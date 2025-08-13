@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -15,9 +18,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 import definitions.Constants;
 import definitions.Recipe;
-import util.Config;
 
 /*
  * Author: Cailean Bernard
@@ -35,12 +39,17 @@ public class UserInterface extends JPanel {
 	private JPanel rcpSelectListPanel;
 	private JLabel rcpSelectLabel;
 	private JPanel rcpEditPanel;
+	private JPanel filterLabelCombo;
+	private JPanel filterInputPanel;
+	private JLabel filterLabel;
+	private JTextField filterInput;
+	private JButton filterApply;
+	private JButton filterClear;
 	private List<RecipeSelectButton> rcpSelectList;
 	private JButton rcpListAdd;
 	private JButton rcpListRemove;
 	private JButton rcpListEdit;
 	private JScrollPane rcpSelectScrollPane;
-	private Recipe activeRecipe;
 
 	// Selected (active) Recipe information (UI right side)
 	private JPanel selectedRcpDescPanel;
@@ -49,10 +58,28 @@ public class UserInterface extends JPanel {
 	private JTextArea selectedRcpTxt;
 	private JScrollPane selectedRcpTxtScrollPane;
 
+	// Other
+	private ResourceBundle bundle;
+	private Recipe activeRecipe;
 
-	public UserInterface() {
+
+	public UserInterface(ResourceBundle bundle) {
 		rcpSelectList = new ArrayList<RecipeSelectButton>();
 		setLayout(new BorderLayout());
+		this.bundle = bundle;
+
+		// TAG STUFF
+		filterLabelCombo = new JPanel(new BorderLayout());
+		filterInputPanel = new JPanel(new BorderLayout());
+		filterInput = new JTextField(10);
+		filterApply = new JButton(bundle.getString("filterApply"));
+		filterLabel = new JLabel(bundle.getString("filterLabel"));
+		filterClear = new JButton(bundle.getString("filterClear"));
+		filterInputPanel.add(filterLabel, BorderLayout.WEST);
+		filterInputPanel.add(filterInput, BorderLayout.CENTER);
+		filterInputPanel.add(filterApply, BorderLayout.EAST);
+		filterInputPanel.add(filterClear, BorderLayout.SOUTH);
+		filterLabelCombo.add(filterInputPanel, BorderLayout.SOUTH);
 
 		// Recipe Selection List Panel (WEST)
 		rcpSelectPanel = new JPanel(new BorderLayout());
@@ -66,18 +93,20 @@ public class UserInterface extends JPanel {
 		rcpSelectScrollPane.setPreferredSize(new Dimension(
 				Constants.BUTTON_WIDTH,
 				Constants.BUTTON_HEIGHT * Constants.NUM_SHOWN_BUTTONS));
+		rcpSelectScrollPane.getVerticalScrollBar().setUnitIncrement(Constants.SCROLL_SPEED);
 		rcpEditPanel = new JPanel();
-		rcpSelectLabel = new JLabel("Recipes", JLabel.CENTER);
+		rcpSelectLabel = new JLabel(bundle.getString("rcpSelectLabel"), JLabel.CENTER);
 		rcpSelectLabel.setFont(Constants.titleFont);
 		BoxLayout rcpSelectListLayout = new BoxLayout(rcpSelectListPanel, BoxLayout.Y_AXIS);
 		rcpSelectListPanel.setLayout(rcpSelectListLayout);
-		rcpListAdd = new JButton("Add");
-		rcpListRemove = new JButton("Remove");
-		rcpListEdit = new JButton("Edit");
+		rcpListAdd = new JButton(bundle.getString("rcpListAdd"));
+		rcpListRemove = new JButton(bundle.getString("rcpListRemove"));
+		rcpListEdit = new JButton(bundle.getString("rcpListEdit"));
 		rcpEditPanel.add(rcpListAdd);
 		rcpEditPanel.add(rcpListRemove);
 		rcpEditPanel.add(rcpListEdit);
-		rcpSelectPanel.add(rcpSelectLabel, BorderLayout.NORTH);
+
+		rcpSelectPanel.add(filterLabelCombo, BorderLayout.NORTH);
 		rcpSelectPanel.add(rcpSelectScrollPane, BorderLayout.CENTER);
 		rcpSelectPanel.add(rcpEditPanel, BorderLayout.SOUTH);
 
@@ -92,8 +121,9 @@ public class UserInterface extends JPanel {
 		selectedRcpTxt.setCaretPosition(0);
 		selectedRcpTxt.setWrapStyleWord(true);
 		selectedRcpTxt.setLineWrap(true);
+		selectedRcpTxt.setFont(Constants.textFont);
 		selectedRcpTxt.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		selectedDescLabel = new JLabel("Recipe Information");
+		selectedDescLabel = new JLabel(bundle.getString("selectedDescLabel"));
 		selectedDescLabel.setAlignmentX(CENTER_ALIGNMENT);
 		selectedDescLabel.setFont(Constants.titleFont);
 		selectedRcpTxtScrollPane = new JScrollPane(selectedRcpTxt);
@@ -114,7 +144,7 @@ public class UserInterface extends JPanel {
 			System.err.println("Recipe list in model or view was not properly initialized: populateRecipeList().");
 			return;
 		}
-		
+
 		rcpSelectList.clear();
 
 		for (Recipe rcp : recipes) {
@@ -133,9 +163,9 @@ public class UserInterface extends JPanel {
 			System.err.println("Recipe Select List was not initialized before display.");
 			return;
 		}
-		
+
 		rcpSelectListPanel.removeAll();
-		
+
 		for (RecipeSelectButton r : rcpSelectList) {
 			rcpSelectListPanel.add(r);
 		}
@@ -144,31 +174,78 @@ public class UserInterface extends JPanel {
 		rcpSelectListPanel.repaint();
 	}
 
-	public void switchLanguage(String langCode) {
+	public void displayRecipeButtons(String[] filters) {
+		if (rcpSelectList == null) {
+			System.err.println("Recipe Select List as not initialized before display.");
+			return;
+		}
 
+		rcpSelectListPanel.removeAll();
+
+		// filters match by recipe name or by tags
+		// iterate through each filter, then the name/tags
+		for (RecipeSelectButton r : rcpSelectList) {
+			for (String filter : filters) {
+				if (filter.equals(r.getName())) {
+					rcpSelectListPanel.add(r);
+				} else {
+					// saved here
+					for (String tag : r.getTags()) {
+						
+					}
+				}
+			}
+		}
+
+		rcpSelectListPanel.revalidate();
+		rcpSelectListPanel.repaint();
 	}
-	
+
+	public String[] getFilters() {
+		if (filterInput == null) {
+			System.err.println("Filter input uninitialized.");
+			return null;
+		} else if (filterInput.getText().isEmpty()) {
+			System.out.println("Nothing to filter by.");
+			return null;
+		}
+		
+		return filterInput.getText().trim().split(",");
+	}
+
+	public void clearFilters() {
+		if (filterInput == null) {
+			System.err.println("Filter input uninitialized.");
+			return;
+		}
+
+		filterInput.setText("");
+	}
+
 	public void initializeAddButton(ActionListener listener) {
 		rcpListAdd.setActionCommand("add");
 		rcpListAdd.addActionListener(listener);
 	}
-	
+
 	public void initializeRemoveButton(ActionListener listener) {
 		rcpListRemove.setActionCommand("remove");
 		rcpListRemove.addActionListener(e -> {
 			if (activeRecipe == null) {
 				System.out.println("Aborting remove recipe dialog: no active recipe.");
 				JOptionPane.showMessageDialog(null,
-						"Select a recipe you wish to remove, then click \"remove\".",
-						"No Recipe Selected",
+						bundle.getString("noRcpSelRemove"),
+						bundle.getString("noRcpSelRemoveTitle"),
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			
+
 			int choice = JOptionPane.showConfirmDialog(null,
-					"Are you sure you want to delete " + activeRecipe.getTitle() + "?",
-					"Confirm Choice", JOptionPane.OK_CANCEL_OPTION);
-			
+					bundle.getString("removeRcpConfirm") +
+					activeRecipe.getTitle() + "?",
+					bundle.getString("removeRcpConfirmTitle"),
+					JOptionPane.OK_CANCEL_OPTION);
+
+
 			if (choice == JOptionPane.OK_OPTION) {
 				listener.actionPerformed(new ActionEvent(
 						rcpListRemove, ActionEvent.ACTION_PERFORMED,
@@ -176,23 +253,58 @@ public class UserInterface extends JPanel {
 			}
 		});
 	}
-	
+
 	public void initializeEditButton(ActionListener listener) {
 		rcpListEdit.setActionCommand("edit");
-		rcpListEdit.addActionListener(listener);
+		rcpListEdit.addActionListener(e -> {
+			if (activeRecipe == null) {
+				System.out.println("Aborting edit recipe dialog: no active recipe.");
+				JOptionPane.showMessageDialog(null,
+						bundle.getString("noRcpSelEdit"),
+						bundle.getString("noRcpSelEditTitle"),
+						JOptionPane.ERROR_MESSAGE);
+			} else {
+				listener.actionPerformed(new ActionEvent(
+						rcpListEdit, ActionEvent.ACTION_PERFORMED,
+						"edit"));
+			}
+		});
 	}
-	
+
 	public void clearSelectedRecipeText() {
 		selectedRcpTxt.setText("");
+	}
+
+	public void updateBundle(Locale locale) {
+		bundle = ResourceBundle.getBundle("resources.MessagesBundle", locale);
+	}
+
+	public void initializeFilter(ActionListener listener) {
+		filterApply.addActionListener(listener);
+		filterApply.setActionCommand("applyFilter");
+		filterClear.addActionListener(listener);
+		filterClear.setActionCommand("clearFilter");
+	}
+
+	public void refreshTranslatableText() {
+		rcpSelectLabel.setText(bundle.getString("rcpSelectLabel"));
+		selectedDescLabel.setText(bundle.getString("selectedDescLabel"));
+		rcpListAdd.setText(bundle.getString("rcpListAdd"));
+		rcpListRemove.setText(bundle.getString("rcpListRemove"));
+		rcpListEdit.setText(bundle.getString("rcpListEdit"));
+		filterApply.setText(bundle.getString("filterApply"));
+		filterLabel.setText(bundle.getString("filterLabel"));
+		filterClear.setText(bundle.getString("filterClear"));
 	}
 
 	public Recipe getActiveRecipe() {
 		return activeRecipe;
 	}
-	
+
 	public void setActiveRecipe(Recipe recipe) {
 		activeRecipe = recipe;
 		selectedRcpTxt.setText(activeRecipe.formatRecipeForTextDisplay());
+		selectedRcpTxt.setCaretPosition(0);
 	}
 
 }

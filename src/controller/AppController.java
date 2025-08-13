@@ -3,9 +3,8 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
+import java.util.Locale;
 import javax.swing.JOptionPane;
-
 import definitions.Constants;
 import definitions.Recipe;
 import model.RecipeMgrModel;
@@ -61,27 +60,57 @@ public class AppController implements ActionListener {
 			handleAddRecipe(rcpDialog.getCreatedRecipe());
 			break;
 		case "confirmEdit":
-			System.out.println("Recipe has been edited. Overwwriting...");
+			System.out.println("Confirming edits to recipe...");
 			confirmEditRecipe();
 			break;
 		case "save":
 			System.out.println("Saving recipe list to \"recipes.txt\"");
 			handleSaveRecipes();
 			break;
+		case "applyFilter":
+			// get the filters from the ui
+			// return them as a string[]
+			// if there's nothing typed in the filter input, do nothing
+			// once filters retrieved, call displayrecipebuttons overloaded
+			break;
+		case "clearFilter":
+			// reset the 
+			break;
+		case "english":
+			setLanguage(Locale.ENGLISH);
+			break;
+		case "french":
+			setLanguage(Locale.FRENCH);
+			break;
+		case "german":
+			setLanguage(Locale.GERMAN);
+			break;
 		default:
 			System.err.println("Unrecognized button actionCommand.");
 			break;
 		}
 	}
+	
+	public void filterRecipes() {
+		UserInterface ui = view.getUserInterface();
+		String[] filters = ui.getFilters();
+		
+		if (filters == null) {
+			System.out.println("Cancelling filter operation...");
+			return;
+		}
+		
+		ui.displayRecipeButtons(filters);
+	}
 
 	public void displayCreateRecipeDialog() {
-		rcpDialog = new AddRecipeDialog(this, Constants.ADD_MODE, null);
+		rcpDialog = new AddRecipeDialog(this, Constants.ADD_MODE, null, view.getBundle());
 		rcpDialog.setVisible(true);
 	}
 
 	public void displayEditRecipeDialog() {
 		Recipe activeRecipe = view.getUserInterface().getActiveRecipe();
-		rcpDialog = new AddRecipeDialog(this, Constants.EDIT_MODE, activeRecipe);
+		rcpDialog = new AddRecipeDialog(this, Constants.EDIT_MODE, activeRecipe, view.getBundle());
 		rcpDialog.setVisible(true);
 	}
 
@@ -106,9 +135,19 @@ public class AppController implements ActionListener {
 		// XXX this conditional can likely be removed
 		if (recipes.contains(rcpEditing)) {
 			int idx = recipes.indexOf(rcpEditing);
-			rcpEditing = rcpDialog.getCreatedRecipe();
-			recipes.set(idx, rcpEditing);
-			view.getUserInterface().setActiveRecipe(rcpEditing);
+			Recipe rcpEdited = rcpDialog.getCreatedRecipe();
+			
+			// XXX this lazy, but works for now
+			if (rcpEdited == null) {
+				System.out.println("GetCreatedRecipe() returned null.");
+				rcpDialog.dispose();
+				rcpDialog = new AddRecipeDialog(this, Constants.EDIT_MODE, rcpEditing, view.getBundle());
+				rcpDialog.setVisible(true);
+				return;
+			}
+			
+			recipes.set(idx, rcpEdited);
+			view.getUserInterface().setActiveRecipe(rcpEdited);
 			refreshRecipeList();
 			rcpDialog.setCreatedRecipeToNull();
 			rcpDialog.dispose();
@@ -153,6 +192,18 @@ public class AppController implements ActionListener {
 
 	public void handleWindowClosed() {
 
+	}
+
+	public void setLanguage(Locale locale) {
+		System.out.println("Switching language to " + locale);
+		view.getConfig().setLocale(locale);
+		view.getConfig().setResourceBundle("resources.MessagesBundle", locale);
+		view.updateBundle();
+		view.toggleLangButton(locale);
+		view.getUserInterface().updateBundle(locale);
+		view.getUserInterface().refreshTranslatableText();
+		view.refreshTranslatableText();
+		view.packFrame();
 	}
 
 }

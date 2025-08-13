@@ -3,6 +3,8 @@ package view;
 import java.awt.Color;
 import javax.swing.JButton;
 
+import definitions.Constants;
+
 /*
  * Author: Cailean Bernard
  * Contents: 
@@ -16,6 +18,7 @@ public class RecipeSelectButton extends JButton {
 		setFocusable(true);
 		setText(title);
 		setBackground(Color.white);
+		setFont(Constants.buttonFont);
 	}
 
 }

@@ -21,6 +21,10 @@ public class Constants {
 	public static final int ADD_MODE = 0;
 	public static final int EDIT_MODE = 1;
 	public static final int VALUE_IDX = 1;
-	public static final Font titleFont = new Font("Segoe UI", Font.BOLD, 14);
+	public static int FONT_SIZE = 14;
+	public static int SCROLL_SPEED = 19;
+	public static final Font titleFont = new Font("Serif", Font.BOLD, FONT_SIZE);
+	public static final Font buttonFont = new Font("Serif", Font.BOLD, FONT_SIZE);
+	public static final Font textFont = new Font("Serif", Font.PLAIN, FONT_SIZE);
 
 }

@@ -148,9 +148,8 @@ public class RecipeMgrModel {
 			e.printStackTrace();
 		}
 
-		if (recipes == null || recipes.isEmpty()) {
-			System.err.println("parseRecipeFromStrArr() returned null.");
-			return null;
+		if (recipes.isEmpty()) {
+			System.err.println("No recipes detected.");
 		}
 
 		return recipes;

@@ -7,8 +7,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.StringJoiner;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
@@ -50,23 +53,28 @@ public class AddRecipeDialog extends JDialog {
 	private JPanel btnPanel;
 	private JLabel recipeTags;
 	private JTextField inputTags;
-	
+
 	// Other / Constants
 	private static final int TXT_ROWS = 10;
 	private static final int TXT_COLS = 10;
 	private Recipe createdRecipe;
+	private ResourceBundle bundle;
 
 
-	public AddRecipeDialog(ActionListener listener, int mode, Recipe recipe) {
+	public AddRecipeDialog(ActionListener listener,
+			int mode,
+			Recipe recipe,
+			ResourceBundle bundle) {
 		super(null, "Add a New Recipe", JDialog.DEFAULT_MODALITY_TYPE);
 		createdRecipe = recipe;
-		recipeTitle = new JLabel("Title: ");
-		recipeIngredients = new JLabel("Ingredients:");
-		recipeDirections = new JLabel("Directions:");
-		recipeTags = new JLabel("Recipe Tags:");
-		btnConfirm = new JButton("Confirm");
-		btnCancel = new JButton("Cancel");
-		btnHelp = new JButton("Help");
+		this.bundle = bundle;
+		recipeTitle = new JLabel(bundle.getString("recipeTitle"));
+		recipeIngredients = new JLabel(bundle.getString("recipeIngredients"));
+		recipeDirections = new JLabel(bundle.getString("recipeDirections"));
+		recipeTags = new JLabel(bundle.getString("recipeTags"));
+		btnConfirm = new JButton(bundle.getString("btnConfirm"));
+		btnCancel = new JButton(bundle.getString("btnCancel"));
+		btnHelp = new JButton(bundle.getString("btnHelp"));
 		inputTitle = new JTextField(); 
 		inputIngredients = new JTextArea(TXT_ROWS,TXT_COLS);
 		inputDirections = new JTextArea(TXT_ROWS,TXT_COLS);
@@ -116,13 +124,14 @@ public class AddRecipeDialog extends JDialog {
 				cancelRecipe();
 			}
 		});
-		
+
 		if (mode == Constants.EDIT_MODE) {
 			initDialogForEdit();
 		}
 
 		pack();
 		setLocationRelativeTo(null);
+		btnConfirm.requestFocusInWindow();
 	}
 
 	public void confirmRecipe() {
@@ -140,7 +149,7 @@ public class AddRecipeDialog extends JDialog {
 		} else if (mode == Constants.EDIT_MODE) {
 			btnConfirm.setActionCommand("confirmEdit");
 		}
-		
+
 		btnConfirm.addActionListener(e -> {
 			System.out.println("Checking validity of recipe fields...");
 			Recipe newRecipe = getRecipeFromFields();
@@ -160,7 +169,7 @@ public class AddRecipeDialog extends JDialog {
 						btnConfirm, ActionEvent.ACTION_PERFORMED,
 						"confirmEdit"));
 			}
-			
+
 		});
 	}
 
@@ -170,19 +179,10 @@ public class AddRecipeDialog extends JDialog {
 	}
 
 	public void displayHelp() {
-		String helpString = 
-				"To add a new recipe, add a title to the title field, then add\n"
-				+ "ingredients in the format \"amount unit ingredient\", e.g:\n"
-				+ "0.5 cup sugar, 1.5 tbsp kosher salt, 0.75 liter warm water"
-				+ "Amounts must be in decimal format, not in fractional form.\n"
-				+ "For a list of accepted measurement units, consult README.md.\n"
-				+ "Each ingredient in the ingredient input box must be added on\n"
-				+ "its' own separate line. Tags should be separated by commas.\n"
-				+ "Good tags should allow recipes to be organized by the station\n"
-				+ "or section that they belong to.";
+		String helpString = bundle.getString("displayHelp");
 		JOptionPane.showMessageDialog(this,
 				helpString,
-				"How to Add a Recipe",
+				bundle.getString("displayHelpTitle"),
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
@@ -191,18 +191,19 @@ public class AddRecipeDialog extends JDialog {
 		String ingredientsStr = inputIngredients.getText().trim();
 		List<Ingredient> ingredientsList = new ArrayList<>();
 		String directions = inputDirections.getText().trim();
-		String[] tags = inputTags.getText().trim().split(", ");
-		
+		String tagsStr = inputTags.getText().trim();
+		String[] tags = tagsStr.split(", ");
+
 		try (Scanner scan = new Scanner(ingredientsStr)) {
 			while (scan.hasNextLine()) {
 				String line = scan.nextLine();
 				String[] lineParts = line.split("\\s+");
 				int linePartsLen = lineParts.length;
-				
+
 				float amount = Float.parseFloat(lineParts[Constants.AMT_IDX].trim());
 				Unit unit = Unit.valueOf(lineParts[Constants.UNIT_IDX].toUpperCase().trim());
 				String name = null;
-				
+
 				// If the ingredient name is longer than one word, concatenate it
 				if (linePartsLen == Constants.DEFAULT_LENGTH) {
 					name = lineParts[Constants.NAME_IDX].trim();
@@ -213,42 +214,43 @@ public class AddRecipeDialog extends JDialog {
 					}
 					name = sj.toString();
 				}
-				
+
 				ingredientsList.add(new Ingredient(amount, unit, name));
 			}
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(this,
-					"You input an incorrect amount for one or more ingredients.\n"
-					+ "Ingredients must be in decimal format, not fractional.",
-					"Invalid Ingredient Amount"
-					, JOptionPane.ERROR_MESSAGE);
+					bundle.getString("errIncorrectIngAmt"),
+							bundle.getString("errIncorrectIngAmtTitle")
+							, JOptionPane.ERROR_MESSAGE);
 		} catch (IllegalArgumentException e) {
 			JOptionPane.showMessageDialog(this,
-					"Unknown unit of measurement. Consult README.md for all acceptable\n"
-					+ "units of measurement.",
-					"Invalid Measurement Unit",
-					JOptionPane.ERROR_MESSAGE);
+					bundle.getString("errUnknownUnit"),
+							bundle.getString("errUnknownUnitTitle"),
+							JOptionPane.ERROR_MESSAGE);
 		}
-		
+
 		// recipes can have no tags if the user doesn't care to add any, so no check
 		if (title.isEmpty()
 				|| directions.isEmpty()
 				|| ingredientsList.size() < 1) {
 			JOptionPane.showMessageDialog(this,
-					"One or more fields were left blank. Give the recipe a title\n"
-					+ "and some instructions, as well as at least one ingredient.\n"
-					+ "Ingredients must follow the format: \"amt unit ingredient\".\n"
-					+ "e.g. 0.5 cup sugar, 3 tbsp olive oil. Amounts must be in\n"
-					+ "decimal form, not fractional (1/4 = 0.25, 1/2 = 0.5, etc.",
-					"Malformed Recipe",
-					JOptionPane.WARNING_MESSAGE);
+					bundle.getString("errMissingFields"),
+							bundle.getString("errMissingFieldsTitle"),
+							JOptionPane.WARNING_MESSAGE);
 			return null;
-		} 
-
-		Recipe newRecipe = new Recipe(title, ingredientsList, directions, tags);
+		}
+		
+		Recipe newRecipe = null;
+		
+		if (tagsStr.isEmpty()) {
+			newRecipe = new Recipe(title, ingredientsList, directions);
+		} else {
+			newRecipe = new Recipe(title, ingredientsList, directions, tags);
+		}
+ 
 		return newRecipe;
 	}
-	
+
 	public void initDialogForEdit() {
 		inputTitle.setText(createdRecipe.getTitle());
 		inputIngredients.setText(createdRecipe.stringifyIngredients());
@@ -259,11 +261,11 @@ public class AddRecipeDialog extends JDialog {
 	public Recipe getCreatedRecipe() {
 		return createdRecipe;
 	}
-	
+
 	public void setCreatedRecipeToNull() {
 		createdRecipe = null;
 	}
-	
+
 	public void setCreatedRecipe(Recipe recipe) {
 		createdRecipe = recipe;
 	}

@@ -17,6 +17,12 @@ public class Main {
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 
-		// implement internationalization, settings saving
+		// TODO light mode/dark mode
+		// TODO tag/name filtering
+		// TODO database instead of local file
+		// TODO notification center
+		// TODO UI element size (accessibility)
+		// TODO icon, make the UI not look so bad
+		// TODO add a button that just opens the readme in whatever language
 	}
 }
