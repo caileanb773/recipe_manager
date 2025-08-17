@@ -31,9 +31,7 @@ public class RecipeMgrModel {
 	private static final int INGREDIENT_NAME_IDX = 2;
 	private static final int RECIPE_NAME_IDX = 0;
 	private static final int RECIPE_INSTRUCTIONS_IDX = 2;
-	private static final String RECIPE_SECT_DELIM = ":";
-	private static final String INGREDIENT_DELIM = ",";
-	private static final String INGREDIENT_SECT_DELIM = " ";
+
 
 	public RecipeMgrModel(List<Recipe> r) {
 		if (!r.isEmpty()) {
@@ -84,6 +82,7 @@ public class RecipeMgrModel {
 			return;
 		}
 
+		System.out.println("Saving recipe list locally...");
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(exportPath))) {
 			for (Recipe r : recipes) {
 				writer.write(r.formatRecipeForExport());
@@ -106,17 +105,17 @@ public class RecipeMgrModel {
 
 			// each line in the file is a separate recipe
 			while ((fileLine = reader.readLine()) != null) {
-				String[] recipeStrArr = fileLine.split(RECIPE_SECT_DELIM); 
+				String[] recipeStrArr = fileLine.split(Constants.RECIPE_SECT_DELIM); 
 				name = recipeStrArr[RECIPE_NAME_IDX].replace("_", " ");
-				ingredientsArr = recipeStrArr[INGREDIENT_UNIT_IDX].split(INGREDIENT_DELIM);
-				instructions = recipeStrArr[RECIPE_INSTRUCTIONS_IDX];
+				ingredientsArr = recipeStrArr[INGREDIENT_UNIT_IDX].split(Constants.ING_TAG_DELIM);
+				instructions = recipeStrArr[RECIPE_INSTRUCTIONS_IDX].replace("\\n", "\n");
 				int ingredientsArrLen = ingredientsArr.length;
 
 				if (ingredientsArrLen > 0) {
 					ingredientsList = new ArrayList<>();
 
 					for (int i = 0; i < ingredientsArrLen; i++) {
-						String[] unparsedIngredientStrArr = ingredientsArr[i].split(INGREDIENT_SECT_DELIM);
+						String[] unparsedIngredientStrArr = ingredientsArr[i].split(Constants.INGREDIENT_SECT_DELIM);
 						Ingredient newIng = parseIngredientFromStrArr(unparsedIngredientStrArr);
 
 						if (newIng == null) {
@@ -132,7 +131,7 @@ public class RecipeMgrModel {
 				}
 
 				if (recipeStrArr.length == Constants.LENGTH_WITH_TAGS) {
-					String[] tags = recipeStrArr[Constants.TAGS_IDX].split(",");
+					String[] tags = recipeStrArr[Constants.TAGS_IDX].split(Constants.ING_TAG_DELIM);
 					addRecipe(new Recipe(name, ingredientsList, instructions, tags));
 				} else {
 					addRecipe(new Recipe(name, ingredientsList, instructions));

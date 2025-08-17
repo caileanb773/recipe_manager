@@ -18,6 +18,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -53,10 +54,12 @@ public class AddRecipeDialog extends JDialog {
 	private JPanel btnPanel;
 	private JLabel recipeTags;
 	private JTextField inputTags;
+	private JScrollPane ingredientsScrollPane;
+	private JScrollPane directionsScrollPane;
 
 	// Other / Constants
 	private static final int TXT_ROWS = 10;
-	private static final int TXT_COLS = 10;
+	private static final int TXT_COLS = 40;
 	private Recipe createdRecipe;
 	private ResourceBundle bundle;
 
@@ -93,14 +96,20 @@ public class AddRecipeDialog extends JDialog {
 		inputIngredients.setWrapStyleWord(true);
 		inputDirections.setLineWrap(true);
 		inputDirections.setWrapStyleWord(true);
-		BoxLayout layout = new BoxLayout(dialogPanel, BoxLayout.Y_AXIS);
+		BoxLayout layout = new BoxLayout(dialogPanel, BoxLayout.Y_AXIS);		
+		ingredientsScrollPane = new JScrollPane(inputIngredients);
+		ingredientsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		ingredientsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		directionsScrollPane = new JScrollPane(inputDirections);
+		directionsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		directionsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);		
 		dialogPanel.setLayout(layout);
 		dialogPanel.add(recipeTitle);
 		dialogPanel.add(inputTitle);
 		dialogPanel.add(recipeIngredients);
-		dialogPanel.add(inputIngredients);
+		dialogPanel.add(ingredientsScrollPane);
 		dialogPanel.add(recipeDirections);
-		dialogPanel.add(inputDirections);
+		dialogPanel.add(directionsScrollPane);
 		dialogPanel.add(recipeTags);
 		dialogPanel.add(inputTags);
 		Border blackLineBorder = BorderFactory.createLineBorder(Color.black, 1);

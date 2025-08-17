@@ -32,7 +32,7 @@ public class Recipe {
 		this.directions = directions;
 		this.tags = tags;
 	}
-	
+
 	public Recipe(String title, List<Ingredient> ingredeints, String directions, String[] tagsArr) {
 		this.title = title;
 		this.ingredients = ingredeints;
@@ -88,8 +88,8 @@ public class Recipe {
 
 	public String formatRecipeForExport() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(title + ":");
-		StringJoiner sj = new StringJoiner(",");
+		sb.append(title).append(Constants.RECIPE_SECT_DELIM);
+		StringJoiner sj = new StringJoiner(Constants.ING_TAG_DELIM);
 
 		for (Ingredient ing : ingredients) {
 			sj.add(ing.getAmount() + " " +
@@ -97,21 +97,22 @@ public class Recipe {
 					ing.getName().replace(" ", "_"));
 		}
 
-		sb.append(sj.toString());
-		sb.append(":" + directions);
-		sj = new StringJoiner(",");
+		sb.append(sj);
+		String safeDirections = directions.replace("\r\n", "\\n")
+				.replace("\n", "\\n");
+		sb.append(Constants.RECIPE_SECT_DELIM).append(safeDirections);
+		sj = new StringJoiner(Constants.ING_TAG_DELIM);
 		
 		if (!tags.isEmpty()) {
-			
 			for (String tag : tags) {
 				sj.add(tag);
 			}
-			
-			sb.append(":" + sj.toString());
+			sb.append(Constants.RECIPE_SECT_DELIM).append(sj);
 		}
 
 		return sb.toString();
 	}
+
 
 	public String formatRecipeForTextDisplay() {
 		StringBuilder sb = new StringBuilder();
@@ -132,11 +133,11 @@ public class Recipe {
 		}
 
 		sb.append("\n" + directions + "\n\n");
-		
+
 		if (!tags.isEmpty()) {
 			sb.append("Tags: " + stringifyTags());
 		}
-		
+
 		return sb.toString();
 	}
 
@@ -149,14 +150,14 @@ public class Recipe {
 
 		return sj.toString();
 	}
-	
+
 	public String stringifyTags() {
 		StringJoiner sj = new StringJoiner(", ");
-		
+
 		for (String tag : tags) {
 			sj.add(tag);
 		}
-		
+
 		return sj.toString();
 	}
 

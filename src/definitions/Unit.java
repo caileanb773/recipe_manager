@@ -29,7 +29,7 @@ public enum Unit {
 
 	/* ----- OTHER ----- */
 
-	PIECE, KNOB, CLOVE, STICK, GLUG, WHOLE, INCH, CM, DASH, PINCH, DROP,
+	PIECE, KNOB, CLOVE, STICK, GLUG, WHOLE, INCH, CM, DASH, PINCH, DROP, PERCENT,
 	NO_UNIT; // for situations where no unit is needed
 
 }

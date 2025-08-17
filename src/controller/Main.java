@@ -17,8 +17,9 @@ public class Main {
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 
+		// TODO resize recipe info based on window size
+		// TODO batch math (10x batch, 5x batch, etcc)
 		// TODO light mode/dark mode
-		// TODO tag/name filtering
 		// TODO database instead of local file
 		// TODO notification center
 		// TODO UI element size (accessibility)

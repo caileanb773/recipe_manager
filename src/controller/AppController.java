@@ -36,6 +36,7 @@ public class AppController implements ActionListener {
 		view.initializeMainScreen(model.getRecipes());
 		view.initializeUIButtons(this);
 		view.addButtonListeners(this);
+		view.initCloseBtn(this);
 	}
 
 	@Override
@@ -68,13 +69,10 @@ public class AppController implements ActionListener {
 			handleSaveRecipes();
 			break;
 		case "applyFilter":
-			// get the filters from the ui
-			// return them as a string[]
-			// if there's nothing typed in the filter input, do nothing
-			// once filters retrieved, call displayrecipebuttons overloaded
+			filterRecipes();
 			break;
 		case "clearFilter":
-			// reset the 
+			clearFilters();
 			break;
 		case "english":
 			setLanguage(Locale.ENGLISH);
@@ -85,6 +83,9 @@ public class AppController implements ActionListener {
 		case "german":
 			setLanguage(Locale.GERMAN);
 			break;
+		case "closeWindow":
+			model.exportRecipeList("recipes.txt");
+			break;
 		default:
 			System.err.println("Unrecognized button actionCommand.");
 			break;
@@ -93,7 +94,7 @@ public class AppController implements ActionListener {
 	
 	public void filterRecipes() {
 		UserInterface ui = view.getUserInterface();
-		String[] filters = ui.getFilters();
+		List<String> filters = ui.getFilters();
 		
 		if (filters == null) {
 			System.out.println("Cancelling filter operation...");
@@ -101,6 +102,12 @@ public class AppController implements ActionListener {
 		}
 		
 		ui.displayRecipeButtons(filters);
+	}
+	
+	public void clearFilters() {
+		UserInterface ui = view.getUserInterface();
+		ui.clearFilters();
+		ui.displayRecipeButtons();
 	}
 
 	public void displayCreateRecipeDialog() {

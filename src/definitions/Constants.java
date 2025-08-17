@@ -23,6 +23,9 @@ public class Constants {
 	public static final int VALUE_IDX = 1;
 	public static int FONT_SIZE = 14;
 	public static int SCROLL_SPEED = 19;
+	public static final String RECIPE_SECT_DELIM = "§§";
+	public static final String ING_TAG_DELIM = "¤";
+	public static final String INGREDIENT_SECT_DELIM = " ";
 	public static final Font titleFont = new Font("Serif", Font.BOLD, FONT_SIZE);
 	public static final Font buttonFont = new Font("Serif", Font.BOLD, FONT_SIZE);
 	public static final Font textFont = new Font("Serif", Font.PLAIN, FONT_SIZE);

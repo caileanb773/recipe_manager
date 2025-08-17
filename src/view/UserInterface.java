@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -79,7 +80,7 @@ public class UserInterface extends JPanel {
 		filterInputPanel.add(filterInput, BorderLayout.CENTER);
 		filterInputPanel.add(filterApply, BorderLayout.EAST);
 		filterInputPanel.add(filterClear, BorderLayout.SOUTH);
-		filterLabelCombo.add(filterInputPanel, BorderLayout.SOUTH);
+		filterLabelCombo.add(filterInputPanel, BorderLayout.SOUTH);;
 
 		// Recipe Selection List Panel (WEST)
 		rcpSelectPanel = new JPanel(new BorderLayout());
@@ -133,8 +134,6 @@ public class UserInterface extends JPanel {
 		selectedRcpInfo.add(selectedRcpTxtScrollPane);
 		selectedRcpDescPanel.add(selectedDescLabel);
 		selectedRcpDescPanel.add(selectedRcpInfo);
-
-		// Separation of this code from the code that is previous
 		add(selectedRcpDescPanel, BorderLayout.CENTER);
 		add(rcpSelectPanel, BorderLayout.WEST);
 	}
@@ -148,7 +147,7 @@ public class UserInterface extends JPanel {
 		rcpSelectList.clear();
 
 		for (Recipe rcp : recipes) {
-			RecipeSelectButton newRcpButton = new RecipeSelectButton(rcp.getTitle());
+			RecipeSelectButton newRcpButton = new RecipeSelectButton(rcp);
 			rcpSelectList.add(newRcpButton);
 			newRcpButton.setAlignmentX(CENTER_ALIGNMENT);
 			newRcpButton.addActionListener(e -> {
@@ -174,34 +173,45 @@ public class UserInterface extends JPanel {
 		rcpSelectListPanel.repaint();
 	}
 
-	public void displayRecipeButtons(String[] filters) {
-		if (rcpSelectList == null) {
-			System.err.println("Recipe Select List as not initialized before display.");
-			return;
-		}
+	public void displayRecipeButtons(List<String> filters) {
+	    if (rcpSelectList == null) {
+	        System.err.println("Recipe Select List was not initialized before display.");
+	        return;
+	    }
 
-		rcpSelectListPanel.removeAll();
+	    rcpSelectListPanel.removeAll();
 
-		// filters match by recipe name or by tags
-		// iterate through each filter, then the name/tags
-		for (RecipeSelectButton r : rcpSelectList) {
-			for (String filter : filters) {
-				if (filter.equals(r.getName())) {
-					rcpSelectListPanel.add(r);
-				} else {
-					// saved here
-					for (String tag : r.getTags()) {
-						
-					}
-				}
-			}
-		}
+	    for (RecipeSelectButton r : rcpSelectList) {
+	        String name = r.getText().toLowerCase();
+	        boolean added = false;
 
-		rcpSelectListPanel.revalidate();
-		rcpSelectListPanel.repaint();
+	        for (String filter : filters) {
+	            String f = filter.toLowerCase();
+
+	            if (name.contains(f)) {
+	                rcpSelectListPanel.add(r);
+	                added = true;
+	                break;
+	            } else {
+	                for (String tag : r.getTags()) {
+	                    if (tag.toLowerCase().contains(f)) {
+	                        rcpSelectListPanel.add(r);
+	                        added = true;
+	                        break;
+	                    }
+	                }
+	            }
+
+	            if (added) break;
+	        }
+	    }
+
+	    rcpSelectListPanel.revalidate();
+	    rcpSelectListPanel.repaint();
 	}
 
-	public String[] getFilters() {
+
+	public List<String> getFilters() {
 		if (filterInput == null) {
 			System.err.println("Filter input uninitialized.");
 			return null;
@@ -209,8 +219,8 @@ public class UserInterface extends JPanel {
 			System.out.println("Nothing to filter by.");
 			return null;
 		}
-		
-		return filterInput.getText().trim().split(",");
+
+		return Arrays.asList(filterInput.getText().trim().split(","));
 	}
 
 	public void clearFilters() {
@@ -284,6 +294,15 @@ public class UserInterface extends JPanel {
 		filterApply.setActionCommand("applyFilter");
 		filterClear.addActionListener(listener);
 		filterClear.setActionCommand("clearFilter");
+		// Filter input shortcut
+		filterInput.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listener.actionPerformed(new ActionEvent(filterInput,
+						ActionEvent.ACTION_PERFORMED,
+						"applyFilter"));
+			}
+		});
 	}
 
 	public void refreshTranslatableText() {
