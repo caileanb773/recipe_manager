@@ -7,12 +7,12 @@ package definitions;
 
 public class Ingredient {
 	
-	private float amount;
+	private String amount;
 	private Unit unit;
 	private String name;
 
 	
-	public Ingredient(float a, Unit u, String n) {
+	public Ingredient(String a, Unit u, String n) {
 		name = n;
 		unit = u;
 		amount = a;
@@ -26,7 +26,7 @@ public class Ingredient {
 		return unit;
 	}
 	
-	public float getAmount() {
+	public String getAmount() {
 		return amount;
 	}
 	

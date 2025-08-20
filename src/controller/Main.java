@@ -24,6 +24,18 @@ public class Main {
 		// TODO notification center
 		// TODO UI element size (accessibility)
 		// TODO icon, make the UI not look so bad
-		// TODO add a button that just opens the readme in whatever language
+		
+		/*
+		 * Database Flow:
+		 * 
+		 * on startup, query the database to see how many records are present.
+		 * if there are 0, don't bother loading anything from DB, just start the
+		 * app as normal.
+		 * if there are some records, load each into local memory (model).
+		 * app usage continues like normal. each time a recipe is added, directly
+		 * update the db first, then persist the data in local memory.
+		 * 
+		 * */
+		
 	}
 }

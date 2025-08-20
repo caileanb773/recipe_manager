@@ -62,6 +62,7 @@ public class AddRecipeDialog extends JDialog {
 	private static final int TXT_COLS = 40;
 	private Recipe createdRecipe;
 	private ResourceBundle bundle;
+	private int tempRecipeId;
 
 
 	public AddRecipeDialog(ActionListener listener,
@@ -209,7 +210,7 @@ public class AddRecipeDialog extends JDialog {
 				String[] lineParts = line.split("\\s+");
 				int linePartsLen = lineParts.length;
 
-				float amount = Float.parseFloat(lineParts[Constants.AMT_IDX].trim());
+				String amount = lineParts[Constants.AMT_IDX].trim();
 				Unit unit = Unit.valueOf(lineParts[Constants.UNIT_IDX].toUpperCase().trim());
 				String name = null;
 
@@ -261,6 +262,7 @@ public class AddRecipeDialog extends JDialog {
 	}
 
 	public void initDialogForEdit() {
+		tempRecipeId = createdRecipe.getId();
 		inputTitle.setText(createdRecipe.getTitle());
 		inputIngredients.setText(createdRecipe.stringifyIngredients());
 		inputDirections.setText(createdRecipe.getDirections());
@@ -268,6 +270,8 @@ public class AddRecipeDialog extends JDialog {
 	}
 
 	public Recipe getCreatedRecipe() {
+		createdRecipe.setId(tempRecipeId);
+		tempRecipeId = -1;
 		return createdRecipe;
 	}
 

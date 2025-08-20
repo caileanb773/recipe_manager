@@ -128,7 +128,7 @@ public class UserInterface extends JPanel {
 		selectedDescLabel.setAlignmentX(CENTER_ALIGNMENT);
 		selectedDescLabel.setFont(Constants.titleFont);
 		selectedRcpTxtScrollPane = new JScrollPane(selectedRcpTxt);
-		selectedRcpTxtScrollPane.setPreferredSize(new Dimension(300,300));
+		selectedRcpTxtScrollPane.setPreferredSize(new Dimension(500,500));
 		selectedRcpTxtScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		selectedRcpTxtScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		selectedRcpInfo.add(selectedRcpTxtScrollPane);
@@ -324,6 +324,10 @@ public class UserInterface extends JPanel {
 		activeRecipe = recipe;
 		selectedRcpTxt.setText(activeRecipe.formatRecipeForTextDisplay());
 		selectedRcpTxt.setCaretPosition(0);
+	}
+	
+	public void clearActiveRecipe() {
+		activeRecipe = null;
 	}
 
 }

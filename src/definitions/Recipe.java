@@ -2,7 +2,10 @@ package definitions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
+
+import util.Utility;
 
 /*
  * Author: Cailean Bernard
@@ -14,11 +17,21 @@ import java.util.StringJoiner;
 
 public class Recipe {
 
+	private int id;
 	private String title;
 	private List<Ingredient> ingredients;
 	private String directions;
 	private List<String> tags;
 
+	
+	public Recipe(int id, String title, List<Ingredient> ingredients, String directions) {
+		this.id = id;
+		this.title = title;
+		this.ingredients = ingredients;
+		this.directions = directions;
+		this.tags = new ArrayList<>();
+	}
+	
 	public Recipe(String title, List<Ingredient> ingredients, String directions) {
 		this.title = title;
 		this.ingredients = ingredients;
@@ -26,39 +39,30 @@ public class Recipe {
 		this.tags = new ArrayList<>();
 	}
 
-	public Recipe(String title, List<Ingredient> ingredients, String directions, List<String> tags) {
+
+	public Recipe(String title, List<Ingredient> ingredients, String directions, String[] tagsArr) {
 		this.title = title;
 		this.ingredients = ingredients;
-		this.directions = directions;
-		this.tags = tags;
-	}
-
-	public Recipe(String title, List<Ingredient> ingredeints, String directions, String[] tagsArr) {
-		this.title = title;
-		this.ingredients = ingredeints;
 		this.directions = directions;
 		tags = new ArrayList<String>();
 		for (String tag : tagsArr) {
 			tags.add(tag);
 		}
 	}
-
-	public Recipe(String title, String[] ingredientArr, String directions) {
+	
+	public Recipe(int id, String title, List<Ingredient> ingredients, String directions, List<String> tagsList) {
+		this.id = id;
 		this.title = title;
+		this.ingredients = ingredients;
 		this.directions = directions;
-		ingredients = new ArrayList<Ingredient>();
-
-		try {
-			for (int i = 0; i < ingredientArr.length; i++) {
-				ingredients.add(new Ingredient(
-						Float.parseFloat(ingredientArr[Constants.AMT_IDX]),
-						Unit.valueOf(ingredientArr[Constants.UNIT_IDX]),
-						ingredientArr[Constants.NAME_IDX]));
-			}	
-		} catch (IndexOutOfBoundsException e) {
-			System.err.println("Malformed ingredient encountered in Recipe constructor.");
-			e.printStackTrace();
-		}
+		tags = tagsList;
+	}
+	
+	public Recipe(String title, List<Ingredient> ingredients, String directions, List<String> tagsList) {
+		this.title = title;
+		this.ingredients = ingredients;
+		this.directions = directions;
+		tags = tagsList;
 	}
 
 	public List<String> getTags() {
@@ -69,21 +73,6 @@ public class Recipe {
 		if (tags.contains(tag)) {
 			tags.remove(tag);
 		}
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Recipe: " + title + "\n" + "Ingredients:\n");
-
-		for (Ingredient ingredient : ingredients) {
-			sb.append(ingredient.getAmount() + " ");
-			sb.append(ingredient.getUnit() + " ");
-			sb.append(ingredient.getName() + "\n");
-		}
-
-		sb.append("Directions:\n" + directions);
-		return sb.toString();
 	}
 
 	public String formatRecipeForExport() {
@@ -113,17 +102,17 @@ public class Recipe {
 		return sb.toString();
 	}
 
-
 	public String formatRecipeForTextDisplay() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(title + "\n\n");
-		float amt;
+		String amt;
 
 		for (Ingredient ing : ingredients) {
 			amt = ing.getAmount();
 
-			if (amt % 1 == 0) {
-				sb.append((int)amt + " ");
+			// XXX this is very ugly
+			if (Utility.getAmountAsFloat(amt) % 1 == 0) {
+				sb.append((int)Float.parseFloat(amt) + " ");
 			} else {
 				sb.append(amt + " ");
 			}
@@ -160,13 +149,54 @@ public class Recipe {
 
 		return sj.toString();
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Recipe: " + title + "\n" + "Ingredients:\n");
+
+		for (Ingredient ingredient : ingredients) {
+			sb.append(ingredient.getAmount() + " ");
+			sb.append(ingredient.getUnit() + " ");
+			sb.append(ingredient.getName() + "\n");
+		}
+
+		sb.append("Directions:\n" + directions);
+		return sb.toString();
+	}
 
 	public String getTitle() {
 		return title;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getDirections() {
 		return directions;
 	}
+	
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (!(o instanceof Recipe)) return false;
+	    Recipe other = (Recipe) o;
+	    return this.id == other.id;
+	}
+
+	@Override
+	public int hashCode() {
+	    return Objects.hash(id);
+	}
+
 
 }

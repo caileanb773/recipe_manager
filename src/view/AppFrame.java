@@ -4,13 +4,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import definitions.Recipe;
 import util.Config;
 
@@ -33,10 +40,11 @@ public class AppFrame {
 	private JMenu menuOpt;
 	private JMenu menuLang;
 	private JMenuItem menuBtnSave;
-	private JMenuItem menuBtnLoad;
+	private JMenuItem menuBtnSync;
 	private JMenuItem menuBtnEn;
 	private JMenuItem menuBtnFr;
 	private JMenuItem menuBtnDe;
+	private JMenuItem menuBtnReadMe;
 	
 	
 	public AppFrame() {
@@ -51,12 +59,14 @@ public class AppFrame {
 		menuBar = new JMenuBar();
 		menuFile = new JMenu(bundle.getString("menuFile"));
 		menuBtnSave = new JMenuItem(bundle.getString("menuBtnSave"));
-		menuBtnLoad = new JMenuItem(bundle.getString("menuBtnLoad"));
+		menuBtnSync = new JMenuItem(bundle.getString("menuBtnSync"));
 		menuFile.add(menuBtnSave);
-		menuFile.add(menuBtnLoad);
+		menuFile.add(menuBtnSync);
 		menuOpt = new JMenu(bundle.getString("menuOpt"));
 		menuLang = new JMenu(bundle.getString("menuLang"));
+		menuBtnReadMe = new JMenuItem(bundle.getString("menuBtnReadMe"));
 		menuOpt.add(menuLang);
+		menuOpt.add(menuBtnReadMe);
 		menuBtnEn = new JMenuItem(bundle.getString("menuBtnEn"));
 		menuBtnFr = new JMenuItem(bundle.getString("menuBtnFr"));
 		menuBtnDe = new JMenuItem(bundle.getString("menuBtnDe"));
@@ -91,12 +101,41 @@ public class AppFrame {
 	public void addButtonListeners(ActionListener listener) {
 		menuBtnSave.addActionListener(listener);
 		menuBtnSave.setActionCommand("save");
+		menuBtnSync.addActionListener(listener);
+		menuBtnSync.setActionCommand("sync");
 		menuBtnEn.addActionListener(listener);
 		menuBtnEn.setActionCommand("english");
 		menuBtnFr.addActionListener(listener);
 		menuBtnFr.setActionCommand("french");
 		menuBtnDe.addActionListener(listener);
 		menuBtnDe.setActionCommand("german");
+		menuBtnReadMe.addActionListener(e -> {
+			displayReadMe();
+		});
+	}
+	
+	// TODO needs to be modified for additional languages
+	public void displayReadMe() {
+		String readMe = null;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader("README.md"))) {
+			String line = null;
+			StringBuilder sb = new StringBuilder();
+			
+			while ((line = reader.readLine()) != null) {
+				sb.append(line);
+				sb.append("\n");
+			}
+			
+			readMe = sb.toString();
+			
+		} catch (FileNotFoundException e) {
+			System.err.println("Could not find README.md");
+		} catch (IOException e) {
+			System.err.println("IO Exception");
+		}
+		
+		JOptionPane.showMessageDialog(frame, readMe);
 	}
 	
 	public void initializeUIButtons(ActionListener listener) {
@@ -154,7 +193,7 @@ public class AppFrame {
 		menuOpt.setText(bundle.getString("menuOpt"));
 		menuLang.setText(bundle.getString("menuLang"));
 		menuBtnSave.setText(bundle.getString("menuBtnSave"));
-		menuBtnLoad.setText(bundle.getString("menuBtnLoad"));
+		menuBtnSync.setText(bundle.getString("menuBtnSync"));
 		menuBtnEn.setText(bundle.getString("menuBtnEn"));
 		menuBtnFr.setText(bundle.getString("menuBtnFr"));
 	}

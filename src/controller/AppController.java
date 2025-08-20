@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Locale;
+
 import javax.swing.JOptionPane;
+
+import db.RecipeDAO;
 import definitions.Constants;
 import definitions.Recipe;
 import model.RecipeMgrModel;
@@ -24,14 +27,32 @@ public class AppController implements ActionListener {
 	private RecipeMgrModel model;
 	private AppFrame view;
 	private AddRecipeDialog rcpDialog;
+	private RecipeDAO recipeDao;
+	private boolean appIsOnline = true;
+
 
 	public AppController(RecipeMgrModel model, AppFrame view) {
 		this.model = model;
 		this.view = view;
-		initialize();
+		this.recipeDao = new RecipeDAO();
+		// if internet is available
+		if (appIsOnline) {
+			initialize();
+		} else {
+			initializeOffline();
+		}
 	}
 
 	public void initialize() {
+		recipeDao.init();
+		model.setRecipes(recipeDao.selectAllRecipesAsList());
+		view.initializeMainScreen(model.getRecipes());
+		view.initializeUIButtons(this);
+		view.addButtonListeners(this);
+		view.initCloseBtn(this);
+	}
+
+	public void initializeOffline() {
 		model.initModelOffline("recipes.txt");
 		view.initializeMainScreen(model.getRecipes());
 		view.initializeUIButtons(this);
@@ -68,6 +89,10 @@ public class AppController implements ActionListener {
 			System.out.println("Saving recipe list to \"recipes.txt\"");
 			handleSaveRecipes();
 			break;
+		case "sync":
+			System.out.println("Loading recipes from .txt and pushing to database...");
+			syncRecipesFromTxtToDB();
+			break;
 		case "applyFilter":
 			filterRecipes();
 			break;
@@ -92,18 +117,30 @@ public class AppController implements ActionListener {
 		}
 	}
 	
+	public void syncRecipesFromTxtToDB() {
+		// clear the db first
+		// load all recipes into model from txt
+		// for each recipe in the model, add it to the db
+		recipeDao.clearRecipes();
+		model.setRecipes(model.importRecipeList("recipes.txt"));
+		for (Recipe recipe : model.getRecipes()) {
+			recipeDao.insertRecipe(recipe);
+		}
+		refreshRecipeList();
+	}
+
 	public void filterRecipes() {
 		UserInterface ui = view.getUserInterface();
 		List<String> filters = ui.getFilters();
-		
+
 		if (filters == null) {
 			System.out.println("Cancelling filter operation...");
 			return;
 		}
-		
+
 		ui.displayRecipeButtons(filters);
 	}
-	
+
 	public void clearFilters() {
 		UserInterface ui = view.getUserInterface();
 		ui.clearFilters();
@@ -123,6 +160,11 @@ public class AppController implements ActionListener {
 
 	public void handleAddRecipe(Recipe newRecipe) {
 		if (newRecipe != null) {
+			if (appIsOnline) {
+				int newRcpId = recipeDao.insertRecipe(newRecipe);
+				newRecipe.setId(newRcpId);
+			}
+
 			model.addRecipe(newRecipe);
 			view.getUserInterface().setActiveRecipe(newRecipe);
 			refreshRecipeList();
@@ -139,55 +181,65 @@ public class AppController implements ActionListener {
 		Recipe rcpEditing = view.getUserInterface().getActiveRecipe();
 		List<Recipe> recipes = model.getRecipes();
 
-		// XXX this conditional can likely be removed
-		if (recipes.contains(rcpEditing)) {
-			int idx = recipes.indexOf(rcpEditing);
-			Recipe rcpEdited = rcpDialog.getCreatedRecipe();
-			
-			// XXX this lazy, but works for now
-			if (rcpEdited == null) {
-				System.out.println("GetCreatedRecipe() returned null.");
-				rcpDialog.dispose();
-				rcpDialog = new AddRecipeDialog(this, Constants.EDIT_MODE, rcpEditing, view.getBundle());
-				rcpDialog.setVisible(true);
-				return;
-			}
-			
-			recipes.set(idx, rcpEdited);
-			view.getUserInterface().setActiveRecipe(rcpEdited);
-			refreshRecipeList();
-			rcpDialog.setCreatedRecipeToNull();
-			rcpDialog.dispose();
-			rcpDialog = null;			
-		} else {
+		if (rcpEditing == null) {
 			System.out.println("Active recipe in the view does not exist in the model.");
 			JOptionPane.showMessageDialog(null,
 					"Select a recipe you wish to edit, then click \"edit\".",
 					"No Recipe Selected", JOptionPane.ERROR_MESSAGE);
 		}
+
+		int idx = recipes.indexOf(rcpEditing);
+		Recipe rcpEdited = rcpDialog.getCreatedRecipe();
+
+		// XXX this lazy, but works for now
+		if (rcpEdited == null) {
+			System.out.println("GetCreatedRecipe() returned null.");
+			rcpDialog.dispose();
+			rcpDialog = new AddRecipeDialog(this, Constants.EDIT_MODE, rcpEditing, view.getBundle());
+			rcpDialog.setVisible(true);
+			return;
+		}
+
+		if (appIsOnline) {
+			recipeDao.updateRecipe(rcpEdited);
+		}
+
+		recipes.set(idx, rcpEdited);
+		view.getUserInterface().setActiveRecipe(rcpEdited);
+		refreshRecipeList();
+		rcpDialog.setCreatedRecipeToNull();
+		rcpDialog.dispose();
+		rcpDialog = null;			
 	}
 
 	public void handleRemoveRecipe() {
 		Recipe recipeToRemove = view.getUserInterface().getActiveRecipe();
 
-		if (recipeToRemove == null) {
-			System.out.println("No active recipe to remove.");
+		if (recipeToRemove != null && model.getRecipes().contains(recipeToRemove)) {
+			if (appIsOnline) {
+				recipeDao.removeRecipe(recipeToRemove.getId());
+			}
+			model.removeRecipe(recipeToRemove);
+			System.out.println("Removing " + recipeToRemove.getTitle());
+		} else {
+			System.out.println("Recipe == null or not found in local memory.");
 			return;
 		}
 
-		if (model.getRecipes().contains(recipeToRemove)) {
-			model.removeRecipe(recipeToRemove);
-			System.out.println("Removing " + recipeToRemove.getTitle());
-		}
-
-		// tell the UI to update
+		// tell the UI to update, reset activeRecipe
+		// TODO check that clearActiveRecipe didn't break anything.
+		view.getUserInterface().clearActiveRecipe();
 		view.getUserInterface().clearSelectedRecipeText();
 		refreshRecipeList();
 	}
 
 	public void refreshRecipeList() {
 		UserInterface ui = view.getUserInterface();
-		ui.populateRecipeSelectList(model.getRecipes());
+		if (appIsOnline) {
+			ui.populateRecipeSelectList(recipeDao.selectAllRecipesAsList());
+		} else {
+			ui.populateRecipeSelectList(model.getRecipes());
+		}
 		ui.displayRecipeButtons();
 	}
 

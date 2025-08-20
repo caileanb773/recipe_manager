@@ -8,11 +8,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Unit;
+import util.Utility;
 
 /*
  * Author: Cailean Bernard
@@ -61,11 +61,11 @@ public class RecipeMgrModel {
 	}
 
 	private Ingredient parseIngredientFromStrArr(String[] strArr) {
-		float amount = Float.parseFloat(strArr[INGREDIENT_AMT_IDX]);
+		String amount = strArr[INGREDIENT_AMT_IDX];
 		Unit unit = Unit.valueOf(strArr[INGREDIENT_UNIT_IDX].toUpperCase());
 		String name = strArr[INGREDIENT_NAME_IDX].replace("_", " ");
 
-		if (amount < 0 || unit == null || name.isEmpty()) {
+		if (Utility.getAmountAsFloat(amount) < 0 || unit == null || name.isEmpty()) {
 			System.err.println("Malformed ingredient encountered during parsing.");
 			return null;
 		}
@@ -172,6 +172,10 @@ public class RecipeMgrModel {
 
 	public List<Recipe> getRecipes() {
 		return recipes;
+	}
+	
+	public void setRecipes(List<Recipe> recipes) {
+		this.recipes = recipes;
 	}
 
 }
