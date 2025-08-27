@@ -57,23 +57,36 @@ public class RecipeMgrModel {
 			return;
 		}
 
-		recipes = importRecipeList(recipeTxtPath);
+		try {
+			recipes = importRecipeList(recipeTxtPath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private Ingredient parseIngredientFromStrArr(String[] strArr) {
+	private Ingredient parseIngredientFromStrArr(String[] strArr) throws NumberFormatException {
 		String amount = strArr[INGREDIENT_AMT_IDX];
 		Unit unit = Unit.valueOf(strArr[INGREDIENT_UNIT_IDX].toUpperCase());
 		String name = strArr[INGREDIENT_NAME_IDX].replace("_", " ");
+		float amtFloat;
 
-		if (Utility.getAmountAsFloat(amount) < 0 || unit == null || name.isEmpty()) {
-			System.err.println("Malformed ingredient encountered during parsing.");
+		try {
+			amtFloat = Utility.getAmountAsFloat(amount);
+			if (amtFloat < 0 || unit == null || name.isEmpty()) {
+				System.err.println("Malformed ingredient encountered during parsing.");
+				return null;
+			}
+		} catch (NumberFormatException e) {
+			System.err.println("Error parsing amount as float: " + amount);
 			return null;
 		}
 
 		return new Ingredient(amount, unit, name);
 	}
 
-	public void exportRecipeList(String exportPath) {
+	public void exportRecipeList(String exportPath) throws IOException, SecurityException {
 		if (recipes.isEmpty() || recipes == null) {
 			System.err.println("Cannot export empty recipe list.");
 			return;
@@ -93,8 +106,10 @@ public class RecipeMgrModel {
 		}
 	}
 
-	// will have to be refactored once this works to be more efficient, likely
-	public List<Recipe> importRecipeList(String path) {
+	public List<Recipe> importRecipeList(String path) 
+			throws FileNotFoundException, IOException, NumberFormatException, ArrayIndexOutOfBoundsException {
+		
+		List<Recipe> newRecipes = new ArrayList<>();
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
 			String fileLine;
@@ -103,9 +118,14 @@ public class RecipeMgrModel {
 			String instructions;
 			List<Ingredient> ingredientsList;
 
-			// each line in the file is a separate recipe
+			// each line in the file is a separate recipe, read recipes until EOF
 			while ((fileLine = reader.readLine()) != null) {
-				String[] recipeStrArr = fileLine.split(Constants.RECIPE_SECT_DELIM); 
+				String[] recipeStrArr = fileLine.split(Constants.RECIPE_SECT_DELIM);
+				
+				if (recipeStrArr.length < 3 || recipeStrArr.length > 4) {
+					throw new ArrayIndexOutOfBoundsException();
+				}
+				
 				name = recipeStrArr[RECIPE_NAME_IDX].replace("_", " ");
 				ingredientsArr = recipeStrArr[INGREDIENT_UNIT_IDX].split(Constants.ING_TAG_DELIM);
 				instructions = recipeStrArr[RECIPE_INSTRUCTIONS_IDX].replace("\\n", "\n");
@@ -130,11 +150,13 @@ public class RecipeMgrModel {
 					return null;
 				}
 
+				System.out.println("Adding new recipe: " + name);
+
 				if (recipeStrArr.length == Constants.LENGTH_WITH_TAGS) {
 					String[] tags = recipeStrArr[Constants.TAGS_IDX].split(Constants.ING_TAG_DELIM);
-					addRecipe(new Recipe(name, ingredientsList, instructions, tags));
+					newRecipes.add(new Recipe(name, ingredientsList, instructions, tags));
 				} else {
-					addRecipe(new Recipe(name, ingredientsList, instructions));
+					newRecipes.add(new Recipe(name, ingredientsList, instructions));
 				}
 
 			}
@@ -148,10 +170,11 @@ public class RecipeMgrModel {
 		}
 
 		if (recipes.isEmpty()) {
-			System.err.println("No recipes detected.");
+			System.err.println("No recipes detected in import file.");
 		}
 
-		return recipes;
+		recipes.addAll(newRecipes);
+		return newRecipes;
 	}
 
 	public void addRecipe(Recipe newRecipe) {
@@ -173,7 +196,7 @@ public class RecipeMgrModel {
 	public List<Recipe> getRecipes() {
 		return recipes;
 	}
-	
+
 	public void setRecipes(List<Recipe> recipes) {
 		this.recipes = recipes;
 	}

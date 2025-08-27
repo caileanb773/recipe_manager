@@ -95,6 +95,12 @@ public class AddRecipeDialog extends JDialog {
 		recipeTags.setFont(Constants.titleFont);
 		inputIngredients.setLineWrap(true);
 		inputIngredients.setWrapStyleWord(true);
+
+		inputIngredients.setFont(Constants.dialogFont);	
+		inputDirections.setFont(Constants.dialogFont);
+		inputTitle.setFont(Constants.dialogFont);
+		inputTags.setFont(Constants.dialogFont);
+
 		inputDirections.setLineWrap(true);
 		inputDirections.setWrapStyleWord(true);
 		BoxLayout layout = new BoxLayout(dialogPanel, BoxLayout.Y_AXIS);		
@@ -230,13 +236,13 @@ public class AddRecipeDialog extends JDialog {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(this,
 					bundle.getString("errIncorrectIngAmt"),
-							bundle.getString("errIncorrectIngAmtTitle")
-							, JOptionPane.ERROR_MESSAGE);
+					bundle.getString("errIncorrectIngAmtTitle")
+					, JOptionPane.ERROR_MESSAGE);
 		} catch (IllegalArgumentException e) {
 			JOptionPane.showMessageDialog(this,
 					bundle.getString("errUnknownUnit"),
-							bundle.getString("errUnknownUnitTitle"),
-							JOptionPane.ERROR_MESSAGE);
+					bundle.getString("errUnknownUnitTitle"),
+					JOptionPane.ERROR_MESSAGE);
 		}
 
 		// recipes can have no tags if the user doesn't care to add any, so no check
@@ -245,19 +251,19 @@ public class AddRecipeDialog extends JDialog {
 				|| ingredientsList.size() < 1) {
 			JOptionPane.showMessageDialog(this,
 					bundle.getString("errMissingFields"),
-							bundle.getString("errMissingFieldsTitle"),
-							JOptionPane.WARNING_MESSAGE);
+					bundle.getString("errMissingFieldsTitle"),
+					JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
-		
+
 		Recipe newRecipe = null;
-		
+
 		if (tagsStr.isEmpty()) {
 			newRecipe = new Recipe(title, ingredientsList, directions);
 		} else {
 			newRecipe = new Recipe(title, ingredientsList, directions, tags);
 		}
- 
+
 		return newRecipe;
 	}
 
@@ -270,9 +276,14 @@ public class AddRecipeDialog extends JDialog {
 	}
 
 	public Recipe getCreatedRecipe() {
-		createdRecipe.setId(tempRecipeId);
-		tempRecipeId = -1;
-		return createdRecipe;
+		if (createdRecipe == null) {
+			System.err.println("getCreatedRecipe() returned null.");
+			return null;
+		} else {
+			createdRecipe.setId(tempRecipeId);
+			tempRecipeId = -1;
+			return createdRecipe;
+		}
 	}
 
 	public void setCreatedRecipeToNull() {

@@ -39,8 +39,8 @@ public class AppFrame {
 	private JMenu menuFile;
 	private JMenu menuOpt;
 	private JMenu menuLang;
-	private JMenuItem menuBtnSave;
-	private JMenuItem menuBtnSync;
+	private JMenuItem menuBtnExport;
+	private JMenuItem menuBtnImport;
 	private JMenuItem menuBtnEn;
 	private JMenuItem menuBtnFr;
 	private JMenuItem menuBtnDe;
@@ -58,10 +58,10 @@ public class AppFrame {
 		// Menu bar
 		menuBar = new JMenuBar();
 		menuFile = new JMenu(bundle.getString("menuFile"));
-		menuBtnSave = new JMenuItem(bundle.getString("menuBtnSave"));
-		menuBtnSync = new JMenuItem(bundle.getString("menuBtnSync"));
-		menuFile.add(menuBtnSave);
-		menuFile.add(menuBtnSync);
+		menuBtnExport = new JMenuItem(bundle.getString("menuBtnExport"));
+		menuBtnImport = new JMenuItem(bundle.getString("menuBtnImport"));
+		menuFile.add(menuBtnExport);
+		menuFile.add(menuBtnImport);
 		menuOpt = new JMenu(bundle.getString("menuOpt"));
 		menuLang = new JMenu(bundle.getString("menuLang"));
 		menuBtnReadMe = new JMenuItem(bundle.getString("menuBtnReadMe"));
@@ -99,10 +99,10 @@ public class AppFrame {
 	}
 	
 	public void addButtonListeners(ActionListener listener) {
-		menuBtnSave.addActionListener(listener);
-		menuBtnSave.setActionCommand("save");
-		menuBtnSync.addActionListener(listener);
-		menuBtnSync.setActionCommand("sync");
+		menuBtnExport.addActionListener(listener);
+		menuBtnExport.setActionCommand("export");
+		menuBtnImport.addActionListener(listener);
+		menuBtnImport.setActionCommand("import");
 		menuBtnEn.addActionListener(listener);
 		menuBtnEn.setActionCommand("english");
 		menuBtnFr.addActionListener(listener);
@@ -192,8 +192,8 @@ public class AppFrame {
 		menuFile.setText(bundle.getString("menuFile"));
 		menuOpt.setText(bundle.getString("menuOpt"));
 		menuLang.setText(bundle.getString("menuLang"));
-		menuBtnSave.setText(bundle.getString("menuBtnSave"));
-		menuBtnSync.setText(bundle.getString("menuBtnSync"));
+		menuBtnExport.setText(bundle.getString("menuBtnExport"));
+		menuBtnImport.setText(bundle.getString("menuBtnImport"));
 		menuBtnEn.setText(bundle.getString("menuBtnEn"));
 		menuBtnFr.setText(bundle.getString("menuBtnFr"));
 	}

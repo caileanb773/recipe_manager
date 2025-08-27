@@ -17,25 +17,12 @@ public class Main {
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 
+		// TODO handle when recipe amts are 1 + 1/2, 2 1/4
 		// TODO resize recipe info based on window size
 		// TODO batch math (10x batch, 5x batch, etcc)
 		// TODO light mode/dark mode
-		// TODO database instead of local file
 		// TODO notification center
 		// TODO UI element size (accessibility)
 		// TODO icon, make the UI not look so bad
-		
-		/*
-		 * Database Flow:
-		 * 
-		 * on startup, query the database to see how many records are present.
-		 * if there are 0, don't bother loading anything from DB, just start the
-		 * app as normal.
-		 * if there are some records, load each into local memory (model).
-		 * app usage continues like normal. each time a recipe is added, directly
-		 * update the db first, then persist the data in local memory.
-		 * 
-		 * */
-		
 	}
 }

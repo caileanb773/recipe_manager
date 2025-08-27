@@ -2,10 +2,17 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.apache.commons.io.FilenameUtils;
 
 import db.RecipeDAO;
 import definitions.Constants;
@@ -85,13 +92,13 @@ public class AppController implements ActionListener {
 			System.out.println("Confirming edits to recipe...");
 			confirmEditRecipe();
 			break;
-		case "save":
-			System.out.println("Saving recipe list to \"recipes.txt\"");
-			handleSaveRecipes();
+		case "export":
+			System.out.println("Exporting recipe list...");
+			handleExportRecipes();
 			break;
-		case "sync":
+		case "import":
 			System.out.println("Loading recipes from .txt and pushing to database...");
-			syncRecipesFromTxtToDB();
+			handleImportRecipes();
 			break;
 		case "applyFilter":
 			filterRecipes();
@@ -109,24 +116,29 @@ public class AppController implements ActionListener {
 			setLanguage(Locale.GERMAN);
 			break;
 		case "closeWindow":
-			model.exportRecipeList("recipes.txt");
+			handleCloseWindow();
 			break;
 		default:
 			System.err.println("Unrecognized button actionCommand.");
 			break;
 		}
 	}
-	
-	public void syncRecipesFromTxtToDB() {
-		// clear the db first
-		// load all recipes into model from txt
-		// for each recipe in the model, add it to the db
-		recipeDao.clearRecipes();
-		model.setRecipes(model.importRecipeList("recipes.txt"));
-		for (Recipe recipe : model.getRecipes()) {
-			recipeDao.insertRecipe(recipe);
+
+	public void handleCloseWindow() {
+		ResourceBundle bundle = view.getBundle();
+		try {
+			model.exportRecipeList("backup.txt");
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null,
+					bundle.getString("export.ioerror") + "\n" + e.getMessage(),
+					bundle.getString("error.title"),
+					JOptionPane.ERROR_MESSAGE);
+		} catch (SecurityException e) {
+			JOptionPane.showMessageDialog(null,
+					bundle.getString("export.securityerror"),
+					bundle.getString("error.title"),
+					JOptionPane.ERROR_MESSAGE);
 		}
-		refreshRecipeList();
 	}
 
 	public void filterRecipes() {
@@ -189,14 +201,14 @@ public class AppController implements ActionListener {
 		}
 
 		int idx = recipes.indexOf(rcpEditing);
+
 		Recipe rcpEdited = rcpDialog.getCreatedRecipe();
 
-		// XXX this lazy, but works for now
 		if (rcpEdited == null) {
-			System.out.println("GetCreatedRecipe() returned null.");
+			System.err.println("Cancelling recipe edit.");
+			rcpDialog.setCreatedRecipeToNull();
 			rcpDialog.dispose();
-			rcpDialog = new AddRecipeDialog(this, Constants.EDIT_MODE, rcpEditing, view.getBundle());
-			rcpDialog.setVisible(true);
+			rcpDialog = null;
 			return;
 		}
 
@@ -209,7 +221,7 @@ public class AppController implements ActionListener {
 		refreshRecipeList();
 		rcpDialog.setCreatedRecipeToNull();
 		rcpDialog.dispose();
-		rcpDialog = null;			
+		rcpDialog = null;
 	}
 
 	public void handleRemoveRecipe() {
@@ -226,8 +238,6 @@ public class AppController implements ActionListener {
 			return;
 		}
 
-		// tell the UI to update, reset activeRecipe
-		// TODO check that clearActiveRecipe didn't break anything.
 		view.getUserInterface().clearActiveRecipe();
 		view.getUserInterface().clearSelectedRecipeText();
 		refreshRecipeList();
@@ -243,14 +253,129 @@ public class AppController implements ActionListener {
 		ui.displayRecipeButtons();
 	}
 
-	public void handleSaveRecipes() {
-		// XXX this should be replaced by a filechooser to get custom paths
-		// for now its fine
-		model.exportRecipeList("recipes.txt");
+	// TODO edit this to include JSON format eventually
+	public void handleExportRecipes() {
+		ResourceBundle bundle = view.getBundle();
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle(bundle.getString("export"));
+		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				bundle.getString("filter"), "txt");
+		chooser.setAcceptAllFileFilterUsed(false);
+		chooser.addChoosableFileFilter(filter);
+
+		int option = chooser.showSaveDialog(null);
+
+		if (option == JFileChooser.APPROVE_OPTION) {
+			File file = chooser.getSelectedFile();
+
+			// Always ensure .txt extension
+			String baseName = FilenameUtils.getBaseName(file.getName());
+			file = new File(file.getParentFile(), baseName + ".txt");
+			String filePath = file.getAbsolutePath();
+
+			if (file.exists()) {
+				int confirm = JOptionPane.showConfirmDialog(
+						null,
+						bundle.getString("export.fileexists"),
+						bundle.getString("export.confirmoverwrite"),
+						JOptionPane.YES_NO_OPTION);
+
+				if (confirm != JOptionPane.YES_OPTION) {
+					System.out.println("Export cancelled: user chose not to overwrite.");
+					return;
+				}
+			}
+
+			try {
+				model.exportRecipeList(file.getAbsolutePath());
+				JOptionPane.showMessageDialog(null,
+						bundle.getString("export.success"),
+						bundle.getString("export.title"),
+						JOptionPane.INFORMATION_MESSAGE);
+				System.out.println("Recipes exported to: " + filePath);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null,
+						bundle.getString("export.ioerror") + "\n" + e.getMessage(),
+						bundle.getString("error.title"),
+						JOptionPane.ERROR_MESSAGE);
+			} catch (SecurityException e) {
+				JOptionPane.showMessageDialog(null,
+						bundle.getString("export.securityerror"),
+						bundle.getString("error.title"),
+						JOptionPane.ERROR_MESSAGE);
+			}
+
+		} else {
+			System.out.println("Cancelling export...");
+		}
 	}
 
-	public void handleWindowClosed() {
+	public void handleImportRecipes() {
+		ResourceBundle bundle = view.getBundle();
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle(bundle.getString("import.title"));
+		chooser.setDialogType(JFileChooser.OPEN_DIALOG);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				bundle.getString("filter"), "txt");
+		chooser.setAcceptAllFileFilterUsed(false);
+		chooser.addChoosableFileFilter(filter);
+		int option = chooser.showOpenDialog(null);
 
+		if (option == JFileChooser.APPROVE_OPTION) {
+			File file = chooser.getSelectedFile();
+			String fileName = file.getName();
+			String extension = FilenameUtils.getExtension(fileName);
+
+			if (extension.equalsIgnoreCase("txt")) {
+
+				try {
+					List<Recipe> rcpList = model.importRecipeList(file.getAbsolutePath());
+
+					if (rcpList.size() == 0) {
+						JOptionPane.showMessageDialog(null,
+								bundle.getString("import.norecipes"),
+								bundle.getString("error.title"),
+								JOptionPane.ERROR_MESSAGE);
+					}
+
+					if (appIsOnline) {
+						for (Recipe rcp : rcpList) {
+							int id = recipeDao.insertRecipe(rcp);
+							rcp.setId(id);
+						}
+					}
+
+					// no need to handle if !appIsOnline, already handled by importRecipeList()
+
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null,
+							bundle.getString("import.ioerror"),
+							bundle.getString("error.title"),
+							JOptionPane.ERROR_MESSAGE);
+				} catch (SecurityException e) {
+					JOptionPane.showMessageDialog(null,
+							bundle.getString("import.securityerror"),
+							bundle.getString("error.title"),
+							JOptionPane.ERROR_MESSAGE);
+				} catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
+					JOptionPane.showMessageDialog(null,
+							bundle.getString("import.parseerror"),
+							bundle.getString("error.title"),
+							JOptionPane.ERROR_MESSAGE);
+				}
+
+			} else {
+
+				JOptionPane.showMessageDialog(
+						null,
+						bundle.getString("import.unsupportedftype"),
+						bundle.getString("error.title"),
+						JOptionPane.OK_OPTION);
+			}
+		}
+
+		refreshRecipeList();
 	}
 
 	public void setLanguage(Locale locale) {

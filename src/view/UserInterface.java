@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
 import definitions.Constants;
 import definitions.Recipe;
 
@@ -85,15 +84,37 @@ public class UserInterface extends JPanel {
 		// Recipe Selection List Panel (WEST)
 		rcpSelectPanel = new JPanel(new BorderLayout());
 		rcpSelectPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		rcpSelectListPanel = new JPanel();
+		rcpSelectListPanel = new JPanel() {
+		    @Override
+		    public Dimension getPreferredSize() {
+		        int width = 0;
+		        int height = 0;
+
+		        for (Component comp : getComponents()) {
+		            Dimension d = comp.getPreferredSize();
+		            width = Math.max(width, d.width);
+		            height += d.height;
+		        }
+
+		        // Add a little extra so no text clips
+		        width += 10;
+
+		        return new Dimension(width, height);
+		    }
+		};
+		rcpSelectListPanel.setLayout(new BoxLayout(rcpSelectListPanel, BoxLayout.Y_AXIS));
+
+		// 🔑 Ensure buttons expand to fill the available width
+		for (RecipeSelectButton btn : rcpSelectList) {
+		    btn.setAlignmentX(Component.LEFT_ALIGNMENT); // align neatly
+		    btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, btn.getPreferredSize().height));
+		}
+
 		rcpSelectListPanel.setBackground(Color.lightGray);
 		rcpSelectListPanel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder(Color.darkGray, 1),
 				BorderFactory.createLineBorder(Color.black, 1)));
 		rcpSelectScrollPane = new JScrollPane(rcpSelectListPanel);
-		rcpSelectScrollPane.setPreferredSize(new Dimension(
-				Constants.BUTTON_WIDTH,
-				Constants.BUTTON_HEIGHT * Constants.NUM_SHOWN_BUTTONS));
 		rcpSelectScrollPane.getVerticalScrollBar().setUnitIncrement(Constants.SCROLL_SPEED);
 		rcpEditPanel = new JPanel();
 		rcpSelectLabel = new JLabel(bundle.getString("rcpSelectLabel"), JLabel.CENTER);
@@ -168,6 +189,9 @@ public class UserInterface extends JPanel {
 		for (RecipeSelectButton r : rcpSelectList) {
 			rcpSelectListPanel.add(r);
 		}
+		
+		rcpSelectListPanel.setPreferredSize(new Dimension(Constants.BUTTON_WIDTH, 
+                Constants.BUTTON_HEIGHT * rcpSelectList.size()));
 
 		rcpSelectListPanel.revalidate();
 		rcpSelectListPanel.repaint();
@@ -206,6 +230,13 @@ public class UserInterface extends JPanel {
 	        }
 	    }
 
+	    rcpSelectListPanel.setPreferredSize(new Dimension(Constants.BUTTON_WIDTH, 
+                Constants.BUTTON_HEIGHT * rcpSelectList.size()));
+
+	    rcpSelectScrollPane.setPreferredSize(new Dimension(Constants.BUTTON_WIDTH, 
+                Constants.BUTTON_HEIGHT * rcpSelectList.size()));
+
+	    
 	    rcpSelectListPanel.revalidate();
 	    rcpSelectListPanel.repaint();
 	}

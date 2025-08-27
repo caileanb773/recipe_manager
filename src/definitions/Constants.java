@@ -9,9 +9,9 @@ import java.awt.Font;
 
 public class Constants {
 	
-	public static int BUTTON_HEIGHT = 30;
-	public static int BUTTON_WIDTH = 40;
-	public static int NUM_SHOWN_BUTTONS = 10;
+	public static final int BUTTON_HEIGHT = 30;
+	public static final int BUTTON_WIDTH = 40;
+	public static final int NUM_SHOWN_BUTTONS = 11;
 	public static final int AMT_IDX = 0;
 	public static final int UNIT_IDX = 1;
 	public static final int NAME_IDX = 2;
@@ -21,13 +21,13 @@ public class Constants {
 	public static final int ADD_MODE = 0;
 	public static final int EDIT_MODE = 1;
 	public static final int VALUE_IDX = 1;
-	public static int FONT_SIZE = 14;
-	public static int SCROLL_SPEED = 19;
+	public static final int SCROLL_SPEED = 19;
 	public static final String RECIPE_SECT_DELIM = "§§";
 	public static final String ING_TAG_DELIM = "¤";
 	public static final String INGREDIENT_SECT_DELIM = " ";
-	public static final Font titleFont = new Font("Serif", Font.BOLD, FONT_SIZE);
-	public static final Font buttonFont = new Font("Serif", Font.BOLD, FONT_SIZE);
-	public static final Font textFont = new Font("Serif", Font.PLAIN, FONT_SIZE);
+	public static final Font titleFont = new Font("Serif", Font.BOLD, 16);
+	public static final Font buttonFont = new Font("Serif", Font.BOLD, 16);
+	public static final Font textFont = new Font("Serif", Font.PLAIN, 15);
+	public static final Font dialogFont = new Font("Serif", Font.PLAIN, 15);
 
 }

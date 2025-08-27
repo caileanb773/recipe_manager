@@ -7,7 +7,7 @@ package util;
 
 public class Utility {
 	
-	public static float getAmountAsFloat(String amount) {
+	public static float getAmountAsFloat(String amount) throws NumberFormatException {
 		try {
 			if (amount.contains("/")) {
 				String[] parts = amount.split("/");
@@ -15,7 +15,6 @@ public class Utility {
 			}
 			return Float.parseFloat(amount);
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
 			return -1;
 		}
 

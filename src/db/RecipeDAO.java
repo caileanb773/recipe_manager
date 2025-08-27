@@ -331,7 +331,6 @@ public class RecipeDAO {
 
 				Recipe recipe = new Recipe(id, title, ingredients, directions, tags);
 				recipes.add(recipe);
-				System.out.println("Recipe " + recipe.getTitle() + " has ID: " + recipe.getId());
 			}
 
 		} catch (SQLException e) {
@@ -341,8 +340,5 @@ public class RecipeDAO {
 
 		return recipes;
 	}
-
-
-	// TODO: add methods for fetching, updating, and removing recipes and ingredients
 
 }
