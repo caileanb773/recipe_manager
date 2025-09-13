@@ -1,6 +1,12 @@
 package definitions;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import controller.Main;
 
 /*
  * Author: Cailean Bernard
@@ -28,6 +34,27 @@ public class Constants {
 	public static final Font titleFont = new Font("Serif", Font.BOLD, 16);
 	public static final Font buttonFont = new Font("Serif", Font.BOLD, 16);
 	public static final Font textFont = new Font("Serif", Font.PLAIN, 15);
-	public static final Font dialogFont = new Font("Serif", Font.PLAIN, 15);
-
+	public static final Color bgGray = new Color(105,105,105);
+	public static final Color rcpBtnGray = new Color(217,217,217);
+	public static final Font recipeTxtFont;
+	
+    static {
+        Font font = null;
+        try {
+            InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("Montserrat-VariableFont_wght.ttf");
+            if (fontStream != null) {
+                font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.BOLD, 15);
+            } else {
+                System.err.println("Font file not found");
+                font = new Font("SansSerif", Font.BOLD, 15);
+            }
+        } catch (FontFormatException | IOException e) {
+            System.err.println("Error loading font: " + e.getMessage());
+            font = new Font("SansSerif", Font.BOLD, 15);
+        }
+        recipeTxtFont = font;
+    }
+	
+	
+	private Constants() {}
 }

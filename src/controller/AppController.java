@@ -18,9 +18,12 @@ import db.RecipeDAO;
 import definitions.Constants;
 import definitions.Recipe;
 import model.RecipeMgrModel;
+import util.Config;
 import view.AddRecipeDialog;
 import view.AppFrame;
-import view.UserInterface;
+import view.LoginScreen;
+import view.RegisterScreen;
+import view.UserInterfaceScreen;
 
 /*
  * Author: Cailean Bernard
@@ -55,6 +58,8 @@ public class AppController implements ActionListener {
 		model.setRecipes(recipeDao.selectAllRecipesAsList());
 		view.initializeMainScreen(model.getRecipes());
 		view.initializeUIButtons(this);
+		view.initializeLoginButtons(this);
+		view.initializeRegisterButtons(this);
 		view.addButtonListeners(this);
 		view.initCloseBtn(this);
 	}
@@ -118,10 +123,46 @@ public class AppController implements ActionListener {
 		case "closeWindow":
 			handleCloseWindow();
 			break;
+		case "login":
+			login();
+			break;
+		case "logout":
+			logout();
+			break;
+		case "register":
+			register();
+			break;
+		case "cancelRegister":
+			cancelRegister();
+			break;
 		default:
 			System.err.println("Unrecognized button actionCommand.");
 			break;
 		}
+	}
+	
+	public void register() {
+		view.switchScreen("REGISTER_SCREEN");
+	}
+	
+	public void cancelRegister() {
+		view.switchScreen("LOGIN");
+	}
+	
+	public void login() {
+		System.out.println("Attempting to log in...");
+		LoginScreen login = view.getLoginScreen();
+		if (LoginScreen.isRemembering()) {
+			Config.setLastEmail(login.getEmail());
+		} else {
+			Config.setLastEmail(null);
+		}
+		view.switchScreen("USER_INTERFACE");
+	}
+	
+	public void logout() {
+		System.out.println("Logging out...");
+		view.switchScreen("LOGIN");
 	}
 
 	public void handleCloseWindow() {
@@ -142,7 +183,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void filterRecipes() {
-		UserInterface ui = view.getUserInterface();
+		UserInterfaceScreen ui = view.getUserInterface();
 		List<String> filters = ui.getFilters();
 
 		if (filters == null) {
@@ -154,7 +195,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void clearFilters() {
-		UserInterface ui = view.getUserInterface();
+		UserInterfaceScreen ui = view.getUserInterface();
 		ui.clearFilters();
 		ui.displayRecipeButtons();
 	}
@@ -244,7 +285,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void refreshRecipeList() {
-		UserInterface ui = view.getUserInterface();
+		UserInterfaceScreen ui = view.getUserInterface();
 		if (appIsOnline) {
 			ui.populateRecipeSelectList(recipeDao.selectAllRecipesAsList());
 		} else {
@@ -378,16 +419,26 @@ public class AppController implements ActionListener {
 		refreshRecipeList();
 	}
 
+	// TODO clean this up
 	public void setLanguage(Locale locale) {
 		System.out.println("Switching language to " + locale);
-		view.getConfig().setLocale(locale);
-		view.getConfig().setResourceBundle("resources.MessagesBundle", locale);
+		
+		Config cfg = view.getConfig();
+		UserInterfaceScreen ui = view.getUserInterface();
+		LoginScreen log = view.getLoginScreen();
+		RegisterScreen reg = view.getRegisterScreen();
+		
+		cfg.setLocale(locale);
+		cfg.setResourceBundle("MessagesBundle", locale);
 		view.updateBundle();
 		view.toggleLangButton(locale);
-		view.getUserInterface().updateBundle(locale);
-		view.getUserInterface().refreshTranslatableText();
+		ui.updateBundle(locale);
+		ui.refreshTranslatable();
 		view.refreshTranslatableText();
-		view.packFrame();
+		log.updateBundle(locale);
+		log.refreshTranslatable();
+		reg.updateBundle(locale);
+		reg.refreshTranslatable();
 	}
 
 }

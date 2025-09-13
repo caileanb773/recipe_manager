@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.util.List;
 import javax.swing.JButton;
 import definitions.Constants;
@@ -24,6 +25,16 @@ public class RecipeSelectButton extends JButton {
 		setText(recipe.getTitle());
 		setBackground(Color.white);
 		setFont(Constants.buttonFont);
+	}
+	
+	public RecipeSelectButton(Recipe recipe, Font font) {
+		new JButton();
+		btnRecipe = recipe;
+		setFocusable(true);
+		setText(recipe.getTitle());
+		setBackground(Constants.rcpBtnGray);
+		setForeground(Color.black);
+		setFont(font);
 	}
 	
 	public List<String> getTags() {

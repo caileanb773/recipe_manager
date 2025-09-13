@@ -89,18 +89,14 @@ public class AddRecipeDialog extends JDialog {
 		recipeIngredients.setAlignmentX(CENTER_ALIGNMENT);
 		recipeDirections.setAlignmentX(CENTER_ALIGNMENT);
 		recipeTags.setAlignmentX(CENTER_ALIGNMENT);
-		recipeTitle.setFont(Constants.titleFont);
-		recipeIngredients.setFont(Constants.titleFont);
-		recipeDirections.setFont(Constants.titleFont);
-		recipeTags.setFont(Constants.titleFont);
+		
+		recipeTitle.putClientProperty("FlatLaf.styleClass", "h3");
+		recipeIngredients.putClientProperty("FlatLaf.styleClass", "h3");
+		recipeDirections.putClientProperty("FlatLaf.styleClass", "h3");
+		recipeTags.putClientProperty("FlatLaf.styleClass", "h3");
+		
 		inputIngredients.setLineWrap(true);
 		inputIngredients.setWrapStyleWord(true);
-
-		inputIngredients.setFont(Constants.dialogFont);	
-		inputDirections.setFont(Constants.dialogFont);
-		inputTitle.setFont(Constants.dialogFont);
-		inputTags.setFont(Constants.dialogFont);
-
 		inputDirections.setLineWrap(true);
 		inputDirections.setWrapStyleWord(true);
 		BoxLayout layout = new BoxLayout(dialogPanel, BoxLayout.Y_AXIS);		
