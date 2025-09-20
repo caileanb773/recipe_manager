@@ -1,19 +1,31 @@
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
+import org.mindrot.jbcrypt.BCrypt;
+import definitions.Constants;
 import util.Utility;
 
 /*
@@ -35,18 +47,20 @@ public class RegisterScreen extends JPanel {
 	private JTextField confirmEmailField;
 	private JPasswordField enterPasswordField;
 	private JPasswordField confirmPasswordField;
-	//private ActionListener listener;
 	private ResourceBundle bundle;
+	private JPanel contentPanel;
+	private final int FIELD_GAP = 10;
 
 
 	public RegisterScreen(ResourceBundle bundle) {
 		this.bundle = bundle;
-		JPanel emailEnterPanel = new JPanel();
-		JPanel emailConfirmPanel = new JPanel();
-		JPanel passwordEnterPanel = new JPanel();
-		JPanel passwordConfirmPanel = new JPanel();
-		JPanel buttonPanel = new JPanel();
-
+		JPanel emailEnterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));		
+		JPanel emailConfirmPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+		JPanel passwordEnterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+		JPanel passwordConfirmPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+		contentPanel = new JPanel();
+		
 		enterEmailField = new JTextField(15);
 		confirmEmailField = new JTextField(15);
 		enterPasswordField = new JPasswordField(15);
@@ -59,18 +73,26 @@ public class RegisterScreen extends JPanel {
 		confirmEmail = new JLabel(bundle.getString("confirmEmail"));
 		enterPass = new JLabel(bundle.getString("enterPass"));
 		confirmPass = new JLabel(bundle.getString("confirmPass"));
-
-		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-		setLayout(layout);
+		
+		BoxLayout layout = new BoxLayout(contentPanel, BoxLayout.Y_AXIS);
+		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		contentPanel.setLayout(layout);
+		
+		contentPanel.add(register);
+		contentPanel.add(Box.createVerticalStrut(FIELD_GAP));
+		contentPanel.add(emailEnterPanel);
+		contentPanel.add(Box.createVerticalStrut(FIELD_GAP));
+		contentPanel.add(emailConfirmPanel);
+		contentPanel.add(Box.createVerticalStrut(FIELD_GAP));
+		contentPanel.add(passwordEnterPanel);
+		contentPanel.add(Box.createVerticalStrut(FIELD_GAP));
+		contentPanel.add(passwordConfirmPanel);
+		contentPanel.add(Box.createVerticalStrut(FIELD_GAP));
+		contentPanel.add(buttonPanel);
 
-		add(register);
-		add(emailEnterPanel);
-		add(emailConfirmPanel);
-		add(passwordEnterPanel);
-		add(passwordConfirmPanel);
-		add(buttonPanel);
-
+		add(contentPanel, BorderLayout.CENTER);
+		
 		emailEnterPanel.add(enterEmail);
 		emailEnterPanel.add(enterEmailField);
 		emailConfirmPanel.add(confirmEmail);
@@ -81,10 +103,19 @@ public class RegisterScreen extends JPanel {
 		passwordConfirmPanel.add(confirmPasswordField);
 		buttonPanel.add(confirm);
 		buttonPanel.add(cancel);
+		
+		emailEnterPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, emailEnterPanel.getPreferredSize().height));
+		emailConfirmPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, emailConfirmPanel.getPreferredSize().height));
+		passwordEnterPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, passwordEnterPanel.getPreferredSize().height));
+		passwordConfirmPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, passwordConfirmPanel.getPreferredSize().height));
+		buttonPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, buttonPanel.getPreferredSize().height));
+		
+		JPanel wrapper = new JPanel(new GridBagLayout());
+		wrapper.add(contentPanel);
+		add(wrapper, BorderLayout.CENTER);
 	}
 
 	public void initializeButtons(ActionListener listener) {
-		//this.listener = listener;
 		confirm.addActionListener(e -> validateFields());
 		cancel.addActionListener(e -> {
 			ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
@@ -93,49 +124,136 @@ public class RegisterScreen extends JPanel {
 		});
 	}
 
-	// XXX this method deals with passwords, update to be more secure asap
-	// also probably clean this up. pretty ugly
 	private void validateFields() {	
-		// Check for empty fields
 		if (formHasEmptyFields()) {
-			System.out.println("Form had empty fields.");
-			// error dialog, one or more fields is empty and the focus is now in that field
+			JOptionPane.showMessageDialog(null, bundle.getString("register.blankFields"),
+					bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
-		String eEmail = enterEmailField.getText().trim();
-		String cEmail = confirmEmailField.getText().trim();
+		String eEmail = enterEmailField.getText().toLowerCase().trim();
+		String cEmail = confirmEmailField.getText().toLowerCase().trim();
 		
+		// XXX too many nested ifs. clean this up (use && conditional, separate into methods)
 		if (Utility.isEmailValid(eEmail) && Utility.isEmailValid(cEmail)) {
 			if (eEmail.equals(cEmail)) {
-				// emails match and are in the right format. check passwords
 				
+				// emails match and are in the right format. match passwords
 				if (Arrays.equals(enterPasswordField.getPassword(),
 						confirmPasswordField.getPassword())) {
 					
-					// Emails are in the correct format, match, and so do PWs. store credentials
-					storeCredentials(eEmail);
+					// passwords match, check strength
+					if (isPasswordStrong(enterPasswordField.getPassword())) {
+						
+						// Emails are in the correct format, match, and so do PWs. store credentials
+						if (emailIsUnique(eEmail)) {
+							storeCredentials(eEmail);
+							
+						} else {
+							JOptionPane.showMessageDialog(null, bundle.getString("register.emailNotUnique"),
+									bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+						
+					} else {
+						JOptionPane.showMessageDialog(null, bundle.getString("register.weakPassword"),
+								bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 					
 				} else {
-					// JDialog here
-					System.out.println("Passwords do not match.");
+					JOptionPane.showMessageDialog(null, bundle.getString("register.mismatchPassword"),
+							bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
+					return;
 				}
 			} else {
-				// JDialog here
-				System.out.println("Entered emails did not match.");
+				JOptionPane.showMessageDialog(null, bundle.getString("register.mismatchEmail"),
+						bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		} else {
-			// JDialog here
-			System.out.println("One of the emails wasn't in the right format.");
+			JOptionPane.showMessageDialog(null, bundle.getString("register.invalidEmail"),
+					bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		// ensure the passwords match
-		// if they do, hash them, then store the credentials
+		
+		JOptionPane.showMessageDialog(null, bundle.getString("register.success"),
+				bundle.getString("export.title"), JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	private boolean isPasswordStrong(char[] pw) {
+		boolean hasUpper = false, hasLower = false, hasDigit = false, hasSpecial = false;
+		
+		if (pw.length < Constants.MIN_PW_LEN) {
+			return false;
+		}
+		
+		for (char c : pw) {
+			if (Character.isUpperCase(c)) hasUpper = true;
+			else if (Character.isLowerCase(c)) hasLower = true;
+			else if (Character.isDigit(c)) hasDigit = true;
+			else if (Constants.ASCII_SPECIAL_CHARS.indexOf(c) >= 0) hasSpecial = true;
+ 		}
+		
+		return (hasUpper && hasLower && hasDigit && hasSpecial);
+	}
+	
+	// XXX for now, this stores credentials locally. this will need to be changed to a db in the future
 	public void storeCredentials(String newUserEmail) {
-		System.out.println("Storing credentials for " + newUserEmail);
+		System.out.println("Storing new credentials");
+		char[] pw = enterPasswordField.getPassword();
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("resources/credentials.txt", true))) {
+			
+			String email = enterEmailField.getText().toLowerCase().trim();
+			writer.write(email);
+			writer.write("=");
+			String s = new String(pw);
+			String hashed = BCrypt.hashpw(s, BCrypt.gensalt());
+			writer.write(hashed);
+			writer.write('\n');
+		
+		} catch (IOException e) {
+			System.out.println("IO exception encountered: " + e.getMessage());
+			clearFields();
+			return;
+		} finally {
+			java.util.Arrays.fill(pw, '\0');
+		}
+		
+		clearFields();
+	}
+	
+	private boolean emailIsUnique(String newEmail) {
+		try (BufferedReader r = new BufferedReader(new FileReader("resources/credentials.txt"))) {
+			String line;
+			
+			while ((line = r.readLine()) != null) {
+				String[] lineData = line.split("=");
+				String existingEmail = lineData[Constants.EMAIL_IDX];
+				
+				if (newEmail.equals(existingEmail)) {
+					return false;
+				}
+			}
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("Could not find credentials file: " + e.getMessage());
+			return false;
+		} catch (IOException e) {
+			System.out.println("IO exception while checking if email is registered: "
+					+ e.getMessage());
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private void clearFields() {
+		enterEmailField.setText("");
+		confirmEmailField.setText("");
+		enterPasswordField.setText("");
+		confirmPasswordField.setText("");
 	}
 	
 	private boolean formHasEmptyFields() {
@@ -154,10 +272,6 @@ public class RegisterScreen extends JPanel {
 		}
 		
 		return false;
-	}
-	
-	public void registerNewUser(String email, String password) {
-		
 	}
 
 	public void updateBundle(Locale locale) {

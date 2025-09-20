@@ -1,15 +1,22 @@
 package view;
 
+import static definitions.Constants.INCORRECT_PASSWORD;
+import static definitions.Constants.NONEXISTENT_EMAIL;
+import static definitions.Constants.VALID;
+
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BoxLayout;
@@ -25,11 +32,13 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import com.sun.tools.javac.Main;
+import org.mindrot.jbcrypt.BCrypt;
 
+import com.sun.tools.javac.Main;
 import definitions.Constants;
 import util.Config;
 import util.Utility;
+import static definitions.Constants.*;
 
 /*
  * Author: Cailean Bernard
@@ -154,32 +163,108 @@ public class LoginScreen extends JPanel {
 
 	public void validateFields() {
 		String email = emailInput.getText();
-		// XXX this should be replaced by something more secure asap
 		char[] passArr = pwInput.getPassword();
-		String password = new String(passArr); // don't store pw as string
 
-		if (email.isEmpty() || password.isEmpty()) {
+
+		if (email.isEmpty() || passArr.length == 0) {
 			JOptionPane.showMessageDialog(null, bundle.getString("validate.missingField"), 
 					bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
 		if (Utility.isEmailValid(email)) {
-			// TODO finish this, for now this is temp
-			if (email.equalsIgnoreCase("admin@admin.com") && password.equals("admin")) {
-				pwInput.setText(""); // replace this with "clearing" the char[]
-				ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "login");
-				listener.actionPerformed(event);
-			} else {
+			// XXX this can now return other constants, like ERROR
+			int credentialCheck = areCredentialsValid(email, passArr);
+
+			if (credentialCheck == VALID) {
+				login();
+
+			} else if (credentialCheck == NONEXISTENT_EMAIL) {
+				JOptionPane.showMessageDialog(null, bundle.getString("validate.emailUnregistered"),
+						bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
+				return;
+			} else if (credentialCheck == INCORRECT_PASSWORD) {
 				JOptionPane.showMessageDialog(null, bundle.getString("validate.incorrectPass"),
 						bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+
 		} else {
 			JOptionPane.showMessageDialog(null, bundle.getString("validate.invalidEmail"),
 					bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+	}
+
+	private int areCredentialsValid(String email, char[] pw) {
+		if (!emailIsRegistered(email)) {
+			return NONEXISTENT_EMAIL;
+		}
+
+		if (validatePassword(email, pw) == VALID) {
+			return VALID;
+		} else {
+			return INCORRECT_PASSWORD;
+		}
+	}
+
+	private int validatePassword(String email, char[] pw) {
+		try (BufferedReader reader = new BufferedReader(new FileReader("resources/credentials.txt"))) {
+			String line;
+
+			while ((line = reader.readLine()) != null) {
+				String[] lineData = line.split("=");
+
+				if (email.equalsIgnoreCase(lineData[EMAIL_IDX])) {
+					if (BCrypt.checkpw(new String(pw), lineData[PW_IDX])) {
+						return VALID;
+					}
+				} else {
+					continue;
+				}
+			}
+
+		} catch (FileNotFoundException e) {
+			System.err.println("Could not find credentials file.");
+			return ERROR;
+		} catch (IOException e) {
+			System.err.println("IO Exception while checking for existing email." + e.getMessage());
+			return ERROR;
+		} finally {
+			java.util.Arrays.fill(pw, '\0');
+		}
+		
+		return INCORRECT_PASSWORD;
+	}
+
+	private boolean emailIsRegistered(String newEmail) {
+		try (BufferedReader reader = new BufferedReader(new FileReader("resources/credentials.txt"))) {
+			String line;
+
+			while ((line = reader.readLine()) != null) {
+				String[] lineData = line.split("=");
+				String existingEmail = lineData[EMAIL_IDX];
+
+				if (newEmail.equalsIgnoreCase(existingEmail)) {
+					return true;
+				}
+
+			}
+		} catch (FileNotFoundException e) {
+			System.err.println("Could not find credentials file.");
+			return false;
+		} catch (IOException e) {
+			System.err.println("IO Exception while checking for existing email." + e.getMessage());
+			return false;
+		}
+
+		return false;
+	}
+
+	private void login() {
+		System.out.println("Credentials validated, logging in");
+		ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "login");
+		listener.actionPerformed(event);
 	}
 
 	public void togglePwReveal() {

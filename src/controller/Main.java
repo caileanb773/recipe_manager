@@ -16,7 +16,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		// Preamble, don't delete
+		// UI Look and Feel init
 		try {
 		    UIManager.setLookAndFeel( new FlatLightLaf() );
 		} catch( Exception ex ) {
@@ -36,6 +36,10 @@ public class Main {
 		// TODO UI element size (accessibility)
 		// TODO registerController(ActionListener listener) for the model/view and others that need it
 		// TODO separate concerns of initializing buttons and registering the listener
+		// TODO don't need two methods for checking if email exists if were using an int constant as return (emailexists, validatepassword)
+		// TODO for password registration, maybe a little red X that stays red as long as the user's password is "weak" and turns to green check when its "strong"
+		// TODO fields should clear after registration
+		// TODO add "show password" checkbox for registration
 		
 		/* for storing passwords, don't store the password itself. store the hash,
 		 * then when the user enters their password, check that hashed password

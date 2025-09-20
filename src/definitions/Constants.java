@@ -18,6 +18,8 @@ public class Constants {
 	public static final int BUTTON_HEIGHT = 30;
 	public static final int BUTTON_WIDTH = 40;
 	public static final int NUM_SHOWN_BUTTONS = 11;
+	public static final int EMAIL_IDX = 0;
+	public static final int PW_IDX = 1;
 	public static final int AMT_IDX = 0;
 	public static final int UNIT_IDX = 1;
 	public static final int NAME_IDX = 2;
@@ -37,6 +39,14 @@ public class Constants {
 	public static final Color bgGray = new Color(105,105,105);
 	public static final Color rcpBtnGray = new Color(217,217,217);
 	public static final Font recipeTxtFont;
+	public static final String ASCII_SPECIAL_CHARS = "!@#$%^&*()_+-=`~|\\[]{};':\",./<>?";
+	public static final int MIN_PW_LEN = 12;
+	public static final int VALID = 1;
+	public static final int NONEXISTENT_EMAIL = 0;
+	public static final int INCORRECT_PASSWORD = -1;
+	public static final int ERROR = -2;
+	public static final boolean SUCCESS = true;
+	public static final boolean FAIL = false;
 	
     static {
         Font font = null;
