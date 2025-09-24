@@ -1,6 +1,4 @@
-/.settings
-.classpath
-.project
+./settings/
 /bin
 recipes.txt
 recipes.db
