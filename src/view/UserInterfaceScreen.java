@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -130,7 +133,7 @@ public class UserInterfaceScreen extends JPanel {
 		rcpSelectPanel.add(rcpEditPanel, BorderLayout.SOUTH);
 
 		// Selected Recipe Information Panel (CENTER)
-		selectedRcpDescPanel = new JPanel();		
+		selectedRcpDescPanel = new JPanel();	
 		BoxLayout recipeDescLayout = new BoxLayout(selectedRcpDescPanel, BoxLayout.Y_AXIS);
 		selectedRcpDescPanel.setLayout(recipeDescLayout);
 		selectedRcpInfo = new JPanel();
@@ -169,6 +172,22 @@ public class UserInterfaceScreen extends JPanel {
 		rcpSelectPanel.setOpaque(false);
 		rcpSelectPanel.setOpaque(false);
 		rcpEditPanel.setOpaque(false);
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+	    super.paintComponent(g);
+
+	    Graphics2D g2d = (Graphics2D) g.create();
+	    int w = getWidth();
+	    int h = getHeight();
+
+		Color topColor = new Color(184,184,184);
+		Color bottomColor = new Color(217,217,217);
+
+	    g2d.setPaint(new GradientPaint(0, 0, topColor, 0, h, bottomColor));
+	    g2d.fillRect(0, 0, w, h);
+	    g2d.dispose();
 	}
 
 	public void populateRecipeSelectList(List<Recipe> recipes) {

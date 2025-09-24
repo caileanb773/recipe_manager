@@ -74,9 +74,15 @@ public class AppController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String btnCommand = e.getActionCommand();
-
-		switch (btnCommand) {
+		String[] cmdData = e.getActionCommand().split("&");
+		String cmd = cmdData[0];
+		String cmdOpt = null;
+		
+		if (cmdData.length > 1) {
+			cmdOpt = cmdData[1];
+		}
+		
+		switch (cmd) {
 		case "add":
 			System.out.println("Attempting to add recipe...");
 			displayCreateRecipeDialog();
@@ -135,10 +141,19 @@ public class AppController implements ActionListener {
 		case "cancelRegister":
 			cancelRegister();
 			break;
+		case "returnToLoginAfterRegister":
+			returnToLoginAfterRegister(cmdOpt);
+			break;
 		default:
 			System.err.println("Unrecognized button actionCommand.");
 			break;
 		}
+	}
+	
+	public void returnToLoginAfterRegister(String newEmail) {
+		view.getLoginScreen().setEmail(newEmail);
+		view.switchScreen("LOGIN");
+		view.getLoginScreen().initFocus("PASSWORD_FIELD");
 	}
 	
 	public void register() {
@@ -146,6 +161,7 @@ public class AppController implements ActionListener {
 	}
 	
 	public void cancelRegister() {
+		view.getRegisterScreen().clearFields();
 		view.switchScreen("LOGIN");
 	}
 	

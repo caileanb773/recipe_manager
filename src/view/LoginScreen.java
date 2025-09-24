@@ -1,12 +1,21 @@
 package view;
 
+import static definitions.Constants.EMAIL_IDX;
 import static definitions.Constants.INCORRECT_PASSWORD;
 import static definitions.Constants.NONEXISTENT_EMAIL;
+import static definitions.Constants.PW_IDX;
 import static definitions.Constants.VALID;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -17,6 +26,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BoxLayout;
@@ -31,14 +41,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-
 import org.mindrot.jbcrypt.BCrypt;
-
 import com.sun.tools.javac.Main;
 import definitions.Constants;
 import util.Config;
 import util.Utility;
-import static definitions.Constants.*;
 
 /*
  * Author: Cailean Bernard
@@ -56,8 +63,7 @@ public class LoginScreen extends JPanel {
 	private JButton clear;
 	private JButton register;
 	private JPanel buttonPanel;
-	private JPanel emailPanel;
-	private JPanel pwPanel;
+	private JPanel inputsPanel;
 	private JCheckBox pwReveal;
 	private static JCheckBox rmbrMe;
 	private ActionListener listener;
@@ -69,8 +75,7 @@ public class LoginScreen extends JPanel {
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(layout);
 		setBackground(Constants.rcpBtnGray);
-
-		URL bannerUrl = Main.class.getClassLoader().getResource("banner_red.png");
+		URL bannerUrl = Main.class.getClassLoader().getResource("banner_transparentbg.png");
 
 		if (bannerUrl != null) {
 			ImageIcon icon = new ImageIcon(bannerUrl);
@@ -81,44 +86,50 @@ public class LoginScreen extends JPanel {
 			logoBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
 			add(logoBanner);
 		} else {
-			System.err.println("Could not resolve path to banner.png.");
+			System.err.println("Could not resolve path to Login Screen banner.");
 		}
 
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(3,3,3,3);
+		inputsPanel = new JPanel(new GridBagLayout());
+		buttonPanel = new JPanel(new FlowLayout());
 		emailLabel = new JLabel(bundle.getString("email"));
 		pwLabel = new JLabel(bundle.getString("password"));
 		pwReveal = new JCheckBox(bundle.getString("revealPassword"), false);
 		rmbrMe = new JCheckBox(bundle.getString("remember"), false);
-		emailInput = new JTextField(15);
-		pwInput = new JPasswordField(15);
-		buttonPanel = new JPanel(new FlowLayout());
-		emailPanel = new JPanel(new FlowLayout());
-		pwPanel = new JPanel(new FlowLayout());
-
-		buttonPanel.setBackground(Constants.rcpBtnGray);
-		emailPanel.setBackground(Constants.rcpBtnGray);
-		pwPanel.setBackground(Constants.rcpBtnGray);
-
 		login = new JButton(bundle.getString("login"));
 		clear = new JButton(bundle.getString("clear"));
 		register = new JButton(bundle.getString("register"));
+		emailInput = new JTextField(20);
+		pwInput = new JPasswordField(20);
+		
+		buttonPanel.setOpaque(false);
+		inputsPanel.setOpaque(false);
 
 		buttonPanel.add(login);
 		buttonPanel.add(clear);
 		buttonPanel.add(register);
-		emailPanel.add(emailLabel);
-		emailPanel.add(emailInput);
-		emailPanel.add(rmbrMe);
-		pwPanel.add(pwLabel);
-		pwPanel.add(pwInput);
-		pwPanel.add(pwReveal);
 
-		//emailPanel.setAlignmentX(CENTER_ALIGNMENT);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		inputsPanel.add(emailLabel, gbc);
+		gbc.gridx++;
+		inputsPanel.add(emailInput, gbc);
+		gbc.gridx++;
+		inputsPanel.add(rmbrMe, gbc);
+		gbc.gridx = 0;
+		gbc.gridy++;
+		inputsPanel.add(pwLabel, gbc);
+		gbc.gridx++;
+		inputsPanel.add(pwInput, gbc);
+		gbc.gridx++;
+		inputsPanel.add(pwReveal, gbc);
+		gbc.gridx = 1;
+		gbc.gridy++;
 
-
-		add(emailPanel);
-		add(pwPanel);
+		add(inputsPanel);
 		add(buttonPanel);
-
+		
 		// Check if there is a last email
 		String lastEmail = Config.getLastEmail();
 		if (lastEmail == null || lastEmail.equals("null") || lastEmail.isEmpty()) {
@@ -129,7 +140,22 @@ public class LoginScreen extends JPanel {
 			emailInput.setSelectionStart(0);
 			emailInput.setSelectionEnd(0);
 		}
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+	    super.paintComponent(g);
 
+	    Graphics2D g2d = (Graphics2D) g.create();
+	    int w = getWidth();
+	    int h = getHeight();
+
+		Color topColor = new Color(184,184,184);
+		Color bottomColor = new Color(217,217,217);
+
+	    g2d.setPaint(new GradientPaint(0, 0, topColor, 0, h, bottomColor));
+	    g2d.fillRect(0, 0, w, h);
+	    g2d.dispose();
 	}
 
 	public void initializeButtons(ActionListener listener) {
@@ -160,6 +186,10 @@ public class LoginScreen extends JPanel {
 	public String getEmail() {
 		return emailInput.getText();
 	}
+	
+	public void setEmail(String email) {
+		emailInput.setText(email);
+	}
 
 	public void validateFields() {
 		String email = emailInput.getText();
@@ -178,7 +208,7 @@ public class LoginScreen extends JPanel {
 
 			if (credentialCheck == VALID) {
 				login();
-
+				pwInput.setText("");
 			} else if (credentialCheck == NONEXISTENT_EMAIL) {
 				JOptionPane.showMessageDialog(null, bundle.getString("validate.emailUnregistered"),
 						bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);

@@ -27,7 +27,6 @@ public class Main {
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 
-		// TODO fix gradient for login when screen is expanded
 		// TODO handle when recipe amts are 1 + 1/2, 2 1/4
 		// TODO resize recipe info based on window size
 		// TODO batch math (10x batch, 5x batch, etcc)
@@ -37,12 +36,9 @@ public class Main {
 		// TODO registerController(ActionListener listener) for the model/view and others that need it
 		// TODO separate concerns of initializing buttons and registering the listener
 		// TODO don't need two methods for checking if email exists if were using an int constant as return (emailexists, validatepassword)
-		// TODO for password registration, maybe a little red X that stays red as long as the user's password is "weak" and turns to green check when its "strong"
-		// TODO fields should clear after registration
-		// TODO add "show password" checkbox for registration
+		// TODO figure out a good way to represent that a pw in register screen is strong enough
+		// TODO remove references to "missing" in translations
+		// TODO clean up/simplify init methods
 		
-		/* for storing passwords, don't store the password itself. store the hash,
-		 * then when the user enters their password, check that hashed password
-		 * against the stored hash */
 	}
 }
