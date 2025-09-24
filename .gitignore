@@ -5,3 +5,5 @@
 recipes.txt
 recipes.db
 backup.txt 
+/resources/credentials.txt
+/resources/config.ini
