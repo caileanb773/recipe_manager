@@ -74,13 +74,15 @@ public class RegisterScreen extends JPanel {
 	private final int GREEN_CHECK = 1;
 	private final int EYE_OPEN = 0;
 	private final int EYE_CLOSED = 1;
+	private final int EYE_OPEN_ROLL = 2;
+	private final int EYE_CLOSED_ROLL = 3;
 
 
 	public RegisterScreen(ResourceBundle bundle) {
 		this.bundle = bundle;
 		setLayout(new BorderLayout());
 		pwStrengthIndicators = new Image[2];
-		pwRevealIcons = new ImageIcon[2];
+		pwRevealIcons = new ImageIcon[4];
 
 		// ---------------
 		// Panels
@@ -130,14 +132,14 @@ public class RegisterScreen extends JPanel {
 		if (redXUrl != null && greenCheckUrl != null) {
 			ImageIcon redX = new ImageIcon(redXUrl);
 			Image scaledRedX = redX.getImage().getScaledInstance(
-					redX.getIconWidth() / 4,
-					redX.getIconHeight() / 4,
+					redX.getIconWidth() / 3,
+					redX.getIconHeight() / 3,
 					Image.SCALE_SMOOTH); // try this with scale_fast as well
 			
 			ImageIcon greenChk = new ImageIcon(greenCheckUrl);
 			Image scaledGreenChk = greenChk.getImage().getScaledInstance(
-					greenChk.getIconWidth() / 4,
-					greenChk.getIconHeight() / 4,
+					greenChk.getIconWidth() / 3,
+					greenChk.getIconHeight() / 3,
 					Image.SCALE_SMOOTH);
 			pwStrengthIndicators[RED_X] = scaledRedX;
 			pwStrengthIndicators[GREEN_CHECK] = scaledGreenChk;
@@ -148,30 +150,59 @@ public class RegisterScreen extends JPanel {
 		pwStrengthIndicator = new JLabel(new ImageIcon(pwStrengthIndicators[RED_X]));
 		
 		// ----- Button for show/hide password -----
-		URL eyeOpenUrl = Main.class.getClassLoader().getResource("eye_open.png");
 		URL eyeClosedUrl = Main.class.getClassLoader().getResource("eye_closed.png");
+		URL eyeClosedRollUrl = Main.class.getClassLoader().getResource("eye_closed_rollover.png");
+		URL eyeOpenUrl = Main.class.getClassLoader().getResource("eye_open.png");
+		URL eyeOpenRollUrl = Main.class.getClassLoader().getResource("eye_open_rollover.png");
 		
-		if (eyeOpenUrl != null && eyeClosedUrl != null) {
+		if (eyeOpenUrl != null
+				&& eyeOpenRollUrl != null
+				&& eyeClosedUrl != null
+				&& eyeClosedRollUrl != null) {
+			
+			// Default Open Eye img
 			ImageIcon eyeOpenIcon = new ImageIcon(eyeOpenUrl);
 			Image eyeOpen = eyeOpenIcon.getImage().getScaledInstance(
-					eyeOpenIcon.getIconWidth() / 4,
-					eyeOpenIcon.getIconHeight() / 4,
+					eyeOpenIcon.getIconWidth() / 3,
+					eyeOpenIcon.getIconHeight() / 3,
 					Image.SCALE_SMOOTH);
 			
+			// Rollover Open Eye img
+			ImageIcon eyeOpenRollIcon = new ImageIcon(eyeOpenRollUrl);
+			Image eyeOpenRoll = eyeOpenRollIcon.getImage().getScaledInstance(
+					eyeOpenRollIcon.getIconWidth() / 3,
+					eyeOpenRollIcon.getIconHeight() / 3,
+					Image.SCALE_SMOOTH);
+			 
+			// Default Closed Eye img
 			ImageIcon eyeClosedIcon = new ImageIcon(eyeClosedUrl);
 			Image eyeClosed = eyeClosedIcon.getImage().getScaledInstance(
-					eyeClosedIcon.getIconWidth() / 4,
-					eyeClosedIcon.getIconHeight() / 4,
+					eyeClosedIcon.getIconWidth() / 3,
+					eyeClosedIcon.getIconHeight() / 3,
 					Image.SCALE_SMOOTH);
+			
+			// Rollover Closed Eye img
+			ImageIcon eyeClosedRollIcon = new ImageIcon(eyeClosedRollUrl);
+			Image eyeClosedRoll = eyeClosedIcon.getImage().getScaledInstance(
+					eyeClosedRollIcon.getIconWidth() / 3,
+					eyeClosedRollIcon.getIconHeight() / 3,
+					Image.SCALE_SMOOTH);
+			
 			pwRevealIcons[EYE_OPEN] = new ImageIcon(eyeOpen);
 			pwRevealIcons[EYE_CLOSED] = new ImageIcon(eyeClosed);
+			pwRevealIcons[EYE_OPEN_ROLL] = new ImageIcon(eyeOpenRoll);
+			pwRevealIcons[EYE_CLOSED_ROLL] = new ImageIcon(eyeClosedRoll);
 		} else {
+			System.out.println("eye closed url" + eyeClosedUrl + " eye closed roll url " + eyeClosedRollUrl + " eye open url "+ eyeOpenUrl + "eyeopenrollurl "+ eyeOpenRollUrl);
 			System.err.println("Could not resolve path(s) to password reveal button icon.");
 		}
 		
 		pwRevealBtn = new JButton();
 		pwRevealBtn.setContentAreaFilled(false);
 		pwRevealBtn.setIcon(pwRevealIcons[EYE_CLOSED]);
+		
+		// XXX testing
+		pwRevealBtn.setRolloverIcon(pwRevealIcons[EYE_CLOSED_ROLL]);
 
 		// ---------------
 		// Registration Form
