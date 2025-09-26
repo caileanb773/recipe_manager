@@ -77,7 +77,7 @@ public class AppFrame {
 		container.add(registerScreen, "REGISTER_SCREEN");
 
 		try {
-			URL iconUrl = Main.class.getClassLoader().getResource("icon.png");		
+			URL iconUrl = Main.class.getClassLoader().getResource("img/icon.png");		
 			ImageIcon icon = new ImageIcon(iconUrl);
 			frame.setIconImage(icon.getImage());
 		} catch (NullPointerException e) {
@@ -191,7 +191,7 @@ public class AppFrame {
 	public void initializeLoginButtons(ActionListener listener) {
 		loginScreen.initializeButtons(listener);
 	}
-	
+
 	public void initializeRegisterButtons(ActionListener listener) {
 		registerScreen.initializeButtons(listener);
 	}
@@ -289,7 +289,7 @@ public class AppFrame {
 	public LoginScreen getLoginScreen() {
 		return loginScreen;
 	}
-	
+
 	public RegisterScreen getRegisterScreen() {
 		return registerScreen;
 	}

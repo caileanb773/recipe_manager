@@ -5,8 +5,8 @@ import static definitions.Constants.INCORRECT_PASSWORD;
 import static definitions.Constants.NONEXISTENT_EMAIL;
 import static definitions.Constants.PW_IDX;
 import static definitions.Constants.VALID;
-
-import java.awt.Color;
+import static definitions.Constants.GRADIENT_BOTTOM;
+import static definitions.Constants.GRADIENT_TOP;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GradientPaint;
@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BoxLayout;
@@ -55,6 +54,7 @@ import util.Utility;
 @SuppressWarnings("serial")
 public class LoginScreen extends JPanel {
 
+	private static JCheckBox rmbrMe;
 	private JLabel emailLabel;
 	private JLabel pwLabel;
 	private JTextField emailInput;
@@ -65,7 +65,6 @@ public class LoginScreen extends JPanel {
 	private JPanel buttonPanel;
 	private JPanel inputsPanel;
 	private JCheckBox pwReveal;
-	private static JCheckBox rmbrMe;
 	private ActionListener listener;
 	private ResourceBundle bundle;
 
@@ -75,7 +74,7 @@ public class LoginScreen extends JPanel {
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(layout);
 		setBackground(Constants.rcpBtnGray);
-		URL bannerUrl = Main.class.getClassLoader().getResource("banner_transparentbg.png");
+		URL bannerUrl = Main.class.getClassLoader().getResource("img/banner_bluegray.png");
 
 		if (bannerUrl != null) {
 			ImageIcon icon = new ImageIcon(bannerUrl);
@@ -102,7 +101,7 @@ public class LoginScreen extends JPanel {
 		register = new JButton(bundle.getString("register"));
 		emailInput = new JTextField(20);
 		pwInput = new JPasswordField(20);
-		
+
 		buttonPanel.setOpaque(false);
 		inputsPanel.setOpaque(false);
 
@@ -129,7 +128,7 @@ public class LoginScreen extends JPanel {
 
 		add(inputsPanel);
 		add(buttonPanel);
-		
+
 		// Check if there is a last email
 		String lastEmail = Config.getLastEmail();
 		if (lastEmail == null || lastEmail.equals("null") || lastEmail.isEmpty()) {
@@ -141,21 +140,18 @@ public class LoginScreen extends JPanel {
 			emailInput.setSelectionEnd(0);
 		}
 	}
-	
+
 	@Override
 	protected void paintComponent(Graphics g) {
-	    super.paintComponent(g);
+		super.paintComponent(g);
 
-	    Graphics2D g2d = (Graphics2D) g.create();
-	    int w = getWidth();
-	    int h = getHeight();
+		Graphics2D g2d = (Graphics2D) g.create();
+		int w = getWidth();
+		int h = getHeight();
 
-		Color topColor = new Color(184,184,184);
-		Color bottomColor = new Color(217,217,217);
-
-	    g2d.setPaint(new GradientPaint(0, 0, topColor, 0, h, bottomColor));
-	    g2d.fillRect(0, 0, w, h);
-	    g2d.dispose();
+		g2d.setPaint(new GradientPaint(0, 0, GRADIENT_TOP, 0, h, GRADIENT_BOTTOM));
+		g2d.fillRect(0, 0, w, h);
+		g2d.dispose();
 	}
 
 	public void initializeButtons(ActionListener listener) {
@@ -186,7 +182,7 @@ public class LoginScreen extends JPanel {
 	public String getEmail() {
 		return emailInput.getText();
 	}
-	
+
 	public void setEmail(String email) {
 		emailInput.setText(email);
 	}
@@ -263,7 +259,7 @@ public class LoginScreen extends JPanel {
 		} finally {
 			java.util.Arrays.fill(pw, '\0');
 		}
-		
+
 		return INCORRECT_PASSWORD;
 	}
 

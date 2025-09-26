@@ -15,17 +15,17 @@ import view.AppFrame;
 public class Main {
 
 	public static void main(String[] args) {
-		
+
 		// UI Look and Feel init
 		try {
-		    UIManager.setLookAndFeel( new FlatLightLaf() );
+			UIManager.setLookAndFeel( new FlatLightLaf() );
 		} catch( Exception ex ) {
-		    System.err.println( "Failed to initialize LaF" );
+			System.err.println( "Failed to initialize LaF" );
 		}
-		
+
 		RecipeMgrModel model = new RecipeMgrModel();
 		AppFrame view = new AppFrame();
-		AppController controller = new AppController(model, view);
+		new AppController(model, view);
 
 		// TODO handle when recipe amts are 1 + 1/2, 2 1/4
 		// TODO resize recipe info based on window size
@@ -40,6 +40,6 @@ public class Main {
 		// TODO remove references to "missing" in translations
 		// TODO clean up/simplify init methods
 		// TODO deal with empty credentials file?
-		
+
 	}
 }

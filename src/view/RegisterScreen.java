@@ -1,7 +1,8 @@
 package view;
 
+import static definitions.Constants.GRADIENT_BOTTOM;
+import static definitions.Constants.GRADIENT_TOP;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GradientPaint;
@@ -20,24 +21,22 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.mindrot.jbcrypt.BCrypt;
-
 import com.sun.tools.javac.Main;
-
 import definitions.Constants;
 import util.Utility;
 
@@ -45,16 +44,16 @@ import util.Utility;
  * Author: Cailean Bernard
  * Contents: Allows user to register with an email and password.
  */
-
 @SuppressWarnings("serial")
 public class RegisterScreen extends JPanel {
 
+	// Swing
 	private JPasswordField passwordInput;
 	private JTextField emailInput;
 	private JButton confirmBtn;
 	private JButton cancelBtn;
-	private JCheckBox pwRevealChkbx;
 	private JButton pwRevealBtn;
+	private JLabel pwStrengthIndicator;
 	private JLabel registerLbl;
 	private JLabel emailInputLbl;
 	private JLabel passwordInputLbl;
@@ -64,18 +63,21 @@ public class RegisterScreen extends JPanel {
 	private JPanel buttonPanel;
 	private JPanel wrapperPanel;
 	private ResourceBundle bundle;
-	private JLabel pwStrengthIndicator;
 	private Image[] pwStrengthIndicators;
 	private ImageIcon[] pwRevealIcons;
 	private ActionListener listener;
-	
-	// Constants
-	private final int RED_X = 0;
+
+	// Local Constants
+	private final int GRAY_CHECK = 0;
 	private final int GREEN_CHECK = 1;
 	private final int EYE_OPEN = 0;
 	private final int EYE_CLOSED = 1;
 	private final int EYE_OPEN_ROLL = 2;
 	private final int EYE_CLOSED_ROLL = 3;
+	private final int ICON_SCALE = 3;
+
+	// Other
+	private boolean isPasswordHidden;
 
 
 	public RegisterScreen(ResourceBundle bundle) {
@@ -83,6 +85,7 @@ public class RegisterScreen extends JPanel {
 		setLayout(new BorderLayout());
 		pwStrengthIndicators = new Image[2];
 		pwRevealIcons = new ImageIcon[4];
+		isPasswordHidden = true;
 
 		// ---------------
 		// Panels
@@ -114,95 +117,12 @@ public class RegisterScreen extends JPanel {
 		registerLbl = new JLabel(bundle.getString("register"));
 		emailInputLbl = new JLabel(bundle.getString("enterEmail"));
 		passwordInputLbl = new JLabel(bundle.getString("enterPass"));
-		pwRevealChkbx = new JCheckBox(bundle.getString("revealPassword"), false);
 		registerLbl.putClientProperty( "FlatLaf.styleClass", "h2" );
-		// TODO translate
-		passwordRequirements = new JLabel("<html>A strong password must contain:<br>"
-				+ "•12 or more characters<br>"
-				+ "•A mix of upper/lowercase letters<br>"
-				+ "•At least one number<br>"
-				+ "•At least one special character</html>");
-		//passwordRequirements = new JLabel(bundle.getString("register.pwrequirements"));
-		
-		// ----- Indicators for weak/strong password ----- 
-		URL redXUrl = Main.class.getClassLoader().getResource("red_x.png");
-		URL greenCheckUrl = Main.class.getClassLoader().getResource("green_check.png");
-		
-		// TODO handle indexoutofbounds
-		if (redXUrl != null && greenCheckUrl != null) {
-			ImageIcon redX = new ImageIcon(redXUrl);
-			Image scaledRedX = redX.getImage().getScaledInstance(
-					redX.getIconWidth() / 3,
-					redX.getIconHeight() / 3,
-					Image.SCALE_SMOOTH); // try this with scale_fast as well
-			
-			ImageIcon greenChk = new ImageIcon(greenCheckUrl);
-			Image scaledGreenChk = greenChk.getImage().getScaledInstance(
-					greenChk.getIconWidth() / 3,
-					greenChk.getIconHeight() / 3,
-					Image.SCALE_SMOOTH);
-			pwStrengthIndicators[RED_X] = scaledRedX;
-			pwStrengthIndicators[GREEN_CHECK] = scaledGreenChk;
-		} else {
-			System.err.println("Could not resolve path(s) to password strength indicators.");
-		}
-		
-		pwStrengthIndicator = new JLabel(new ImageIcon(pwStrengthIndicators[RED_X]));
-		
-		// ----- Button for show/hide password -----
-		URL eyeClosedUrl = Main.class.getClassLoader().getResource("eye_closed.png");
-		URL eyeClosedRollUrl = Main.class.getClassLoader().getResource("eye_closed_rollover.png");
-		URL eyeOpenUrl = Main.class.getClassLoader().getResource("eye_open.png");
-		URL eyeOpenRollUrl = Main.class.getClassLoader().getResource("eye_open_rollover.png");
-		
-		if (eyeOpenUrl != null
-				&& eyeOpenRollUrl != null
-				&& eyeClosedUrl != null
-				&& eyeClosedRollUrl != null) {
-			
-			// Default Open Eye img
-			ImageIcon eyeOpenIcon = new ImageIcon(eyeOpenUrl);
-			Image eyeOpen = eyeOpenIcon.getImage().getScaledInstance(
-					eyeOpenIcon.getIconWidth() / 3,
-					eyeOpenIcon.getIconHeight() / 3,
-					Image.SCALE_SMOOTH);
-			
-			// Rollover Open Eye img
-			ImageIcon eyeOpenRollIcon = new ImageIcon(eyeOpenRollUrl);
-			Image eyeOpenRoll = eyeOpenRollIcon.getImage().getScaledInstance(
-					eyeOpenRollIcon.getIconWidth() / 3,
-					eyeOpenRollIcon.getIconHeight() / 3,
-					Image.SCALE_SMOOTH);
-			 
-			// Default Closed Eye img
-			ImageIcon eyeClosedIcon = new ImageIcon(eyeClosedUrl);
-			Image eyeClosed = eyeClosedIcon.getImage().getScaledInstance(
-					eyeClosedIcon.getIconWidth() / 3,
-					eyeClosedIcon.getIconHeight() / 3,
-					Image.SCALE_SMOOTH);
-			
-			// Rollover Closed Eye img
-			ImageIcon eyeClosedRollIcon = new ImageIcon(eyeClosedRollUrl);
-			Image eyeClosedRoll = eyeClosedIcon.getImage().getScaledInstance(
-					eyeClosedRollIcon.getIconWidth() / 3,
-					eyeClosedRollIcon.getIconHeight() / 3,
-					Image.SCALE_SMOOTH);
-			
-			pwRevealIcons[EYE_OPEN] = new ImageIcon(eyeOpen);
-			pwRevealIcons[EYE_CLOSED] = new ImageIcon(eyeClosed);
-			pwRevealIcons[EYE_OPEN_ROLL] = new ImageIcon(eyeOpenRoll);
-			pwRevealIcons[EYE_CLOSED_ROLL] = new ImageIcon(eyeClosedRoll);
-		} else {
-			System.out.println("eye closed url" + eyeClosedUrl + " eye closed roll url " + eyeClosedRollUrl + " eye open url "+ eyeOpenUrl + "eyeopenrollurl "+ eyeOpenRollUrl);
-			System.err.println("Could not resolve path(s) to password reveal button icon.");
-		}
-		
-		pwRevealBtn = new JButton();
-		pwRevealBtn.setContentAreaFilled(false);
-		pwRevealBtn.setIcon(pwRevealIcons[EYE_CLOSED]);
-		
-		// XXX testing
-		pwRevealBtn.setRolloverIcon(pwRevealIcons[EYE_CLOSED_ROLL]);
+
+		// ----- Indicators for weak/strong password & revealing ----- 
+		initPwStrengthIndicator();
+		initPwRevealBtn();
+		initPwFieldChecking();
 
 		// ---------------
 		// Registration Form
@@ -221,20 +141,15 @@ public class RegisterScreen extends JPanel {
 		gbc.gridx = 1;
 		contentPanel.add(passwordInput, gbc);
 		gbc.gridx = 2;
-		contentPanel.add(pwRevealBtn, gbc);
-		gbc.gridx = 3;
 		contentPanel.add(pwStrengthIndicator, gbc);
+		gbc.gridx = 3;
+		contentPanel.add(pwRevealBtn, gbc);
 
 		// ---------------
 		// Button Panel
 		// ---------------
 		buttonPanel.add(confirmBtn);
 		buttonPanel.add(cancelBtn);
-		
-		// ---------------
-		// Password Strength Requirements Panel
-		// ---------------
-		pwRqmntPanel.add(passwordRequirements);
 
 		// ---------------
 		// Adding Components to Vertical Stacking Panel
@@ -244,7 +159,7 @@ public class RegisterScreen extends JPanel {
 		wrapperPanel.add(buttonPanel);
 		wrapperPanel.add(Box.createVerticalStrut(10));
 		wrapperPanel.add(pwRqmntPanel);
-		
+
 		// ---------------
 		// Constrain Size of Panels Vertically
 		// ---------------
@@ -254,16 +169,104 @@ public class RegisterScreen extends JPanel {
 		buttonPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, pref.height));
 		pref = pwRqmntPanel.getPreferredSize();
 		pwRqmntPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, pref.height));
-		
+
 		// ---------------
 		// Center Wrapper Panel Vertically in Outer Panel
 		// ---------------
-	    JPanel outer = new JPanel(new GridBagLayout());
-	    outer.setOpaque(false);
-	    outer.add(wrapperPanel);
-	    
-	    // Add Centered Panel to Parent
+		JPanel outer = new JPanel(new GridBagLayout());
+		outer.setOpaque(false);
+		outer.add(wrapperPanel);
+
+		// Add Centered Panel to Parent
 		add(outer, BorderLayout.CENTER);
+	}
+
+	private void initPwFieldChecking() {
+		passwordInput.getDocument().addDocumentListener(new DocumentListener() {
+			private void updateStrength() {
+				char[] pw = passwordInput.getPassword();
+				boolean weak = isPasswordWeak(pw);
+
+				Arrays.fill(pw, '\0');
+
+				pwStrengthIndicator.setIcon(weak ? 
+						new ImageIcon(pwStrengthIndicators[GRAY_CHECK]) : 
+							new ImageIcon(pwStrengthIndicators[GREEN_CHECK]));
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				updateStrength();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				updateStrength();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				updateStrength();
+			}
+		});
+	}
+
+	private void initPwStrengthIndicator() {
+		URL grayCheckUrl = Main.class.getClassLoader().getResource("img/gray_check.png");
+		URL greenCheckUrl = Main.class.getClassLoader().getResource("img/green_check.png");
+
+		// TODO handle indexoutofbounds
+		if (grayCheckUrl != null && greenCheckUrl != null) {
+			ImageIcon grayChk = new ImageIcon(grayCheckUrl);
+			Image scaledGrayChk = grayChk.getImage().getScaledInstance(
+					grayChk.getIconWidth() / 3,
+					grayChk.getIconHeight() / 3,
+					Image.SCALE_SMOOTH); // try this with scale_fast as well
+
+			ImageIcon greenChk = new ImageIcon(greenCheckUrl);
+			Image scaledGreenChk = greenChk.getImage().getScaledInstance(
+					greenChk.getIconWidth() / 3,
+					greenChk.getIconHeight() / 3,
+					Image.SCALE_SMOOTH);
+			pwStrengthIndicators[GRAY_CHECK] = scaledGrayChk;
+			pwStrengthIndicators[GREEN_CHECK] = scaledGreenChk;
+		} else {
+			System.err.println("Could not resolve path(s) to password strength indicators.");
+		}
+
+		pwStrengthIndicator = new JLabel(new ImageIcon(pwStrengthIndicators[GRAY_CHECK]));
+	}
+
+	// TODO add the checkbox back as a fallback if images fail to load
+	private void initPwRevealBtn() {
+		pwRevealBtn = new JButton();
+		pwRevealBtn.setContentAreaFilled(false);
+		URL eyeClosedUrl = Main.class.getClassLoader().getResource("img/eye_closed.png");
+		URL eyeClosedRollUrl = Main.class.getClassLoader().getResource("img/eye_closed_rollover.png");
+		URL eyeOpenUrl = Main.class.getClassLoader().getResource("img/eye_open.png");
+		URL eyeOpenRollUrl = Main.class.getClassLoader().getResource("img/eye_open_rollover.png");
+
+		if (eyeOpenUrl != null && eyeOpenRollUrl != null 
+				&& eyeClosedUrl != null && eyeClosedRollUrl != null) {
+			pwRevealIcons[EYE_OPEN] = loadScaledIcon(eyeOpenUrl, ICON_SCALE);
+			pwRevealIcons[EYE_CLOSED] = loadScaledIcon(eyeClosedUrl, ICON_SCALE);
+			pwRevealIcons[EYE_OPEN_ROLL] = loadScaledIcon(eyeOpenRollUrl, ICON_SCALE);
+			pwRevealIcons[EYE_CLOSED_ROLL] = loadScaledIcon(eyeClosedRollUrl, ICON_SCALE);
+		} else {
+			System.err.println("Could not resolve path(s) to password reveal button icon.");
+		}
+
+		pwRevealBtn.setIcon(pwRevealIcons[EYE_CLOSED]);
+		pwRevealBtn.setRolloverIcon(pwRevealIcons[EYE_CLOSED_ROLL]);
+
+	}
+
+	private ImageIcon loadScaledIcon(URL url, int scale) {
+		ImageIcon icon = new ImageIcon(url);
+		int w = icon.getIconWidth();
+		int h = icon.getIconHeight();
+		return new ImageIcon(icon.getImage()
+				.getScaledInstance(w / scale, h / scale, Image.SCALE_SMOOTH));
 	}
 
 	@Override
@@ -274,17 +277,14 @@ public class RegisterScreen extends JPanel {
 		int w = getWidth();
 		int h = getHeight();
 
-		Color topColor = new Color(184,184,184);
-		Color bottomColor = new Color(217,217,217);
-
-		g2d.setPaint(new GradientPaint(0, 0, topColor, 0, h, bottomColor));
+		g2d.setPaint(new GradientPaint(0, 0, GRADIENT_TOP, 0, h, GRADIENT_BOTTOM));
 		g2d.fillRect(0, 0, w, h);
 		g2d.dispose();
 	}
 
 	public void initializeButtons(ActionListener listener) {
 		this.listener = listener;
-		pwRevealChkbx.addActionListener(e -> togglePwReveal());
+		pwRevealBtn.addActionListener(e -> togglePwReveal());
 		confirmBtn.addActionListener(e -> validateFields());
 		cancelBtn.addActionListener(e -> {
 			ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
@@ -294,12 +294,19 @@ public class RegisterScreen extends JPanel {
 	}
 
 	public void togglePwReveal() {
+		System.out.println("Toggling pw reveal");
 		char echoChar = '•';
 
-		if (pwRevealChkbx.isSelected()) {
+		if (isPasswordHidden) {
 			passwordInput.setEchoChar((char) 0);
+			isPasswordHidden = false;
+			pwRevealBtn.setIcon(pwRevealIcons[EYE_OPEN]);
+			pwRevealBtn.setRolloverIcon(pwRevealIcons[EYE_OPEN_ROLL]);
 		} else {
 			passwordInput.setEchoChar(echoChar);
+			isPasswordHidden = true;
+			pwRevealBtn.setIcon(pwRevealIcons[EYE_CLOSED]);
+			pwRevealBtn.setRolloverIcon(pwRevealIcons[EYE_CLOSED_ROLL]);
 		}
 	}
 
@@ -403,7 +410,7 @@ public class RegisterScreen extends JPanel {
 
 		return false;
 	}
-	
+
 	public void clearFields() {
 		emailInput.setText("");
 		passwordInput.setText("");
@@ -439,7 +446,6 @@ public class RegisterScreen extends JPanel {
 		registerLbl.setText(bundle.getString("register"));
 		emailInputLbl.setText(bundle.getString("enterEmail"));
 		passwordInputLbl.setText(bundle.getString("enterPass"));
-		pwRevealChkbx.setText(bundle.getString("revealPassword"));
 	}
 
 	public void initFocus() {

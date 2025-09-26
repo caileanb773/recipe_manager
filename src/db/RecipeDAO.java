@@ -151,54 +151,54 @@ public class RecipeDAO {
 	}
 
 	public void updateRecipe(Recipe recipe) {
-	    System.out.println("Updating recipe in database...");
-	    String rcpSql = "UPDATE recipes SET title = ?, directions = ?, tags = ? WHERE id = ?";
-	    String delIngSql = "DELETE FROM ingredients WHERE recipe_id = ?";
-	    String insIngSql = "INSERT INTO ingredients (recipe_id, amount, unit, name) VALUES (?, ?, ?, ?)";
+		System.out.println("Updating recipe in database...");
+		String rcpSql = "UPDATE recipes SET title = ?, directions = ?, tags = ? WHERE id = ?";
+		String delIngSql = "DELETE FROM ingredients WHERE recipe_id = ?";
+		String insIngSql = "INSERT INTO ingredients (recipe_id, amount, unit, name) VALUES (?, ?, ?, ?)";
 
-	    try (Connection conn = connect()) {
-	        conn.setAutoCommit(false); // begin transaction
+		try (Connection conn = connect()) {
+			conn.setAutoCommit(false); // begin transaction
 
-	        // --- Update recipe row ---
-	        try (PreparedStatement pstmt = conn.prepareStatement(rcpSql)) {
-	            pstmt.setString(1, recipe.getTitle());
-	            pstmt.setString(2, recipe.getDirections());
-	            pstmt.setString(3, recipe.stringifyTags());
-	            pstmt.setInt(4, recipe.getId());
+			// --- Update recipe row ---
+			try (PreparedStatement pstmt = conn.prepareStatement(rcpSql)) {
+				pstmt.setString(1, recipe.getTitle());
+				pstmt.setString(2, recipe.getDirections());
+				pstmt.setString(3, recipe.stringifyTags());
+				pstmt.setInt(4, recipe.getId());
 
-	            int rows = pstmt.executeUpdate();
-	            if (rows == 0) {
-	                System.out.println("No recipe found with ID " + recipe.getId());
-	                conn.rollback();
-	                return;
-	            }
-	        }
+				int rows = pstmt.executeUpdate();
+				if (rows == 0) {
+					System.out.println("No recipe found with ID " + recipe.getId());
+					conn.rollback();
+					return;
+				}
+			}
 
-	        // Delete old ingredients
-	        try (PreparedStatement pstmt = conn.prepareStatement(delIngSql)) {
-	            pstmt.setInt(1, recipe.getId());
-	            pstmt.executeUpdate();
-	        }
+			// Delete old ingredients
+			try (PreparedStatement pstmt = conn.prepareStatement(delIngSql)) {
+				pstmt.setInt(1, recipe.getId());
+				pstmt.executeUpdate();
+			}
 
-	        // Insert new ingredients
-	        try (PreparedStatement pstmt = conn.prepareStatement(insIngSql)) {
-	            for (Ingredient ing : recipe.getIngredients()) {
-	                pstmt.setInt(1, recipe.getId());
-	                pstmt.setString(2, ing.getAmount());
-	                pstmt.setString(3, ing.getUnit().toString());
-	                pstmt.setString(4, ing.getName());
-	                pstmt.addBatch();
-	            }
-	            pstmt.executeBatch();
-	        }
+			// Insert new ingredients
+			try (PreparedStatement pstmt = conn.prepareStatement(insIngSql)) {
+				for (Ingredient ing : recipe.getIngredients()) {
+					pstmt.setInt(1, recipe.getId());
+					pstmt.setString(2, ing.getAmount());
+					pstmt.setString(3, ing.getUnit().toString());
+					pstmt.setString(4, ing.getName());
+					pstmt.addBatch();
+				}
+				pstmt.executeBatch();
+			}
 
-	        conn.commit();
-	        System.out.println("Recipe updated successfully.");
+			conn.commit();
+			System.out.println("Recipe updated successfully.");
 
-	    } catch (SQLException e) {
-	        System.err.println("Update operation failed: " + e.getMessage());
-	        e.printStackTrace();
-	    }
+		} catch (SQLException e) {
+			System.err.println("Update operation failed: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 

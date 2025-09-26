@@ -77,11 +77,11 @@ public class AppController implements ActionListener {
 		String[] cmdData = e.getActionCommand().split("&");
 		String cmd = cmdData[0];
 		String cmdOpt = null;
-		
+
 		if (cmdData.length > 1) {
 			cmdOpt = cmdData[1];
 		}
-		
+
 		switch (cmd) {
 		case "add":
 			System.out.println("Attempting to add recipe...");
@@ -149,22 +149,22 @@ public class AppController implements ActionListener {
 			break;
 		}
 	}
-	
+
 	public void returnToLoginAfterRegister(String newEmail) {
 		view.getLoginScreen().setEmail(newEmail);
 		view.switchScreen("LOGIN");
 		view.getLoginScreen().initFocus("PASSWORD_FIELD");
 	}
-	
+
 	public void register() {
 		view.switchScreen("REGISTER_SCREEN");
 	}
-	
+
 	public void cancelRegister() {
 		view.getRegisterScreen().clearFields();
 		view.switchScreen("LOGIN");
 	}
-	
+
 	public void login() {
 		System.out.println("Attempting to log in...");
 		LoginScreen login = view.getLoginScreen();
@@ -175,7 +175,7 @@ public class AppController implements ActionListener {
 		}
 		view.switchScreen("USER_INTERFACE");
 	}
-	
+
 	public void logout() {
 		System.out.println("Logging out...");
 		view.switchScreen("LOGIN");
@@ -438,12 +438,12 @@ public class AppController implements ActionListener {
 	// TODO clean this up
 	public void setLanguage(Locale locale) {
 		System.out.println("Switching language to " + locale);
-		
+
 		Config cfg = view.getConfig();
 		UserInterfaceScreen ui = view.getUserInterface();
 		LoginScreen log = view.getLoginScreen();
 		RegisterScreen reg = view.getRegisterScreen();
-		
+
 		cfg.setLocale(locale);
 		cfg.setResourceBundle("MessagesBundle", locale);
 		view.updateBundle();

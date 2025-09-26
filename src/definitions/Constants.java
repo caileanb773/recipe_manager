@@ -14,7 +14,7 @@ import controller.Main;
  */
 
 public class Constants {
-	
+
 	public static final int BUTTON_HEIGHT = 30;
 	public static final int BUTTON_WIDTH = 40;
 	public static final int NUM_SHOWN_BUTTONS = 11;
@@ -47,24 +47,26 @@ public class Constants {
 	public static final int ERROR = -2;
 	public static final boolean SUCCESS = true;
 	public static final boolean FAIL = false;
-	
-    static {
-        Font font = null;
-        try {
-            InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("Montserrat-VariableFont_wght.ttf");
-            if (fontStream != null) {
-                font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.BOLD, 15);
-            } else {
-                System.err.println("Font file not found");
-                font = new Font("SansSerif", Font.BOLD, 15);
-            }
-        } catch (FontFormatException | IOException e) {
-            System.err.println("Error loading font: " + e.getMessage());
-            font = new Font("SansSerif", Font.BOLD, 15);
-        }
-        recipeTxtFont = font;
-    }
-	
-	
+	public static final Color GRADIENT_TOP = new Color(184,184,184);
+	public static final Color GRADIENT_BOTTOM = new Color(217,217,217);
+
+	static {
+		Font font = null;
+		try {
+			InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("Montserrat-VariableFont_wght.ttf");
+			if (fontStream != null) {
+				font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.BOLD, 15);
+			} else {
+				System.err.println("Font file not found");
+				font = new Font("SansSerif", Font.BOLD, 15);
+			}
+		} catch (FontFormatException | IOException e) {
+			System.err.println("Error loading font: " + e.getMessage());
+			font = new Font("SansSerif", Font.BOLD, 15);
+		}
+		recipeTxtFont = font;
+	}
+
+
 	private Constants() {}
 }
