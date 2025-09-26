@@ -54,6 +54,7 @@ public class RegisterScreen extends JPanel {
 	private JButton confirmBtn;
 	private JButton cancelBtn;
 	private JCheckBox pwRevealChkbx;
+	private JButton pwRevealBtn;
 	private JLabel registerLbl;
 	private JLabel emailInputLbl;
 	private JLabel passwordInputLbl;
@@ -64,18 +65,22 @@ public class RegisterScreen extends JPanel {
 	private JPanel wrapperPanel;
 	private ResourceBundle bundle;
 	private JLabel pwStrengthIndicator;
-	private Image[] pwIndicators;
+	private Image[] pwStrengthIndicators;
+	private ImageIcon[] pwRevealIcons;
 	private ActionListener listener;
 	
 	// Constants
 	private final int RED_X = 0;
 	private final int GREEN_CHECK = 1;
+	private final int EYE_OPEN = 0;
+	private final int EYE_CLOSED = 1;
 
 
 	public RegisterScreen(ResourceBundle bundle) {
 		this.bundle = bundle;
 		setLayout(new BorderLayout());
-		pwIndicators = new Image[2];
+		pwStrengthIndicators = new Image[2];
+		pwRevealIcons = new ImageIcon[2];
 
 		// ---------------
 		// Panels
@@ -92,7 +97,7 @@ public class RegisterScreen extends JPanel {
 		pwRqmntPanel = new JPanel();
 		pwRqmntPanel.setOpaque(false);
 
-		// Wrapper for stacking panels vertically
+		// ----- Wrapper for stacking panels vertically -----
 		wrapperPanel = new JPanel();
 		wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.Y_AXIS));
 		wrapperPanel.setOpaque(false);
@@ -109,16 +114,19 @@ public class RegisterScreen extends JPanel {
 		passwordInputLbl = new JLabel(bundle.getString("enterPass"));
 		pwRevealChkbx = new JCheckBox(bundle.getString("revealPassword"), false);
 		registerLbl.putClientProperty( "FlatLaf.styleClass", "h2" );
-		// TODO
+		// TODO translate
 		passwordRequirements = new JLabel("<html>A strong password must contain:<br>"
 				+ "•12 or more characters<br>"
 				+ "•A mix of upper/lowercase letters<br>"
 				+ "•At least one number<br>"
 				+ "•At least one special character</html>");
 		//passwordRequirements = new JLabel(bundle.getString("register.pwrequirements"));
+		
+		// ----- Indicators for weak/strong password ----- 
 		URL redXUrl = Main.class.getClassLoader().getResource("red_x.png");
 		URL greenCheckUrl = Main.class.getClassLoader().getResource("green_check.png");
 		
+		// TODO handle indexoutofbounds
 		if (redXUrl != null && greenCheckUrl != null) {
 			ImageIcon redX = new ImageIcon(redXUrl);
 			Image scaledRedX = redX.getImage().getScaledInstance(
@@ -131,14 +139,39 @@ public class RegisterScreen extends JPanel {
 					greenChk.getIconWidth() / 4,
 					greenChk.getIconHeight() / 4,
 					Image.SCALE_SMOOTH);
-			pwIndicators[RED_X] = scaledRedX;
-			pwIndicators[GREEN_CHECK] = scaledGreenChk;
+			pwStrengthIndicators[RED_X] = scaledRedX;
+			pwStrengthIndicators[GREEN_CHECK] = scaledGreenChk;
 		} else {
 			System.err.println("Could not resolve path(s) to password strength indicators.");
 		}
 		
-		pwStrengthIndicator = new JLabel(new ImageIcon(pwIndicators[RED_X]));
+		pwStrengthIndicator = new JLabel(new ImageIcon(pwStrengthIndicators[RED_X]));
 		
+		// ----- Button for show/hide password -----
+		URL eyeOpenUrl = Main.class.getClassLoader().getResource("eye_open.png");
+		URL eyeClosedUrl = Main.class.getClassLoader().getResource("eye_closed.png");
+		
+		if (eyeOpenUrl != null && eyeClosedUrl != null) {
+			ImageIcon eyeOpenIcon = new ImageIcon(eyeOpenUrl);
+			Image eyeOpen = eyeOpenIcon.getImage().getScaledInstance(
+					eyeOpenIcon.getIconWidth() / 4,
+					eyeOpenIcon.getIconHeight() / 4,
+					Image.SCALE_SMOOTH);
+			
+			ImageIcon eyeClosedIcon = new ImageIcon(eyeClosedUrl);
+			Image eyeClosed = eyeClosedIcon.getImage().getScaledInstance(
+					eyeClosedIcon.getIconWidth() / 4,
+					eyeClosedIcon.getIconHeight() / 4,
+					Image.SCALE_SMOOTH);
+			pwRevealIcons[EYE_OPEN] = new ImageIcon(eyeOpen);
+			pwRevealIcons[EYE_CLOSED] = new ImageIcon(eyeClosed);
+		} else {
+			System.err.println("Could not resolve path(s) to password reveal button icon.");
+		}
+		
+		pwRevealBtn = new JButton();
+		pwRevealBtn.setContentAreaFilled(false);
+		pwRevealBtn.setIcon(pwRevealIcons[EYE_CLOSED]);
 
 		// ---------------
 		// Registration Form
@@ -157,7 +190,7 @@ public class RegisterScreen extends JPanel {
 		gbc.gridx = 1;
 		contentPanel.add(passwordInput, gbc);
 		gbc.gridx = 2;
-		contentPanel.add(pwRevealChkbx, gbc);
+		contentPanel.add(pwRevealBtn, gbc);
 		gbc.gridx = 3;
 		contentPanel.add(pwStrengthIndicator, gbc);
 
