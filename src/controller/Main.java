@@ -39,6 +39,7 @@ public class Main {
 		// TODO figure out a good way to represent that a pw in register screen is strong enough
 		// TODO remove references to "missing" in translations
 		// TODO clean up/simplify init methods
+		// TODO deal with empty credentials file?
 		
 	}
 }
