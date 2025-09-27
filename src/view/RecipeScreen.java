@@ -35,7 +35,7 @@ import definitions.Recipe;
  */
 
 @SuppressWarnings("serial")
-public class UserInterfaceScreen extends JPanel {
+public class RecipeScreen extends JPanel {
 
 	// Recipe selection list (UI left side)
 	private JPanel rcpSelectPanel;
@@ -66,7 +66,7 @@ public class UserInterfaceScreen extends JPanel {
 	private Recipe activeRecipe;
 
 
-	public UserInterfaceScreen(ResourceBundle bundle) {		
+	public RecipeScreen(ResourceBundle bundle) {		
 		rcpSelectList = new ArrayList<RecipeSelectButton>();
 		setLayout(new BorderLayout());
 		this.bundle = bundle;

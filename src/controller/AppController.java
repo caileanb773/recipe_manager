@@ -23,7 +23,7 @@ import view.AddRecipeDialog;
 import view.AppFrame;
 import view.LoginScreen;
 import view.RegisterScreen;
-import view.UserInterfaceScreen;
+import view.RecipeScreen;
 
 /*
  * Author: Cailean Bernard
@@ -31,7 +31,6 @@ import view.UserInterfaceScreen;
  * to necessary buttons contained in the User Interface. When those buttons are
  * clicked, it filters by button and handles the events accordingly.
  */
-
 public class AppController implements ActionListener {
 
 	private RecipeMgrModel model;
@@ -56,20 +55,24 @@ public class AppController implements ActionListener {
 	public void initialize() {
 		recipeDao.init();
 		model.setRecipes(recipeDao.selectAllRecipesAsList());
-		view.initializeMainScreen(model.getRecipes());
-		view.initializeUIButtons(this);
-		view.initializeLoginButtons(this);
-		view.initializeRegisterButtons(this);
-		view.addButtonListeners(this);
-		view.initCloseBtn(this);
+		view.registerListener(this);
+		view.populateRecipeList(model.getRecipes());
+		initAllButtons();
 	}
 
 	public void initializeOffline() {
 		model.initModelOffline("recipes.txt");
-		view.initializeMainScreen(model.getRecipes());
-		view.initializeUIButtons(this);
-		view.addButtonListeners(this);
-		view.initCloseBtn(this);
+		view.populateRecipeList(model.getRecipes());
+		view.registerListener(this);
+		initAllButtons();
+	}
+	
+	private void initAllButtons() {
+		view.initiRecipeScreenButtons();
+		view.initLoginScreenButtons();
+		view.initRegisterScreenButtons();
+		view.initCloseBtn();
+		view.addButtonListeners();
 	}
 
 	@Override
@@ -173,7 +176,7 @@ public class AppController implements ActionListener {
 		} else {
 			Config.setLastEmail(null);
 		}
-		view.switchScreen("USER_INTERFACE");
+		view.switchScreen("RECIPE_SCREEN");
 	}
 
 	public void logout() {
@@ -199,7 +202,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void filterRecipes() {
-		UserInterfaceScreen ui = view.getUserInterface();
+		RecipeScreen ui = view.getUserInterface();
 		List<String> filters = ui.getFilters();
 
 		if (filters == null) {
@@ -211,7 +214,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void clearFilters() {
-		UserInterfaceScreen ui = view.getUserInterface();
+		RecipeScreen ui = view.getUserInterface();
 		ui.clearFilters();
 		ui.displayRecipeButtons();
 	}
@@ -301,7 +304,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void refreshRecipeList() {
-		UserInterfaceScreen ui = view.getUserInterface();
+		RecipeScreen ui = view.getUserInterface();
 		if (appIsOnline) {
 			ui.populateRecipeSelectList(recipeDao.selectAllRecipesAsList());
 		} else {
@@ -440,7 +443,7 @@ public class AppController implements ActionListener {
 		System.out.println("Switching language to " + locale);
 
 		Config cfg = view.getConfig();
-		UserInterfaceScreen ui = view.getUserInterface();
+		RecipeScreen ui = view.getUserInterface();
 		LoginScreen log = view.getLoginScreen();
 		RegisterScreen reg = view.getRegisterScreen();
 

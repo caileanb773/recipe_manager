@@ -34,15 +34,13 @@ public class AppFrame {
 
 	// Displayed screens & layout
 	private JFrame frame;
-	private UserInterfaceScreen userInterface;
+	private RecipeScreen recipeScreen;
 	private LoginScreen loginScreen;
 	private RegisterScreen registerScreen;
-
 	private Config config;
 	private ResourceBundle bundle;
 	private CardLayout cardLayout;
 	private Container container;
-	//private User activeUser;
 
 	// Menu bar
 	private JMenuBar menuBar;
@@ -57,6 +55,9 @@ public class AppFrame {
 	private JMenuItem menuBtnDe;
 	private JMenuItem menuBtnReadMe;
 	private JMenuItem menuBtnLogout;
+	
+	// Other
+	private ActionListener listener;
 
 
 	public AppFrame() {
@@ -67,13 +68,13 @@ public class AppFrame {
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		config = new Config();
 		bundle = config.getResourceBundle();
-		userInterface = new UserInterfaceScreen(bundle);
+		recipeScreen = new RecipeScreen(bundle);
 		loginScreen = new LoginScreen(bundle);
 		registerScreen = new RegisterScreen(bundle);
 		container = frame.getContentPane();
 
 		container.add(loginScreen, "LOGIN");
-		container.add(userInterface, "USER_INTERFACE");
+		container.add(recipeScreen, "RECIPE_SCREEN");
 		container.add(registerScreen, "REGISTER_SCREEN");
 
 		try {
@@ -102,7 +103,6 @@ public class AppFrame {
 		menuBtnEn = new JMenuItem(bundle.getString("menuBtnEn"));
 		menuBtnFr = new JMenuItem(bundle.getString("menuBtnFr"));
 		menuBtnDe = new JMenuItem(bundle.getString("menuBtnDe"));
-
 		menuLang.add(menuBtnEn);
 		menuLang.add(menuBtnFr);
 		menuLang.add(menuBtnDe);
@@ -124,9 +124,9 @@ public class AppFrame {
 		}
 	}
 
-	public void initializeMainScreen(List<Recipe> recipeList) {
-		userInterface.populateRecipeSelectList(recipeList);
-		userInterface.displayRecipeButtons(); 
+	public void populateRecipeList(List<Recipe> recipeList) {
+		recipeScreen.populateRecipeSelectList(recipeList);
+		recipeScreen.displayRecipeButtons(); 
 	}
 
 	public void updateLanguageButtons() {
@@ -135,11 +135,11 @@ public class AppFrame {
 		menuBtnFr.setEnabled(isEnglish);
 	}
 
-	public UserInterfaceScreen getUserInterface() {
-		return userInterface;
+	public RecipeScreen getUserInterface() {
+		return recipeScreen;
 	}
 
-	public void addButtonListeners(ActionListener listener) {
+	public void addButtonListeners() {
 		menuBtnExport.addActionListener(listener);
 		menuBtnExport.setActionCommand("export");
 		menuBtnImport.addActionListener(listener);
@@ -181,18 +181,18 @@ public class AppFrame {
 		JOptionPane.showMessageDialog(frame, readMe);
 	}
 
-	public void initializeUIButtons(ActionListener listener) {
-		userInterface.initializeRemoveButton(listener);
-		userInterface.initializeAddButton(listener);
-		userInterface.initializeEditButton(listener);
-		userInterface.initializeFilter(listener);
+	public void initiRecipeScreenButtons() {
+		recipeScreen.initializeRemoveButton(listener);
+		recipeScreen.initializeAddButton(listener);
+		recipeScreen.initializeEditButton(listener);
+		recipeScreen.initializeFilter(listener);
 	}
 
-	public void initializeLoginButtons(ActionListener listener) {
+	public void initLoginScreenButtons() {
 		loginScreen.initializeButtons(listener);
 	}
 
-	public void initializeRegisterButtons(ActionListener listener) {
+	public void initRegisterScreenButtons() {
 		registerScreen.initializeButtons(listener);
 	}
 
@@ -211,8 +211,12 @@ public class AppFrame {
 			menuBtnDe.setEnabled(false);
 		}
 	}
+	
+	public void registerListener(ActionListener listener) {
+		this.listener = listener;
+	}
 
-	public void initCloseBtn(ActionListener listener) {
+	public void initCloseBtn() {
 		// save settings in config on close
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
@@ -263,11 +267,11 @@ public class AppFrame {
 				setEnabledButtons(screenName);
 				loginScreen.initFocus("EMAIL_FIELD");
 				break;
-			case "USER_INTERFACE":
+			case "RECIPE_SCREEN":
 				System.out.println("Switching to UI");
-				cardLayout.show(container, "USER_INTERFACE");
+				cardLayout.show(container, "RECIPE_SCREEN");
 				setEnabledButtons(screenName);
-				userInterface.initFocus();
+				recipeScreen.initFocus();
 				break;
 			case "REGISTER_SCREEN":
 				System.out.println("Switching to register screen");
@@ -306,7 +310,7 @@ public class AppFrame {
 			menuBtnImport.setEnabled(false);
 			menuBtnLogout.setEnabled(false);
 			break;
-		case "USER_INTERFACE":
+		case "RECIPE_SCREEN":
 			menuBtnExport.setEnabled(true);
 			menuBtnImport.setEnabled(true);
 			menuBtnLogout.setEnabled(true);

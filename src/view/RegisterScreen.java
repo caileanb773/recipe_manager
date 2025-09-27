@@ -333,7 +333,7 @@ public class RegisterScreen extends JPanel {
 
 		if (isPasswordWeak(passwordInput.getPassword())) {
 			JOptionPane.showMessageDialog(null, bundle.getString("register.weakPassword"),
-					bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
+					bundle.getString("register.weakPasswordTitle"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 

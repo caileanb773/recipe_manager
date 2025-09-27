@@ -36,10 +36,9 @@ public class Main {
 		// TODO registerController(ActionListener listener) for the model/view and others that need it
 		// TODO separate concerns of initializing buttons and registering the listener
 		// TODO don't need two methods for checking if email exists if were using an int constant as return (emailexists, validatepassword)
-		// TODO figure out a good way to represent that a pw in register screen is strong enough
-		// TODO remove references to "missing" in translations
 		// TODO clean up/simplify init methods
-		// TODO deal with empty credentials file?
+		// TODO BUG: UI freeze when importing .txt of recipes into empty list
+		// TODO implement checking that only one instance is running?
 
 	}
 }
