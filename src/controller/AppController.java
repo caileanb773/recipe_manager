@@ -33,37 +33,42 @@ import view.RecipeScreen;
  */
 public class AppController implements ActionListener {
 
+	// Swing
 	private RecipeMgrModel model;
 	private AppFrame view;
 	private AddRecipeDialog rcpDialog;
-	private RecipeDAO recipeDao;
+	
+	// Other
 	private boolean appIsOnline = true;
+	private RecipeDAO recipeDao;
+	
+	// Csontants
+	private final int ONLINE = 1;
+	private final int OFFLINE = 0;
 
 
 	public AppController(RecipeMgrModel model, AppFrame view) {
 		this.model = model;
 		this.view = view;
 		this.recipeDao = new RecipeDAO();
-		// if internet is available
 		if (appIsOnline) {
-			initialize();
+			initialize(ONLINE);
 		} else {
-			initializeOffline();
+			initialize(OFFLINE);
 		}
 	}
 
-	public void initialize() {
-		recipeDao.init();
-		model.setRecipes(recipeDao.selectAllRecipesAsList());
-		view.registerListener(this);
+	public void initialize(int mode) {
+		if (mode == ONLINE) {
+			recipeDao.init();
+			model.setRecipes(recipeDao.selectAllRecipesAsList());
+		} if (mode == OFFLINE) {
+			model.initModelOffline("recipes.txt");
+			view.populateRecipeList(model.getRecipes());
+		}
+		view.registerController(this);
+		view.registerControllerInSubscreens(this);
 		view.populateRecipeList(model.getRecipes());
-		initAllButtons();
-	}
-
-	public void initializeOffline() {
-		model.initModelOffline("recipes.txt");
-		view.populateRecipeList(model.getRecipes());
-		view.registerListener(this);
 		initAllButtons();
 	}
 	
@@ -154,9 +159,11 @@ public class AppController implements ActionListener {
 	}
 
 	public void returnToLoginAfterRegister(String newEmail) {
-		view.getLoginScreen().setEmail(newEmail);
+		LoginScreen loginScreen = view.getLoginScreen();
+		loginScreen.setEmail(newEmail);
 		view.switchScreen("LOGIN");
-		view.getLoginScreen().initFocus("PASSWORD_FIELD");
+		loginScreen.initFocus("PASSWORD_FIELD");
+		loginScreen.setRemembering(true);
 	}
 
 	public void register() {
@@ -202,7 +209,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void filterRecipes() {
-		RecipeScreen ui = view.getUserInterface();
+		RecipeScreen ui = view.getRecipeScreen();
 		List<String> filters = ui.getFilters();
 
 		if (filters == null) {
@@ -214,7 +221,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void clearFilters() {
-		RecipeScreen ui = view.getUserInterface();
+		RecipeScreen ui = view.getRecipeScreen();
 		ui.clearFilters();
 		ui.displayRecipeButtons();
 	}
@@ -225,7 +232,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void displayEditRecipeDialog() {
-		Recipe activeRecipe = view.getUserInterface().getActiveRecipe();
+		Recipe activeRecipe = view.getRecipeScreen().getActiveRecipe();
 		rcpDialog = new AddRecipeDialog(this, Constants.EDIT_MODE, activeRecipe, view.getBundle());
 		rcpDialog.setVisible(true);
 	}
@@ -238,7 +245,7 @@ public class AppController implements ActionListener {
 			}
 
 			model.addRecipe(newRecipe);
-			view.getUserInterface().setActiveRecipe(newRecipe);
+			view.getRecipeScreen().setActiveRecipe(newRecipe);
 			refreshRecipeList();
 			System.out.println("Adding " + newRecipe.getTitle() + " to recipe list...");
 			rcpDialog.setCreatedRecipeToNull();
@@ -250,7 +257,8 @@ public class AppController implements ActionListener {
 	}
 
 	public void confirmEditRecipe() {
-		Recipe rcpEditing = view.getUserInterface().getActiveRecipe();
+		RecipeScreen recipeScreen = view.getRecipeScreen();
+		Recipe rcpEditing = recipeScreen.getActiveRecipe();
 		List<Recipe> recipes = model.getRecipes();
 
 		if (rcpEditing == null) {
@@ -261,7 +269,6 @@ public class AppController implements ActionListener {
 		}
 
 		int idx = recipes.indexOf(rcpEditing);
-
 		Recipe rcpEdited = rcpDialog.getCreatedRecipe();
 
 		if (rcpEdited == null) {
@@ -277,7 +284,7 @@ public class AppController implements ActionListener {
 		}
 
 		recipes.set(idx, rcpEdited);
-		view.getUserInterface().setActiveRecipe(rcpEdited);
+		recipeScreen.setActiveRecipe(rcpEdited);
 		refreshRecipeList();
 		rcpDialog.setCreatedRecipeToNull();
 		rcpDialog.dispose();
@@ -285,7 +292,8 @@ public class AppController implements ActionListener {
 	}
 
 	public void handleRemoveRecipe() {
-		Recipe recipeToRemove = view.getUserInterface().getActiveRecipe();
+		RecipeScreen recipeScreen = view.getRecipeScreen();
+		Recipe recipeToRemove = recipeScreen.getActiveRecipe();
 
 		if (recipeToRemove != null && model.getRecipes().contains(recipeToRemove)) {
 			if (appIsOnline) {
@@ -298,13 +306,13 @@ public class AppController implements ActionListener {
 			return;
 		}
 
-		view.getUserInterface().clearActiveRecipe();
-		view.getUserInterface().clearSelectedRecipeText();
+		recipeScreen.clearActiveRecipe();
+		recipeScreen.clearSelectedRecipeText();
 		refreshRecipeList();
 	}
 
 	public void refreshRecipeList() {
-		RecipeScreen ui = view.getUserInterface();
+		RecipeScreen ui = view.getRecipeScreen();
 		if (appIsOnline) {
 			ui.populateRecipeSelectList(recipeDao.selectAllRecipesAsList());
 		} else {
@@ -323,7 +331,6 @@ public class AppController implements ActionListener {
 				bundle.getString("filter"), "txt");
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.addChoosableFileFilter(filter);
-
 		int option = chooser.showSaveDialog(null);
 
 		if (option == JFileChooser.APPROVE_OPTION) {
@@ -438,15 +445,12 @@ public class AppController implements ActionListener {
 		refreshRecipeList();
 	}
 
-	// TODO clean this up
 	public void setLanguage(Locale locale) {
 		System.out.println("Switching language to " + locale);
-
 		Config cfg = view.getConfig();
-		RecipeScreen ui = view.getUserInterface();
+		RecipeScreen ui = view.getRecipeScreen();
 		LoginScreen log = view.getLoginScreen();
 		RegisterScreen reg = view.getRegisterScreen();
-
 		cfg.setLocale(locale);
 		cfg.setResourceBundle("MessagesBundle", locale);
 		view.updateBundle();

@@ -62,12 +62,10 @@ public class RegisterScreen extends JPanel {
 	private JPanel pwRqmntPanel;
 	private JPanel buttonPanel;
 	private JPanel wrapperPanel;
-	private ResourceBundle bundle;
 	private Image[] pwStrengthIndicators;
 	private ImageIcon[] pwRevealIcons;
-	private ActionListener listener;
 
-	// Local Constants
+	// Constants
 	private final int GRAY_CHECK = 0;
 	private final int GREEN_CHECK = 1;
 	private final int EYE_OPEN = 0;
@@ -78,6 +76,8 @@ public class RegisterScreen extends JPanel {
 
 	// Other
 	private boolean isPasswordHidden;
+	private ActionListener listener;
+	private ResourceBundle bundle;
 
 
 	public RegisterScreen(ResourceBundle bundle) {
@@ -118,7 +118,8 @@ public class RegisterScreen extends JPanel {
 		emailInputLbl = new JLabel(bundle.getString("enterEmail"));
 		passwordInputLbl = new JLabel(bundle.getString("enterPass"));
 		registerLbl.putClientProperty( "FlatLaf.styleClass", "h2" );
-
+		passwordRequirements = new JLabel(bundle.getString("register.weakPassword"));
+		
 		// ----- Indicators for weak/strong password & revealing ----- 
 		initPwStrengthIndicator();
 		initPwRevealBtn();
@@ -159,6 +160,8 @@ public class RegisterScreen extends JPanel {
 		wrapperPanel.add(buttonPanel);
 		wrapperPanel.add(Box.createVerticalStrut(10));
 		wrapperPanel.add(pwRqmntPanel);
+		wrapperPanel.add(Box.createVerticalStrut(10));
+		wrapperPanel.add(passwordRequirements);
 
 		// ---------------
 		// Constrain Size of Panels Vertically
@@ -209,6 +212,10 @@ public class RegisterScreen extends JPanel {
 				updateStrength();
 			}
 		});
+	}
+	
+	public void registerController(ActionListener listener) {
+		this.listener = listener;
 	}
 
 	private void initPwStrengthIndicator() {
@@ -282,8 +289,7 @@ public class RegisterScreen extends JPanel {
 		g2d.dispose();
 	}
 
-	public void initializeButtons(ActionListener listener) {
-		this.listener = listener;
+	public void initializeButtons() {
 		pwRevealBtn.addActionListener(e -> togglePwReveal());
 		confirmBtn.addActionListener(e -> validateFields());
 		cancelBtn.addActionListener(e -> {
@@ -446,6 +452,7 @@ public class RegisterScreen extends JPanel {
 		registerLbl.setText(bundle.getString("register"));
 		emailInputLbl.setText(bundle.getString("enterEmail"));
 		passwordInputLbl.setText(bundle.getString("enterPass"));
+		passwordRequirements.setText(bundle.getString("register.weakPassword"));
 	}
 
 	public void initFocus() {

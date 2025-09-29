@@ -64,14 +64,17 @@ public class RecipeScreen extends JPanel {
 	// Other
 	private ResourceBundle bundle;
 	private Recipe activeRecipe;
+	private ActionListener listener;
 
 
-	public RecipeScreen(ResourceBundle bundle) {		
-		rcpSelectList = new ArrayList<RecipeSelectButton>();
-		setLayout(new BorderLayout());
+	public RecipeScreen(ResourceBundle bundle) {	
 		this.bundle = bundle;
+		setLayout(new BorderLayout());
+		rcpSelectList = new ArrayList<RecipeSelectButton>();
 
-		// TAG STUFF
+		// ---------------
+		// Tags
+		// ---------------
 		filterLabelCombo = new JPanel(new BorderLayout());
 		filterInputPanel = new JPanel(new BorderLayout());
 		filterInput = new JTextField(10);
@@ -84,7 +87,9 @@ public class RecipeScreen extends JPanel {
 		filterInputPanel.add(filterClear, BorderLayout.SOUTH);
 		filterLabelCombo.add(filterInputPanel, BorderLayout.SOUTH);
 
-		// Recipe Selection List Panel (WEST)
+		// ---------------
+		// Recipe Select Subsection
+		// ---------------
 		rcpSelectPanel = new JPanel(new BorderLayout());
 		rcpSelectPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		rcpSelectListPanel = new JPanel() {
@@ -113,6 +118,9 @@ public class RecipeScreen extends JPanel {
 		    btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, btn.getPreferredSize().height));
 		}
 
+		// ---------------
+		// Recipe Select List
+		// ---------------
 		rcpSelectListPanel.setBackground(Color.lightGray);
 		rcpSelectScrollPane = new JScrollPane(rcpSelectListPanel);
 		rcpSelectScrollPane.getVerticalScrollBar().setUnitIncrement(Constants.SCROLL_SPEED);
@@ -127,12 +135,13 @@ public class RecipeScreen extends JPanel {
 		rcpEditPanel.add(rcpListAdd);
 		rcpEditPanel.add(rcpListRemove);
 		rcpEditPanel.add(rcpListEdit);
-
 		rcpSelectPanel.add(filterLabelCombo, BorderLayout.NORTH);
 		rcpSelectPanel.add(rcpSelectScrollPane, BorderLayout.CENTER);
 		rcpSelectPanel.add(rcpEditPanel, BorderLayout.SOUTH);
 
-		// Selected Recipe Information Panel (CENTER)
+		// ---------------
+		// Selected Recipe Information Panel
+		// ---------------
 		selectedRcpDescPanel = new JPanel();	
 		BoxLayout recipeDescLayout = new BoxLayout(selectedRcpDescPanel, BoxLayout.Y_AXIS);
 		selectedRcpDescPanel.setLayout(recipeDescLayout);
@@ -148,25 +157,24 @@ public class RecipeScreen extends JPanel {
 		selectedRcpTxt.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		selectedDescLabel = new JLabel(bundle.getString("selectedDescLabel"));
 		selectedDescLabel.setAlignmentX(CENTER_ALIGNMENT);
-		//selectedDescLabel.setFont(Constants.titleFont);
-		
-		//selectedDescLabel.putClientProperty( "FlatLaf.styleClass", "h2" );
-
-		
+	
+		// ----- Selected Recipe Scrollpane -----
 		selectedRcpTxtScrollPane = new JScrollPane(selectedRcpTxt);
 		selectedRcpTxtScrollPane.setPreferredSize(new Dimension(500,500));
 		selectedRcpTxtScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		selectedRcpTxtScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		selectedRcpInfo.add(selectedRcpTxtScrollPane);
-		//selectedRcpDescPanel.add(selectedDescLabel);
 		selectedRcpDescPanel.add(selectedRcpInfo);
+		
+		// ---------------
+		// Build Panel
+		// ---------------
 		add(selectedRcpDescPanel, BorderLayout.CENTER);
 		add(rcpSelectPanel, BorderLayout.WEST);
 		
-		// testing colours
+		// ----- Panel Graphical Settings -----
 		setBackground(Constants.bgGray);
 		rcpSelectListPanel.setBackground(Color.white);
-		
 		selectedRcpDescPanel.setOpaque(false);
 		selectedRcpInfo.setOpaque(false);
 		rcpSelectPanel.setOpaque(false);
@@ -189,12 +197,17 @@ public class RecipeScreen extends JPanel {
 	    g2d.fillRect(0, 0, w, h);
 	    g2d.dispose();
 	}
+	
+	public void registerController(ActionListener listener) {
+		this.listener = listener;
+	}
 
 	public void populateRecipeSelectList(List<Recipe> recipes) {
 		if (recipes == null || rcpSelectList == null) {
 			System.err.println("Recipe list in model or view was not properly initialized: populateRecipeList().");
 			return;
 		}
+		
 		rcpSelectList.clear();
 		
 		for (Recipe rcp : recipes) {
@@ -254,7 +267,9 @@ public class RecipeScreen extends JPanel {
 	                }
 	            }
 
-	            if (added) break;
+	            if (added) {
+	            	break;
+	            }
 	        }
 	    }
 
@@ -263,23 +278,9 @@ public class RecipeScreen extends JPanel {
 
 	    rcpSelectScrollPane.setPreferredSize(new Dimension(Constants.BUTTON_WIDTH, 
                 Constants.BUTTON_HEIGHT * rcpSelectList.size()));
-
 	    
 	    rcpSelectListPanel.revalidate();
 	    rcpSelectListPanel.repaint();
-	}
-
-
-	public List<String> getFilters() {
-		if (filterInput == null) {
-			System.err.println("Filter input uninitialized.");
-			return null;
-		} else if (filterInput.getText().isEmpty()) {
-			System.out.println("Nothing to filter by.");
-			return null;
-		}
-
-		return Arrays.asList(filterInput.getText().trim().split(","));
 	}
 
 	public void clearFilters() {
@@ -291,12 +292,12 @@ public class RecipeScreen extends JPanel {
 		filterInput.setText("");
 	}
 
-	public void initializeAddButton(ActionListener listener) {
+	public void initAddButton() {
 		rcpListAdd.setActionCommand("add");
 		rcpListAdd.addActionListener(listener);
 	}
 
-	public void initializeRemoveButton(ActionListener listener) {
+	public void initRemoveButton() {
 		rcpListRemove.setActionCommand("remove");
 		rcpListRemove.addActionListener(e -> {
 			if (activeRecipe == null) {
@@ -323,7 +324,7 @@ public class RecipeScreen extends JPanel {
 		});
 	}
 
-	public void initializeEditButton(ActionListener listener) {
+	public void initEditButton() {
 		rcpListEdit.setActionCommand("edit");
 		rcpListEdit.addActionListener(e -> {
 			if (activeRecipe == null) {
@@ -348,7 +349,7 @@ public class RecipeScreen extends JPanel {
 		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
 	}
 
-	public void initializeFilter(ActionListener listener) {
+	public void initFilter() {
 		filterApply.addActionListener(listener);
 		filterApply.setActionCommand("applyFilter");
 		filterClear.addActionListener(listener);
@@ -375,10 +376,6 @@ public class RecipeScreen extends JPanel {
 		filterClear.setText(bundle.getString("filterClear"));
 	}
 
-	public Recipe getActiveRecipe() {
-		return activeRecipe;
-	}
-
 	public void setActiveRecipe(Recipe recipe) {
 		activeRecipe = recipe;
 		selectedRcpTxt.setText(activeRecipe.formatRecipeForTextDisplay());
@@ -391,6 +388,22 @@ public class RecipeScreen extends JPanel {
 	
 	public void initFocus() {
 		filterInput.requestFocusInWindow();
+	}
+	
+	public List<String> getFilters() {
+		if (filterInput == null) {
+			System.err.println("Filter input uninitialized.");
+			return null;
+		} else if (filterInput.getText().isEmpty()) {
+			System.out.println("Nothing to filter by.");
+			return null;
+		}
+
+		return Arrays.asList(filterInput.getText().trim().split(","));
+	}
+	
+	public Recipe getActiveRecipe() {
+		return activeRecipe;
 	}
 
 }

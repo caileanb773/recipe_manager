@@ -1,9 +1,6 @@
 package controller;
 
-import javax.swing.UIManager;
-import com.formdev.flatlaf.FlatLightLaf;
-import model.RecipeMgrModel;
-import view.AppFrame;
+import definitions.Fraction;
 
 /*
  * Author: Cailean Bernard
@@ -11,21 +8,25 @@ import view.AppFrame;
  * the view is instantiated, and then a new Controller is created using the passed
  * model and view.
  */
-
 public class Main {
 
 	public static void main(String[] args) {
 
 		// UI Look and Feel init
-		try {
-			UIManager.setLookAndFeel( new FlatLightLaf() );
-		} catch( Exception ex ) {
-			System.err.println( "Failed to initialize LaF" );
-		}
-
-		RecipeMgrModel model = new RecipeMgrModel();
-		AppFrame view = new AppFrame();
-		new AppController(model, view);
+//		try {
+//			UIManager.setLookAndFeel( new FlatLightLaf() );
+//		} catch( Exception ex ) {
+//			System.err.println( "Failed to initialize LaF" );
+//		}
+//
+//		RecipeMgrModel model = new RecipeMgrModel();
+//		AppFrame view = new AppFrame();
+//		new AppController(model, view);
+		
+		String frac = "1/2";
+		Fraction f1 = new Fraction(2, 1, 2);
+		System.out.println("is frac a fraction: " + Fraction.isFraction(frac));
+		System.out.println(f1.multiply(4).toString());
 
 		// TODO handle when recipe amts are 1 + 1/2, 2 1/4
 		// TODO resize recipe info based on window size
@@ -33,12 +34,9 @@ public class Main {
 		// TODO add light/dark mode
 		// TODO notification center
 		// TODO UI element size (accessibility)
-		// TODO registerController(ActionListener listener) for the model/view and others that need it
-		// TODO separate concerns of initializing buttons and registering the listener
-		// TODO don't need two methods for checking if email exists if were using an int constant as return (emailexists, validatepassword)
-		// TODO clean up/simplify init methods
 		// TODO BUG: UI freeze when importing .txt of recipes into empty list
-		// TODO implement checking that only one instance is running?
-
+		// TODO BUG: ensure ampersand in finishRegistration doesn't break anything
+		// TODO consider implications of a single-instance app
+		
 	}
 }

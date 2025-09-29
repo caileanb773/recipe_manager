@@ -66,6 +66,10 @@ public class AppFrame {
 		frame.getContentPane().setLayout(cardLayout);
 		frame.setTitle("Macromise Recipe Manager");		
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		
+		// ---------------
+		// Components
+		// ---------------
 		config = new Config();
 		bundle = config.getResourceBundle();
 		recipeScreen = new RecipeScreen(bundle);
@@ -73,10 +77,7 @@ public class AppFrame {
 		registerScreen = new RegisterScreen(bundle);
 		container = frame.getContentPane();
 
-		container.add(loginScreen, "LOGIN");
-		container.add(recipeScreen, "RECIPE_SCREEN");
-		container.add(registerScreen, "REGISTER_SCREEN");
-
+		// ----- Icon -----
 		try {
 			URL iconUrl = Main.class.getClassLoader().getResource("img/icon.png");		
 			ImageIcon icon = new ImageIcon(iconUrl);
@@ -84,8 +85,14 @@ public class AppFrame {
 		} catch (NullPointerException e) {
 			System.err.println("Could not find icon.png");
 		}
+		
+		container.add(loginScreen, "LOGIN");
+		container.add(recipeScreen, "RECIPE_SCREEN");
+		container.add(registerScreen, "REGISTER_SCREEN");
 
-		// Menu bar
+		// ---------------
+		// Menu Bar
+		// ---------------
 		menuBar = new JMenuBar();
 		menuFile = new JMenu(bundle.getString("menuFile"));
 		menuBtnExport = new JMenuItem(bundle.getString("menuBtnExport"));
@@ -110,11 +117,14 @@ public class AppFrame {
 		menuBar.add(menuOpt);
 		menuBar.add(menuAccount);
 		frame.setJMenuBar(menuBar);
-		updateLanguageButtons();	
+		
+		// ----- Final Frame Settings -----
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
+		// ----- Final Initialization -----
+		updateLanguageButtons();	
 		setEnabledButtons("LOGIN");
 
 		if (LoginScreen.isRemembering()) {
@@ -133,10 +143,6 @@ public class AppFrame {
 		boolean isEnglish = config.getLocale().equals(Locale.ENGLISH);
 		menuBtnEn.setEnabled(!isEnglish);
 		menuBtnFr.setEnabled(isEnglish);
-	}
-
-	public RecipeScreen getUserInterface() {
-		return recipeScreen;
 	}
 
 	public void addButtonListeners() {
@@ -182,18 +188,18 @@ public class AppFrame {
 	}
 
 	public void initiRecipeScreenButtons() {
-		recipeScreen.initializeRemoveButton(listener);
-		recipeScreen.initializeAddButton(listener);
-		recipeScreen.initializeEditButton(listener);
-		recipeScreen.initializeFilter(listener);
+		recipeScreen.initRemoveButton();
+		recipeScreen.initAddButton();
+		recipeScreen.initEditButton();
+		recipeScreen.initFilter();
 	}
 
 	public void initLoginScreenButtons() {
-		loginScreen.initializeButtons(listener);
+		loginScreen.initializeButtons();
 	}
 
 	public void initRegisterScreenButtons() {
-		registerScreen.initializeButtons(listener);
+		registerScreen.initializeButtons();
 	}
 
 	public void toggleLangButton(Locale lang) {
@@ -212,12 +218,17 @@ public class AppFrame {
 		}
 	}
 	
-	public void registerListener(ActionListener listener) {
+	public void registerController(ActionListener listener) {
 		this.listener = listener;
+	}
+	
+	public void registerControllerInSubscreens(ActionListener listener) {
+		loginScreen.registerController(listener);
+		registerScreen.registerController(listener);
+		//recipeScreen.registerController(listener);
 	}
 
 	public void initCloseBtn() {
-		// save settings in config on close
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -230,16 +241,8 @@ public class AppFrame {
 		});
 	}
 
-	public Config getConfig() {
-		return config;
-	}
-
 	public void updateBundle() {
 		bundle = config.getResourceBundle();
-	}
-
-	public ResourceBundle getBundle() {
-		return bundle;
 	}
 
 	public void refreshTranslatableText() {
@@ -252,10 +255,6 @@ public class AppFrame {
 		menuBtnEn.setText(bundle.getString("menuBtnEn"));
 		menuBtnFr.setText(bundle.getString("menuBtnFr"));
 		menuBtnLogout.setText(bundle.getString("menuBtnLogout"));
-	}
-
-	public CardLayout getCardLayout() {
-		return cardLayout;
 	}
 
 	public void switchScreen(String screenName) {
@@ -290,18 +289,6 @@ public class AppFrame {
 		}
 	}
 
-	public LoginScreen getLoginScreen() {
-		return loginScreen;
-	}
-
-	public RegisterScreen getRegisterScreen() {
-		return registerScreen;
-	}
-
-	public void packFrame() {
-		frame.pack();
-	}
-
 	public void setEnabledButtons(String visibleScreen) {
 		switch (visibleScreen) {
 		case "LOGIN":
@@ -318,6 +305,34 @@ public class AppFrame {
 		default:
 			break;
 		}
+	}
+	
+	public void packFrame() {
+		frame.pack();
+	}
+	
+	public CardLayout getCardLayout() {
+		return cardLayout;
+	}
+	
+	public ResourceBundle getBundle() {
+		return bundle;
+	}
+	
+	public Config getConfig() {
+		return config;
+	}
+	
+	public LoginScreen getLoginScreen() {
+		return loginScreen;
+	}
+
+	public RegisterScreen getRegisterScreen() {
+		return registerScreen;
+	}
+
+	public RecipeScreen getRecipeScreen() {
+		return recipeScreen;
 	}
 
 }

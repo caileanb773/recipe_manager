@@ -8,7 +8,7 @@ import org.apache.commons.validator.routines.EmailValidator;
  */
 
 public class Utility {
-	
+
 	public static float getAmountAsFloat(String amount) throws NumberFormatException {
 		try {
 			if (amount.contains("/")) {
@@ -21,7 +21,7 @@ public class Utility {
 		}
 
 	}
-	
+
 	public static boolean isEmailValid(String email) {
 		EmailValidator validator = EmailValidator.getInstance();
 		return validator.isValid(email);
