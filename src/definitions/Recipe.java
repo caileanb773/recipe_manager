@@ -22,15 +22,6 @@ public class Recipe {
 	private List<Ingredient> ingredients;
 	private String directions;
 	private List<String> tags;
-
-	
-	public Recipe(int id, String title, List<Ingredient> ingredients, String directions) {
-		this.id = id;
-		this.title = title;
-		this.ingredients = ingredients;
-		this.directions = directions;
-		this.tags = new ArrayList<>();
-	}
 	
 	public Recipe(String title, List<Ingredient> ingredients, String directions) {
 		this.title = title;
@@ -38,7 +29,6 @@ public class Recipe {
 		this.directions = directions;
 		this.tags = new ArrayList<>();
 	}
-
 
 	public Recipe(String title, List<Ingredient> ingredients, String directions, String[] tagsArr) {
 		this.title = title;
@@ -57,13 +47,6 @@ public class Recipe {
 		this.directions = directions;
 		tags = tagsList;
 	}
-	
-	public Recipe(String title, List<Ingredient> ingredients, String directions, List<String> tagsList) {
-		this.title = title;
-		this.ingredients = ingredients;
-		this.directions = directions;
-		tags = tagsList;
-	}
 
 	public List<String> getTags() {
 		return tags;
@@ -77,12 +60,12 @@ public class Recipe {
 
 	public String formatRecipeForExport() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(title).append(Constants.RECIPE_SECT_DELIM);
+		sb.append(title.replace(" ", "_")).append(Constants.RECIPE_SECT_DELIM);
 		StringJoiner sj = new StringJoiner(Constants.ING_TAG_DELIM);
 
 		for (Ingredient ing : ingredients) {
-			sj.add(ing.getAmount() + " " +
-					ing.getUnit().toString().toLowerCase() + " " +
+			sj.add(ing.getAmount().toString() + Constants.INGREDIENT_SECT_DELIM +
+					ing.getUnit().toString().toLowerCase() + Constants.INGREDIENT_SECT_DELIM +
 					ing.getName().replace(" ", "_"));
 		}
 
@@ -108,7 +91,7 @@ public class Recipe {
 		String amt;
 
 		for (Ingredient ing : ingredients) {
-			amt = ing.getAmount();
+			amt = ing.getAmount().toString();
 
 			// XXX this is very ugly
 			if (Utility.getAmountAsFloat(amt) % 1 == 0) {
@@ -156,7 +139,7 @@ public class Recipe {
 		sb.append("Recipe: " + title + "\n" + "Ingredients:\n");
 
 		for (Ingredient ingredient : ingredients) {
-			sb.append(ingredient.getAmount() + " ");
+			sb.append(ingredient.getAmount().toString() + " ");
 			sb.append(ingredient.getUnit() + " ");
 			sb.append(ingredient.getName() + "\n");
 		}

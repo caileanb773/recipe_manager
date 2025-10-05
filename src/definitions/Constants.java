@@ -39,7 +39,7 @@ public class Constants {
 	public static final String ASCII_SPECIAL_CHARS = "!@#$%^&*()_+-=`~|\\[]{};':\",./<>?";
 	public static final String RECIPE_SECT_DELIM = "§§";
 	public static final String ING_TAG_DELIM = "¤";
-	public static final String INGREDIENT_SECT_DELIM = " ";
+	public static final String INGREDIENT_SECT_DELIM = "█";
 	public static final Font titleFont = new Font("Serif", Font.BOLD, 16);
 	public static final Font buttonFont = new Font("Serif", Font.BOLD, 16);
 	public static final Font textFont = new Font("Serif", Font.PLAIN, 15);

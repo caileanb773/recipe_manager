@@ -6,13 +6,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 import definitions.Constants;
+import definitions.Fraction;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Unit;
-import util.Utility;
 
 /*
  * Author: Cailean Bernard
@@ -66,15 +68,41 @@ public class RecipeMgrModel {
 		}
 	}
 
+	// XXX this feels hacky
 	private Ingredient parseIngredientFromStrArr(String[] strArr) throws NumberFormatException {
 		String amount = strArr[INGREDIENT_AMT_IDX];
 		Unit unit = Unit.valueOf(strArr[INGREDIENT_UNIT_IDX].toUpperCase());
 		String name = strArr[INGREDIENT_NAME_IDX].replace("_", " ");
-		float amtFloat;
+		Fraction fracAmt = null;
+		BigDecimal decAmt;
+		int intAmt;
+		boolean malformed = false;
+
+		System.out.println("Parsing ingredient " + name + " with amount " + amount + "...");
+		if (Fraction.isFraction(amount)) {
+			fracAmt = Fraction.parseFraction(amount);
+			if (fracAmt.getDen() <= 0 || fracAmt.getNum() <= 0) {
+				malformed = true;
+			}
+		} else if (Fraction.isDecimal(amount)) {
+			System.out.println("Decimal detected for ingredient " + name + " with amount " + amount + ".");
+			decAmt = new BigDecimal(amount);
+			if (decAmt.compareTo(BigDecimal.ZERO) == -1) {
+				malformed = true;
+			} else {
+				fracAmt = new Fraction(decAmt);
+			}
+		} else {
+			intAmt = Integer.parseInt(amount);
+			if (intAmt <= 0) {
+				malformed = true;
+			} else {
+				fracAmt = new Fraction(intAmt, 0, 1);
+			}
+		}		
 
 		try {
-			amtFloat = Utility.getAmountAsFloat(amount);
-			if (amtFloat < 0 || unit == null || name.isEmpty()) {
+			if (malformed || unit == null || name.isEmpty()) {
 				System.err.println("Malformed ingredient encountered during parsing.");
 				return null;
 			}
@@ -83,7 +111,7 @@ public class RecipeMgrModel {
 			return null;
 		}
 
-		return new Ingredient(amount, unit, name);
+		return new Ingredient(fracAmt, unit, name);
 	}
 
 	public void exportRecipeList(String exportPath) throws IOException, SecurityException {
@@ -107,7 +135,8 @@ public class RecipeMgrModel {
 	}
 
 	public List<Recipe> importRecipeList(String path) 
-			throws FileNotFoundException, IOException, NumberFormatException, ArrayIndexOutOfBoundsException {
+			throws FileNotFoundException, IOException, 
+			NumberFormatException, ArrayIndexOutOfBoundsException {
 		
 		List<Recipe> newRecipes = new ArrayList<>();
 
@@ -121,11 +150,12 @@ public class RecipeMgrModel {
 			// each line in the file is a separate recipe, read recipes until EOF
 			while ((fileLine = reader.readLine()) != null) {
 				String[] recipeStrArr = fileLine.split(Constants.RECIPE_SECT_DELIM);
-				
+
+				// Recipe 'length' is 3 if it doesn't have tags, 4 if it does
 				if (recipeStrArr.length < 3 || recipeStrArr.length > 4) {
 					throw new ArrayIndexOutOfBoundsException();
 				}
-				
+
 				name = recipeStrArr[RECIPE_NAME_IDX].replace("_", " ");
 				ingredientsArr = recipeStrArr[INGREDIENT_UNIT_IDX].split(Constants.ING_TAG_DELIM);
 				instructions = recipeStrArr[RECIPE_INSTRUCTIONS_IDX].replace("\\n", "\n");
@@ -169,7 +199,7 @@ public class RecipeMgrModel {
 			e.printStackTrace();
 		}
 
-		if (recipes.isEmpty()) {
+		if (newRecipes.isEmpty()) {
 			System.err.println("No recipes detected in import file.");
 		}
 

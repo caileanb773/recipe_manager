@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import definitions.Fraction;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Unit;
@@ -96,7 +98,7 @@ public class RecipeDAO {
 
 			for (Ingredient ing : recipe.getIngredients()) {
 				pstmt.setInt(1, recipeId);
-				pstmt.setString(2, ing.getAmount());
+				pstmt.setString(2, ing.getAmount().toString());
 				pstmt.setString(3, ing.getUnit().toString());
 				pstmt.setString(4, ing.getName());
 				pstmt.addBatch();
@@ -184,7 +186,7 @@ public class RecipeDAO {
 			try (PreparedStatement pstmt = conn.prepareStatement(insIngSql)) {
 				for (Ingredient ing : recipe.getIngredients()) {
 					pstmt.setInt(1, recipe.getId());
-					pstmt.setString(2, ing.getAmount());
+					pstmt.setString(2, ing.getAmount().toString());
 					pstmt.setString(3, ing.getUnit().toString());
 					pstmt.setString(4, ing.getName());
 					pstmt.addBatch();
@@ -260,7 +262,15 @@ public class RecipeDAO {
 				List<Ingredient> ingredients = new ArrayList<>();
 
 				while (rsIng.next()) {
-					String amount = rsIng.getString("amount");
+					String amtStr = rsIng.getString("amount");					
+					Fraction amount;
+					
+					if (Fraction.isFraction(amtStr)) {
+						amount = Fraction.parseFraction(amtStr);
+					} else {
+						amount = new Fraction(Integer.parseInt(amtStr), 1);
+					}
+					
 					String unit = rsIng.getString("unit");
 					String name = rsIng.getString("name");
 					ingredients.add(new Ingredient(amount, Unit.valueOf(unit), name));
@@ -313,7 +323,15 @@ public class RecipeDAO {
 					pstmt.setInt(1, id);
 					try (ResultSet ingRes = pstmt.executeQuery()) {
 						while (ingRes.next()) {
-							String amount = ingRes.getString("amount");
+							String amtStr = ingRes.getString("amount");
+							Fraction amount;
+							
+							if (Fraction.isFraction(amtStr)) {
+								amount = Fraction.parseFraction(amtStr);
+							} else {
+								amount = new Fraction(Integer.parseInt(amtStr), 1);
+							}
+							
 							String unitStr = ingRes.getString("unit");
 							String name = ingRes.getString("name");
 

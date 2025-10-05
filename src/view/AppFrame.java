@@ -225,7 +225,7 @@ public class AppFrame {
 	public void registerControllerInSubscreens(ActionListener listener) {
 		loginScreen.registerController(listener);
 		registerScreen.registerController(listener);
-		//recipeScreen.registerController(listener);
+		recipeScreen.registerController(listener);
 	}
 
 	public void initCloseBtn() {
@@ -233,9 +233,11 @@ public class AppFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				config.saveConfig();
-				listener.actionPerformed(new ActionEvent(this,
-						ActionEvent.ACTION_PERFORMED,
-						"closeWindow"));
+				
+				// TODO uncomment after axport work is finished
+				//listener.actionPerformed(new ActionEvent(this,
+				//		ActionEvent.ACTION_PERFORMED,
+				//		"closeWindow"));
 				frame.dispose();
 			}
 		});
