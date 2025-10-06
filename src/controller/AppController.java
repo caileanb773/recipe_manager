@@ -37,11 +37,11 @@ public class AppController implements ActionListener {
 	private RecipeMgrModel model;
 	private AppFrame view;
 	private AddRecipeDialog rcpDialog;
-	
+
 	// Other
 	private boolean appIsOnline = true;
 	private RecipeDAO recipeDao;
-	
+
 	// Csontants
 	private final int ONLINE = 1;
 	private final int OFFLINE = 0;
@@ -71,7 +71,7 @@ public class AppController implements ActionListener {
 		view.populateRecipeList(model.getRecipes());
 		initAllButtons();
 	}
-	
+
 	private void initAllButtons() {
 		view.initiRecipeScreenButtons();
 		view.initLoginScreenButtons();

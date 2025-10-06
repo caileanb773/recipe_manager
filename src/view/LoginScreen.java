@@ -67,7 +67,7 @@ public class LoginScreen extends JPanel {
 	private JPanel inputsPanel;
 	private JCheckBox pwReveal;
 	private ResourceBundle bundle;
-	
+
 	// Other
 	private ActionListener listener;
 
@@ -100,7 +100,7 @@ public class LoginScreen extends JPanel {
 		register = new JButton(bundle.getString("register"));
 		emailInput = new JTextField(20);
 		pwInput = new JPasswordField(20);
-		
+
 		// ----- Banner -----
 		URL bannerUrl = Main.class.getClassLoader().getResource("img/banner_bluegray.png");
 		if (bannerUrl != null) {
@@ -114,7 +114,7 @@ public class LoginScreen extends JPanel {
 		} else {
 			System.err.println("Could not resolve path to Login Screen banner.");
 		}
-		
+
 		// ---------------
 		// Login Fields
 		// ---------------
@@ -145,7 +145,7 @@ public class LoginScreen extends JPanel {
 			emailInput.setSelectionStart(0);
 			emailInput.setSelectionEnd(0);
 		}
-		
+
 		// Assemble Screen
 		buttonPanel.add(login);
 		buttonPanel.add(clear);
@@ -166,7 +166,7 @@ public class LoginScreen extends JPanel {
 		g2d.fillRect(0, 0, w, h);
 		g2d.dispose();
 	}
-	
+
 	public void registerController(ActionListener listener) {
 		this.listener = listener;
 	}
@@ -333,7 +333,7 @@ public class LoginScreen extends JPanel {
 	public static boolean isRemembering() {
 		return rmbrMe.isSelected();
 	}
-	
+
 	public void setRemembering(boolean remembering) {
 		rmbrMe.setSelected(remembering);
 	}
@@ -350,7 +350,7 @@ public class LoginScreen extends JPanel {
 		}
 
 	}
-	
+
 	public String getEmail() {
 		return emailInput.getText();
 	}

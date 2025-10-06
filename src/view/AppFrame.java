@@ -2,7 +2,6 @@ package view;
 
 import java.awt.CardLayout;
 import java.awt.Container;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -97,8 +96,8 @@ public class AppFrame {
 		menuFile = new JMenu(bundle.getString("menuFile"));
 		menuBtnExport = new JMenuItem(bundle.getString("menuBtnExport"));
 		menuBtnImport = new JMenuItem(bundle.getString("menuBtnImport"));
-		menuFile.add(menuBtnExport);
 		menuFile.add(menuBtnImport);
+		menuFile.add(menuBtnExport);
 		menuOpt = new JMenu(bundle.getString("menuOpt"));
 		menuLang = new JMenu(bundle.getString("menuLang"));
 		menuBtnReadMe = new JMenuItem(bundle.getString("menuBtnReadMe"));

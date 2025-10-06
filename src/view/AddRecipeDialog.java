@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,6 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import definitions.Constants;
+import definitions.Fraction;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Unit;
@@ -57,9 +59,11 @@ public class AddRecipeDialog extends JDialog {
 	private JScrollPane ingredientsScrollPane;
 	private JScrollPane directionsScrollPane;
 
-	// Other / Constants
+	// Constants
 	private static final int TXT_ROWS = 10;
 	private static final int TXT_COLS = 40;
+
+	// Other
 	private Recipe createdRecipe;
 	private ResourceBundle bundle;
 	private int tempRecipeId;
@@ -89,12 +93,12 @@ public class AddRecipeDialog extends JDialog {
 		recipeIngredients.setAlignmentX(CENTER_ALIGNMENT);
 		recipeDirections.setAlignmentX(CENTER_ALIGNMENT);
 		recipeTags.setAlignmentX(CENTER_ALIGNMENT);
-		
+
 		recipeTitle.putClientProperty("FlatLaf.styleClass", "h3");
 		recipeIngredients.putClientProperty("FlatLaf.styleClass", "h3");
 		recipeDirections.putClientProperty("FlatLaf.styleClass", "h3");
 		recipeTags.putClientProperty("FlatLaf.styleClass", "h3");
-		
+
 		inputIngredients.setLineWrap(true);
 		inputIngredients.setWrapStyleWord(true);
 		inputDirections.setLineWrap(true);
@@ -212,7 +216,23 @@ public class AddRecipeDialog extends JDialog {
 				String[] lineParts = line.split("\\s+");
 				int linePartsLen = lineParts.length;
 
+				// XXX new stuff, refactor?
 				String amount = lineParts[Constants.AMT_IDX].trim();
+				Fraction fracAmt;
+				int intAmt;
+				BigDecimal decAmt;
+
+				if (Fraction.isFraction(amount)) {
+					fracAmt = Fraction.parseFraction(amount);
+				} else if (Fraction.isDecimal(amount)) {
+					decAmt = new BigDecimal(amount);
+					fracAmt = new Fraction(decAmt);
+
+				} else {
+					intAmt = Integer.parseInt(amount);
+					fracAmt = new Fraction(intAmt, 0, 1);
+				}	
+
 				Unit unit = Unit.valueOf(lineParts[Constants.UNIT_IDX].toUpperCase().trim());
 				String name = null;
 
@@ -227,7 +247,7 @@ public class AddRecipeDialog extends JDialog {
 					name = sj.toString();
 				}
 
-				ingredientsList.add(new Ingredient(amount, unit, name));
+				ingredientsList.add(new Ingredient(fracAmt, unit, name));
 			}
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(this,

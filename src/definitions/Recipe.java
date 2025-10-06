@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-import util.Utility;
-
 /*
  * Author: Cailean Bernard
  * Contents: Recipes are made up of a title, a List of ingredients, and a set of
@@ -88,18 +86,9 @@ public class Recipe {
 	public String formatRecipeForTextDisplay() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(title + "\n\n");
-		String amt;
 
 		for (Ingredient ing : ingredients) {
-			amt = ing.getAmount().toString();
-
-			// XXX this is very ugly
-			if (Utility.getAmountAsFloat(amt) % 1 == 0) {
-				sb.append((int)Float.parseFloat(amt) + " ");
-			} else {
-				sb.append(amt + " ");
-			}
-
+			sb.append(ing.getAmount().toString() + " ");
 			sb.append(ing.getUnit().toString().toLowerCase() + " ");
 			sb.append(ing.getName() + "\n");
 		}

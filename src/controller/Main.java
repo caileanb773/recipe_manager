@@ -30,7 +30,6 @@ public class Main {
 		// TODO resize recipe info based on window size
 		
 		// TODO batch math (10x batch, 5x batch, etcc)
-		// TODO ensure importing recipes works
 		// TODO ensure adding new recipes and exporting recipes works (i.e. identical format)
 		// TODO ensure newly added recipes are synced with the db
 		// parseingredientfromstrarr, exportrecipelist, importrecipelist in model
@@ -38,7 +37,7 @@ public class Main {
 		// TODO clean up recipe constructors, see which ones are never used
 		// TODO check the methods in the dao are still functional (adding recipes)
 		// TODO turn "export on close" back on
-		// TODO exception encountered when ingredient amount was null on export
+		// TODO refactor the math in Fraction class
 		
 		// TODO add light/dark mode
 		// TODO notification center
@@ -46,6 +45,8 @@ public class Main {
 		// TODO BUG: UI freeze when importing .txt of recipes into empty list
 		// TODO BUG: ensure ampersand in finishRegistration doesn't break anything
 		// TODO consider implications of a single-instance app
+		// TODO pack() the frame after switching languages
+		// TODO german doesn't work??
 		
 	}
 }
