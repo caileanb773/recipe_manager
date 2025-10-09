@@ -33,7 +33,6 @@ public class Main {
 		// TODO BUG: ensure ampersand in finishRegistration doesn't break anything
 		// TODO consider implications of a single-instance app
 		// TODO german doesn't work??
-		// TODO sort out recipe display font. ugly
 		// TODO add light/dark mode
 		// TODO notification center
 		// TODO UI element size (accessibility)

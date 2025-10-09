@@ -58,7 +58,7 @@ public class AppFrame {
 	private JMenuItem menuBtnDe;
 	private JMenuItem menuBtnReadMe;
 	private JMenuItem menuBtnLogout;
-	private JCheckBox autoBackup;
+	private static JCheckBox autoBackup;
 	
 	// Other
 	private ActionListener listener;
@@ -123,7 +123,8 @@ public class AppFrame {
 		menuBar.add(menuAccount);
 		frame.setJMenuBar(menuBar);
 		autoBackup = new JCheckBox("Auto-backup");
-		autoBackup.setSelected(true);
+		autoBackup.setSelected(config.isAutoBackup());
+		menuOpt.add(autoBackup);
 		
 		// Final JFrame Settings
 		frame.pack();
@@ -245,7 +246,7 @@ public class AppFrame {
 				if (autoBackup.isSelected()) {
 					listener.actionPerformed(new ActionEvent(this,
 							ActionEvent.ACTION_PERFORMED,
-							"closeWindow"));
+							"closeWithBackup"));
 				}
 
 				frame.dispose();
@@ -317,6 +318,10 @@ public class AppFrame {
 		default:
 			break;
 		}
+	}
+	
+	public static boolean isBackingUp() {
+		return autoBackup.isSelected();
 	}
 	
 	public void packFrame() {

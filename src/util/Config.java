@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import view.AppFrame;
 import view.LoginScreen;
 
 /**
@@ -21,7 +23,8 @@ public class Config {
 	private static ResourceBundle bundle;
 	private static Locale locale;
 	private static String lastEmail;
-	private final String[] configs = { "language", "lastEmail" };
+	private static boolean autoBackup;
+	private final String[] configs = { "language", "lastEmail", "autoBackup" };
 
 	// Local constants
 	private final static int VALUE_IDX = 1;
@@ -51,9 +54,9 @@ public class Config {
 	 * Fetches any past configurations that were saved when the app was last closed.
 	 */
 	public void loadConfig() {
+		System.out.println("Loading settings...");
 		String lang = null;
 
-		// TODO implement creation of default ini file if one is not found
 		try (BufferedReader reader = new BufferedReader(new FileReader("resources/config.ini"))) {
 			String line = null;
 			reader.readLine(); // skip the "do not edit" warning comment
@@ -66,6 +69,9 @@ public class Config {
 					break;
 				case "lastEmail":
 					lastEmail = lineInfo[VALUE_IDX];
+					break;
+				case "autoBackup":
+					autoBackup = Boolean.parseBoolean(lineInfo[VALUE_IDX]);
 					break;
 				default:
 					break;
@@ -102,6 +108,11 @@ public class Config {
 					System.out.println("Saving lastEmail as " + lastEmail);
 					writer.write("lastEmail=" + lastEmail + "\n");
 					break;
+				case "autoBackup":
+					System.out.println("Autobackup: " + AppFrame.isBackingUp());
+					writer.write("autoBackup=");
+					writer.write(AppFrame.isBackingUp() ? "true" : "false");
+					break;
 				default:
 					break;
 				}
@@ -126,6 +137,9 @@ public class Config {
 				case "lastEmail":
 					writer.write("null");
 					break;
+				case "autoBackup":
+					writer.write("true");
+					break;
 				default:
 					break;
 				}
@@ -138,6 +152,10 @@ public class Config {
 		
 		// XXX this could lead to an infinite loop. There's probably a better way
 		loadConfig();
+	}
+	
+	public boolean isAutoBackup() {
+		return autoBackup;
 	}
 	
 	public static String getLastEmail() {

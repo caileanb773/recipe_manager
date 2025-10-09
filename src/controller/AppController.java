@@ -134,8 +134,8 @@ public class AppController implements ActionListener {
 		case "german":
 			setLanguage(Locale.GERMAN);
 			break;
-		case "closeWindow":
-			handleCloseWithExport();
+		case "closeWithBackup":
+			handleCloseWithBackup();
 			break;
 		case "login":
 			login();
@@ -191,7 +191,7 @@ public class AppController implements ActionListener {
 		view.switchScreen("LOGIN");
 	}
 
-	public void handleCloseWithExport() {
+	public void handleCloseWithBackup() {
 		ResourceBundle bundle = view.getBundle();
 
 		try {
