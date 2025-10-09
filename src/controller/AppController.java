@@ -42,7 +42,7 @@ public class AppController implements ActionListener {
 	private boolean appIsOnline = true;
 	private RecipeDAO recipeDao;
 
-	// Csontants
+	// Constants
 	private final int ONLINE = 1;
 	private final int OFFLINE = 0;
 
@@ -135,7 +135,7 @@ public class AppController implements ActionListener {
 			setLanguage(Locale.GERMAN);
 			break;
 		case "closeWindow":
-			handleCloseWindow();
+			handleCloseWithExport();
 			break;
 		case "login":
 			login();
@@ -191,8 +191,9 @@ public class AppController implements ActionListener {
 		view.switchScreen("LOGIN");
 	}
 
-	public void handleCloseWindow() {
+	public void handleCloseWithExport() {
 		ResourceBundle bundle = view.getBundle();
+
 		try {
 			model.exportRecipeList("backup.txt");
 		} catch (IOException e) {
@@ -414,7 +415,6 @@ public class AppController implements ActionListener {
 					}
 
 					// no need to handle if !appIsOnline, already handled by importRecipeList()
-
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(null,
 							bundle.getString("import.ioerror"),
@@ -448,16 +448,16 @@ public class AppController implements ActionListener {
 	public void setLanguage(Locale locale) {
 		System.out.println("Switching language to " + locale);
 		Config cfg = view.getConfig();
-		RecipeScreen ui = view.getRecipeScreen();
+		RecipeScreen rcp = view.getRecipeScreen();
 		LoginScreen log = view.getLoginScreen();
 		RegisterScreen reg = view.getRegisterScreen();
 		cfg.setLocale(locale);
 		cfg.setResourceBundle("MessagesBundle", locale);
 		view.updateBundle();
 		view.toggleLangButton(locale);
-		ui.updateBundle(locale);
-		ui.refreshTranslatable();
 		view.refreshTranslatableText();
+		rcp.updateBundle(locale);
+		rcp.refreshTranslatable();
 		log.updateBundle(locale);
 		log.refreshTranslatable();
 		reg.updateBundle(locale);

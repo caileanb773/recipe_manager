@@ -116,7 +116,7 @@ public class RecipeMgrModel {
 
 	public void exportRecipeList(String exportPath) throws IOException, SecurityException {
 		if (recipes.isEmpty() || recipes == null) {
-			System.err.println("Cannot export empty recipe list.");
+			System.out.println("Cancelling export: empty recipe list.");
 			return;
 		} else if (exportPath.isEmpty()) {
 			System.err.println("Invalid export path: blank path.");

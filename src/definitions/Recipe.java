@@ -21,6 +21,9 @@ public class Recipe {
 	private String directions;
 	private List<String> tags;
 	
+	/**
+	 * Constructs a new Recipe object (without tags).
+	 */
 	public Recipe(String title, List<Ingredient> ingredients, String directions) {
 		this.title = title;
 		this.ingredients = ingredients;
@@ -28,6 +31,9 @@ public class Recipe {
 		this.tags = new ArrayList<>();
 	}
 
+	/**
+	 * Constructs a new Recipe object (with tags).
+	 */
 	public Recipe(String title, List<Ingredient> ingredients, String directions, String[] tagsArr) {
 		this.title = title;
 		this.ingredients = ingredients;
@@ -88,6 +94,25 @@ public class Recipe {
 		sb.append(title + "\n\n");
 
 		for (Ingredient ing : ingredients) {
+			sb.append(ing.getAmount().toString() + " ");
+			sb.append(ing.getUnit().toString().toLowerCase() + " ");
+			sb.append(ing.getName() + "\n");
+		}
+
+		sb.append("\n" + directions + "\n\n");
+
+		if (!tags.isEmpty()) {
+			sb.append("Tags: " + stringifyTags());
+		}
+
+		return sb.toString();
+	}
+	
+	public String formatScaledRecipeForTextDisplay(List<Ingredient> scaledIngredients) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(title + "\n\n");
+
+		for (Ingredient ing : scaledIngredients) {
 			sb.append(ing.getAmount().toString() + " ");
 			sb.append(ing.getUnit().toString().toLowerCase() + " ");
 			sb.append(ing.getName() + "\n");

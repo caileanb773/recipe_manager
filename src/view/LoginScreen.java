@@ -78,9 +78,9 @@ public class LoginScreen extends JPanel {
 		setLayout(layout);
 		setBackground(Constants.rcpBtnGray);
 
-		// ---------------
-		// Panels
-		// ---------------
+		// ---------------------------------------------------------------------
+		// P A N E L S
+		// ---------------------------------------------------------------------
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(3,3,3,3);
 		inputsPanel = new JPanel(new GridBagLayout());
@@ -88,9 +88,9 @@ public class LoginScreen extends JPanel {
 		buttonPanel.setOpaque(false);
 		inputsPanel.setOpaque(false);
 
-		// ---------------
-		// Components
-		// ---------------
+		// ---------------------------------------------------------------------
+		// C O M P O N E N T S
+		// ---------------------------------------------------------------------
 		emailLabel = new JLabel(bundle.getString("email"));
 		pwLabel = new JLabel(bundle.getString("password"));
 		pwReveal = new JCheckBox(bundle.getString("revealPassword"), false);
@@ -115,9 +115,9 @@ public class LoginScreen extends JPanel {
 			System.err.println("Could not resolve path to Login Screen banner.");
 		}
 
-		// ---------------
-		// Login Fields
-		// ---------------
+		// ---------------------------------------------------------------------
+		// L O G I N  F I E L D S
+		// ---------------------------------------------------------------------
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		inputsPanel.add(emailLabel, gbc);
@@ -219,6 +219,7 @@ public class LoginScreen extends JPanel {
 			} else if (credentialCheck == INCORRECT_PASSWORD) {
 				JOptionPane.showMessageDialog(null, bundle.getString("validate.incorrectPass"),
 						bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
+				pwInput.setText("");
 				return;
 			}
 

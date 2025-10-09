@@ -2,6 +2,7 @@ package view;
 
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -13,12 +14,15 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+
 import controller.Main;
 import definitions.Recipe;
 import util.Config;
@@ -54,6 +58,7 @@ public class AppFrame {
 	private JMenuItem menuBtnDe;
 	private JMenuItem menuBtnReadMe;
 	private JMenuItem menuBtnLogout;
+	private JCheckBox autoBackup;
 	
 	// Other
 	private ActionListener listener;
@@ -66,9 +71,9 @@ public class AppFrame {
 		frame.setTitle("Macromise Recipe Manager");		
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
-		// ---------------
-		// Components
-		// ---------------
+		// ---------------------------------------------------------------------
+		// C O M P O N E N T S
+		// ---------------------------------------------------------------------
 		config = new Config();
 		bundle = config.getResourceBundle();
 		recipeScreen = new RecipeScreen(bundle);
@@ -76,7 +81,7 @@ public class AppFrame {
 		registerScreen = new RegisterScreen(bundle);
 		container = frame.getContentPane();
 
-		// ----- Icon -----
+		// Icon
 		try {
 			URL iconUrl = Main.class.getClassLoader().getResource("img/icon.png");		
 			ImageIcon icon = new ImageIcon(iconUrl);
@@ -85,13 +90,14 @@ public class AppFrame {
 			System.err.println("Could not find icon.png");
 		}
 		
+		// ----- Adding Screens to Frame -----
 		container.add(loginScreen, "LOGIN");
 		container.add(recipeScreen, "RECIPE_SCREEN");
 		container.add(registerScreen, "REGISTER_SCREEN");
 
-		// ---------------
-		// Menu Bar
-		// ---------------
+		// ---------------------------------------------------------------------
+		// M E N U  B A R
+		// ---------------------------------------------------------------------
 		menuBar = new JMenuBar();
 		menuFile = new JMenu(bundle.getString("menuFile"));
 		menuBtnExport = new JMenuItem(bundle.getString("menuBtnExport"));
@@ -116,16 +122,19 @@ public class AppFrame {
 		menuBar.add(menuOpt);
 		menuBar.add(menuAccount);
 		frame.setJMenuBar(menuBar);
+		autoBackup = new JCheckBox("Auto-backup");
+		autoBackup.setSelected(true);
 		
-		// ----- Final Frame Settings -----
+		// Final JFrame Settings
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-
-		// ----- Final Initialization -----
+		
+		// Set Appropriate Buttons to be Selected
 		updateLanguageButtons();	
 		setEnabledButtons("LOGIN");
 
+		// Set Focus if Login Screen remembers an email
 		if (LoginScreen.isRemembering()) {
 			loginScreen.initFocus("PASSWORD_FIELD");
 		} else {
@@ -233,10 +242,12 @@ public class AppFrame {
 			public void windowClosing(WindowEvent e) {
 				config.saveConfig();
 				
-				// TODO uncomment after axport work is finished
-				//listener.actionPerformed(new ActionEvent(this,
-				//		ActionEvent.ACTION_PERFORMED,
-				//		"closeWindow"));
+				if (autoBackup.isSelected()) {
+					listener.actionPerformed(new ActionEvent(this,
+							ActionEvent.ACTION_PERFORMED,
+							"closeWindow"));
+				}
+
 				frame.dispose();
 			}
 		});

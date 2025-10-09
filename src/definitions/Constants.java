@@ -42,7 +42,7 @@ public class Constants {
 	public static final String INGREDIENT_SECT_DELIM = "█";
 	public static final Font titleFont = new Font("Serif", Font.BOLD, 16);
 	public static final Font buttonFont = new Font("Serif", Font.BOLD, 16);
-	public static final Font textFont = new Font("Serif", Font.PLAIN, 15);
+	public static final Font textFont = new Font("Segoe UI", Font.PLAIN, 15);
 	public static final Font recipeTxtFont;
 	public static final Color bgGray = new Color(105,105,105);
 	public static final Color rcpBtnGray = new Color(217,217,217);

@@ -87,9 +87,9 @@ public class RegisterScreen extends JPanel {
 		pwRevealIcons = new ImageIcon[4];
 		isPasswordHidden = true;
 
-		// ---------------
-		// Panels
-		// ---------------
+		// ---------------------------------------------------------------------
+		// P A N E L S
+		// ---------------------------------------------------------------------
 		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
 		buttonPanel.setOpaque(false);
 
@@ -107,9 +107,9 @@ public class RegisterScreen extends JPanel {
 		wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.Y_AXIS));
 		wrapperPanel.setOpaque(false);
 
-		// ---------------
-		// Components
-		// ---------------
+		// ---------------------------------------------------------------------
+		// C O M P O N E N T S
+		// ---------------------------------------------------------------------
 		emailInput = new JTextField(20);
 		passwordInput = new JPasswordField(20);
 		confirmBtn = new JButton(bundle.getString("btnConfirm"));
@@ -125,9 +125,9 @@ public class RegisterScreen extends JPanel {
 		initPwRevealBtn();
 		initPwFieldChecking();
 
-		// ---------------
-		// Registration Form
-		// ---------------
+		// ---------------------------------------------------------------------
+		// R E G I S T R A T I O N  F O R M
+		// ---------------------------------------------------------------------
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		contentPanel.add(registerLbl, gbc);
@@ -146,15 +146,11 @@ public class RegisterScreen extends JPanel {
 		gbc.gridx = 3;
 		contentPanel.add(pwRevealBtn, gbc);
 
-		// ---------------
-		// Button Panel
-		// ---------------
+		// ----- Button Panel -----
 		buttonPanel.add(confirmBtn);
 		buttonPanel.add(cancelBtn);
 
-		// ---------------
-		// Adding Components to Vertical Stacking Panel
-		// ---------------
+		// ----- Adding Components to Vertical Stacking Panel -----
 		wrapperPanel.add(contentPanel);
 		wrapperPanel.add(Box.createVerticalStrut(10));
 		wrapperPanel.add(buttonPanel);
@@ -163,9 +159,7 @@ public class RegisterScreen extends JPanel {
 		wrapperPanel.add(Box.createVerticalStrut(10));
 		wrapperPanel.add(passwordRequirements);
 
-		// ---------------
-		// Constrain Size of Panels Vertically
-		// ---------------
+		// ----- Constrain Size of Panels Vertically -----
 		Dimension pref = contentPanel.getPreferredSize();
 		contentPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, pref.height));
 		pref = buttonPanel.getPreferredSize();
@@ -173,9 +167,7 @@ public class RegisterScreen extends JPanel {
 		pref = pwRqmntPanel.getPreferredSize();
 		pwRqmntPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, pref.height));
 
-		// ---------------
-		// Center Wrapper Panel Vertically in Outer Panel
-		// ---------------
+		// ----- Center Wrapper Panel Vertically in Outer Panel -----
 		JPanel outer = new JPanel(new GridBagLayout());
 		outer.setOpaque(false);
 		outer.add(wrapperPanel);
