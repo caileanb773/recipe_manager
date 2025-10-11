@@ -15,7 +15,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		// UI Look and Feel init
+		// Init FlatLAF
 		try {
 			UIManager.setLookAndFeel( new FlatLightLaf() );
 		} catch( Exception ex ) {
@@ -30,12 +30,8 @@ public class Main {
 		// TODO refactor the math in Fraction class and accnt for decimal multiplication
 		// TODO BUG: UI freeze when importing .txt of recipes into empty list
 		// TODO BUG: ensure ampersand in finishRegistration doesn't break anything
-		// TODO consider implications of a single-instance app
 		// TODO german doesn't work??
-		// TODO add light/dark mode
-		// TODO notification center
-		// TODO UI element size (accessibility)
-		// TODO update the readme
+		// TODO add one more theme to match alternate banner
 		// TODO save import/export and backup files as proprietary .rcp to align with readme
 		
 	}
