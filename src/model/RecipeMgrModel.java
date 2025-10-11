@@ -48,8 +48,8 @@ public class RecipeMgrModel {
 		recipes = new ArrayList<Recipe>();
 	}
 
-	public void initModelOffline(String recipeTxtPath) {
-		if (recipeTxtPath.isEmpty()) {
+	public void initModelOffline(String recipeFilePath) {
+		if (recipeFilePath.isEmpty()) {
 			System.err.println("Empty path passed to initModelOffline().");
 			return;
 		}
@@ -60,7 +60,7 @@ public class RecipeMgrModel {
 		}
 
 		try {
-			recipes = importRecipeList(recipeTxtPath);
+			recipes = importRecipeList(recipeFilePath);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -78,14 +78,12 @@ public class RecipeMgrModel {
 		int intAmt;
 		boolean malformed = false;
 
-		System.out.println("Parsing ingredient " + name + " with amount " + amount + "...");
 		if (Fraction.isFraction(amount)) {
 			fracAmt = Fraction.parseFraction(amount);
 			if (fracAmt.getDen() <= 0 || fracAmt.getNum() <= 0) {
 				malformed = true;
 			}
 		} else if (Fraction.isDecimal(amount)) {
-			System.out.println("Decimal detected for ingredient " + name + " with amount " + amount + ".");
 			decAmt = new BigDecimal(amount);
 			if (decAmt.compareTo(BigDecimal.ZERO) == -1) {
 				malformed = true;

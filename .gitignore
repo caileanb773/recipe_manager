@@ -1,7 +1,6 @@
 ./settings/
 /bin
-recipes.txt
 recipes.db
-backup.txt 
+backup.rcp
 /resources/credentials.txt
 /resources/config.ini

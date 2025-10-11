@@ -28,11 +28,15 @@ public class Main {
 
 		// TODO resize recipe info based on window size
 		// TODO refactor the math in Fraction class and accnt for decimal multiplication
-		// TODO BUG: UI freeze when importing .txt of recipes into empty list
+		// TODO BUG: UI freeze when importing .rcp of recipes into empty list
 		// TODO BUG: ensure ampersand in finishRegistration doesn't break anything
 		// TODO german doesn't work??
 		// TODO add one more theme to match alternate banner
 		// TODO save import/export and backup files as proprietary .rcp to align with readme
-		
+		// TODO on logout, if remembering, focus pw field
+		// TODO clean up register screen pw requirements label
+//workin   TODO add a "send to new window" btn for recipe viewing (view multiple at once)
+		// TODO shortcut del key = delete recipe
+	
 	}
 }

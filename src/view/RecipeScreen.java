@@ -15,9 +15,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -59,9 +62,6 @@ public class RecipeScreen extends JPanel {
 	private JButton rcpListRemove;
 	private JButton rcpListEdit;
 	private JScrollPane rcpSelectScrollPane;
-	private JLabel scaleRcpLabel;
-	private JSpinner scaleRcpSpinner;
-	private JPanel scaleRcpPanel;
 
 	// Selected (active) Recipe information (UI right side)
 	private JPanel selectedRcpDescPanel;
@@ -69,7 +69,11 @@ public class RecipeScreen extends JPanel {
 	private JLabel selectedDescLabel;
 	private JTextArea selectedRcpTxt;
 	private JScrollPane selectedRcpTxtScrollPane;
-
+	private JLabel scaleRcpLabel;
+	private JSpinner scaleRcpSpinner;
+	private JPanel scaleRcpPanel;
+	private JButton detachRecipeBtn;
+	
 	// Other
 	private ResourceBundle bundle;
 	private Recipe activeRecipe;
@@ -144,6 +148,7 @@ public class RecipeScreen extends JPanel {
 		rcpSelectLabel.setFont(Constants.titleFont);
 		BoxLayout rcpSelectListLayout = new BoxLayout(rcpSelectListPanel, BoxLayout.Y_AXIS);
 		rcpSelectListPanel.setLayout(rcpSelectListLayout);
+		rcpSelectListPanel.setBorder(BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED));
 		rcpListAdd = new JButton(bundle.getString("rcpListAdd"));
 		rcpListRemove = new JButton(bundle.getString("rcpListRemove"));
 		rcpListEdit = new JButton(bundle.getString("rcpListEdit"));
@@ -153,6 +158,7 @@ public class RecipeScreen extends JPanel {
 		rcpSelectPanel.add(filterLabelCombo, BorderLayout.NORTH);
 		rcpSelectPanel.add(rcpSelectScrollPane, BorderLayout.CENTER);
 		rcpSelectPanel.add(rcpEditPanel, BorderLayout.SOUTH);
+
 
 		// ---------------------------------------------------------------------
 		// S E L E C T E D  R E C I P E  D I S P L A Y
@@ -172,7 +178,7 @@ public class RecipeScreen extends JPanel {
 		selectedRcpTxt.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		selectedDescLabel = new JLabel(bundle.getString("selectedDescLabel"));
 		selectedDescLabel.setAlignmentX(CENTER_ALIGNMENT);
-
+		
 		// ----- Scale Recipe Spinner -----
 		scaleRcpPanel = new JPanel(new FlowLayout());
 		scaleRcpPanel.setOpaque(false);
@@ -185,8 +191,24 @@ public class RecipeScreen extends JPanel {
 		});
 		scaleRcpPanel.add(scaleRcpLabel);
 		scaleRcpPanel.add(scaleRcpSpinner);
-		selectedRcpDescPanel.add(scaleRcpPanel);
 
+		// ----- Send Recipe to New Screen Btn -----
+		detachRecipeBtn = new JButton("Detach Recipe"); // TODO translation
+		detachRecipeBtn.addActionListener(e -> {
+			if (activeRecipe == null) {
+				return;
+			}
+			JDialog detachedRecipe = new JDialog((JFrame) null,
+					activeRecipe.formatRecipeForTextDisplay(),
+					true);
+			
+			detachedRecipe.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			detachedRecipe.setLocationRelativeTo(null);
+			detachedRecipe.setVisible(true);
+			detachedRecipe.pack();
+		});
+		scaleRcpPanel.add(detachRecipeBtn);
+		
 		// ----- Selected Recipe Scrollpane -----
 		selectedRcpTxtScrollPane = new JScrollPane(selectedRcpTxt);
 		selectedRcpTxtScrollPane.setPreferredSize(new Dimension(500,500));
@@ -195,7 +217,7 @@ public class RecipeScreen extends JPanel {
 		selectedRcpInfo.add(selectedRcpTxtScrollPane);
 		selectedRcpDescPanel.add(selectedRcpInfo);
 		selectedRcpTxtScrollPane.setBorder(BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED));
-
+		selectedRcpDescPanel.add(scaleRcpPanel);
 
 		// ----- Build Panel ----- 
 		add(selectedRcpDescPanel, BorderLayout.CENTER);

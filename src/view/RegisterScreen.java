@@ -2,6 +2,7 @@ package view;
 
 import static definitions.Constants.GRADIENT_BOTTOM;
 import static definitions.Constants.GRADIENT_TOP;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -16,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -24,6 +26,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -35,8 +38,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 import org.mindrot.jbcrypt.BCrypt;
+
 import com.sun.tools.javac.Main;
+
 import definitions.Constants;
 import util.Utility;
 
@@ -385,7 +391,20 @@ public class RegisterScreen extends JPanel {
 	}
 
 	private boolean emailIsRegistered(String newEmail) {
-		try (BufferedReader r = new BufferedReader(new FileReader("resources/credentials.txt"))) {
+		File credentials = new File("resources/credentials.txt");
+				
+		if (!credentials.exists()) {
+			System.out.println("Credentials file not found. Creating...");
+			
+			try {
+				credentials.createNewFile();
+			} catch (IOException e) {
+				System.out.println("IOException while creating default credentials file: "
+						+ e.getMessage());
+			}
+		}
+		
+		try (BufferedReader r = new BufferedReader(new FileReader(credentials))) {
 			String line;
 
 			while ((line = r.readLine()) != null) {

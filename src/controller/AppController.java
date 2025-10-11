@@ -7,13 +7,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import org.apache.commons.io.FilenameUtils;
-
 import db.RecipeDAO;
 import definitions.Constants;
 import definitions.Recipe;
@@ -62,8 +59,8 @@ public class AppController implements ActionListener {
 		if (mode == ONLINE) {
 			recipeDao.init();
 			model.setRecipes(recipeDao.selectAllRecipesAsList());
-		} if (mode == OFFLINE) {
-			model.initModelOffline("recipes.txt");
+		} if (mode == OFFLINE) { // XXX for now, this is never called.
+			model.initModelOffline("backup.rcp");
 			view.populateRecipeList(model.getRecipes());
 		}
 		view.registerController(this);
@@ -116,7 +113,7 @@ public class AppController implements ActionListener {
 			handleExportRecipes();
 			break;
 		case "import":
-			System.out.println("Loading recipes from .txt and pushing to database...");
+			System.out.println("Loading recipes from .rcp and pushing to database...");
 			handleImportRecipes();
 			break;
 		case "applyFilter":
@@ -195,7 +192,7 @@ public class AppController implements ActionListener {
 		ResourceBundle bundle = view.getBundle();
 
 		try {
-			model.exportRecipeList("backup.txt");
+			model.exportRecipeList("backup.rcp");
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null,
 					bundle.getString("export.ioerror") + "\n" + e.getMessage(),
@@ -329,7 +326,7 @@ public class AppController implements ActionListener {
 		chooser.setDialogTitle(bundle.getString("export"));
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				bundle.getString("filter"), "txt");
+				bundle.getString("filter"), "rcp");
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.addChoosableFileFilter(filter);
 		int option = chooser.showSaveDialog(null);
@@ -337,9 +334,9 @@ public class AppController implements ActionListener {
 		if (option == JFileChooser.APPROVE_OPTION) {
 			File file = chooser.getSelectedFile();
 
-			// Always ensure .txt extension
+			// Always ensure .rcp extension
 			String baseName = FilenameUtils.getBaseName(file.getName());
-			file = new File(file.getParentFile(), baseName + ".txt");
+			file = new File(file.getParentFile(), baseName + ".rcp");
 			String filePath = file.getAbsolutePath();
 
 			if (file.exists()) {
@@ -385,7 +382,7 @@ public class AppController implements ActionListener {
 		chooser.setDialogTitle(bundle.getString("import.title"));
 		chooser.setDialogType(JFileChooser.OPEN_DIALOG);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				bundle.getString("filter"), "txt");
+				bundle.getString("filter"), "rcp");
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.addChoosableFileFilter(filter);
 		int option = chooser.showOpenDialog(null);
@@ -395,7 +392,7 @@ public class AppController implements ActionListener {
 			String fileName = file.getName();
 			String extension = FilenameUtils.getExtension(fileName);
 
-			if (extension.equalsIgnoreCase("txt")) {
+			if (extension.equalsIgnoreCase("rcp")) {
 
 				try {
 					List<Recipe> rcpList = model.importRecipeList(file.getAbsolutePath());

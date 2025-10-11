@@ -1,5 +1,6 @@
 package db;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -264,13 +265,13 @@ public class RecipeDAO {
 				while (rsIng.next()) {
 					String amtStr = rsIng.getString("amount");					
 					Fraction amount;
-					
+
 					if (Fraction.isFraction(amtStr)) {
 						amount = Fraction.parseFraction(amtStr);
 					} else {
 						amount = new Fraction(Integer.parseInt(amtStr), 1);
 					}
-					
+
 					String unit = rsIng.getString("unit");
 					String name = rsIng.getString("name");
 					ingredients.add(new Ingredient(amount, Unit.valueOf(unit), name));
@@ -325,13 +326,16 @@ public class RecipeDAO {
 						while (ingRes.next()) {
 							String amtStr = ingRes.getString("amount");
 							Fraction amount;
-							
+
 							if (Fraction.isFraction(amtStr)) {
 								amount = Fraction.parseFraction(amtStr);
+
+							} else if (Fraction.isDecimal(amtStr)) {
+								amount = new Fraction(new BigDecimal(amtStr));
 							} else {
 								amount = new Fraction(Integer.parseInt(amtStr), 1);
 							}
-							
+
 							String unitStr = ingRes.getString("unit");
 							String name = ingRes.getString("name");
 
