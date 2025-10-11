@@ -134,7 +134,7 @@ public class LoginScreen extends JPanel {
 		inputsPanel.add(pwReveal, gbc);
 		gbc.gridx = 1;
 		gbc.gridy++;
-
+		
 		// ----- LastEmail check -----
 		String lastEmail = Config.getLastEmail();
 		if (lastEmail == null || lastEmail.equals("null") || lastEmail.isEmpty()) {

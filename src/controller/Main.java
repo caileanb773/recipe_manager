@@ -27,7 +27,6 @@ public class Main {
 		new AppController(model, view);
 
 		// TODO resize recipe info based on window size
-		// TODO add autobackup remembering to config file
 		// TODO refactor the math in Fraction class and accnt for decimal multiplication
 		// TODO BUG: UI freeze when importing .txt of recipes into empty list
 		// TODO BUG: ensure ampersand in finishRegistration doesn't break anything
@@ -37,6 +36,7 @@ public class Main {
 		// TODO notification center
 		// TODO UI element size (accessibility)
 		// TODO update the readme
+		// TODO save import/export and backup files as proprietary .rcp to align with readme
 		
 	}
 }

@@ -26,6 +26,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.BevelBorder;
+
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
@@ -155,7 +157,7 @@ public class RecipeScreen extends JPanel {
 		// ---------------------------------------------------------------------
 		// S E L E C T E D  R E C I P E  D I S P L A Y
 		// ---------------------------------------------------------------------
-		selectedRcpDescPanel = new JPanel();	
+		selectedRcpDescPanel = new JPanel();
 		BoxLayout recipeDescLayout = new BoxLayout(selectedRcpDescPanel, BoxLayout.Y_AXIS);
 		selectedRcpDescPanel.setLayout(recipeDescLayout);
 		selectedRcpInfo = new JPanel();
@@ -192,6 +194,8 @@ public class RecipeScreen extends JPanel {
 		selectedRcpTxtScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		selectedRcpInfo.add(selectedRcpTxtScrollPane);
 		selectedRcpDescPanel.add(selectedRcpInfo);
+		selectedRcpTxtScrollPane.setBorder(BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED));
+
 
 		// ----- Build Panel ----- 
 		add(selectedRcpDescPanel, BorderLayout.CENTER);
