@@ -287,7 +287,6 @@ public class RecipeScreen extends JPanel {
 		detachedRcpTxt.setBackground(Color.white);
 		detachedRcpTxt.setEditable(false);
 		detachedRcpTxt.setCaretColor(new Color(0,0,0,0));
-		detachedRcpTxt.setCaretPosition(0);
 		detachedRcpTxt.setWrapStyleWord(true);
 		detachedRcpTxt.setLineWrap(true);
 		detachedRcpTxt.setFont(Constants.textFont);
@@ -305,6 +304,8 @@ public class RecipeScreen extends JPanel {
 		detachedRecipe.setLocation(pnt.x + DETACHED_RECIPE_X_OFFSET,
 				pnt.y - DETACHED_RECIPE_Y_OFFSET);
 		detachedRecipe.setVisible(true);
+		detachedRcpTxt.setCaretPosition(0);
+
 	}
 
 	public List<Ingredient> scaleRecipe(int amt) {

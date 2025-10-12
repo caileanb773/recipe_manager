@@ -2,11 +2,13 @@ package view;
 
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -59,7 +61,7 @@ public class AppFrame {
 	private JMenuItem menuBtnReadMe;
 	private JMenuItem menuBtnLogout;
 	private static JCheckBox autoBackup;
-	
+
 	// Other
 	private ActionListener listener;
 
@@ -70,7 +72,7 @@ public class AppFrame {
 		frame.getContentPane().setLayout(cardLayout);
 		frame.setTitle("Macromise Recipe Manager");		
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		
+
 		// ---------------------------------------------------------------------
 		// C O M P O N E N T S
 		// ---------------------------------------------------------------------
@@ -89,7 +91,7 @@ public class AppFrame {
 		} catch (NullPointerException e) {
 			System.err.println("Could not find icon.png");
 		}
-		
+
 		// ----- Adding Screens to Frame -----
 		container.add(loginScreen, "LOGIN");
 		container.add(recipeScreen, "RECIPE_SCREEN");
@@ -125,12 +127,12 @@ public class AppFrame {
 		autoBackup = new JCheckBox("Auto-backup");
 		autoBackup.setSelected(config.isAutoBackup());
 		menuOpt.add(autoBackup);
-		
+
 		// Final JFrame Settings
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
+
 		// Set Appropriate Buttons to be Selected
 		updateLanguageButtons();	
 		setEnabledButtons("LOGIN");
@@ -172,8 +174,23 @@ public class AppFrame {
 		menuBtnLogout.addActionListener(listener);
 	}
 
-	// TODO needs to be modified for additional languages
 	public void displayReadMe() {
+		try {
+			File readmeFile = new File("README.md");
+			Desktop.getDesktop().browse(readmeFile.toURI());
+
+		} catch (FileNotFoundException e) {
+			System.err.println("Could not find README.md: "
+					+ e.getMessage());
+		} catch (IOException e) {
+			System.err.println("IOException while opening browser: "
+					+ e.getMessage());
+		}
+
+	}
+
+	@Deprecated
+	public void displayReadMeOLD() {
 		String readMe = null;
 
 		try (BufferedReader reader = new BufferedReader(new FileReader("README.md"))) {
@@ -226,11 +243,11 @@ public class AppFrame {
 			menuBtnDe.setEnabled(false);
 		}
 	}
-	
+
 	public void registerController(ActionListener listener) {
 		this.listener = listener;
 	}
-	
+
 	public void registerControllerInSubscreens(ActionListener listener) {
 		loginScreen.registerController(listener);
 		registerScreen.registerController(listener);
@@ -242,7 +259,7 @@ public class AppFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				config.saveConfig();
-				
+
 				if (autoBackup.isSelected()) {
 					listener.actionPerformed(new ActionEvent(this,
 							ActionEvent.ACTION_PERFORMED,
@@ -319,27 +336,27 @@ public class AppFrame {
 			break;
 		}
 	}
-	
+
 	public static boolean isBackingUp() {
 		return autoBackup.isSelected();
 	}
-	
+
 	public void packFrame() {
 		frame.pack();
 	}
-	
+
 	public CardLayout getCardLayout() {
 		return cardLayout;
 	}
-	
+
 	public ResourceBundle getBundle() {
 		return bundle;
 	}
-	
+
 	public Config getConfig() {
 		return config;
 	}
-	
+
 	public LoginScreen getLoginScreen() {
 		return loginScreen;
 	}

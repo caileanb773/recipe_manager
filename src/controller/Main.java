@@ -27,14 +27,13 @@ public class Main {
 		new AppController(model, view);
 
 		// TODO refactor the math in Fraction class and accnt for decimal multiplication
-		// TODO BUG: ensure ampersand in finishRegistration doesn't break anything
 		// TODO german doesn't work??
 		// TODO add one more theme to match alternate banner
-		// TODO on logout, if remembering, focus pw field
 		// TODO clean up register screen pw requirements label
 		// TODO load screen for importing recipes
 		// TODO recipe buttons should just go '...' if they are too long. currently long rcp names widen the entire window
-		// TODO detaching recipe should have the text start at the top
+		// TODO fix readme opening in notepad
+		// TODO add text about illegal characters to register fail jdialog
 		
 	}
 }

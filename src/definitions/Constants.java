@@ -37,6 +37,7 @@ public class Constants {
 	public static final boolean SUCCESS = true;
 	public static final boolean FAIL = false;
 	public static final String ASCII_SPECIAL_CHARS = "!@#$%^&*()_+-=`~|\\[]{};':\",./<>?";
+	public static final String ILLEGAL_EMAIL_CHARS = "()[]:;<>%,\\%&*+=?{}|";
 	public static final String RECIPE_SECT_DELIM = "§§";
 	public static final String ING_TAG_DELIM = "¤";
 	public static final String INGREDIENT_SECT_DELIM = "█";
@@ -67,5 +68,8 @@ public class Constants {
 	}
 
 
+	/**
+	 * Private constructor prevents instantiation of this class.
+	 */
 	private Constants() {}
 }

@@ -2,6 +2,8 @@ package util;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
+import definitions.Constants;
+
 /*
  * Author: Cailean Bernard
  * Contents: Helper methods needed in more than one class.
@@ -24,6 +26,13 @@ public class Utility {
 
 	public static boolean isEmailValid(String email) {
 		EmailValidator validator = EmailValidator.getInstance();
+
+		for (char c : Constants.ILLEGAL_EMAIL_CHARS.toCharArray()) {
+			if (email.indexOf(c) >= 0) {
+				return false;
+			}
+		}
+
 		return validator.isValid(email);
 	}
 
