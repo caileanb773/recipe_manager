@@ -24,7 +24,8 @@ public class Main {
 
 		RecipeMgrModel model = new RecipeMgrModel();
 		AppFrame view = new AppFrame();
-		new AppController(model, view);
+		AppController controller = new AppController(model, view);
+		//controller.login(); //for debugging
 
 		// TODO refactor the math in Fraction class and accnt for decimal multiplication
 		// TODO german doesn't work??
@@ -32,8 +33,7 @@ public class Main {
 		// TODO clean up register screen pw requirements label
 		// TODO load screen for importing recipes
 		// TODO recipe buttons should just go '...' if they are too long. currently long rcp names widen the entire window
-		// TODO fix readme opening in notepad
-		// TODO add text about illegal characters to register fail jdialog
+		// TODO add text/translations about illegal characters to register fail jdialog
 		
 	}
 }

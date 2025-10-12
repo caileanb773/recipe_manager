@@ -8,15 +8,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -24,7 +24,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
 import controller.Main;
 import definitions.Recipe;
 import util.Config;
@@ -176,14 +175,13 @@ public class AppFrame {
 
 	public void displayReadMe() {
 		try {
-			File readmeFile = new File("README.md");
-			Desktop.getDesktop().browse(readmeFile.toURI());
-
-		} catch (FileNotFoundException e) {
-			System.err.println("Could not find README.md: "
-					+ e.getMessage());
+			Desktop.getDesktop().browse(new URI(
+					"https://github.com/caileanb773/recipe_manager/blob/main/README.md"));
 		} catch (IOException e) {
 			System.err.println("IOException while opening browser: "
+					+ e.getMessage());
+		} catch (URISyntaxException e) {
+			System.err.println("URISyntaxException while opening browser: "
 					+ e.getMessage());
 		}
 

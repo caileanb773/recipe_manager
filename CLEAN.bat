@@ -2,7 +2,7 @@
 
 echo Cleaning...
 
-del backup.txt
+del backup.rcp
 del recipes.db
 del resources\config.ini
 del resources\credentials.txt
