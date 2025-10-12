@@ -8,17 +8,23 @@ import java.awt.FlowLayout;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,7 +34,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
 import definitions.Constants;
@@ -83,6 +91,11 @@ public class RecipeScreen extends JPanel {
 	// Constant
 	private final int UNSCALED = 0;
 	private final int SCALED = 1;
+	private final int SELECTED_RCP_TXT_TEXT_AREA_WIDTH = 500;
+	private final int SELECTED_RCP_TXT_TEXT_AREA_HEIGHT = 500;
+	private final int DETACHED_RECIPE_HEIGHT_OFFSET = 18;
+	private final int DETACHED_RECIPE_X_OFFSET = 285;
+	private final int DETACHED_RECIPE_Y_OFFSET = 45;
 
 
 	public RecipeScreen(ResourceBundle bundle) {	
@@ -125,6 +138,7 @@ public class RecipeScreen extends JPanel {
 
 				// padding
 				width += 10;
+				height += 4;
 
 				return new Dimension(width, height);
 			}
@@ -159,7 +173,6 @@ public class RecipeScreen extends JPanel {
 		rcpSelectPanel.add(rcpSelectScrollPane, BorderLayout.CENTER);
 		rcpSelectPanel.add(rcpEditPanel, BorderLayout.SOUTH);
 
-
 		// ---------------------------------------------------------------------
 		// S E L E C T E D  R E C I P E  D I S P L A Y
 		// ---------------------------------------------------------------------
@@ -193,25 +206,17 @@ public class RecipeScreen extends JPanel {
 		scaleRcpPanel.add(scaleRcpSpinner);
 
 		// ----- Send Recipe to New Screen Btn -----
-		detachRecipeBtn = new JButton("Detach Recipe"); // TODO translation
+		detachRecipeBtn = new JButton("Detach Recipe"); // TODO translations here x 2
 		detachRecipeBtn.addActionListener(e -> {
-			if (activeRecipe == null) {
-				return;
-			}
-			JDialog detachedRecipe = new JDialog((JFrame) null,
-					activeRecipe.formatRecipeForTextDisplay(),
-					true);
-			
-			detachedRecipe.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			detachedRecipe.setLocationRelativeTo(null);
-			detachedRecipe.setVisible(true);
-			detachedRecipe.pack();
+			handleDetachRecipe();
 		});
 		scaleRcpPanel.add(detachRecipeBtn);
 		
 		// ----- Selected Recipe Scrollpane -----
 		selectedRcpTxtScrollPane = new JScrollPane(selectedRcpTxt);
-		selectedRcpTxtScrollPane.setPreferredSize(new Dimension(500,500));
+		selectedRcpTxtScrollPane.setPreferredSize(new Dimension(
+				SELECTED_RCP_TXT_TEXT_AREA_WIDTH,
+				SELECTED_RCP_TXT_TEXT_AREA_HEIGHT));
 		selectedRcpTxtScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		selectedRcpTxtScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		selectedRcpInfo.add(selectedRcpTxtScrollPane);
@@ -231,6 +236,7 @@ public class RecipeScreen extends JPanel {
 		rcpSelectPanel.setOpaque(false);
 		rcpSelectPanel.setOpaque(false);
 		rcpEditPanel.setOpaque(false);
+		initKeyBindings();
 	}
 
 	@Override
@@ -247,6 +253,58 @@ public class RecipeScreen extends JPanel {
 		g2d.setPaint(new GradientPaint(0, 0, topColor, 0, h, bottomColor));
 		g2d.fillRect(0, 0, w, h);
 		g2d.dispose();
+	}
+	
+	public void initKeyBindings() {
+		InputMap inMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actMap = getActionMap();
+		
+		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "deletePressed");
+		
+		actMap.put("deletePressed", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removeRecipe();
+			}
+		});
+	}
+	
+	public void handleDetachRecipe() {
+		if (activeRecipe == null) {
+			JOptionPane.showMessageDialog(null,
+					"No recipe selected to detach.\nSelect a recipe first.",
+					"Error",
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+		
+		JDialog detachedRecipe = new JDialog((JFrame) SwingUtilities.getWindowAncestor(this),
+				"Detached Recipe", // TODO translation
+				false);
+ 
+		JTextArea detachedRcpTxt = new JTextArea();
+		detachedRcpTxt = new JTextArea();
+		detachedRcpTxt.setBackground(Color.white);
+		detachedRcpTxt.setEditable(false);
+		detachedRcpTxt.setCaretColor(new Color(0,0,0,0));
+		detachedRcpTxt.setCaretPosition(0);
+		detachedRcpTxt.setWrapStyleWord(true);
+		detachedRcpTxt.setLineWrap(true);
+		detachedRcpTxt.setFont(Constants.textFont);
+		JScrollPane scroll = new JScrollPane(detachedRcpTxt);
+		scroll.setPreferredSize(new Dimension(
+				SELECTED_RCP_TXT_TEXT_AREA_WIDTH,
+				SELECTED_RCP_TXT_TEXT_AREA_HEIGHT - DETACHED_RECIPE_HEIGHT_OFFSET));
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		detachedRcpTxt.setText(activeRecipe.formatRecipeForTextDisplay());
+		detachedRecipe.add(scroll);
+		detachedRecipe.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		Point pnt = rcpSelectListPanel.getLocationOnScreen();
+		detachedRecipe.pack();
+		detachedRecipe.setLocation(pnt.x + DETACHED_RECIPE_X_OFFSET,
+				pnt.y - DETACHED_RECIPE_Y_OFFSET);
+		detachedRecipe.setVisible(true);
 	}
 
 	public List<Ingredient> scaleRecipe(int amt) {
@@ -373,28 +431,31 @@ public class RecipeScreen extends JPanel {
 	public void initRemoveButton() {
 		rcpListRemove.setActionCommand("remove");
 		rcpListRemove.addActionListener(e -> {
-			if (activeRecipe == null) {
-				System.out.println("Aborting remove recipe dialog: no active recipe.");
-				JOptionPane.showMessageDialog(null,
-						bundle.getString("noRcpSelRemove"),
-						bundle.getString("noRcpSelRemoveTitle"),
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			int choice = JOptionPane.showConfirmDialog(null,
-					bundle.getString("removeRcpConfirm") +
-					activeRecipe.getTitle() + "?",
-					bundle.getString("removeRcpConfirmTitle"),
-					JOptionPane.OK_CANCEL_OPTION);
-
-
-			if (choice == JOptionPane.OK_OPTION) {
-				listener.actionPerformed(new ActionEvent(
-						rcpListRemove, ActionEvent.ACTION_PERFORMED,
-						"remove"));
-			}
+			removeRecipe();
 		});
+	}
+	
+	public void removeRecipe() {
+		if (activeRecipe == null) {
+			JOptionPane.showMessageDialog(null,
+					bundle.getString("noRcpSelRemove"),
+					bundle.getString("noRcpSelRemoveTitle"),
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		int choice = JOptionPane.showConfirmDialog(null,
+				bundle.getString("removeRcpConfirm") +
+				activeRecipe.getTitle() + "?",
+				bundle.getString("removeRcpConfirmTitle"),
+				JOptionPane.OK_CANCEL_OPTION);
+
+
+		if (choice == JOptionPane.OK_OPTION) {
+			listener.actionPerformed(new ActionEvent(
+					rcpListRemove, ActionEvent.ACTION_PERFORMED,
+					"remove"));
+		}
 	}
 
 	public void initEditButton() {

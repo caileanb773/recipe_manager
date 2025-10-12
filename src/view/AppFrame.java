@@ -137,9 +137,9 @@ public class AppFrame {
 
 		// Set Focus if Login Screen remembers an email
 		if (LoginScreen.isRemembering()) {
-			loginScreen.initFocus("PASSWORD_FIELD");
+			loginScreen.grabFocus("PASSWORD_FIELD");
 		} else {
-			loginScreen.initFocus("LOGIN_FIELD");
+			loginScreen.grabFocus("LOGIN_FIELD");
 		}
 	}
 
@@ -277,7 +277,7 @@ public class AppFrame {
 				System.out.println("Switching to Login screen");
 				cardLayout.show(container, "LOGIN");
 				setEnabledButtons(screenName);
-				loginScreen.initFocus("EMAIL_FIELD");
+				loginScreen.grabFocus("EMAIL_FIELD");
 				break;
 			case "RECIPE_SCREEN":
 				System.out.println("Switching to UI");

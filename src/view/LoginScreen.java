@@ -339,7 +339,7 @@ public class LoginScreen extends JPanel {
 		rmbrMe.setSelected(remembering);
 	}
 
-	public void initFocus(String field) {
+	public void grabFocus(String field) {
 		switch (field) {
 		case "PASSWORD_FIELD":
 			SwingUtilities.invokeLater(() -> pwInput.requestFocusInWindow());

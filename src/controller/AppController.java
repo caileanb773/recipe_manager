@@ -159,7 +159,7 @@ public class AppController implements ActionListener {
 		LoginScreen loginScreen = view.getLoginScreen();
 		loginScreen.setEmail(newEmail);
 		view.switchScreen("LOGIN");
-		loginScreen.initFocus("PASSWORD_FIELD");
+		loginScreen.grabFocus("PASSWORD_FIELD");
 		loginScreen.setRemembering(true);
 	}
 
@@ -186,6 +186,7 @@ public class AppController implements ActionListener {
 	public void logout() {
 		System.out.println("Logging out...");
 		view.switchScreen("LOGIN");
+		view.getLoginScreen().grabFocus("PASSWORD_FIELD");
 	}
 
 	public void handleCloseWithBackup() {
