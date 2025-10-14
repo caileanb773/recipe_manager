@@ -2,7 +2,6 @@ package view;
 
 import static definitions.Constants.GRADIENT_BOTTOM;
 import static definitions.Constants.GRADIENT_TOP;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -26,7 +25,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -36,13 +34,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import org.mindrot.jbcrypt.BCrypt;
-
 import com.sun.tools.javac.Main;
-
 import definitions.Constants;
 import util.Utility;
 
@@ -63,7 +62,7 @@ public class RegisterScreen extends JPanel {
 	private JLabel registerLbl;
 	private JLabel emailInputLbl;
 	private JLabel passwordInputLbl;
-	private JLabel passwordRequirements;
+	private JTextPane passwordRequirements;
 	private JPanel contentPanel;
 	private JPanel pwRqmntPanel;
 	private JPanel buttonPanel;
@@ -124,8 +123,15 @@ public class RegisterScreen extends JPanel {
 		emailInputLbl = new JLabel(bundle.getString("enterEmail"));
 		passwordInputLbl = new JLabel(bundle.getString("enterPass"));
 		registerLbl.putClientProperty( "FlatLaf.styleClass", "h2" );
-		passwordRequirements = new JLabel(bundle.getString("register.weakPassword"));
-		
+		passwordRequirements = new JTextPane();
+		passwordRequirements.setText(bundle.getString("register.weakPassword"));
+		StyledDocument doc = passwordRequirements.getStyledDocument();
+		SimpleAttributeSet center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
+		passwordRequirements.setEditable(false);
+		passwordRequirements.setOpaque(false);
+
 		// ----- Indicators for weak/strong password & revealing ----- 
 		initPwStrengthIndicator();
 		initPwRevealBtn();
@@ -211,7 +217,7 @@ public class RegisterScreen extends JPanel {
 			}
 		});
 	}
-	
+
 	public void registerController(ActionListener listener) {
 		this.listener = listener;
 	}
@@ -392,10 +398,10 @@ public class RegisterScreen extends JPanel {
 
 	private boolean emailIsRegistered(String newEmail) {
 		File credentials = new File("resources/credentials.txt");
-				
+
 		if (!credentials.exists()) {
 			System.out.println("Credentials file not found. Creating...");
-			
+
 			try {
 				credentials.createNewFile();
 			} catch (IOException e) {
@@ -403,7 +409,7 @@ public class RegisterScreen extends JPanel {
 						+ e.getMessage());
 			}
 		}
-		
+
 		try (BufferedReader r = new BufferedReader(new FileReader(credentials))) {
 			String line;
 

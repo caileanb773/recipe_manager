@@ -123,7 +123,7 @@ public class AppFrame {
 		menuBar.add(menuOpt);
 		menuBar.add(menuAccount);
 		frame.setJMenuBar(menuBar);
-		autoBackup = new JCheckBox("Auto-backup");
+		autoBackup = new JCheckBox(bundle.getString("autoBackup"));
 		autoBackup.setSelected(config.isAutoBackup());
 		menuOpt.add(autoBackup);
 

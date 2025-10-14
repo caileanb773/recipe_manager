@@ -28,12 +28,10 @@ public class Main {
 		//controller.login(); //for debugging
 
 		// TODO refactor the math in Fraction class and accnt for decimal multiplication
-		// TODO german doesn't work??
+		// TODO BUG: the change to German translation is non-functional atm
 		// TODO add one more theme to match alternate banner
-		// TODO clean up register screen pw requirements label
 		// TODO load screen for importing recipes
 		// TODO recipe buttons should just go '...' if they are too long. currently long rcp names widen the entire window
-		// TODO add text/translations about illegal characters to register fail jdialog
 		
 	}
 }

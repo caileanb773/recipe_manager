@@ -79,13 +79,13 @@ public class RecipeScreen extends JPanel {
 	private JSpinner scaleRcpSpinner;
 	private JPanel scaleRcpPanel;
 	private JButton detachRecipeBtn;
-	
+
 	// Other
 	private ResourceBundle bundle;
 	private Recipe activeRecipe;
 	private ActionListener listener;
 	private int scaleVal;
-	
+
 	// Constant
 	private final int UNSCALED = 0;
 	private final int SCALED = 1;
@@ -189,11 +189,11 @@ public class RecipeScreen extends JPanel {
 		selectedRcpTxt.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		selectedDescLabel = new JLabel(bundle.getString("selectedDescLabel"));
 		selectedDescLabel.setAlignmentX(CENTER_ALIGNMENT);
-		
+
 		// ----- Scale Recipe Spinner -----
 		scaleRcpPanel = new JPanel(new FlowLayout());
 		scaleRcpPanel.setOpaque(false);
-		scaleRcpLabel = new JLabel("Scale Recipe ");
+		scaleRcpLabel = new JLabel(bundle.getString("scaleRcp"));
 		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 100, 1);
 		scaleRcpSpinner = new JSpinner(spinnerModel);
 		scaleRcpSpinner.addChangeListener(e -> {
@@ -204,12 +204,13 @@ public class RecipeScreen extends JPanel {
 		scaleRcpPanel.add(scaleRcpSpinner);
 
 		// ----- Send Recipe to New Screen Btn -----
-		detachRecipeBtn = new JButton("Detach Recipe"); // TODO translations here x 2
+		detachRecipeBtn = new JButton(bundle.getString("detachRcp"));
 		detachRecipeBtn.addActionListener(e -> {
 			handleDetachRecipe();
 		});
 		scaleRcpPanel.add(detachRecipeBtn);
-		
+		detachRecipeBtn.setToolTipText(bundle.getString("detachRcpToolTip"));
+
 		// ----- Selected Recipe Scrollpane -----
 		selectedRcpTxtScrollPane = new JScrollPane(selectedRcpTxt);
 		selectedRcpTxtScrollPane.setPreferredSize(new Dimension(
@@ -252,13 +253,13 @@ public class RecipeScreen extends JPanel {
 		g2d.fillRect(0, 0, w, h);
 		g2d.dispose();
 	}
-	
+
 	public void initKeyBindings() {
 		InputMap inMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actMap = getActionMap();
-		
+
 		inMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "deletePressed");
-		
+
 		actMap.put("deletePressed", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -266,20 +267,20 @@ public class RecipeScreen extends JPanel {
 			}
 		});
 	}
-	
+
 	public void handleDetachRecipe() {
 		if (activeRecipe == null) {
 			JOptionPane.showMessageDialog(null,
-					"No recipe selected to detach.\nSelect a recipe first.",
-					"Error",
+					bundle.getString("detachRcpError"),
+					bundle.getString("error.title"),
 					JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
-		
+
 		JDialog detachedRecipe = new JDialog((JFrame) SwingUtilities.getWindowAncestor(this),
-				"Detached Recipe", // TODO translation
+				bundle.getString("detachedRcp"),
 				false);
- 
+
 		JTextArea detachedRcpTxt = new JTextArea();
 		detachedRcpTxt = new JTextArea();
 		detachedRcpTxt.setBackground(Color.white);
@@ -323,7 +324,7 @@ public class RecipeScreen extends JPanel {
 					baseIngredient.getUnit(),
 					baseIngredient.getName()));
 		}
-		
+
 		return scaledIngredients;
 	}
 
@@ -433,7 +434,7 @@ public class RecipeScreen extends JPanel {
 			removeRecipe();
 		});
 	}
-	
+
 	public void removeRecipe() {
 		if (activeRecipe == null) {
 			JOptionPane.showMessageDialog(null,
@@ -507,6 +508,7 @@ public class RecipeScreen extends JPanel {
 		filterApply.setText(bundle.getString("filterApply"));
 		filterLabel.setText(bundle.getString("filterLabel"));
 		filterClear.setText(bundle.getString("filterClear"));
+		detachRecipeBtn.setText(bundle.getString("detachRcp"));
 	}
 
 	public void setActiveRecipe(Recipe recipe) {
@@ -519,7 +521,7 @@ public class RecipeScreen extends JPanel {
 			selectedRcpTxt.setText(activeRecipe.formatRecipeForTextDisplay());
 		} else if (mode == SCALED) {
 			selectedRcpTxt.setText(activeRecipe.formatScaledRecipeForTextDisplay(
-							scaleRecipe(scaleVal)));
+					scaleRecipe(scaleVal)));
 		}
 
 		selectedRcpTxt.setCaretPosition(0);
