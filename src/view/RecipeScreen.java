@@ -110,12 +110,17 @@ public class RecipeScreen extends JPanel {
 		filterInput = new JTextField(10);
 		filterApply = new JButton(bundle.getString("filterApply"));
 		filterLabel = new JLabel(bundle.getString("filterLabel"));
+		filterLabel.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
 		filterClear = new JButton(bundle.getString("filterClear"));
+		JPanel filterBtns = new JPanel();
+		filterBtns.add(filterApply);
+		filterBtns.add(filterClear);
 		filterInputPanel.add(filterLabel, BorderLayout.WEST);
 		filterInputPanel.add(filterInput, BorderLayout.CENTER);
-		filterInputPanel.add(filterApply, BorderLayout.EAST);
-		filterInputPanel.add(filterClear, BorderLayout.SOUTH);
+		//filterInputPanel.add(filterApply, BorderLayout.EAST);
+		filterInputPanel.add(filterBtns, BorderLayout.SOUTH);
 		filterLabelCombo.add(filterInputPanel, BorderLayout.SOUTH);
+		filterLabelCombo.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 
 		// ---------------------------------------------------------------------
 		// R E C I P E  S E L E C T  S U B S E C T I O N
