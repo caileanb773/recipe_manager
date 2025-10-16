@@ -1,7 +1,7 @@
 package view;
 
-import static definitions.Constants.GRADIENT_BOTTOM;
-import static definitions.Constants.GRADIENT_TOP;
+import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
+import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -288,7 +288,7 @@ public class RegisterScreen extends JPanel {
 		int w = getWidth();
 		int h = getHeight();
 
-		g2d.setPaint(new GradientPaint(0, 0, GRADIENT_TOP, 0, h, GRADIENT_BOTTOM));
+		g2d.setPaint(new GradientPaint(0, 0, LIGHT_GRADIENT_TOP, 0, h, LIGHT_GRADIENT_BOTTOM));
 		g2d.fillRect(0, 0, w, h);
 		g2d.dispose();
 	}

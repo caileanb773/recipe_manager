@@ -1,12 +1,13 @@
 package view;
 
 import static definitions.Constants.EMAIL_IDX;
+import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
+import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.INCORRECT_PASSWORD;
 import static definitions.Constants.NONEXISTENT_EMAIL;
 import static definitions.Constants.PW_IDX;
 import static definitions.Constants.VALID;
-import static definitions.Constants.GRADIENT_BOTTOM;
-import static definitions.Constants.GRADIENT_TOP;
+
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GradientPaint;
@@ -24,8 +25,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BoxLayout;
@@ -40,8 +44,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+
 import org.mindrot.jbcrypt.BCrypt;
+
 import com.sun.tools.javac.Main;
+
 import definitions.Constants;
 import util.Config;
 import util.Utility;
@@ -67,9 +74,15 @@ public class LoginScreen extends JPanel {
 	private JPanel inputsPanel;
 	private JCheckBox pwReveal;
 	private ResourceBundle bundle;
-
+	private JLabel logoBanner;
+	private List<ImageIcon> banners;
+	
 	// Other
 	private ActionListener listener;
+	
+	// Constants
+	private final int LIGHT_THEME_BANNER = 0;
+	private final int DARK_THEME_BANNER = 1;
 
 
 	public LoginScreen(ResourceBundle bundle) {
@@ -77,6 +90,7 @@ public class LoginScreen extends JPanel {
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(layout);
 		setBackground(Constants.rcpBtnGray);
+		banners = new ArrayList<>();
 
 		// ---------------------------------------------------------------------
 		// P A N E L S
@@ -100,20 +114,38 @@ public class LoginScreen extends JPanel {
 		register = new JButton(bundle.getString("register"));
 		emailInput = new JTextField(20);
 		pwInput = new JPasswordField(20);
+		logoBanner = new JLabel();
 
-		// ----- Banner -----
-		URL bannerUrl = Main.class.getClassLoader().getResource("img/banner_bluegray.png");
-		if (bannerUrl != null) {
-			ImageIcon icon = new ImageIcon(bannerUrl);
+		// ----- Banners -----
+		logoBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
+		add(logoBanner);
+
+		URL bannerLightUrl = Main.class.getClassLoader().getResource(
+				"img/banner_bluegray.png");
+		if (bannerLightUrl != null) {
+			ImageIcon icon = new ImageIcon(bannerLightUrl);
 			Image scaledImage = icon.getImage().getScaledInstance(
 					icon.getIconWidth() / 2, icon.getIconHeight() / 2,
 					Image.SCALE_SMOOTH);
-			JLabel logoBanner = new JLabel(new ImageIcon(scaledImage));
-			logoBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
-			add(logoBanner);
+			banners.add(new ImageIcon(scaledImage));
 		} else {
-			System.err.println("Could not resolve path to Login Screen banner.");
+			System.err.println("Could not resolve path to Light Theme banner.");
 		}
+		
+		URL bannerDarkUrl = Main.class.getClassLoader().getResource(
+				"img/banner_blackred.png");
+		if (bannerDarkUrl != null) {
+			ImageIcon icon = new ImageIcon(bannerDarkUrl);
+			Image scaledImage = icon.getImage().getScaledInstance(
+					icon.getIconWidth() / 2, icon.getIconHeight() / 2,
+					Image.SCALE_SMOOTH);
+			banners.add(new ImageIcon(scaledImage));
+		} else {
+			System.err.println("Could not resolve path to Dark Theme banner.");
+		}
+		
+		// TODO manage fetching the current theme
+		logoBanner.setIcon(banners.get(LIGHT_THEME_BANNER));
 
 		// ---------------------------------------------------------------------
 		// L O G I N  F I E L D S
@@ -162,7 +194,7 @@ public class LoginScreen extends JPanel {
 		int w = getWidth();
 		int h = getHeight();
 
-		g2d.setPaint(new GradientPaint(0, 0, GRADIENT_TOP, 0, h, GRADIENT_BOTTOM));
+		g2d.setPaint(new GradientPaint(0, 0, LIGHT_GRADIENT_TOP, 0, h, LIGHT_GRADIENT_BOTTOM));
 		g2d.fillRect(0, 0, w, h);
 		g2d.dispose();
 	}

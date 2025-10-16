@@ -3,6 +3,7 @@ package view;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Desktop;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -17,6 +18,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -24,6 +27,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+
 import controller.Main;
 import definitions.Recipe;
 import util.Config;
@@ -60,6 +71,8 @@ public class AppFrame {
 	private JMenuItem menuBtnReadMe;
 	private JMenuItem menuBtnLogout;
 	private static JCheckBox autoBackup;
+	private JRadioButtonMenuItem themeLight;
+	private JRadioButtonMenuItem themeDark;
 
 	// Other
 	private ActionListener listener;
@@ -126,6 +139,19 @@ public class AppFrame {
 		autoBackup = new JCheckBox(bundle.getString("autoBackup"));
 		autoBackup.setSelected(config.isAutoBackup());
 		menuOpt.add(autoBackup);
+		JMenu menuTheme = new JMenu("Themes");
+		ButtonGroup themeGroup = new ButtonGroup();
+		themeLight = new JRadioButtonMenuItem("Light", true);
+		themeDark = new JRadioButtonMenuItem("Dark");
+		themeGroup.add(themeLight);
+		themeGroup.add(themeDark);
+		menuOpt.add(menuTheme);
+		menuTheme.add(themeLight);
+		menuTheme.add(themeDark);
+
+		// Theme Selection Setup
+		themeLight.addActionListener(e -> applyTheme("LIGHT"));
+		themeDark.addActionListener(e -> applyTheme("DARK"));
 
 		// Final JFrame Settings
 		frame.pack();
@@ -141,6 +167,41 @@ public class AppFrame {
 			loginScreen.grabFocus("PASSWORD_FIELD");
 		} else {
 			loginScreen.grabFocus("LOGIN_FIELD");
+		}
+	}
+
+	public void applyTheme(String themeTitle) {
+		if (themeTitle.isEmpty()) {
+			System.err.println("No theme title passed to applyTheme().");
+			return;
+		}
+		
+		if (!(themeTitle.equals("LIGHT") || themeTitle.equals("DARK"))) {
+			System.err.println("Unrecognized theme passed to applyTheme().");
+			return;
+		}
+
+		try {
+			switch (themeTitle) {
+			case "LIGHT":
+				UIManager.setLookAndFeel(new FlatLightLaf());
+				break;
+			case "DARK":
+				UIManager.setLookAndFeel(new FlatDarkLaf());
+				break;
+			default:
+				return;
+			}
+		} catch (UnsupportedLookAndFeelException e) {
+			System.err.println("Exception caught while switching theme: "
+					+ e.getMessage());
+		} catch (Exception e) {
+			System.err.println("Exception caught while switching theme: "
+					+ e.getMessage());
+		}
+
+		for (Window w : Window.getWindows()) {
+			SwingUtilities.updateComponentTreeUI(w);
 		}
 	}
 

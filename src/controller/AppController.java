@@ -7,10 +7,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.apache.commons.io.FilenameUtils;
+
+import com.formdev.flatlaf.FlatLightLaf;
+
 import db.RecipeDAO;
 import definitions.Constants;
 import definitions.Recipe;
@@ -19,8 +25,8 @@ import util.Config;
 import view.AddRecipeDialog;
 import view.AppFrame;
 import view.LoginScreen;
-import view.RegisterScreen;
 import view.RecipeScreen;
+import view.RegisterScreen;
 
 /*
  * Author: Cailean Bernard

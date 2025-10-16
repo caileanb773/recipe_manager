@@ -44,10 +44,10 @@ public class Constants {
 	public static final Font buttonFont = new Font("Serif", Font.BOLD, 16);
 	public static final Font textFont = new Font("Segoe UI", Font.PLAIN, 15);
 	public static final Font recipeTxtFont;
-	public static final Color bgGray = new Color(105,105,105);
+	public static final Color LIGHT_THEME_BG_COL = new Color(105,105,105);
 	public static final Color rcpBtnGray = new Color(217,217,217);
-	public static final Color GRADIENT_TOP = new Color(150,150,150);
-	public static final Color GRADIENT_BOTTOM = new Color(225,225,225);
+	public static final Color LIGHT_GRADIENT_TOP = new Color(150,150,150);
+	public static final Color LIGHT_GRADIENT_BOTTOM = new Color(225,225,225);
 
 	static {
 		Font font = null;

@@ -233,7 +233,7 @@ public class RecipeScreen extends JPanel {
 		add(rcpSelectPanel, BorderLayout.WEST);
 
 		// ----- Panel Graphical Settings -----
-		setBackground(Constants.bgGray);
+		setBackground(Constants.LIGHT_THEME_BG_COL);
 		rcpSelectListPanel.setBackground(Color.white);
 		selectedRcpDescPanel.setOpaque(false);
 		selectedRcpInfo.setOpaque(false);

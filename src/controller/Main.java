@@ -15,13 +15,13 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		// Init FlatLAF
+		// Default theme is light
 		try {
-			UIManager.setLookAndFeel( new FlatLightLaf() );
-		} catch( Exception ex ) {
-			System.err.println( "Failed to initialize LaF" );
+			UIManager.setLookAndFeel(new FlatLightLaf());
+		} catch (Exception e) {
+			System.err.println("Error while initializing FlatLAF: " + e.getMessage());
 		}
-
+		
 		RecipeMgrModel model = new RecipeMgrModel();
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
@@ -31,6 +31,7 @@ public class Main {
 		// TODO BUG: the change to German translation is non-functional atm
 		// TODO add one more theme to match alternate banner
 		// TODO load screen for importing recipes
+		// TODO save/load last used theme in config
 		// TODO recipe buttons should just go '...' if they are too long. currently long rcp names widen the entire window
 		
 	}
