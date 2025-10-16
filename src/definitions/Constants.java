@@ -44,10 +44,18 @@ public class Constants {
 	public static final Font buttonFont = new Font("Serif", Font.BOLD, 16);
 	public static final Font textFont = new Font("Segoe UI", Font.PLAIN, 15);
 	public static final Font recipeTxtFont;
-	public static final Color LIGHT_THEME_BG_COL = new Color(105,105,105);
-	public static final Color rcpBtnGray = new Color(217,217,217);
+	
+	// Light Theme Constants
+	public static final Color LIGHT_THEME_BG_COL = new Color(237,237,237);
+	public static final Color LIGHT_THEME_RECIPE_BTN_COL = new Color(217,217,217);
 	public static final Color LIGHT_GRADIENT_TOP = new Color(150,150,150);
 	public static final Color LIGHT_GRADIENT_BOTTOM = new Color(225,225,225);
+	
+	// Dark Theme Constants
+	public static final Color DARK_THEME_BG_COL = new Color(46,46,46);
+	public static final Color DARK_THEME_RECIPE_BTN_COL = new Color(83,83,83);
+	public static final Color DARK_GRADIENT_TOP = new Color(69,69,69);
+	public static final Color DARK_GRADIENT_BOTTOM = new Color(31,31,31);
 
 	static {
 		Font font = null;

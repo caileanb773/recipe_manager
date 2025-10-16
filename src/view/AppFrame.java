@@ -37,6 +37,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import controller.Main;
 import definitions.Recipe;
+import definitions.Theme;
 import util.Config;
 
 /*
@@ -150,8 +151,8 @@ public class AppFrame {
 		menuTheme.add(themeDark);
 
 		// Theme Selection Setup
-		themeLight.addActionListener(e -> applyTheme("LIGHT"));
-		themeDark.addActionListener(e -> applyTheme("DARK"));
+		themeLight.addActionListener(e -> fireThemeChangeEvent(Theme.LIGHT));
+		themeDark.addActionListener(e -> fireThemeChangeEvent(Theme.DARK));
 
 		// Final JFrame Settings
 		frame.pack();
@@ -169,29 +170,49 @@ public class AppFrame {
 			loginScreen.grabFocus("LOGIN_FIELD");
 		}
 	}
-
-	public void applyTheme(String themeTitle) {
-		if (themeTitle.isEmpty()) {
-			System.err.println("No theme title passed to applyTheme().");
+	
+	public void fireThemeChangeEvent(Theme theme) {
+		if (theme.toString().isEmpty()) {
+			System.err.println("No theme passed to fireThemeChangeEvent().");
 			return;
 		}
 		
-		if (!(themeTitle.equals("LIGHT") || themeTitle.equals("DARK"))) {
-			System.err.println("Unrecognized theme passed to applyTheme().");
+		if (!(theme == Theme.LIGHT || theme == Theme.DARK)) {
+			System.err.println("Unrecognized theme passed to fireThemeChangeEvent().");
 			return;
 		}
+		
+		// Switch the FlatLaf library
+		applyTheme(theme);
+		
+		// Fire the theme change event to the controller
+		ActionEvent themeChange = new ActionEvent(this,
+				ActionEvent.ACTION_PERFORMED,
+				"switchTheme&" + theme.toString());
+		listener.actionPerformed(themeChange);
+	}
+	
+	public void changeThemeInChildren(Theme theme) {
+		// change theme in registerscreen, loginscreen, recipescreen
+		// tell the model what the current theme is so the config can save it
+		loginScreen.changeTheme(theme);
+		registerScreen.changeTheme(theme);
+		recipeScreen.changeTheme(theme);
+	}
 
+	public void applyTheme(Theme theme) {
 		try {
-			switch (themeTitle) {
-			case "LIGHT":
+			switch (theme) {
+			case LIGHT:
 				UIManager.setLookAndFeel(new FlatLightLaf());
 				break;
-			case "DARK":
+			case DARK:
 				UIManager.setLookAndFeel(new FlatDarkLaf());
 				break;
 			default:
 				return;
 			}
+			
 		} catch (UnsupportedLookAndFeelException e) {
 			System.err.println("Exception caught while switching theme: "
 					+ e.getMessage());

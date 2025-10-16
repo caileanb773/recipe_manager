@@ -20,6 +20,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import db.RecipeDAO;
 import definitions.Constants;
 import definitions.Recipe;
+import definitions.Theme;
 import model.RecipeMgrModel;
 import util.Config;
 import view.AddRecipeDialog;
@@ -83,6 +84,7 @@ public class AppController implements ActionListener {
 		view.addButtonListeners();
 	}
 
+	// TODO magic numbers here
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String[] cmdData = e.getActionCommand().split("&");
@@ -155,10 +157,22 @@ public class AppController implements ActionListener {
 		case "returnToLoginAfterRegister":
 			returnToLoginAfterRegister(cmdOpt);
 			break;
+		case "switchTheme":
+			handleThemeSwitch(cmdData[1]);
+			break;
 		default:
 			System.err.println("Unrecognized button actionCommand.");
 			break;
 		}
+	}
+	
+	public void handleThemeSwitch(String themeTitle) {
+		System.out.println("Switching theme: " + themeTitle);
+		// Font colours
+		// Background colours
+		// In each Jpanel of cardlayout
+		
+		view.changeThemeInChildren(Theme.valueOf(themeTitle));
 	}
 
 	public void returnToLoginAfterRegister(String newEmail) {

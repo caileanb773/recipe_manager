@@ -1,5 +1,13 @@
 package view;
 
+import static definitions.Constants.DARK_GRADIENT_BOTTOM;
+import static definitions.Constants.DARK_GRADIENT_TOP;
+import static definitions.Constants.DARK_THEME_BG_COL;
+import static definitions.Constants.DARK_THEME_RECIPE_BTN_COL;
+import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
+import static definitions.Constants.LIGHT_GRADIENT_TOP;
+import static definitions.Constants.LIGHT_THEME_BG_COL;
+import static definitions.Constants.LIGHT_THEME_RECIPE_BTN_COL;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -40,6 +48,7 @@ import javax.swing.border.BevelBorder;
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
+import definitions.Theme;
 
 /*
  * Author: Cailean Bernard
@@ -85,6 +94,10 @@ public class RecipeScreen extends JPanel {
 	private Recipe activeRecipe;
 	private ActionListener listener;
 	private int scaleVal;
+	private Color topGradient;
+	private Color botGradient;
+	private Color rcpBtnColor;
+	private Color rcpBtnFontCol;
 
 	// Constant
 	private final int UNSCALED = 0;
@@ -101,6 +114,10 @@ public class RecipeScreen extends JPanel {
 		setLayout(new BorderLayout());
 		rcpSelectList = new ArrayList<RecipeSelectButton>();
 		scaleVal = 1;
+		topGradient = LIGHT_GRADIENT_TOP;
+		botGradient = LIGHT_GRADIENT_BOTTOM;
+		rcpBtnColor = LIGHT_THEME_RECIPE_BTN_COL;
+		rcpBtnFontCol = Color.white;
 
 		// ---------------------------------------------------------------------
 		// T A G S
@@ -233,8 +250,7 @@ public class RecipeScreen extends JPanel {
 		add(rcpSelectPanel, BorderLayout.WEST);
 
 		// ----- Panel Graphical Settings -----
-		setBackground(Constants.LIGHT_THEME_BG_COL);
-		rcpSelectListPanel.setBackground(Color.white);
+		rcpSelectListPanel.setBackground(Constants.LIGHT_THEME_BG_COL); // XXX this will need to be changed
 		selectedRcpDescPanel.setOpaque(false);
 		selectedRcpInfo.setOpaque(false);
 		rcpSelectPanel.setOpaque(false);
@@ -251,10 +267,7 @@ public class RecipeScreen extends JPanel {
 		int w = getWidth();
 		int h = getHeight();
 
-		Color topColor = new Color(184,184,184);
-		Color bottomColor = new Color(217,217,217);
-
-		g2d.setPaint(new GradientPaint(0, 0, topColor, 0, h, bottomColor));
+		g2d.setPaint(new GradientPaint(0, 0, topGradient, 0, h, botGradient));
 		g2d.fillRect(0, 0, w, h);
 		g2d.dispose();
 	}
@@ -347,6 +360,7 @@ public class RecipeScreen extends JPanel {
 
 		for (Recipe rcp : recipes) {
 			RecipeSelectButton newRcpButton = new RecipeSelectButton(rcp, Constants.recipeTxtFont);
+			newRcpButton.setBackground(rcpBtnColor);
 			rcpSelectList.add(newRcpButton);
 			newRcpButton.setAlignmentX(CENTER_ALIGNMENT);
 			newRcpButton.addActionListener(e -> {
@@ -514,6 +528,33 @@ public class RecipeScreen extends JPanel {
 		filterLabel.setText(bundle.getString("filterLabel"));
 		filterClear.setText(bundle.getString("filterClear"));
 		detachRecipeBtn.setText(bundle.getString("detachRcp"));
+	}
+	
+	public void changeTheme(Theme theme) {
+		
+		switch (theme) {
+		case LIGHT:
+			topGradient = LIGHT_GRADIENT_TOP;
+			botGradient = LIGHT_GRADIENT_BOTTOM;
+			selectedRcpTxt.setBackground(LIGHT_THEME_BG_COL);
+			rcpSelectListPanel.setBackground(LIGHT_THEME_BG_COL);
+			rcpBtnColor = LIGHT_THEME_RECIPE_BTN_COL;
+			rcpBtnFontCol = Color.white;
+			break;
+		case DARK:
+			topGradient = DARK_GRADIENT_TOP;
+			botGradient = DARK_GRADIENT_BOTTOM;
+			selectedRcpTxt.setBackground(DARK_THEME_BG_COL);
+			rcpSelectListPanel.setBackground(DARK_THEME_BG_COL);
+			rcpBtnColor = DARK_THEME_RECIPE_BTN_COL;
+			rcpBtnFontCol = Color.DARK_GRAY; // maybe black?
+			break;
+		default:
+			System.err.println("Unrecognized theme: " + theme);
+		}
+		
+		// if !recipes.empty()
+		displayRecipeButtons();
 	}
 
 	public void setActiveRecipe(Recipe recipe) {

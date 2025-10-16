@@ -1,13 +1,15 @@
 package view;
 
 import static definitions.Constants.EMAIL_IDX;
+import static definitions.Constants.INCORRECT_PASSWORD;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
-import static definitions.Constants.INCORRECT_PASSWORD;
+import static definitions.Constants.DARK_GRADIENT_BOTTOM;
+import static definitions.Constants.DARK_GRADIENT_TOP;
 import static definitions.Constants.NONEXISTENT_EMAIL;
 import static definitions.Constants.PW_IDX;
 import static definitions.Constants.VALID;
-
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GradientPaint;
@@ -50,6 +52,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import com.sun.tools.javac.Main;
 
 import definitions.Constants;
+import definitions.Theme;
 import util.Config;
 import util.Utility;
 
@@ -76,10 +79,12 @@ public class LoginScreen extends JPanel {
 	private ResourceBundle bundle;
 	private JLabel logoBanner;
 	private List<ImageIcon> banners;
-	
+	private Color topGradient;
+	private Color botGradient;
+
 	// Other
 	private ActionListener listener;
-	
+
 	// Constants
 	private final int LIGHT_THEME_BANNER = 0;
 	private final int DARK_THEME_BANNER = 1;
@@ -89,8 +94,12 @@ public class LoginScreen extends JPanel {
 		this.bundle = bundle;
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(layout);
-		setBackground(Constants.rcpBtnGray);
+		setBackground(Constants.LIGHT_THEME_RECIPE_BTN_COL);
 		banners = new ArrayList<>();
+		
+		// TODO change this to fetch colours from config
+		topGradient = LIGHT_GRADIENT_TOP;
+		botGradient = LIGHT_GRADIENT_BOTTOM;
 
 		// ---------------------------------------------------------------------
 		// P A N E L S
@@ -131,7 +140,7 @@ public class LoginScreen extends JPanel {
 		} else {
 			System.err.println("Could not resolve path to Light Theme banner.");
 		}
-		
+
 		URL bannerDarkUrl = Main.class.getClassLoader().getResource(
 				"img/banner_blackred.png");
 		if (bannerDarkUrl != null) {
@@ -143,7 +152,7 @@ public class LoginScreen extends JPanel {
 		} else {
 			System.err.println("Could not resolve path to Dark Theme banner.");
 		}
-		
+
 		// TODO manage fetching the current theme
 		logoBanner.setIcon(banners.get(LIGHT_THEME_BANNER));
 
@@ -166,7 +175,7 @@ public class LoginScreen extends JPanel {
 		inputsPanel.add(pwReveal, gbc);
 		gbc.gridx = 1;
 		gbc.gridy++;
-		
+
 		// ----- LastEmail check -----
 		String lastEmail = Config.getLastEmail();
 		if (lastEmail == null || lastEmail.equals("null") || lastEmail.isEmpty()) {
@@ -194,7 +203,7 @@ public class LoginScreen extends JPanel {
 		int w = getWidth();
 		int h = getHeight();
 
-		g2d.setPaint(new GradientPaint(0, 0, LIGHT_GRADIENT_TOP, 0, h, LIGHT_GRADIENT_BOTTOM));
+		g2d.setPaint(new GradientPaint(0, 0, topGradient, 0, h, botGradient));
 		g2d.fillRect(0, 0, w, h);
 		g2d.dispose();
 	}
@@ -361,6 +370,24 @@ public class LoginScreen extends JPanel {
 		login.setText(bundle.getString("login"));
 		clear.setText(bundle.getString("clear"));
 		register.setText(bundle.getString("register"));
+	}
+
+	public void changeTheme(Theme theme) {
+		
+		switch (theme) {
+		case LIGHT:
+			logoBanner.setIcon(banners.get(LIGHT_THEME_BANNER));
+			topGradient = LIGHT_GRADIENT_TOP;
+			botGradient = LIGHT_GRADIENT_BOTTOM;
+			break;
+		case DARK:
+			logoBanner.setIcon(banners.get(DARK_THEME_BANNER));
+			topGradient = DARK_GRADIENT_TOP;
+			botGradient = DARK_GRADIENT_BOTTOM;
+			break;
+		default:
+			System.err.println("Unrecognized theme: " + theme);
+		}
 	}
 
 	public static boolean isRemembering() {

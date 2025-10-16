@@ -29,9 +29,9 @@ public class Main {
 
 		// TODO refactor the math in Fraction class and accnt for decimal multiplication
 		// TODO BUG: the change to German translation is non-functional atm
-		// TODO add one more theme to match alternate banner
+		// TODO finish theme methods
+		// TODO theme config and default config loading
 		// TODO load screen for importing recipes
-		// TODO save/load last used theme in config
 		// TODO recipe buttons should just go '...' if they are too long. currently long rcp names widen the entire window
 		
 	}

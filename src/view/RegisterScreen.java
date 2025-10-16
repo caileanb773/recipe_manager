@@ -1,8 +1,12 @@
 package view;
 
+import static definitions.Constants.DARK_GRADIENT_BOTTOM;
+import static definitions.Constants.DARK_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
+
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GradientPaint;
@@ -25,6 +29,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -40,9 +45,13 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
 import org.mindrot.jbcrypt.BCrypt;
+
 import com.sun.tools.javac.Main;
+
 import definitions.Constants;
+import definitions.Theme;
 import util.Utility;
 
 /*
@@ -83,6 +92,8 @@ public class RegisterScreen extends JPanel {
 	private boolean isPasswordHidden;
 	private ActionListener listener;
 	private ResourceBundle bundle;
+	private Color topGradient;
+	private Color botGradient;
 
 
 	public RegisterScreen(ResourceBundle bundle) {
@@ -91,7 +102,9 @@ public class RegisterScreen extends JPanel {
 		pwStrengthIndicators = new Image[2];
 		pwRevealIcons = new ImageIcon[4];
 		isPasswordHidden = true;
-
+		topGradient = LIGHT_GRADIENT_TOP;
+		botGradient = LIGHT_GRADIENT_BOTTOM;
+		
 		// ---------------------------------------------------------------------
 		// P A N E L S
 		// ---------------------------------------------------------------------
@@ -288,7 +301,7 @@ public class RegisterScreen extends JPanel {
 		int w = getWidth();
 		int h = getHeight();
 
-		g2d.setPaint(new GradientPaint(0, 0, LIGHT_GRADIENT_TOP, 0, h, LIGHT_GRADIENT_BOTTOM));
+		g2d.setPaint(new GradientPaint(0, 0, topGradient, 0, h, botGradient));
 		g2d.fillRect(0, 0, w, h);
 		g2d.dispose();
 	}
@@ -470,6 +483,22 @@ public class RegisterScreen extends JPanel {
 		emailInputLbl.setText(bundle.getString("enterEmail"));
 		passwordInputLbl.setText(bundle.getString("enterPass"));
 		passwordRequirements.setText(bundle.getString("register.weakPassword"));
+	}
+	
+	public void changeTheme(Theme theme) {
+		
+		switch (theme) {
+		case LIGHT:
+			topGradient = LIGHT_GRADIENT_TOP;
+			botGradient = LIGHT_GRADIENT_BOTTOM;
+			break;
+		case DARK:
+			topGradient = DARK_GRADIENT_TOP;
+			botGradient = DARK_GRADIENT_BOTTOM;
+			break;
+		default:
+			System.err.println("Unrecognized theme: " + theme);
+		}
 	}
 
 	public void initFocus() {

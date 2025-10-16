@@ -32,7 +32,7 @@ public class RecipeSelectButton extends JButton {
 		btnRecipe = recipe;
 		setFocusable(true);
 		setText(recipe.getTitle());
-		setBackground(Constants.rcpBtnGray);
+		setBackground(Constants.LIGHT_THEME_RECIPE_BTN_COL);
 		setForeground(Color.black);
 		setFont(font);
 	}
