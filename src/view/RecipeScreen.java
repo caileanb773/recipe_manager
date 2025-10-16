@@ -98,6 +98,7 @@ public class RecipeScreen extends JPanel {
 	private Color botGradient;
 	private Color rcpBtnColor;
 	private Color rcpBtnFontCol;
+	private Color panelBgCol;
 
 	// Constant
 	private final int UNSCALED = 0;
@@ -114,10 +115,13 @@ public class RecipeScreen extends JPanel {
 		setLayout(new BorderLayout());
 		rcpSelectList = new ArrayList<RecipeSelectButton>();
 		scaleVal = 1;
+		
+		// TODO Theme colour init, this will need to be refactoed
 		topGradient = LIGHT_GRADIENT_TOP;
 		botGradient = LIGHT_GRADIENT_BOTTOM;
 		rcpBtnColor = LIGHT_THEME_RECIPE_BTN_COL;
-		rcpBtnFontCol = Color.white;
+		rcpBtnFontCol = Color.black;
+		panelBgCol = LIGHT_THEME_BG_COL;
 
 		// ---------------------------------------------------------------------
 		// T A G S
@@ -174,7 +178,7 @@ public class RecipeScreen extends JPanel {
 		// ---------------------------------------------------------------------
 		// R E C I P E  S E L E C T  L I S T
 		// ---------------------------------------------------------------------
-		rcpSelectListPanel.setBackground(Color.lightGray);
+		rcpSelectListPanel.setBackground(panelBgCol);
 		rcpSelectScrollPane = new JScrollPane(rcpSelectListPanel);
 		rcpSelectScrollPane.getVerticalScrollBar().setUnitIncrement(Constants.SCROLL_SPEED);
 		rcpEditPanel = new JPanel();
@@ -201,7 +205,7 @@ public class RecipeScreen extends JPanel {
 		selectedRcpDescPanel.setLayout(recipeDescLayout);
 		selectedRcpInfo = new JPanel();
 		selectedRcpTxt = new JTextArea();
-		selectedRcpTxt.setBackground(Color.white);
+		selectedRcpTxt.setBackground(panelBgCol);
 		selectedRcpTxt.setEditable(false);
 		selectedRcpTxt.setCaretColor(new Color(0,0,0,0));
 		selectedRcpTxt.setCaretPosition(0);
@@ -301,7 +305,7 @@ public class RecipeScreen extends JPanel {
 
 		JTextArea detachedRcpTxt = new JTextArea();
 		detachedRcpTxt = new JTextArea();
-		detachedRcpTxt.setBackground(Color.white);
+		detachedRcpTxt.setBackground(panelBgCol);
 		detachedRcpTxt.setEditable(false);
 		detachedRcpTxt.setCaretColor(new Color(0,0,0,0));
 		detachedRcpTxt.setWrapStyleWord(true);
@@ -360,7 +364,6 @@ public class RecipeScreen extends JPanel {
 
 		for (Recipe rcp : recipes) {
 			RecipeSelectButton newRcpButton = new RecipeSelectButton(rcp, Constants.recipeTxtFont);
-			newRcpButton.setBackground(rcpBtnColor);
 			rcpSelectList.add(newRcpButton);
 			newRcpButton.setAlignmentX(CENTER_ALIGNMENT);
 			newRcpButton.addActionListener(e -> {
@@ -379,6 +382,8 @@ public class RecipeScreen extends JPanel {
 		rcpSelectListPanel.removeAll();
 
 		for (RecipeSelectButton r : rcpSelectList) {
+			r.setBackground(rcpBtnColor);
+			r.setForeground(rcpBtnFontCol);
 			rcpSelectListPanel.add(r);
 		}
 
@@ -536,18 +541,20 @@ public class RecipeScreen extends JPanel {
 		case LIGHT:
 			topGradient = LIGHT_GRADIENT_TOP;
 			botGradient = LIGHT_GRADIENT_BOTTOM;
-			selectedRcpTxt.setBackground(LIGHT_THEME_BG_COL);
-			rcpSelectListPanel.setBackground(LIGHT_THEME_BG_COL);
+			panelBgCol = LIGHT_THEME_BG_COL;
+			selectedRcpTxt.setBackground(panelBgCol);
+			rcpSelectListPanel.setBackground(panelBgCol);
 			rcpBtnColor = LIGHT_THEME_RECIPE_BTN_COL;
-			rcpBtnFontCol = Color.white;
+			rcpBtnFontCol = Color.black;
 			break;
 		case DARK:
 			topGradient = DARK_GRADIENT_TOP;
 			botGradient = DARK_GRADIENT_BOTTOM;
-			selectedRcpTxt.setBackground(DARK_THEME_BG_COL);
-			rcpSelectListPanel.setBackground(DARK_THEME_BG_COL);
+			panelBgCol = DARK_THEME_BG_COL;
+			selectedRcpTxt.setBackground(panelBgCol);
+			rcpSelectListPanel.setBackground(panelBgCol);
 			rcpBtnColor = DARK_THEME_RECIPE_BTN_COL;
-			rcpBtnFontCol = Color.DARK_GRAY; // maybe black?
+			rcpBtnFontCol = Color.white;
 			break;
 		default:
 			System.err.println("Unrecognized theme: " + theme);

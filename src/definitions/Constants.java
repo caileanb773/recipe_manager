@@ -46,9 +46,9 @@ public class Constants {
 	public static final Font recipeTxtFont;
 	
 	// Light Theme Constants
-	public static final Color LIGHT_THEME_BG_COL = new Color(237,237,237);
+	public static final Color LIGHT_THEME_BG_COL = new Color(240,240,240);
 	public static final Color LIGHT_THEME_RECIPE_BTN_COL = new Color(217,217,217);
-	public static final Color LIGHT_GRADIENT_TOP = new Color(150,150,150);
+	public static final Color LIGHT_GRADIENT_TOP = new Color(170,170,170);
 	public static final Color LIGHT_GRADIENT_BOTTOM = new Color(225,225,225);
 	
 	// Dark Theme Constants
