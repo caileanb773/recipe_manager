@@ -93,6 +93,7 @@ public class AppFrame {
 		loginScreen = new LoginScreen(bundle);
 		registerScreen = new RegisterScreen(bundle);
 		container = frame.getContentPane();
+		currTheme = config.getTheme();
 
 		// Icon
 		try {

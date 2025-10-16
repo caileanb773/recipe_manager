@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
+import definitions.Theme;
 import view.AppFrame;
 import view.LoginScreen;
 
@@ -22,9 +22,10 @@ public class Config {
 
 	private static ResourceBundle bundle;
 	private static Locale locale;
+	private static Theme theme;
 	private static String lastEmail;
 	private static boolean autoBackup;
-	private final String[] configs = { "language", "lastEmail", "autoBackup" };
+	private final String[] configs = { "language", "lastEmail", "autoBackup", "theme" };
 
 	// Local constants
 	private final static int VALUE_IDX = 1;
@@ -56,6 +57,7 @@ public class Config {
 	public void loadConfig() {
 		System.out.println("Loading settings...");
 		String lang = null;
+		String temp;
 
 		try (BufferedReader reader = new BufferedReader(new FileReader("resources/config.ini"))) {
 			String line = null;
@@ -65,7 +67,7 @@ public class Config {
 				String[] lineInfo = line.split("=");
 				switch (lineInfo[KEY_IDX]) {
 				case "language":
-					lang = lineInfo[VALUE_IDX]; 
+					lang = lineInfo[VALUE_IDX];
 					break;
 				case "lastEmail":
 					lastEmail = lineInfo[VALUE_IDX];
@@ -73,6 +75,8 @@ public class Config {
 				case "autoBackup":
 					autoBackup = Boolean.parseBoolean(lineInfo[VALUE_IDX]);
 					break;
+				case "theme":
+					theme = Theme.valueOf(lineInfo[VALUE_IDX]);
 				default:
 					break;
 				}
@@ -90,6 +94,9 @@ public class Config {
 		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
 	}
 
+	/**
+	 * Saves the current configuration to the config.ini file.
+	 */
 	public void saveConfig() {
 		System.out.println("Saving settings...");
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("resources/config.ini"))) {
@@ -99,23 +106,28 @@ public class Config {
 				switch (cfg) {
 				case "language":
 					System.out.println("Saving language as " + locale);
-					writer.write("language=" + locale + "\n");
+					writer.write("language=" + locale);
 					break;
 				case "lastEmail":
 					if (!LoginScreen.isRemembering()) { // if not remembering email, reset
 						lastEmail = null;
 					}
 					System.out.println("Saving lastEmail as " + lastEmail);
-					writer.write("lastEmail=" + lastEmail + "\n");
+					writer.write("lastEmail=" + lastEmail);
 					break;
 				case "autoBackup":
 					System.out.println("Autobackup: " + AppFrame.isBackingUp());
 					writer.write("autoBackup=");
 					writer.write(AppFrame.isBackingUp() ? "true" : "false");
 					break;
+				case "theme":
+					System.out.println("Saving theme: " + theme);
+					writer.write("theme=" + theme.toString().toUpperCase());
+					break;
 				default:
 					break;
 				}
+				writer.write("\n");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -140,6 +152,8 @@ public class Config {
 				case "autoBackup":
 					writer.write("true");
 					break;
+				case "theme":
+					writer.write("LIGHT");
 				default:
 					break;
 				}
@@ -156,6 +170,10 @@ public class Config {
 	
 	public boolean isAutoBackup() {
 		return autoBackup;
+	}
+	
+	public Theme getTheme() {
+		return theme;
 	}
 	
 	public static String getLastEmail() {
