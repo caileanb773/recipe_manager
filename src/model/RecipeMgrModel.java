@@ -121,7 +121,7 @@ public class RecipeMgrModel {
 			return;
 		}
 
-		System.out.println("Saving recipe list locally...");
+		System.out.println("Saving recipe list locally");
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(exportPath))) {
 			for (Recipe r : recipes) {
 				writer.write(r.formatRecipeForExport());

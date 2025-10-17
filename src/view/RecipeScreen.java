@@ -222,7 +222,7 @@ public class RecipeScreen extends JPanel {
 		scaleRcpLabel = new JLabel(bundle.getString("scaleRcp"));
 		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 100, 1);
 		scaleRcpSpinner = new JSpinner(spinnerModel);
-		scaleRcpSpinner.addChangeListener(_ -> {
+		scaleRcpSpinner.addChangeListener(ignored -> {
 			scaleVal = (int)scaleRcpSpinner.getValue();
 			displayActiveRecipe(SCALED);
 		});
@@ -231,7 +231,7 @@ public class RecipeScreen extends JPanel {
 
 		// ----- Send Recipe to New Screen Btn -----
 		detachRecipeBtn = new JButton(bundle.getString("detachRcp"));
-		detachRecipeBtn.addActionListener(_ -> {
+		detachRecipeBtn.addActionListener(ignored -> {
 			handleDetachRecipe();
 		});
 		scaleRcpPanel.add(detachRecipeBtn);
@@ -366,7 +366,7 @@ public class RecipeScreen extends JPanel {
 			RecipeSelectButton newRcpButton = new RecipeSelectButton(rcp, Constants.recipeTxtFont);
 			rcpSelectList.add(newRcpButton);
 			newRcpButton.setAlignmentX(CENTER_ALIGNMENT);
-			newRcpButton.addActionListener(_ -> {
+			newRcpButton.addActionListener(ignored -> {
 				setActiveRecipe(rcp);
 				scaleRcpSpinner.setValue(1);
 			});
@@ -454,7 +454,7 @@ public class RecipeScreen extends JPanel {
 
 	public void initRemoveButton() {
 		rcpListRemove.setActionCommand("remove");
-		rcpListRemove.addActionListener(_ -> {
+		rcpListRemove.addActionListener(ignored -> {
 			removeRecipe();
 		});
 	}
@@ -484,7 +484,7 @@ public class RecipeScreen extends JPanel {
 
 	public void initEditButton() {
 		rcpListEdit.setActionCommand("edit");
-		rcpListEdit.addActionListener(_ -> {
+		rcpListEdit.addActionListener(ignored -> {
 			if (activeRecipe == null) {
 				System.out.println("Aborting edit recipe dialog: no active recipe.");
 				JOptionPane.showMessageDialog(null,
@@ -560,7 +560,7 @@ public class RecipeScreen extends JPanel {
 			System.err.println("Unrecognized theme: " + theme);
 		}
 		
-		// if !recipes.empty()
+		// TODO there is a method in controller that does this. call that instead?
 		displayRecipeButtons();
 	}
 

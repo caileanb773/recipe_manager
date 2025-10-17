@@ -150,8 +150,8 @@ public class AppFrame {
 		menuOpt.add(menuTheme);
 		menuTheme.add(themeLight);
 		menuTheme.add(themeDark);
-		themeLight.addActionListener(_ -> fireThemeChangeEvent(Theme.LIGHT));
-		themeDark.addActionListener(_ -> fireThemeChangeEvent(Theme.DARK));
+		themeLight.addActionListener(ignored -> fireThemeChangeEvent(Theme.LIGHT));
+		themeDark.addActionListener(ignored -> fireThemeChangeEvent(Theme.DARK));
 		
 		if (currentTheme == Theme.LIGHT) {
 			themeLight.setSelected(true);
@@ -260,7 +260,7 @@ public class AppFrame {
 		menuBtnFr.setActionCommand("french");
 		menuBtnDe.addActionListener(listener);
 		menuBtnDe.setActionCommand("german");
-		menuBtnReadMe.addActionListener(_ -> {
+		menuBtnReadMe.addActionListener(ignored -> {
 			displayReadMe();
 		});
 		menuBtnLogout.setActionCommand("logout");

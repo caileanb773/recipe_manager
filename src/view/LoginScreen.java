@@ -96,10 +96,6 @@ public class LoginScreen extends JPanel {
 		setLayout(layout);
 		setBackground(Constants.LIGHT_THEME_RECIPE_BTN_COL);
 		banners = new ArrayList<>();
-		
-		// TODO change this to fetch colours from config
-		topGradient = LIGHT_GRADIENT_TOP;
-		botGradient = LIGHT_GRADIENT_BOTTOM;
 
 		// ---------------------------------------------------------------------
 		// P A N E L S
@@ -152,9 +148,6 @@ public class LoginScreen extends JPanel {
 		} else {
 			System.err.println("Could not resolve path to Dark Theme banner.");
 		}
-
-		// TODO manage fetching the current theme
-		logoBanner.setIcon(banners.get(LIGHT_THEME_BANNER));
 
 		// ---------------------------------------------------------------------
 		// L O G I N  F I E L D S
@@ -213,10 +206,10 @@ public class LoginScreen extends JPanel {
 	}
 
 	public void initializeButtons() {
-		login.addActionListener(_ -> validateFields());
-		clear.addActionListener(_ -> reset());
-		register.addActionListener(_ -> register());
-		pwReveal.addActionListener(_ -> togglePwReveal());
+		login.addActionListener(ignored -> validateFields());
+		clear.addActionListener(ignored -> reset());
+		register.addActionListener(ignored -> register());
+		pwReveal.addActionListener(ignored -> togglePwReveal());
 
 		Action confirmAction = new AbstractAction(bundle.getString("login")) {
 			@Override

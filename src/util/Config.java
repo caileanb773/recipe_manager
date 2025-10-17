@@ -60,7 +60,7 @@ public class Config {
 	 * Fetches any past configurations that were saved when the app was last closed.
 	 */
 	public void loadConfig() {
-		System.out.println("Loading settings...");
+		System.out.println("Loading settings");
 		loadTimeout++;
 		
 		if (loadTimeout >= 10) {
@@ -151,7 +151,7 @@ public class Config {
 	 * Saves the current configuration to the config.ini file.
 	 */
 	public void saveConfig() {
-		System.out.println("Saving settings...");
+		System.out.println("Saving settings");
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("resources/config.ini"))) {
 			writer.write("# do not edit this unless you know what you are doing\n");
 
@@ -188,7 +188,7 @@ public class Config {
 	}
 
 	public void createDefaultConfig() {
-		System.out.println("Creating config.ini...");
+		System.out.println("Creating config.ini");
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("resources/config.ini"))) {
 			writer.write("# do not edit this unless you know what you are doing\n");

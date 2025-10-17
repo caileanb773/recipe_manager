@@ -307,9 +307,9 @@ public class RegisterScreen extends JPanel {
 	}
 
 	public void initializeButtons() {
-		pwRevealBtn.addActionListener(_ -> togglePwReveal());
-		confirmBtn.addActionListener(_ -> validateFields());
-		cancelBtn.addActionListener(_ -> {
+		pwRevealBtn.addActionListener(ignored -> togglePwReveal());
+		confirmBtn.addActionListener(ignored -> validateFields());
+		cancelBtn.addActionListener(ignored -> {
 			ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
 					"cancelRegister");
 			listener.actionPerformed(event);

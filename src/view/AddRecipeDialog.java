@@ -133,8 +133,8 @@ public class AddRecipeDialog extends JDialog {
 		add(dialogPanel);
 
 		addConfirmListener(listener, mode);
-		btnCancel.addActionListener(_ -> cancelRecipe());
-		btnHelp.addActionListener(_ -> displayHelp());
+		btnCancel.addActionListener(ignored -> cancelRecipe());
+		btnHelp.addActionListener(ignored -> displayHelp());
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				cancelRecipe();
@@ -166,7 +166,7 @@ public class AddRecipeDialog extends JDialog {
 			btnConfirm.setActionCommand("confirmEdit");
 		}
 
-		btnConfirm.addActionListener(_ -> {
+		btnConfirm.addActionListener(ignored -> {
 			System.out.println("Checking validity of recipe fields...");
 			Recipe newRecipe = getRecipeFromFields();
 			if (newRecipe != null) {

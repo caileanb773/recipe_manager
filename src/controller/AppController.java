@@ -2,15 +2,21 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.apache.commons.io.FilenameUtils;
+
 import db.RecipeDAO;
 import definitions.Constants;
 import definitions.Recipe;
@@ -39,6 +45,7 @@ public class AppController implements ActionListener {
 	// Other
 	private boolean appIsOnline = true;
 	private RecipeDAO recipeDao;
+	private ResourceBundle bundle;
 
 	// Constants
 	private final int ONLINE = 1;
@@ -57,6 +64,8 @@ public class AppController implements ActionListener {
 	}
 
 	public void initialize(int mode) {
+		bundle = view.getBundle();
+		
 		if (mode == ONLINE) {
 			recipeDao.init();
 			model.setRecipes(recipeDao.selectAllRecipesAsList());
@@ -97,31 +106,31 @@ public class AppController implements ActionListener {
 
 		switch (cmd) {
 		case "add":
-			System.out.println("Attempting to add recipe...");
+			System.out.println("Attempting to add recipe");
 			displayCreateRecipeDialog();
 			break;
 		case "remove":
-			System.out.println("Attempting to remove recipe...");
+			System.out.println("Attempting to remove recipe");
 			handleRemoveRecipe();
 			break;
 		case "edit":
-			System.out.println("Attempting to edit recipe...");
+			System.out.println("Attempting to edit recipe");
 			displayEditRecipeDialog();
 			break;
 		case "confirmAdd":
-			System.out.println("Recipe created. Updating model/view...");
+			System.out.println("Recipe created. Updating model/view");
 			handleAddRecipe(rcpDialog.getCreatedRecipe());
 			break;
 		case "confirmEdit":
-			System.out.println("Confirming edits to recipe...");
+			System.out.println("Confirming edits to recipe");
 			confirmEditRecipe();
 			break;
 		case "export":
-			System.out.println("Exporting recipe list...");
+			System.out.println("Preparing to export recipes");
 			handleExportRecipes();
 			break;
 		case "import":
-			System.out.println("Loading recipes from .rcp and pushing to database...");
+			System.out.println("Preparing to import recipes");
 			handleImportRecipes();
 			break;
 		case "applyFilter":
@@ -193,7 +202,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void login() {
-		System.out.println("Attempting to log in...");
+		System.out.println("Attempting to log in");
 		LoginScreen login = view.getLoginScreen();
 		if (LoginScreen.isRemembering()) {
 			Config.setLastEmail(login.getEmail());
@@ -204,13 +213,13 @@ public class AppController implements ActionListener {
 	}
 
 	public void logout() {
-		System.out.println("Logging out...");
+		System.out.println("Logging out");
 		view.switchScreen("LOGIN");
 		view.getLoginScreen().grabFocus("PASSWORD_FIELD");
 	}
 
 	public void handleCloseWithBackup() {
-		ResourceBundle bundle = view.getBundle();
+		bundle = view.getBundle();
 
 		try {
 			model.exportRecipeList("backup.rcp");
@@ -232,7 +241,7 @@ public class AppController implements ActionListener {
 		List<String> filters = ui.getFilters();
 
 		if (filters == null) {
-			System.out.println("Cancelling filter operation...");
+			System.out.println("Cancelling filter operation");
 			return;
 		}
 
@@ -266,7 +275,7 @@ public class AppController implements ActionListener {
 			model.addRecipe(newRecipe);
 			view.getRecipeScreen().setActiveRecipe(newRecipe);
 			refreshRecipeList();
-			System.out.println("Adding " + newRecipe.getTitle() + " to recipe list...");
+			System.out.println("Adding " + newRecipe.getTitle() + " to recipe list");
 			rcpDialog.setCreatedRecipeToNull();
 			rcpDialog.dispose();
 			rcpDialog = null;
@@ -337,12 +346,13 @@ public class AppController implements ActionListener {
 		} else {
 			ui.populateRecipeSelectList(model.getRecipes());
 		}
+		
 		ui.displayRecipeButtons();
 	}
 
 	// TODO edit this to include JSON format eventually
 	public void handleExportRecipes() {
-		ResourceBundle bundle = view.getBundle();
+		bundle = view.getBundle();
 		JFileChooser chooser = new JFileChooser();
 		chooser.setDialogTitle(bundle.getString("export"));
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -393,12 +403,12 @@ public class AppController implements ActionListener {
 			}
 
 		} else {
-			System.out.println("Cancelling export...");
+			System.out.println("Cancelling export");
 		}
 	}
 
 	public void handleImportRecipes() {
-		ResourceBundle bundle = view.getBundle();
+		bundle = view.getBundle();
 		JFileChooser chooser = new JFileChooser();
 		chooser.setDialogTitle(bundle.getString("import.title"));
 		chooser.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -416,6 +426,10 @@ public class AppController implements ActionListener {
 			if (extension.equalsIgnoreCase("rcp")) {
 
 				try {
+					int totalRecipes = countLines(file.getAbsolutePath());
+					
+					System.out.println("Preparing to import " + totalRecipes + " recipes.");
+					
 					List<Recipe> rcpList = model.importRecipeList(file.getAbsolutePath());
 
 					if (rcpList.size() == 0) {
@@ -461,6 +475,20 @@ public class AppController implements ActionListener {
 		}
 
 		refreshRecipeList();
+	}
+	
+	private int countLines(String fileName) {
+		int lines = 0;
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+			while (reader.readLine() != null) {
+				lines++;
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return lines;
 	}
 
 	public void setLanguage(Locale locale) {

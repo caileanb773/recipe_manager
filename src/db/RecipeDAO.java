@@ -154,7 +154,7 @@ public class RecipeDAO {
 	}
 
 	public void updateRecipe(Recipe recipe) {
-		System.out.println("Updating recipe in database...");
+		System.out.println("Updating recipe in database");
 		String rcpSql = "UPDATE recipes SET title = ?, directions = ?, tags = ? WHERE id = ?";
 		String delIngSql = "DELETE FROM ingredients WHERE recipe_id = ?";
 		String insIngSql = "INSERT INTO ingredients (recipe_id, amount, unit, name) VALUES (?, ?, ?, ?)";
@@ -300,7 +300,7 @@ public class RecipeDAO {
 	}
 
 	public List<Recipe> selectAllRecipesAsList() {
-		System.out.println("Fetching recipes from database...");
+		System.out.println("Fetching recipes from database");
 		String rcpSql = "SELECT * FROM recipes";
 		String ingSql = "SELECT * FROM ingredients WHERE recipe_id = ?";
 		List<Recipe> recipes = new ArrayList<>();
