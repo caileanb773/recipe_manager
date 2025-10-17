@@ -29,15 +29,10 @@ public class Main {
 
 		// TODO refactor the math in Fraction class and accnt for decimal multiplication
 		// TODO BUG: the change to German translation is non-functional atm
-		// TODO finish theme methods
-		// TODO theme config and default config loading
 		// TODO load screen for importing recipes
 		// TODO recipe buttons should just go '...' if they are too long. currently long rcp names widen the entire window
 		// TODO UI hanging might be due to the fact that every time a recipe is added, the entire list is refreshed. If importing, don't refresh until the end
-		// TODO when switching to register, or switching back after register, clear pw
 		// TODO BUG: if you have a recipe detached, and switch theme, detached recipe theme doesn't change.
-		// TODO fix config loading being unsafe if the cfg file is somehow corrupted
-		// TODO starting with appframe, configure how theme will init everything
 		
 	}
 }

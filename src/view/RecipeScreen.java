@@ -222,7 +222,7 @@ public class RecipeScreen extends JPanel {
 		scaleRcpLabel = new JLabel(bundle.getString("scaleRcp"));
 		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 100, 1);
 		scaleRcpSpinner = new JSpinner(spinnerModel);
-		scaleRcpSpinner.addChangeListener(e -> {
+		scaleRcpSpinner.addChangeListener(_ -> {
 			scaleVal = (int)scaleRcpSpinner.getValue();
 			displayActiveRecipe(SCALED);
 		});
@@ -231,7 +231,7 @@ public class RecipeScreen extends JPanel {
 
 		// ----- Send Recipe to New Screen Btn -----
 		detachRecipeBtn = new JButton(bundle.getString("detachRcp"));
-		detachRecipeBtn.addActionListener(e -> {
+		detachRecipeBtn.addActionListener(_ -> {
 			handleDetachRecipe();
 		});
 		scaleRcpPanel.add(detachRecipeBtn);
@@ -366,7 +366,7 @@ public class RecipeScreen extends JPanel {
 			RecipeSelectButton newRcpButton = new RecipeSelectButton(rcp, Constants.recipeTxtFont);
 			rcpSelectList.add(newRcpButton);
 			newRcpButton.setAlignmentX(CENTER_ALIGNMENT);
-			newRcpButton.addActionListener(e -> {
+			newRcpButton.addActionListener(_ -> {
 				setActiveRecipe(rcp);
 				scaleRcpSpinner.setValue(1);
 			});
@@ -454,7 +454,7 @@ public class RecipeScreen extends JPanel {
 
 	public void initRemoveButton() {
 		rcpListRemove.setActionCommand("remove");
-		rcpListRemove.addActionListener(e -> {
+		rcpListRemove.addActionListener(_ -> {
 			removeRecipe();
 		});
 	}
@@ -484,7 +484,7 @@ public class RecipeScreen extends JPanel {
 
 	public void initEditButton() {
 		rcpListEdit.setActionCommand("edit");
-		rcpListEdit.addActionListener(e -> {
+		rcpListEdit.addActionListener(_ -> {
 			if (activeRecipe == null) {
 				System.out.println("Aborting edit recipe dialog: no active recipe.");
 				JOptionPane.showMessageDialog(null,

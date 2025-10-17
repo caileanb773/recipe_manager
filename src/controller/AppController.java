@@ -7,16 +7,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import org.apache.commons.io.FilenameUtils;
-
-import com.formdev.flatlaf.FlatLightLaf;
-
 import db.RecipeDAO;
 import definitions.Constants;
 import definitions.Recipe;
@@ -74,6 +68,7 @@ public class AppController implements ActionListener {
 		view.registerControllerInSubscreens(this);
 		view.populateRecipeList(model.getRecipes());
 		initAllButtons();
+		initTheme();
 	}
 
 	private void initAllButtons() {
@@ -82,6 +77,11 @@ public class AppController implements ActionListener {
 		view.initRegisterScreenButtons();
 		view.initCloseBtn();
 		view.addButtonListeners();
+	}
+	
+	private void initTheme() {
+		view.fireThemeChangeEvent(view.getConfig().getTheme());
+		view.setViewVisible(true);
 	}
 
 	// TODO magic numbers here

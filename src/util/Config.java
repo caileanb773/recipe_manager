@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import definitions.Constants;
 import definitions.Theme;
 import view.AppFrame;
 import view.LoginScreen;
@@ -26,12 +28,15 @@ public class Config {
 	private static String lastEmail;
 	private static boolean autoBackup;
 	private final String[] configs = { "language", "lastEmail", "autoBackup", "theme" };
+	private int loadTimeout;
 
 	// Local constants
 	private final static int VALUE_IDX = 1;
 	private final static int KEY_IDX = 0;
+	private final int VALID_LEN = 2;
 
 	public Config() {
+		loadTimeout = 0;
 		loadConfig();
 	}
 
@@ -56,8 +61,17 @@ public class Config {
 	 */
 	public void loadConfig() {
 		System.out.println("Loading settings...");
+		loadTimeout++;
+		
+		if (loadTimeout >= 10) {
+			System.err.println("Could not load settings; too many attempts.");
+			loadFailsafeConfig();
+			return;
+		}
+		
 		String lang = null;
-		String temp;
+		String value;
+		Theme temp;
 
 		try (BufferedReader reader = new BufferedReader(new FileReader("resources/config.ini"))) {
 			String line = null;
@@ -65,18 +79,40 @@ public class Config {
 
 			while ((line = reader.readLine()) != null) {
 				String[] lineInfo = line.split("=");
+				
+				// XXX refactor this in the future to find the offending value
+				if (lineInfo.length != VALID_LEN) {
+					createDefaultConfig();
+					loadConfig();
+				}
+				
+				value = lineInfo[VALUE_IDX].trim();
+				
+				if (value.isEmpty()) {
+					createDefaultConfig();
+					loadConfig();
+				}
+				 
 				switch (lineInfo[KEY_IDX]) {
 				case "language":
-					lang = lineInfo[VALUE_IDX];
+					lang = value;
 					break;
 				case "lastEmail":
-					lastEmail = lineInfo[VALUE_IDX];
+					lastEmail = value;
 					break;
 				case "autoBackup":
-					autoBackup = Boolean.parseBoolean(lineInfo[VALUE_IDX]);
+					autoBackup = Boolean.parseBoolean(value);
 					break;
 				case "theme":
-					theme = Theme.valueOf(lineInfo[VALUE_IDX]);
+					temp = Theme.valueOf(value);
+					
+					if (isValidTheme(temp)) {
+						theme = temp;
+					} else {
+						theme = Theme.LIGHT;
+					}
+					
+					break;
 				default:
 					break;
 				}
@@ -92,6 +128,23 @@ public class Config {
 
 		locale = new Locale(lang);
 		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
+	}
+	
+	public boolean isValidTheme(Theme theme) {
+		for (Theme t : Constants.VALID_THEMES) {
+			if (theme == t) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private void loadFailsafeConfig() {
+		locale = new Locale("en");
+		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
+		lastEmail = null;
+		autoBackup = true;
+		theme = Theme.LIGHT;
 	}
 
 	/**
@@ -174,6 +227,10 @@ public class Config {
 	
 	public Theme getTheme() {
 		return theme;
+	}
+	 
+	public void setTheme(Theme theme) {
+		Config.theme = theme;
 	}
 	
 	public static String getLastEmail() {

@@ -71,10 +71,10 @@ public class AppFrame {
 	private static JCheckBox autoBackup;
 	private JRadioButtonMenuItem themeLight;
 	private JRadioButtonMenuItem themeDark;
+	private Theme currentTheme;
 
 	// Other
 	private ActionListener listener;
-	private Theme currTheme;
 
 
 	public AppFrame() {
@@ -93,7 +93,7 @@ public class AppFrame {
 		loginScreen = new LoginScreen(bundle);
 		registerScreen = new RegisterScreen(bundle);
 		container = frame.getContentPane();
-		currTheme = config.getTheme();
+		currentTheme = config.getTheme();
 
 		// Icon
 		try {
@@ -141,22 +141,28 @@ public class AppFrame {
 		menuOpt.add(autoBackup);
 		JMenu menuTheme = new JMenu("Themes");
 		ButtonGroup themeGroup = new ButtonGroup();
-		themeLight = new JRadioButtonMenuItem("Light", true);
+		
+		// Theme section
+		themeLight = new JRadioButtonMenuItem("Light");
 		themeDark = new JRadioButtonMenuItem("Dark");
 		themeGroup.add(themeLight);
 		themeGroup.add(themeDark);
 		menuOpt.add(menuTheme);
 		menuTheme.add(themeLight);
 		menuTheme.add(themeDark);
-
-		// Theme Selection Setup
-		themeLight.addActionListener(e -> fireThemeChangeEvent(Theme.LIGHT));
-		themeDark.addActionListener(e -> fireThemeChangeEvent(Theme.DARK));
+		themeLight.addActionListener(_ -> fireThemeChangeEvent(Theme.LIGHT));
+		themeDark.addActionListener(_ -> fireThemeChangeEvent(Theme.DARK));
+		
+		if (currentTheme == Theme.LIGHT) {
+			themeLight.setSelected(true);
+		} else {
+			themeDark.setSelected(true);
+		}
 
 		// Final JFrame Settings
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		//frame.setVisible(true);
 
 		// Set Appropriate Buttons to be Selected
 		updateLanguageButtons();	
@@ -170,6 +176,10 @@ public class AppFrame {
 		}
 	}
 	
+	public void setViewVisible(boolean visible) {
+		frame.setVisible(visible);
+	}
+	
 	public void fireThemeChangeEvent(Theme theme) {
 		if (theme.toString().isEmpty()) {
 			System.err.println("No theme passed to fireThemeChangeEvent().");
@@ -180,6 +190,9 @@ public class AppFrame {
 			System.err.println("Unrecognized theme passed to fireThemeChangeEvent().");
 			return;
 		}
+		
+		// Notify config of the theme change
+		config.setTheme(theme);
 		
 		// Switch the FlatLaf library
 		applyTheme(theme);
@@ -247,7 +260,7 @@ public class AppFrame {
 		menuBtnFr.setActionCommand("french");
 		menuBtnDe.addActionListener(listener);
 		menuBtnDe.setActionCommand("german");
-		menuBtnReadMe.addActionListener(e -> {
+		menuBtnReadMe.addActionListener(_ -> {
 			displayReadMe();
 		});
 		menuBtnLogout.setActionCommand("logout");
@@ -386,6 +399,7 @@ public class AppFrame {
 				cardLayout.show(container, "REGISTER_SCREEN");
 				setEnabledButtons(screenName);
 				registerScreen.initFocus();
+				loginScreen.clearPwField();
 				break;
 			default:
 				System.err.println("Unknown screen type passed to switchScreen().");

@@ -3,7 +3,6 @@ package view;
 import java.awt.Font;
 import java.util.List;
 import javax.swing.JButton;
-import definitions.Constants;
 import definitions.Recipe;
 
 /*

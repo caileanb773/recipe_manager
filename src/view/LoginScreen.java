@@ -213,10 +213,10 @@ public class LoginScreen extends JPanel {
 	}
 
 	public void initializeButtons() {
-		login.addActionListener(e -> validateFields());
-		clear.addActionListener(e -> reset());
-		register.addActionListener(e -> register());
-		pwReveal.addActionListener(e -> togglePwReveal());
+		login.addActionListener(_ -> validateFields());
+		clear.addActionListener(_ -> reset());
+		register.addActionListener(_ -> register());
+		pwReveal.addActionListener(_ -> togglePwReveal());
 
 		Action confirmAction = new AbstractAction(bundle.getString("login")) {
 			@Override
@@ -247,7 +247,6 @@ public class LoginScreen extends JPanel {
 		}
 
 		if (Utility.isEmailValid(email)) {
-			// XXX this can now return other constants, like ERROR
 			int credentialCheck = areCredentialsValid(email, passArr);
 
 			if (credentialCheck == VALID) {
@@ -409,6 +408,10 @@ public class LoginScreen extends JPanel {
 			break;
 		}
 
+	}
+	
+	public void clearPwField() {
+		pwInput.setText("");
 	}
 
 	public String getEmail() {
