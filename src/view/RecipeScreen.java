@@ -144,7 +144,7 @@ public class RecipeScreen extends JPanel {
 		filterLabelCombo.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 
 		// ---------------------------------------------------------------------
-		// R E C I P E  S E L E C T  S U B S E C T I O N
+		// R E C I P E  S E L E C T I O N  S U B S E C T I O N
 		// ---------------------------------------------------------------------
 		rcpSelectPanel = new JPanel(new BorderLayout());
 		rcpSelectPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -176,7 +176,7 @@ public class RecipeScreen extends JPanel {
 		}
 
 		// ---------------------------------------------------------------------
-		// R E C I P E  S E L E C T  L I S T
+		// R E C I P E  S E L E C T I O N  L I S T
 		// ---------------------------------------------------------------------
 		rcpSelectListPanel.setBackground(panelBgCol);
 		rcpSelectScrollPane = new JScrollPane(rcpSelectListPanel);
