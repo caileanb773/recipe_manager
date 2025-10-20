@@ -1,7 +1,6 @@
 /.settings/
 /bin
 .classpath
-.project
 recipes.db
 backup.rcp
 /resources/credentials.txt
