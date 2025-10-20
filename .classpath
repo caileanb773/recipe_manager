@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.50.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons-validator-1.10.0.jar"/>
+	<classpathentry kind="lib" path="lib/flatlaf-3.6.jar"/>
+	<classpathentry kind="lib" path="lib/jbcrypt-0.4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
