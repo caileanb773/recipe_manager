@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -11,8 +12,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FilenameUtils;
@@ -65,7 +70,7 @@ public class AppController implements ActionListener {
 
 	public void initialize(int mode) {
 		bundle = view.getBundle();
-		
+
 		if (mode == ONLINE) {
 			recipeDao.init();
 			model.setRecipes(recipeDao.selectAllRecipesAsList());
@@ -87,7 +92,7 @@ public class AppController implements ActionListener {
 		view.initCloseBtn();
 		view.addButtonListeners();
 	}
-	
+
 	private void initTheme() {
 		view.fireThemeChangeEvent(view.getConfig().getTheme());
 		view.setViewVisible(true);
@@ -174,13 +179,13 @@ public class AppController implements ActionListener {
 			break;
 		}
 	}
-	
+
 	public void handleThemeSwitch(String themeTitle) {
 		System.out.println("Switching theme: " + themeTitle);
 		// Font colours
 		// Background colours
 		// In each Jpanel of cardlayout
-		
+
 		view.changeThemeInChildren(Theme.valueOf(themeTitle));
 	}
 
@@ -337,6 +342,7 @@ public class AppController implements ActionListener {
 		recipeScreen.clearActiveRecipe();
 		recipeScreen.clearSelectedRecipeText();
 		refreshRecipeList();
+		recipeScreen.focusFirstRecipe();
 	}
 
 	public void refreshRecipeList() {
@@ -346,7 +352,7 @@ public class AppController implements ActionListener {
 		} else {
 			ui.populateRecipeSelectList(model.getRecipes());
 		}
-		
+
 		ui.displayRecipeButtons();
 	}
 
@@ -427,10 +433,8 @@ public class AppController implements ActionListener {
 
 				try {
 					int totalRecipes = countLines(file.getAbsolutePath());
-					
-					System.out.println("Preparing to import " + totalRecipes + " recipes.");
-					
 					List<Recipe> rcpList = model.importRecipeList(file.getAbsolutePath());
+					System.out.println("Preparing to import " + totalRecipes + " recipes.");
 
 					if (rcpList.size() == 0) {
 						JOptionPane.showMessageDialog(null,
@@ -440,10 +444,48 @@ public class AppController implements ActionListener {
 					}
 
 					if (appIsOnline) {
-						for (Recipe rcp : rcpList) {
-							int id = recipeDao.insertRecipe(rcp);
-							rcp.setId(id);
-						}
+
+						// XXX Loading bar for recipes
+						JDialog progressDialog = new JDialog((JFrame) null,
+								"Loading", true);
+						JProgressBar progressBar = new JProgressBar(0, totalRecipes);
+						progressBar.setStringPainted(true);
+						progressDialog.add(progressBar, BorderLayout.CENTER);
+						progressDialog.setSize(300, 75);
+						progressDialog.setLocationRelativeTo(null);
+
+						// Swingworker for adding to the DB
+						SwingWorker<Void, Integer> worker = new SwingWorker<>() {
+							@Override
+							protected Void doInBackground() throws Exception {
+								int progress = 0;
+
+								for (Recipe rcp : rcpList) {
+									int id = recipeDao.insertRecipe(rcp);
+									rcp.setId(id);
+									publish(++progress);
+								}
+								return null;
+							}
+
+							@Override
+							protected void process(List<Integer> chunks) {
+								int latestProgress = chunks.get(chunks.size() -1);
+								progressBar.setValue(latestProgress);
+							}
+
+							@Override
+							protected void done() {
+								progressDialog.dispose();
+								JOptionPane.showMessageDialog(null,
+										"Successful import.",
+										"Success",
+										JOptionPane.INFORMATION_MESSAGE);
+							}
+						};
+
+						worker.execute();
+						progressDialog.setVisible(true);
 					}
 
 					// no need to handle if !appIsOnline, already handled by importRecipeList()
@@ -476,7 +518,7 @@ public class AppController implements ActionListener {
 
 		refreshRecipeList();
 	}
-	
+
 	private int countLines(String fileName) {
 		int lines = 0;
 		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {

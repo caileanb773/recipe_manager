@@ -349,6 +349,16 @@ public class RecipeScreen extends JPanel {
 
 		return scaledIngredients;
 	}
+	
+	public void focusFirstRecipe() {
+		if (rcpSelectList.size() == 0) {
+			return;
+		}
+		
+		RecipeSelectButton  b = rcpSelectList.get(0);
+		b.requestFocus();
+		setActiveRecipe(b.getBtnRecipe());
+	}
 
 	public void registerController(ActionListener listener) {
 		this.listener = listener;

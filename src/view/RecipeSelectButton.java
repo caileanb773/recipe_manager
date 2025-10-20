@@ -27,5 +27,9 @@ public class RecipeSelectButton extends JButton {
 	public List<String> getTags() {
 		return btnRecipe.getTags();
 	}
+	
+	public Recipe getBtnRecipe() {
+		return btnRecipe;
+	}
 
 }
