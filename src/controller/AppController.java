@@ -30,6 +30,7 @@ import definitions.Recipe;
 import definitions.Theme;
 import model.RecipeMgrModel;
 import util.Config;
+import util.ProgressListener;
 import view.AddRecipeDialog;
 import view.AppFrame;
 import view.LoginScreen;
@@ -53,6 +54,7 @@ public class AppController implements ActionListener {
 	private boolean appIsOnline = true;
 	private RecipeDAO recipeDao;
 	private ResourceBundle bundle;
+	private ProgressListener progressListener;
 
 	// Constants
 	private final int ONLINE = 1;
@@ -98,6 +100,16 @@ public class AppController implements ActionListener {
 	private void initTheme() {
 		view.fireThemeChangeEvent(view.getConfig().getTheme());
 		view.setViewVisible(true);
+	}
+	
+	public void setProgressListener(ProgressListener progressListener) {
+		if (progressListener != null) {
+			this.progressListener = progressListener;
+		}
+	}
+	
+	public void reportProgress(int percent, String msg) {
+		progressListener.onProgress(percent, msg);
 	}
 
 	// TODO magic numbers here

@@ -15,6 +15,7 @@ import definitions.Fraction;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Unit;
+import util.ProgressListener;
 
 /*
  * Author: Cailean Bernard
@@ -26,6 +27,7 @@ import definitions.Unit;
 public class RecipeMgrModel {
 
 	private List<Recipe> recipes;
+	private ProgressListener progressListener;
 
 	// Constants
 	private static final int INGREDIENT_AMT_IDX = 0;
@@ -65,6 +67,18 @@ public class RecipeMgrModel {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void setProgressListener(ProgressListener progressListener) {
+		if (progressListener != null) {
+			this.progressListener = progressListener;
+		}
+	}
+	
+	public void reportProgress(int percent, String msg) {
+		if (progressListener != null) {
+			progressListener.onProgress(percent, msg);
 		}
 	}
 

@@ -1,8 +1,11 @@
 package controller;
 
 import javax.swing.UIManager;
+
 import com.formdev.flatlaf.FlatLightLaf;
+
 import model.RecipeMgrModel;
+import util.ProgressListener;
 import view.AppFrame;
 
 /*
@@ -15,6 +18,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		ProgressListener progressListener = new ProgressListener();
 		// Default theme is light
 		try {
 			UIManager.setLookAndFeel(new FlatLightLaf());
@@ -23,9 +27,10 @@ public class Main {
 		}
 		
 		RecipeMgrModel model = new RecipeMgrModel();
+		model.setProgressListener(progressListener);
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
-		controller.login(); //for debugging
+		//controller.login(); //for debugging
 
 		// TODO refactor the math in Fraction class and accnt for decimal multiplication
 		// TODO BUG: the change to German translation is non-functional atm
@@ -34,6 +39,7 @@ public class Main {
 		// TODO loading screen translations
 		// TODO handle user clicking "X" while importing recipes. right now it will freeze the UI, throw an exception, then continue importing in the background even if the applicatin is closed
 		// TODO splash screen
+		// TODO BUG: exporting empty recipe list should cancel and show dialog
 		
 	}
 }

@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -30,12 +31,15 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+
 import controller.Main;
 import definitions.Recipe;
 import definitions.Theme;
 import util.Config;
+import util.ProgressListener;
 
 /*
  * Author: Cailean Bernard
@@ -75,6 +79,7 @@ public class AppFrame {
 
 	// Other
 	private ActionListener listener;
+	private ProgressListener progressListener;
 
 
 	public AppFrame() {
@@ -173,6 +178,18 @@ public class AppFrame {
 			loginScreen.grabFocus("PASSWORD_FIELD");
 		} else {
 			loginScreen.grabFocus("LOGIN_FIELD");
+		}
+	}
+	
+	public void setProgressListener(ProgressListener progressListener) {
+		if (progressListener != null) {
+			this.progressListener = progressListener;
+		}
+	}
+	
+	public void reportProgress(int percent, String msg) {
+		if (progressListener != null) {
+			progressListener.onProgress(percent, msg);	
 		}
 	}
 	
