@@ -49,6 +49,17 @@ public class RecipeMgrModel {
 	public RecipeMgrModel() {
 		recipes = new ArrayList<Recipe>();
 	}
+	
+	public void initialize(boolean online) {
+		reportProgress(0, "Loading model...");
+		if (online) {
+			// wait for recipes from controller
+		} else {
+			initModelOffline("backup.rcp");
+		}
+		
+		reportProgress(5, "Model loaded.");
+	}
 
 	public void initModelOffline(String recipeFilePath) {
 		if (recipeFilePath.isEmpty()) {

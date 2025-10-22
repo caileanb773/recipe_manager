@@ -87,18 +87,28 @@ public class AppFrame {
 		cardLayout = new CardLayout();
 		frame.getContentPane().setLayout(cardLayout);
 		frame.setTitle("Macromise Recipe Manager");		
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public void initialize() {
+		reportProgress(7, "Loading config...");
 		// ---------------------------------------------------------------------
 		// C O M P O N E N T S
 		// ---------------------------------------------------------------------
 		config = new Config();
+		
+		// XXX
+		reportProgress(10, "Loading language...");
+		
 		bundle = config.getResourceBundle();
 		recipeScreen = new RecipeScreen(bundle);
 		loginScreen = new LoginScreen(bundle);
 		registerScreen = new RegisterScreen(bundle);
 		container = frame.getContentPane();
 		currentTheme = config.getTheme();
+		
+		//XXX
+		reportProgress(12, "Loading images...");
 
 		// Icon
 		try {
@@ -108,11 +118,17 @@ public class AppFrame {
 		} catch (NullPointerException e) {
 			System.err.println("Could not find icon.png");
 		}
+		
+		// XXX
+		reportProgress(15, "Loading screens...");
 
 		// ----- Adding Screens to Frame -----
 		container.add(loginScreen, "LOGIN");
 		container.add(recipeScreen, "RECIPE_SCREEN");
 		container.add(registerScreen, "REGISTER_SCREEN");
+		
+		// XXX
+		reportProgress(20, "Initializing screens...");
 
 		// ---------------------------------------------------------------------
 		// M E N U  B A R
@@ -147,6 +163,9 @@ public class AppFrame {
 		JMenu menuTheme = new JMenu("Themes");
 		ButtonGroup themeGroup = new ButtonGroup();
 		
+		// XXX
+		reportProgress(25, "Loading theme...");
+		
 		// Theme section
 		themeLight = new JRadioButtonMenuItem("Light");
 		themeDark = new JRadioButtonMenuItem("Dark");
@@ -158,6 +177,9 @@ public class AppFrame {
 		themeLight.addActionListener(ignored -> fireThemeChangeEvent(Theme.LIGHT));
 		themeDark.addActionListener(ignored -> fireThemeChangeEvent(Theme.DARK));
 		
+		// XXX
+		reportProgress(30, "Final UI initialization...");
+		
 		if (currentTheme == Theme.LIGHT) {
 			themeLight.setSelected(true);
 		} else {
@@ -167,7 +189,6 @@ public class AppFrame {
 		// Final JFrame Settings
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-		//frame.setVisible(true);
 
 		// Set Appropriate Buttons to be Selected
 		updateLanguageButtons();	
@@ -179,6 +200,11 @@ public class AppFrame {
 		} else {
 			loginScreen.grabFocus("LOGIN_FIELD");
 		}
+		
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		
+		// XXX
+		reportProgress(35, "UI Initialized.");
 	}
 	
 	public void setProgressListener(ProgressListener progressListener) {
