@@ -96,8 +96,6 @@ public class AppFrame {
 		// C O M P O N E N T S
 		// ---------------------------------------------------------------------
 		config = new Config();
-		
-		// XXX
 		reportProgress(10, "Loading language...");
 		
 		bundle = config.getResourceBundle();
@@ -106,8 +104,6 @@ public class AppFrame {
 		registerScreen = new RegisterScreen(bundle);
 		container = frame.getContentPane();
 		currentTheme = config.getTheme();
-		
-		//XXX
 		reportProgress(12, "Loading images...");
 
 		// Icon
@@ -119,15 +115,12 @@ public class AppFrame {
 			System.err.println("Could not find icon.png");
 		}
 		
-		// XXX
 		reportProgress(15, "Loading screens...");
 
 		// ----- Adding Screens to Frame -----
 		container.add(loginScreen, "LOGIN");
 		container.add(recipeScreen, "RECIPE_SCREEN");
 		container.add(registerScreen, "REGISTER_SCREEN");
-		
-		// XXX
 		reportProgress(20, "Initializing screens...");
 
 		// ---------------------------------------------------------------------
@@ -162,8 +155,6 @@ public class AppFrame {
 		menuOpt.add(autoBackup);
 		JMenu menuTheme = new JMenu("Themes");
 		ButtonGroup themeGroup = new ButtonGroup();
-		
-		// XXX
 		reportProgress(25, "Loading theme...");
 		
 		// Theme section
@@ -176,8 +167,6 @@ public class AppFrame {
 		menuTheme.add(themeDark);
 		themeLight.addActionListener(ignored -> fireThemeChangeEvent(Theme.LIGHT));
 		themeDark.addActionListener(ignored -> fireThemeChangeEvent(Theme.DARK));
-		
-		// XXX
 		reportProgress(30, "Final UI initialization...");
 		
 		if (currentTheme == Theme.LIGHT) {
@@ -202,8 +191,6 @@ public class AppFrame {
 		}
 		
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		
-		// XXX
 		reportProgress(35, "UI Initialized.");
 	}
 	

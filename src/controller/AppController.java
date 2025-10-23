@@ -65,41 +65,34 @@ public class AppController implements ActionListener {
 		this.model = model;
 		this.view = view;
 		this.recipeDao = new RecipeDAO();
-//		if (appIsOnline) {
-//			initialize(ONLINE);
-//		} else {
-//			initialize(OFFLINE);
-//		}
+		//		if (appIsOnline) {
+		//			initialize(ONLINE);
+		//		} else {
+		//			initialize(OFFLINE);
+		//		}
 	}
 
 	public void initialize(int mode) {
-		// XXX
 		reportProgress(40, "Initializing controller...");
-		
 		bundle = view.getBundle();
 
 		if (mode == ONLINE) {
-			// XXX
 			reportProgress(50, "Loading recipes...");
-			
 			recipeDao.init();
 			model.setRecipes(recipeDao.selectAllRecipesAsList());
 		} if (mode == OFFLINE) { // XXX for now, this is never called.
-			
-			// XXX
 			reportProgress(50, "Loading recipes...");
-			
 			model.initModelOffline("backup.rcp");
 		}
-		
-		// XXX
+
 		reportProgress(60, "Recipes loaded.");
-		
 		view.registerController(this);
 		view.registerControllerInSubscreens(this);
+		reportProgress(70, "Finishing up...");
 		view.populateRecipeList(model.getRecipes());
 		initAllButtons();
 		initTheme();
+		reportProgress(80, "Theme initialized.");
 	}
 
 	private void initAllButtons() {
@@ -114,15 +107,17 @@ public class AppController implements ActionListener {
 		view.fireThemeChangeEvent(view.getConfig().getTheme());
 		view.setViewVisible(true);
 	}
-	
+
 	public void setProgressListener(ProgressListener progressListener) {
 		if (progressListener != null) {
 			this.progressListener = progressListener;
 		}
 	}
-	
+
 	public void reportProgress(int percent, String msg) {
-		progressListener.onProgress(percent, msg);
+		if (progressListener != null) {
+			progressListener.onProgress(percent, msg);
+		}
 	}
 
 	// TODO magic numbers here
@@ -517,7 +512,7 @@ public class AppController implements ActionListener {
 							public void windowClosing(WindowEvent e) {
 								worker.cancel(true);
 								progressDialog.dispose();
-								
+
 								// TODO show "cancelled" dialog
 								// TODO actually "cancel" the import. load into 
 								// temporary array and only commit the import if 
