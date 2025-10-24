@@ -35,9 +35,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
-import controller.Main;
 import definitions.Recipe;
 import definitions.Theme;
+import init.Main;
 import util.Config;
 import util.ProgressListener;
 

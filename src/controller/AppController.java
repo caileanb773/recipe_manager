@@ -3,8 +3,6 @@ package controller;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,7 +11,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -21,9 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import org.apache.commons.io.FilenameUtils;
-
 import db.RecipeDAO;
 import definitions.Constants;
 import definitions.Recipe;
@@ -475,7 +470,7 @@ public class AppController implements ActionListener {
 						progressDialog.add(progressBar, BorderLayout.CENTER);
 						progressDialog.setSize(300, 75);
 						progressDialog.setLocationRelativeTo(null);
-						progressDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);						
+						progressDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
 						// Swingworker for adding to the DB
 						SwingWorker<Void, Integer> worker = new SwingWorker<>() {
@@ -507,18 +502,19 @@ public class AppController implements ActionListener {
 							}
 						};
 
-						progressDialog.addWindowListener(new WindowAdapter() {
-							@Override
-							public void windowClosing(WindowEvent e) {
-								worker.cancel(true);
-								progressDialog.dispose();
-
-								// TODO show "cancelled" dialog
-								// TODO actually "cancel" the import. load into 
-								// temporary array and only commit the import if 
-								// it wasn't cancelled so things aren't
-							}
-						});
+//						progressDialog.addWindowListener(new WindowAdapter() {
+//							@Override
+//							public void windowClosing(WindowEvent e) {
+//								worker.cancel(true);
+//								progressDialog.dispose();
+//
+//								// TODO show "cancelled" dialog
+//								// TODO actually "cancel" the import. load into 
+//								// temporary array and only commit the import if 
+//								// it wasn't cancelled so things aren't
+//							}
+//						});
+						
 						worker.execute();
 						progressDialog.setVisible(true);
 					}
@@ -585,6 +581,14 @@ public class AppController implements ActionListener {
 		log.refreshTranslatable();
 		reg.updateBundle(locale);
 		reg.refreshTranslatable();
+	}
+	
+	public RecipeMgrModel getModel() {
+		return this.model;
+	}
+	
+	public AppFrame getView() {
+		return this.view;
 	}
 
 }
