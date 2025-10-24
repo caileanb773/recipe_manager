@@ -19,6 +19,7 @@ public class Main {
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 		new Loader(controller).run();
+		controller.login();
 
 		// TODO refactor the math in Fraction class and accnt for decimal multiplication
 		// TODO BUG: the change to German translation is non-functional atm
@@ -29,6 +30,7 @@ public class Main {
 		// TODO loading screen logo/tidy up
 		// TODO BUG: exporting empty recipe list should cancel and show dialog
 		// TODO loader should employ a singleton design pattern
+		// TODO new screenshots
 		
 	}
 }
