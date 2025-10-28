@@ -92,7 +92,6 @@ public class RecipeMgrModel {
 		}
 	}
 
-	// XXX this feels hacky
 	private Ingredient parseIngredientFromStrArr(String[] strArr) throws NumberFormatException {
 		String amount = strArr[INGREDIENT_AMT_IDX];
 		Unit unit = Unit.valueOf(strArr[INGREDIENT_UNIT_IDX].toUpperCase());

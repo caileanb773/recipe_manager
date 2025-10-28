@@ -1,7 +1,7 @@
 # Macromise Recipe manager
 
 ![Login Screen](resources/img/screenshot_login.png)
-![Recipe Management Screen](resources/img/screenshot_recipescreen.png)
+![Recipe Management Screen](resources/img/screenshot_recipescreen_dark.png)
 
 # What this app is for
 
@@ -52,11 +52,23 @@ In the vast majority of professional kitchens, seasoning with salt is an unwritt
 
 # Features
 
+## Recipe Scaling
+
+Recipes can be scaled up incrementally for batching out recipes.
+
+## Themes
+
+Choose from either light mode (default) or dark mode to reduce eye strain.
+
+## Detach Recipes
+
+When viewing recipes, you may view them in a separate window by clicking the recipe and then clicking "detach recipe". This is useful for comparing two recipes, or for when it is necessary to reference an old recipe when creating a new one.
+
 ## Auto-Backup
 
-In the options menu item, you can tick the *auto backup* checkbox. This feature will automatically export all recipes stored in the database to a .rcp file on your hard drive; this feature is engaged every time the application closes. 
+In the options menu item, you can tick the *auto backup* checkbox. This feature will automatically export all recipes stored in the database to a .rcp file on your hard drive; when active, this feature will automatically save all recipes locally if internet were to momentarily be unavailable.
 
-## Import/export
+## Import/Export
 
 Recipes can be manually exported to and imported from files in the proprietary .rcp format. This is helpful for migrating recipes from one database to another, or merging the contents of multiple databases into one.
 
@@ -149,6 +161,18 @@ MG, G, KG, MILLIGRAM, GRAM, KILOGRAM, MILLIGRAMS, GRAMS, KILOGRAMS
 
 PIECES, KNOBS, CLOVES, STICKS, GLUGS, INCHES, DASHES, PINCHES, DROPS, BLOCK, PIECE, KNOB, CLOVE, STICK, GLUG, WHOLE, INCH, CM, DASH, PINCH, DROP, BLOCKS, PERCENT, NO_UNIT; // for situations where no unit is needed
 ```
+
+### Bugs
+
+## Known Bugs
+
+• If, with a recipe detached, you change the theme, the detached recipe text may become difficult to read.
+• Cancelling a recipe import will make the application hang, and will still import the recipes. For now, cancelling an import is disabled.
+• Switching to German does not change any text to be in German.
+
+## Submitting a Bug Report
+
+My contact information can be found at github.com/caileanb773. Please include something like "Bug Report" in your email, along with a description of *what you were doing* when the bug happened, and a description of the bug's effects.
 
 ### Credit
 

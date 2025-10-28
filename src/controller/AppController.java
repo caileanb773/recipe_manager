@@ -464,7 +464,7 @@ public class AppController implements ActionListener {
 
 						// XXX Loading bar for recipes
 						JDialog progressDialog = new JDialog((JFrame) null,
-								"Loading", true);
+								bundle.getString("importLoading"), true);
 						JProgressBar progressBar = new JProgressBar(0, totalRecipes);
 						progressBar.setStringPainted(true);
 						progressDialog.add(progressBar, BorderLayout.CENTER);
@@ -496,8 +496,8 @@ public class AppController implements ActionListener {
 							protected void done() {
 								progressDialog.dispose();
 								JOptionPane.showMessageDialog(null,
-										"Successful import.",
-										"Success",
+										bundle.getString("importSucc"),
+										bundle.getString("importSuccTitle"),
 										JOptionPane.INFORMATION_MESSAGE);
 							}
 						};

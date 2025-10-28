@@ -24,12 +24,10 @@ public class Main {
 		// TODO finish refactoring scaling using BigDecimal
 		// TODO BUG: the change to German translation is non-functional atm
 		// TODO MINOR BUG: if you have a recipe detached, and switch theme, detached recipe theme doesn't change.
-		// TODO loading screen translations
 		// TODO handle user clicking "X" while importing recipes. right now it will freeze the UI, throw an exception, then continue importing in the background even if the applicatin is closed
 		// TODO loading screen logo/tidy up
 		// TODO BUG: exporting empty recipe list should cancel and show dialog
 		// TODO loader should employ a singleton design pattern
-		// TODO new screenshots
 		
 	}
 }
