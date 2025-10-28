@@ -2,6 +2,7 @@ package definitions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 
 /*
  * Author: Cailean Bernard
@@ -117,6 +118,19 @@ public class Fraction {
 	public Fraction multiply(int multiplier) {
 		return new Fraction(this.numerator * multiplier, this.denominator);
 	}
+	
+	public Fraction multiply(BigDecimal multiplier) {
+		BigDecimal num = BigDecimal.valueOf(this.numerator);
+		BigDecimal den = BigDecimal.valueOf(this.denominator);
+		BigDecimal interNum = num.multiply(multiplier);
+		
+		int newNum = interNum.setScale(0, RoundingMode.HALF_UP).intValue();
+		int newDen = den.intValue();
+		Fraction frac = new Fraction(newNum, newDen);
+		frac.simplify();
+		return frac;
+	}
+	
 	
 	public static Fraction parseFraction(String fracStr) throws NumberFormatException {		
 		String trimmed = fracStr.trim();

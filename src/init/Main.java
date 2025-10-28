@@ -21,9 +21,8 @@ public class Main {
 		new Loader(controller).run();
 		controller.login();
 
-		// TODO refactor the math in Fraction class and accnt for decimal multiplication
+		// TODO finish refactoring scaling using BigDecimal
 		// TODO BUG: the change to German translation is non-functional atm
-		// TODO recipe buttons should just go '...' if they are too long. currently long rcp names widen the entire window
 		// TODO MINOR BUG: if you have a recipe detached, and switch theme, detached recipe theme doesn't change.
 		// TODO loading screen translations
 		// TODO handle user clicking "X" while importing recipes. right now it will freeze the UI, throw an exception, then continue importing in the background even if the applicatin is closed

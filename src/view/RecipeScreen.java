@@ -20,6 +20,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -93,7 +94,7 @@ public class RecipeScreen extends JPanel {
 	private ResourceBundle bundle;
 	private Recipe activeRecipe;
 	private ActionListener listener;
-	private int scaleVal;
+	private BigDecimal scaleVal;
 	private Color topGradient;
 	private Color botGradient;
 	private Color rcpBtnColor;
@@ -114,9 +115,8 @@ public class RecipeScreen extends JPanel {
 		this.bundle = bundle;
 		setLayout(new BorderLayout());
 		rcpSelectList = new ArrayList<RecipeSelectButton>();
-		scaleVal = 1;
+		scaleVal = BigDecimal.ONE;
 		
-		// TODO Theme colour init, this will need to be refactoed
 		topGradient = LIGHT_GRADIENT_TOP;
 		botGradient = LIGHT_GRADIENT_BOTTOM;
 		rcpBtnColor = LIGHT_THEME_RECIPE_BTN_COL;
@@ -138,7 +138,6 @@ public class RecipeScreen extends JPanel {
 		filterBtns.add(filterClear);
 		filterInputPanel.add(filterLabel, BorderLayout.WEST);
 		filterInputPanel.add(filterInput, BorderLayout.CENTER);
-		//filterInputPanel.add(filterApply, BorderLayout.EAST);
 		filterInputPanel.add(filterBtns, BorderLayout.SOUTH);
 		filterLabelCombo.add(filterInputPanel, BorderLayout.SOUTH);
 		filterLabelCombo.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
@@ -162,7 +161,7 @@ public class RecipeScreen extends JPanel {
 
 				// padding
 				width += 10;
-				height += 4;
+				height += 5;
 
 				return new Dimension(width, height);
 			}
@@ -181,6 +180,7 @@ public class RecipeScreen extends JPanel {
 		rcpSelectListPanel.setBackground(panelBgCol);
 		rcpSelectScrollPane = new JScrollPane(rcpSelectListPanel);
 		rcpSelectScrollPane.getVerticalScrollBar().setUnitIncrement(Constants.SCROLL_SPEED);
+		rcpSelectScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		rcpEditPanel = new JPanel();
 		rcpSelectLabel = new JLabel(bundle.getString("rcpSelectLabel"), JLabel.CENTER);
 		rcpSelectLabel.setFont(Constants.titleFont);
@@ -220,10 +220,10 @@ public class RecipeScreen extends JPanel {
 		scaleRcpPanel = new JPanel(new FlowLayout());
 		scaleRcpPanel.setOpaque(false);
 		scaleRcpLabel = new JLabel(bundle.getString("scaleRcp"));
-		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 100, 1);
+		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 100, scaleVal);
 		scaleRcpSpinner = new JSpinner(spinnerModel);
 		scaleRcpSpinner.addChangeListener(ignored -> {
-			scaleVal = (int)scaleRcpSpinner.getValue();
+			scaleVal = BigDecimal.valueOf((int)scaleRcpSpinner.getValue());
 			displayActiveRecipe(SCALED);
 		});
 		scaleRcpPanel.add(scaleRcpLabel);
@@ -329,8 +329,8 @@ public class RecipeScreen extends JPanel {
 
 	}
 
-	public List<Ingredient> scaleRecipe(int amt) {
-		if (amt <= 0) {
+	public List<Ingredient> scaleRecipe(BigDecimal amt) {
+		if (amt.compareTo(BigDecimal.ZERO) == -1) {
 			System.err.println("Negative scale val. passed to scaleRecipe().");
 			return null;
 		} else if (activeRecipe == null) {
@@ -380,6 +380,11 @@ public class RecipeScreen extends JPanel {
 				setActiveRecipe(rcp);
 				scaleRcpSpinner.setValue(1);
 			});
+			
+			// XXX testing truncation of overly long recipe button titles
+			if (rcp.getTitle().length() >= 20) {
+				newRcpButton.setText(rcp.getTitle().substring(0, 20) + "...");
+			}
 		}
 	}
 
@@ -397,7 +402,7 @@ public class RecipeScreen extends JPanel {
 			rcpSelectListPanel.add(r);
 		}
 
-		rcpSelectListPanel.setPreferredSize(new Dimension(Constants.BUTTON_WIDTH, 
+		rcpSelectListPanel.setSize(new Dimension(Constants.BUTTON_WIDTH, 
 				Constants.BUTTON_HEIGHT * rcpSelectList.size()));
 		rcpSelectListPanel.revalidate();
 		rcpSelectListPanel.repaint();
@@ -438,14 +443,18 @@ public class RecipeScreen extends JPanel {
 			}
 		}
 
-		rcpSelectListPanel.setPreferredSize(new Dimension(Constants.BUTTON_WIDTH, 
+		rcpSelectListPanel.setSize(new Dimension(Constants.BUTTON_WIDTH, 
 				Constants.BUTTON_HEIGHT * rcpSelectList.size()));
 
-		rcpSelectScrollPane.setPreferredSize(new Dimension(Constants.BUTTON_WIDTH, 
+		rcpSelectScrollPane.setSize(new Dimension(Constants.BUTTON_WIDTH, 
 				Constants.BUTTON_HEIGHT * rcpSelectList.size()));
 
 		rcpSelectListPanel.revalidate();
 		rcpSelectListPanel.repaint();
+	}
+	
+	public void fixRcpSelectListPanelWidth() {
+		
 	}
 
 	public void clearFilters() {
@@ -580,6 +589,10 @@ public class RecipeScreen extends JPanel {
 	}
 
 	private void displayActiveRecipe(int mode) {
+		if (activeRecipe == null) {
+			return;
+		}
+		
 		if (mode == UNSCALED) {
 			selectedRcpTxt.setText(activeRecipe.formatRecipeForTextDisplay());
 		} else if (mode == SCALED) {
