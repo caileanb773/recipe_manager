@@ -167,9 +167,6 @@ public class AppController implements ActionListener {
 		case "french":
 			setLanguage(Locale.FRENCH);
 			break;
-		case "german":
-			setLanguage(Locale.GERMAN);
-			break;
 		case "closeWithBackup":
 			handleCloseWithBackup();
 			break;
@@ -376,6 +373,15 @@ public class AppController implements ActionListener {
 	// TODO edit this to include JSON format eventually
 	public void handleExportRecipes() {
 		bundle = view.getBundle();
+		
+		if (model.getRecipes().isEmpty()) {
+			JOptionPane.showMessageDialog(null,
+					bundle.getString("export.noRecipes"),
+					bundle.getString("error.title"),
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
 		JFileChooser chooser = new JFileChooser();
 		chooser.setDialogTitle(bundle.getString("export"));
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);

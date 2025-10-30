@@ -48,10 +48,10 @@ public class Config {
 		return locale;
 	}
 
-	public void setResourceBundle(String base, Locale lang) {
-		bundle = ResourceBundle.getBundle(base, lang);
+	public void setResourceBundle(String baseName, Locale locale) {
+	    ResourceBundle.clearCache();
+	    bundle = ResourceBundle.getBundle(baseName, locale);
 	}
-
 	public void setLocale(Locale l) {
 		locale = l;
 	}
@@ -62,13 +62,13 @@ public class Config {
 	public void loadConfig() {
 		System.out.println("Loading settings");
 		loadTimeout++;
-		
+
 		if (loadTimeout >= 10) {
 			System.err.println("Could not load settings; too many attempts.");
 			loadFailsafeConfig();
 			return;
 		}
-		
+
 		String lang = null;
 		String value;
 		Theme temp;
@@ -79,20 +79,20 @@ public class Config {
 
 			while ((line = reader.readLine()) != null) {
 				String[] lineInfo = line.split("=");
-				
+
 				// XXX refactor this in the future to find the offending value
 				if (lineInfo.length != VALID_LEN) {
 					createDefaultConfig();
 					loadConfig();
 				}
-				
+
 				value = lineInfo[VALUE_IDX].trim();
-				
+
 				if (value.isEmpty()) {
 					createDefaultConfig();
 					loadConfig();
 				}
-				 
+
 				switch (lineInfo[KEY_IDX]) {
 				case "language":
 					lang = value;
@@ -105,13 +105,13 @@ public class Config {
 					break;
 				case "theme":
 					temp = Theme.valueOf(value);
-					
+
 					if (isValidTheme(temp)) {
 						theme = temp;
 					} else {
 						theme = Theme.LIGHT;
 					}
-					
+
 					break;
 				default:
 					break;
@@ -129,7 +129,7 @@ public class Config {
 		locale = new Locale(lang);
 		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
 	}
-	
+
 	public boolean isValidTheme(Theme theme) {
 		for (Theme t : Constants.VALID_THEMES) {
 			if (theme == t) {
@@ -138,7 +138,7 @@ public class Config {
 		}
 		return false;
 	}
-	
+
 	private void loadFailsafeConfig() {
 		locale = new Locale("en");
 		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
@@ -216,27 +216,27 @@ public class Config {
 			System.err.println("IO Exception encountered while writing config.ini");
 			e.printStackTrace();
 		}
-		
+
 		// XXX this could lead to an infinite loop. There's probably a better way
 		loadConfig();
 	}
-	
+
 	public boolean isAutoBackup() {
 		return autoBackup;
 	}
-	
+
 	public Theme getTheme() {
 		return theme;
 	}
-	 
+
 	public void setTheme(Theme theme) {
 		Config.theme = theme;
 	}
-	
+
 	public static String getLastEmail() {
 		return lastEmail;
 	}
-	
+
 	public static void setLastEmail(String email) {
 		lastEmail = email;
 	}

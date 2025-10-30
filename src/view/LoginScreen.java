@@ -253,6 +253,7 @@ public class LoginScreen extends JPanel {
 				JOptionPane.showMessageDialog(null, bundle.getString("validate.incorrectPass"),
 						bundle.getString("error.title"), JOptionPane.ERROR_MESSAGE);
 				pwInput.setText("");
+				requestPwFocus();
 				return;
 			}
 
@@ -413,6 +414,10 @@ public class LoginScreen extends JPanel {
 
 	public void setEmail(String email) {
 		emailInput.setText(email);
+	}
+	
+	public void requestPwFocus() {
+		pwInput.requestFocusInWindow();
 	}
 
 }

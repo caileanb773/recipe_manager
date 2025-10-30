@@ -74,7 +74,7 @@ Recipes can be manually exported to and imported from files in the proprietary .
 
 ## Languages
 
-Macromise is available in English, French, and German. Additional languages may be added in the future.
+Macromise is available in English and French. Additional languages may be added in the future.
 
 # Upcoming Features
 

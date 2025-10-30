@@ -18,7 +18,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -31,10 +30,8 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-
 import definitions.Recipe;
 import definitions.Theme;
 import init.Main;
@@ -69,10 +66,10 @@ public class AppFrame {
 	private JMenuItem menuBtnImport;
 	private JMenuItem menuBtnEn;
 	private JMenuItem menuBtnFr                                                                                                                                                            ;
-	private JMenuItem menuBtnDe;
 	private JMenuItem menuBtnReadMe;
 	private JMenuItem menuBtnLogout;
 	private static JCheckBox autoBackup;
+	private JMenu menuTheme;
 	private JRadioButtonMenuItem themeLight;
 	private JRadioButtonMenuItem themeDark;
 	private Theme currentTheme;
@@ -89,7 +86,7 @@ public class AppFrame {
 		frame.setTitle("Macromise Recipe Manager");		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
+
 	public void initialize() {
 		reportProgress(7, "Loading config...");
 		// ---------------------------------------------------------------------
@@ -97,7 +94,7 @@ public class AppFrame {
 		// ---------------------------------------------------------------------
 		config = new Config();
 		reportProgress(10, "Loading language...");
-		
+
 		bundle = config.getResourceBundle();
 		recipeScreen = new RecipeScreen(bundle);
 		loginScreen = new LoginScreen(bundle);
@@ -114,7 +111,7 @@ public class AppFrame {
 		} catch (NullPointerException e) {
 			System.err.println("Could not find icon.png");
 		}
-		
+
 		reportProgress(15, "Loading screens...");
 
 		// ----- Adding Screens to Frame -----
@@ -142,24 +139,22 @@ public class AppFrame {
 		menuAccount.add(menuBtnLogout);
 		menuBtnEn = new JMenuItem(bundle.getString("menuBtnEn"));
 		menuBtnFr = new JMenuItem(bundle.getString("menuBtnFr"));
-		menuBtnDe = new JMenuItem(bundle.getString("menuBtnDe"));
 		menuLang.add(menuBtnEn);
 		menuLang.add(menuBtnFr);
-		menuLang.add(menuBtnDe);
 		menuBar.add(menuFile);
 		menuBar.add(menuOpt);
 		menuBar.add(menuAccount);
 		frame.setJMenuBar(menuBar);
-		autoBackup = new JCheckBox(bundle.getString("autoBackup"));
+		autoBackup = new JCheckBox(" " + bundle.getString("autoBackup")); // space for spacing
 		autoBackup.setSelected(config.isAutoBackup());
 		menuOpt.add(autoBackup);
-		JMenu menuTheme = new JMenu("Themes");
+		menuTheme = new JMenu(bundle.getString("theme"));
 		ButtonGroup themeGroup = new ButtonGroup();
 		reportProgress(25, "Loading theme...");
-		
+
 		// Theme section
-		themeLight = new JRadioButtonMenuItem("Light");
-		themeDark = new JRadioButtonMenuItem("Dark");
+		themeLight = new JRadioButtonMenuItem(bundle.getString("theme.Light"));
+		themeDark = new JRadioButtonMenuItem(bundle.getString("theme.Dark"));
 		themeGroup.add(themeLight);
 		themeGroup.add(themeDark);
 		menuOpt.add(menuTheme);
@@ -168,7 +163,7 @@ public class AppFrame {
 		themeLight.addActionListener(ignored -> fireThemeChangeEvent(Theme.LIGHT));
 		themeDark.addActionListener(ignored -> fireThemeChangeEvent(Theme.DARK));
 		reportProgress(30, "Final UI initialization...");
-		
+
 		if (currentTheme == Theme.LIGHT) {
 			themeLight.setSelected(true);
 		} else {
@@ -189,51 +184,51 @@ public class AppFrame {
 		} else {
 			loginScreen.grabFocus("LOGIN_FIELD");
 		}
-		
+
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		reportProgress(35, "UI Initialized.");
 	}
-	
+
 	public void setProgressListener(ProgressListener progressListener) {
 		if (progressListener != null) {
 			this.progressListener = progressListener;
 		}
 	}
-	
+
 	public void reportProgress(int percent, String msg) {
 		if (progressListener != null) {
 			progressListener.onProgress(percent, msg);	
 		}
 	}
-	
+
 	public void setViewVisible(boolean visible) {
 		frame.setVisible(visible);
 	}
-	
+
 	public void fireThemeChangeEvent(Theme theme) {
 		if (theme.toString().isEmpty()) {
 			System.err.println("No theme passed to fireThemeChangeEvent().");
 			return;
 		}
-		
+
 		if (!(theme == Theme.LIGHT || theme == Theme.DARK)) {
 			System.err.println("Unrecognized theme passed to fireThemeChangeEvent().");
 			return;
 		}
-		
+
 		// Notify config of the theme change
 		config.setTheme(theme);
-		
+
 		// Switch the FlatLaf library
 		applyTheme(theme);
-		
+
 		// Fire the theme change event to the controller
 		ActionEvent themeChange = new ActionEvent(this,
 				ActionEvent.ACTION_PERFORMED,
 				"switchTheme&" + theme.toString());
 		listener.actionPerformed(themeChange);
 	}
-	
+
 	public void changeThemeInChildren(Theme theme) {
 		// change theme in registerscreen, loginscreen, recipescreen
 		// tell the model what the current theme is so the config can save it
@@ -254,7 +249,7 @@ public class AppFrame {
 			default:
 				return;
 			}
-			
+
 		} catch (UnsupportedLookAndFeelException e) {
 			System.err.println("Exception caught while switching theme: "
 					+ e.getMessage());
@@ -288,8 +283,6 @@ public class AppFrame {
 		menuBtnEn.setActionCommand("english");
 		menuBtnFr.addActionListener(listener);
 		menuBtnFr.setActionCommand("french");
-		menuBtnDe.addActionListener(listener);
-		menuBtnDe.setActionCommand("german");
 		menuBtnReadMe.addActionListener(ignored -> {
 			displayReadMe();
 		});
@@ -354,15 +347,9 @@ public class AppFrame {
 		if (lang.equals(Locale.ENGLISH)) {
 			menuBtnEn.setEnabled(false);
 			menuBtnFr.setEnabled(true);
-			menuBtnDe.setEnabled(true);
 		} else if (lang.equals(Locale.FRENCH)) {
 			menuBtnEn.setEnabled(true);
 			menuBtnFr.setEnabled(false);
-			menuBtnDe.setEnabled(true);
-		} else if (lang.equals(Locale.GERMAN)) {
-			menuBtnEn.setEnabled(true);
-			menuBtnFr.setEnabled(true);
-			menuBtnDe.setEnabled(false);
 		}
 	}
 
@@ -407,6 +394,10 @@ public class AppFrame {
 		menuBtnEn.setText(bundle.getString("menuBtnEn"));
 		menuBtnFr.setText(bundle.getString("menuBtnFr"));
 		menuBtnLogout.setText(bundle.getString("menuBtnLogout"));
+		autoBackup.setText(" " + bundle.getString("autoBackup")); // space for spacing
+		menuTheme.setText(bundle.getString("theme"));
+		themeLight.setText(bundle.getString("theme.Light"));
+		themeDark.setText(bundle.getString("theme.Dark"));
 	}
 
 	public void switchScreen(String screenName) {
@@ -473,7 +464,8 @@ public class AppFrame {
 	}
 
 	public ResourceBundle getBundle() {
-		return bundle;
+		//return bundle;
+		return config.getResourceBundle();
 	}
 
 	public Config getConfig() {
