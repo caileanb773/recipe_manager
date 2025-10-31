@@ -19,11 +19,11 @@ public class Main {
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 		new Loader(controller).run();
+		controller.login();
 
 		// TODO finish refactoring scaling using BigDecimal
-		// TODO MINOR BUG: if you have a recipe detached, and switch theme, detached recipe theme doesn't change.
-		// TODO loading screen logo
 		// TODO language changing messes with app window size (width)
+		// TODO only one instance open at a time
 		
 	}
 }

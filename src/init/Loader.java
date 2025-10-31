@@ -1,8 +1,12 @@
 package init;
 
 import java.awt.BorderLayout;
+import java.awt.Image;
+import java.net.URL;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,6 +30,8 @@ import view.AppFrame;
 public class Loader {
 
 	private AppController controller;
+	private Image bannerImage;
+	private ImageIcon icon;
 
 
 	public Loader(AppController controller) {
@@ -44,9 +50,23 @@ public class Loader {
 		AppFrame view = controller.getView();
 
 		// Create ProgressListener
+		URL loadingBannerURL = Main.class.getClassLoader().getResource(
+				"img/loadingBanner.png");
+		
+		if (loadingBannerURL != null) {
+			icon = new ImageIcon(loadingBannerURL);
+			bannerImage = icon.getImage().getScaledInstance(icon.getIconWidth() / 2,
+					icon.getIconHeight() / 2,
+					Image.SCALE_SMOOTH);
+			icon = new ImageIcon(bannerImage);
+		} else {
+			System.out.println("Error locating loading screen banner.");
+		}
+		
 		JDialog progressDialog = new JDialog((JFrame) null, "Loading", true);
 		JProgressBar progressBar = new JProgressBar(0, 100);
 		JLabel loadingLabel = new JLabel();
+		loadingLabel.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
 		ProgressListener progressListener = new ProgressListener(progressBar,
 				loadingLabel);
 
@@ -58,9 +78,16 @@ public class Loader {
 		JPanel container = new JPanel(new BorderLayout());
 		container.add(progressBar, BorderLayout.CENTER);
 		container.add(loadingLabel, BorderLayout.NORTH);
+		JLabel imgHolder = new JLabel();
+		imgHolder.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		imgHolder.setIcon(icon);
 		progressBar.setStringPainted(true);
 		progressDialog.add(container, BorderLayout.CENTER);
-		progressDialog.setSize(300, 75);
+		progressDialog.add(imgHolder, BorderLayout.NORTH);
+		loadingLabel.setHorizontalAlignment(JLabel.CENTER);
+		progressDialog.pack();
+		progressDialog.setSize(progressDialog.getWidth(),
+				progressDialog.getHeight() + 40);
 		progressDialog.setLocationRelativeTo(null);
 		progressDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 

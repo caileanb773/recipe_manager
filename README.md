@@ -166,9 +166,7 @@ PIECES, KNOBS, CLOVES, STICKS, GLUGS, INCHES, DASHES, PINCHES, DROPS, BLOCK, PIE
 
 ## Known Bugs
 
-• If, with a recipe detached, you change the theme, the detached recipe text may become difficult to read.
 • Cancelling a recipe import will make the application hang, and will still import the recipes. For now, cancelling an import is disabled.
-• Switching to German does not change any text to be in German.
 
 ## Submitting a Bug Report
 

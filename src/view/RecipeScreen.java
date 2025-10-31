@@ -8,9 +8,11 @@ import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_THEME_BG_COL;
 import static definitions.Constants.LIGHT_THEME_RECIPE_BTN_COL;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GradientPaint;
@@ -26,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -46,6 +49,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
+
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
@@ -100,6 +104,7 @@ public class RecipeScreen extends JPanel {
 	private Color rcpBtnColor;
 	private Color rcpBtnFontCol;
 	private Color panelBgCol;
+	private List<JDialog> detachedRcps;
 
 	// Constant
 	private final int UNSCALED = 0;
@@ -116,6 +121,7 @@ public class RecipeScreen extends JPanel {
 		setLayout(new BorderLayout());
 		rcpSelectList = new ArrayList<RecipeSelectButton>();
 		scaleVal = BigDecimal.ONE;
+		detachedRcps = new ArrayList<>();
 		
 		topGradient = LIGHT_GRADIENT_TOP;
 		botGradient = LIGHT_GRADIENT_BOTTOM;
@@ -292,7 +298,7 @@ public class RecipeScreen extends JPanel {
 
 	public void handleDetachRecipe() {
 		if (activeRecipe == null) {
-			JOptionPane.showMessageDialog(null,
+			JOptionPane.showMessageDialog(this,
 					bundle.getString("detachRcpError"),
 					bundle.getString("error.title"),
 					JOptionPane.INFORMATION_MESSAGE);
@@ -304,8 +310,9 @@ public class RecipeScreen extends JPanel {
 				false);
 
 		JTextArea detachedRcpTxt = new JTextArea();
+		detachedRecipe.setBackground(panelBgCol);
 		detachedRcpTxt = new JTextArea();
-		detachedRcpTxt.setBackground(panelBgCol);
+		detachedRcpTxt.setOpaque(true);
 		detachedRcpTxt.setEditable(false);
 		detachedRcpTxt.setCaretColor(new Color(0,0,0,0));
 		detachedRcpTxt.setWrapStyleWord(true);
@@ -327,6 +334,8 @@ public class RecipeScreen extends JPanel {
 		detachedRecipe.setVisible(true);
 		detachedRcpTxt.setCaretPosition(0);
 
+		// Add to the list
+		detachedRcps.add(detachedRecipe);
 	}
 
 	public List<Ingredient> scaleRecipe(BigDecimal amt) {
@@ -381,7 +390,6 @@ public class RecipeScreen extends JPanel {
 				scaleRcpSpinner.setValue(1);
 			});
 			
-			// XXX testing truncation of overly long recipe button titles
 			if (rcp.getTitle().length() >= 20) {
 				newRcpButton.setText(rcp.getTitle().substring(0, 20) + "...");
 			}
@@ -577,6 +585,14 @@ public class RecipeScreen extends JPanel {
 			break;
 		default:
 			System.err.println("Unrecognized theme: " + theme);
+		}
+				
+		for (JDialog d : detachedRcps) {
+			if (d != null) {
+				d.setBackground(panelBgCol);
+			} else {
+				System.out.println("Error changing dialog BGCol, null dialog.");
+			}
 		}
 		
 		// TODO there is a method in controller that does this. call that instead?
