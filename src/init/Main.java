@@ -19,7 +19,7 @@ public class Main {
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 		new Loader(controller).run();
-		controller.login();
+		//controller.login();
 
 		// TODO finish refactoring scaling using BigDecimal
 		// TODO language changing messes with app window size (width)

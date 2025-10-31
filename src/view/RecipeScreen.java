@@ -306,7 +306,7 @@ public class RecipeScreen extends JPanel {
 		}
 
 		JDialog detachedRecipe = new JDialog((JFrame) SwingUtilities.getWindowAncestor(this),
-				bundle.getString("detachedRcp"),
+				bundle.getString("detachedRcp") + ": " + activeRecipe.getTitle(),
 				false);
 
 		JTextArea detachedRcpTxt = new JTextArea();
