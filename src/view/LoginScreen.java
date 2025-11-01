@@ -34,6 +34,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -102,6 +103,8 @@ public class LoginScreen extends JPanel {
 		// ---------------------------------------------------------------------
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(3,3,3,3);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 1.0;
 		inputsPanel = new JPanel(new GridBagLayout());
 		buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.setOpaque(false);
@@ -117,38 +120,19 @@ public class LoginScreen extends JPanel {
 		login = new JButton(bundle.getString("login"));
 		clear = new JButton(bundle.getString("clear"));
 		register = new JButton(bundle.getString("register"));
-		emailInput = new JTextField(20);
-		pwInput = new JPasswordField(20);
+		emailInput = new JTextField(15);
+		pwInput = new JPasswordField(15);
 		logoBanner = new JLabel();
-
-		// ----- Banners -----
+		
+		// ----- Component Centering -----
+		emailLabel.setHorizontalAlignment(JLabel.RIGHT);
+		pwLabel.setHorizontalAlignment(JLabel.RIGHT);
 		logoBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(logoBanner);
-
-		URL bannerLightUrl = Main.class.getClassLoader().getResource(
-				"img/banner_bluegray.png");
-		if (bannerLightUrl != null) {
-			ImageIcon icon = new ImageIcon(bannerLightUrl);
-			Image scaledImage = icon.getImage().getScaledInstance(
-					icon.getIconWidth() / 2, icon.getIconHeight() / 2,
-					Image.SCALE_SMOOTH);
-			banners.add(new ImageIcon(scaledImage));
-		} else {
-			System.err.println("Could not resolve path to Light Theme banner.");
-		}
-
-		URL bannerDarkUrl = Main.class.getClassLoader().getResource(
-				"img/banner_blackred.png");
-		if (bannerDarkUrl != null) {
-			ImageIcon icon = new ImageIcon(bannerDarkUrl);
-			Image scaledImage = icon.getImage().getScaledInstance(
-					icon.getIconWidth() / 2, icon.getIconHeight() / 2,
-					Image.SCALE_SMOOTH);
-			banners.add(new ImageIcon(scaledImage));
-		} else {
-			System.err.println("Could not resolve path to Dark Theme banner.");
-		}
-
+		
+		// ----- Banners -----
+		loadBanner("img/banner_bluegray.png");
+		loadBanner("img/banner_blackred.png");
+	
 		// ---------------------------------------------------------------------
 		// L O G I N  F I E L D S
 		// ---------------------------------------------------------------------
@@ -168,6 +152,9 @@ public class LoginScreen extends JPanel {
 		inputsPanel.add(pwReveal, gbc);
 		gbc.gridx = 1;
 		gbc.gridy++;
+		
+		inputsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		inputsPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
 
 		// ----- LastEmail check -----
 		String lastEmail = Config.getLastEmail();
@@ -184,6 +171,7 @@ public class LoginScreen extends JPanel {
 		buttonPanel.add(login);
 		buttonPanel.add(clear);
 		buttonPanel.add(register);
+		add(logoBanner);
 		add(inputsPanel);
 		add(buttonPanel);
 	}
@@ -199,6 +187,20 @@ public class LoginScreen extends JPanel {
 		g2d.setPaint(new GradientPaint(0, 0, topGradient, 0, h, botGradient));
 		g2d.fillRect(0, 0, w, h);
 		g2d.dispose();
+	}
+	
+	private void loadBanner(String resourcePath) {
+		URL bannerLightUrl = Main.class.getClassLoader().getResource(
+				resourcePath);
+		if (bannerLightUrl != null) {
+			ImageIcon icon = new ImageIcon(bannerLightUrl);
+			Image scaledImage = icon.getImage().getScaledInstance(
+					icon.getIconWidth() / 2, icon.getIconHeight() / 2,
+					Image.SCALE_SMOOTH);
+			banners.add(new ImageIcon(scaledImage));
+		} else {
+			System.err.println("Could not resolve path to banner.");
+		}
 	}
 
 	public void registerController(ActionListener listener) {

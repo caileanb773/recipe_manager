@@ -89,6 +89,7 @@ public class AppFrame {
 
 	public void initialize() {
 		reportProgress(7, "Loading config...");
+		
 		// ---------------------------------------------------------------------
 		// C O M P O N E N T S
 		// ---------------------------------------------------------------------
