@@ -106,7 +106,7 @@ public class LoginScreen extends JPanel {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.weightx = 1.0;
 		inputsPanel = new JPanel(new GridBagLayout());
-		buttonPanel = new JPanel(new FlowLayout());
+		buttonPanel = new JPanel();
 		buttonPanel.setOpaque(false);
 		inputsPanel.setOpaque(false);
 
@@ -125,54 +125,74 @@ public class LoginScreen extends JPanel {
 		logoBanner = new JLabel();
 		
 		// ----- Component Centering -----
-		emailLabel.setHorizontalAlignment(JLabel.RIGHT);
-		pwLabel.setHorizontalAlignment(JLabel.RIGHT);
+		//emailLabel.setHorizontalAlignment(JLabel.RIGHT);
+		//pwLabel.setHorizontalAlignment(JLabel.RIGHT);
 		logoBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		// ----- Banners -----
 		loadBanner("img/banner_bluegray.png");
 		loadBanner("img/banner_blackred.png");
 	
+		// Root: vertical stacking of logo, inputs, and buttons
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setBackground(Constants.LIGHT_THEME_RECIPE_BTN_COL);
+
+		// Center logo
+		logoBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
+		add(logoBanner);
+
 		// ---------------------------------------------------------------------
-		// L O G I N  F I E L D S
+		// I N P U T S
 		// ---------------------------------------------------------------------
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		inputsPanel.add(emailLabel, gbc);
-		gbc.gridx++;
-		inputsPanel.add(emailInput, gbc);
-		gbc.gridx++;
-		inputsPanel.add(rmbrMe, gbc);
-		gbc.gridx = 0;
-		gbc.gridy++;
-		inputsPanel.add(pwLabel, gbc);
-		gbc.gridx++;
-		inputsPanel.add(pwInput, gbc);
-		gbc.gridx++;
-		inputsPanel.add(pwReveal, gbc);
-		gbc.gridx = 1;
-		gbc.gridy++;
+//		inputsPanel = new JPanel(new GridBagLayout());
+//		inputsPanel.setOpaque(false);
+//
+//		emailLabel = new JLabel(bundle.getString("email"));
+//		pwLabel = new JLabel(bundle.getString("password"));
+//		emailInput = new JTextField(15);
+//		pwInput = new JPasswordField(15);
+//		rmbrMe = new JCheckBox(bundle.getString("remember"));
+//		pwReveal = new JCheckBox(bundle.getString("revealPassword"));
+//
+//		// --- Email row ---
+//		gbc.gridx = 0; gbc.gridy = 0;
+//		inputsPanel.add(emailLabel, gbc);
+//
+//		gbc.gridx = 1;
+//		inputsPanel.add(emailInput, gbc);
+//		gbc.gridx = 2;
+//		inputsPanel.add(rmbrMe, gbc);
+//
+//		// --- Password row ---
+//		gbc.gridx = 0; gbc.gridy = 1;
+//		inputsPanel.add(pwLabel, gbc);
+//
+//		gbc.gridx = 1;
+//		inputsPanel.add(pwInput, gbc);
+//
+//		gbc.gridx = 2;
+//		inputsPanel.add(pwReveal, gbc);
+//
+//		// --- Center the entire inputs panel ---
+//		add(inputsPanel);
 		
-		inputsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		inputsPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		JPanel emailPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+		emailPanel.add(emailLabel);
+		emailPanel.add(emailInput);
+		emailPanel.add(rmbrMe);
+		emailPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		add(emailPanel);
 
-		// ----- LastEmail check -----
-		String lastEmail = Config.getLastEmail();
-		if (lastEmail == null || lastEmail.equals("null") || lastEmail.isEmpty()) {
-			rmbrMe.setSelected(false);
-		} else {
-			rmbrMe.setSelected(true);
-			emailInput.setText(lastEmail);
-			emailInput.setSelectionStart(0);
-			emailInput.setSelectionEnd(0);
-		}
-
-		// Assemble Screen
+		// ---------------------------------------------------------------------
+		// B U T T O N S
+		// ---------------------------------------------------------------------
+		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+		buttonPanel.setOpaque(false);
 		buttonPanel.add(login);
 		buttonPanel.add(clear);
 		buttonPanel.add(register);
-		add(logoBanner);
-		add(inputsPanel);
+		buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(buttonPanel);
 	}
 
