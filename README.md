@@ -1,7 +1,12 @@
 # Macromise Recipe manager
 
-![Login Screen](resources/img/screenshot_login.png)
-![Recipe Management Screen](resources/img/screenshot_recipescreen_dark.png)
+![Login Screen - Light Theme](resources/img/screenshot_login.png)
+
+- Light Theme
+
+![Recipe Management Screen - Dark Theme](resources/img/screenshot_recipescreen_dark.png)
+
+- Dark Theme
 
 # What this app is for
 

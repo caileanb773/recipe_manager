@@ -1,7 +1,10 @@
 package init;
 
+import javax.swing.JOptionPane;
+
 import controller.AppController;
 import model.RecipeMgrModel;
+import util.InstanceLocker;
 import view.AppFrame;
 
 /*
@@ -14,6 +17,16 @@ public class Main {
 
 	public static void main(String[] args) {
 		
+		// Detect if an instance is already running
+		if (!InstanceLocker.lockInstance("lock.txt")) {
+			System.err.println("Application is already running.");
+			JOptionPane.showMessageDialog(null,
+					"There is already an instance of Macromise running.",
+					"Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
 		// Create MVC
 		RecipeMgrModel model = new RecipeMgrModel();
 		AppFrame view = new AppFrame();
@@ -23,7 +36,9 @@ public class Main {
 
 		// TODO finish refactoring scaling using BigDecimal
 		// TODO language changing messes with app window size (width)
-		// TODO only one instance open at a time
+		// TODO would be nice if, when expanding window on y-axis, scrollable area became bigger
+		// XXX BUG: When expanding window vertically, upon close/reopen, window is still enlarged (find out how to reproduce)
+		// TODO logging functionality
 		
 	}
 }

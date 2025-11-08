@@ -369,7 +369,7 @@ public class LoginScreen extends JPanel {
 
 	public void refreshTranslatable() {
 		rmbrMe.setText(bundle.getString("remember"));
-		emailLabel.setText(bundle.getString("login"));
+		emailLabel.setText(bundle.getString("email"));
 		pwLabel.setText(bundle.getString("password"));
 		pwReveal.setText(bundle.getString("revealPassword"));
 		login.setText(bundle.getString("login"));
