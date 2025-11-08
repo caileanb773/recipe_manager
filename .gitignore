@@ -2,5 +2,6 @@
 /bin
 recipes.db
 backup.rcp
+MMLock
 /resources/credentials.txt
 /resources/config.ini

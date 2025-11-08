@@ -18,7 +18,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// Detect if an instance is already running
-		if (!InstanceLocker.lockInstance("lock.txt")) {
+		if (!InstanceLocker.lockInstance("MMLock")) {
 			System.err.println("Application is already running.");
 			JOptionPane.showMessageDialog(null,
 					"There is already an instance of Macromise running.",
@@ -37,7 +37,9 @@ public class Main {
 		// TODO finish refactoring scaling using BigDecimal
 		// TODO language changing messes with app window size (width)
 		// TODO would be nice if, when expanding window on y-axis, scrollable area became bigger
-		// XXX BUG: When expanding window vertically, upon close/reopen, window is still enlarged (find out how to reproduce)
+		// XXX BUG: when recipes are imported such that there are enough to enable a scrollable area,
+		// upon closing/reopening the app, the window will not constrain the rcp buttons to the max
+		// size of the scrollable area
 		// TODO logging functionality
 		
 	}

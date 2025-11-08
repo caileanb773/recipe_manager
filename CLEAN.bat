@@ -7,5 +7,6 @@ del recipes.db
 del recipes.db-journal
 del resources\config.ini
 del resources\credentials.txt
+del MMLock
 
 echo Finished.
