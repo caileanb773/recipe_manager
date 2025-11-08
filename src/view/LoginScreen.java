@@ -1,24 +1,22 @@
 package view;
 
+import static definitions.Constants.DARK_GRADIENT_BOTTOM;
+import static definitions.Constants.DARK_GRADIENT_TOP;
 import static definitions.Constants.EMAIL_IDX;
 import static definitions.Constants.INCORRECT_PASSWORD;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
-import static definitions.Constants.DARK_GRADIENT_BOTTOM;
-import static definitions.Constants.DARK_GRADIENT_TOP;
 import static definitions.Constants.NONEXISTENT_EMAIL;
 import static definitions.Constants.PW_IDX;
 import static definitions.Constants.VALID;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -34,7 +32,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -46,6 +44,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -54,7 +53,6 @@ import com.sun.tools.javac.Main;
 
 import definitions.Constants;
 import definitions.Theme;
-import util.Config;
 import util.Utility;
 
 /*
@@ -75,7 +73,6 @@ public class LoginScreen extends JPanel {
 	private JButton clear;
 	private JButton register;
 	private JPanel buttonPanel;
-	private JPanel inputsPanel;
 	private JCheckBox pwReveal;
 	private ResourceBundle bundle;
 	private JLabel logoBanner;
@@ -92,108 +89,101 @@ public class LoginScreen extends JPanel {
 
 
 	public LoginScreen(ResourceBundle bundle) {
-		this.bundle = bundle;
-		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-		setLayout(layout);
-		setBackground(Constants.LIGHT_THEME_RECIPE_BTN_COL);
-		banners = new ArrayList<>();
+	    this.bundle = bundle;
+	    BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
+	    setLayout(layout);
+	    setBackground(Constants.LIGHT_THEME_BG_COL);
+	    banners = new ArrayList<>();
 
-		// ---------------------------------------------------------------------
-		// P A N E L S
-		// ---------------------------------------------------------------------
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(3,3,3,3);
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.weightx = 1.0;
-		inputsPanel = new JPanel(new GridBagLayout());
-		buttonPanel = new JPanel();
-		buttonPanel.setOpaque(false);
-		inputsPanel.setOpaque(false);
+	    // ---------------------------------------------------------------------
+	    // P A N E L S
+	    // ---------------------------------------------------------------------
+	    buttonPanel = new JPanel();
+	    buttonPanel.setOpaque(false);
 
-		// ---------------------------------------------------------------------
-		// C O M P O N E N T S
-		// ---------------------------------------------------------------------
-		emailLabel = new JLabel(bundle.getString("email"));
-		pwLabel = new JLabel(bundle.getString("password"));
-		pwReveal = new JCheckBox(bundle.getString("revealPassword"), false);
-		rmbrMe = new JCheckBox(bundle.getString("remember"), false);
-		login = new JButton(bundle.getString("login"));
-		clear = new JButton(bundle.getString("clear"));
-		register = new JButton(bundle.getString("register"));
-		emailInput = new JTextField(15);
-		pwInput = new JPasswordField(15);
-		logoBanner = new JLabel();
-		
-		// ----- Component Centering -----
-		//emailLabel.setHorizontalAlignment(JLabel.RIGHT);
-		//pwLabel.setHorizontalAlignment(JLabel.RIGHT);
-		logoBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		// ----- Banners -----
-		loadBanner("img/banner_bluegray.png");
-		loadBanner("img/banner_blackred.png");
-	
-		// Root: vertical stacking of logo, inputs, and buttons
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setBackground(Constants.LIGHT_THEME_RECIPE_BTN_COL);
+	    // ---------------------------------------------------------------------
+	    // C O M P O N E N T S
+	    // ---------------------------------------------------------------------
+	    emailLabel = new JLabel(bundle.getString("email"));
+	    pwLabel = new JLabel(bundle.getString("password"));
+	    pwReveal = new JCheckBox(bundle.getString("revealPassword"), false);
+	    rmbrMe = new JCheckBox(bundle.getString("remember"), false);
+	    login = new JButton(bundle.getString("login"));
+	    clear = new JButton(bundle.getString("clear"));
+	    register = new JButton(bundle.getString("register"));
+	    emailInput = new JTextField(15);
+	    pwInput = new JPasswordField(15);
+	    logoBanner = new JLabel();
 
-		// Center logo
-		logoBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(logoBanner);
+	    // ----- Banner -----
+	    loadBanner("img/banner_bluegray.png");
+	    loadBanner("img/banner_blackred.png");
 
-		// ---------------------------------------------------------------------
-		// I N P U T S
-		// ---------------------------------------------------------------------
-//		inputsPanel = new JPanel(new GridBagLayout());
-//		inputsPanel.setOpaque(false);
-//
-//		emailLabel = new JLabel(bundle.getString("email"));
-//		pwLabel = new JLabel(bundle.getString("password"));
-//		emailInput = new JTextField(15);
-//		pwInput = new JPasswordField(15);
-//		rmbrMe = new JCheckBox(bundle.getString("remember"));
-//		pwReveal = new JCheckBox(bundle.getString("revealPassword"));
-//
-//		// --- Email row ---
-//		gbc.gridx = 0; gbc.gridy = 0;
-//		inputsPanel.add(emailLabel, gbc);
-//
-//		gbc.gridx = 1;
-//		inputsPanel.add(emailInput, gbc);
-//		gbc.gridx = 2;
-//		inputsPanel.add(rmbrMe, gbc);
-//
-//		// --- Password row ---
-//		gbc.gridx = 0; gbc.gridy = 1;
-//		inputsPanel.add(pwLabel, gbc);
-//
-//		gbc.gridx = 1;
-//		inputsPanel.add(pwInput, gbc);
-//
-//		gbc.gridx = 2;
-//		inputsPanel.add(pwReveal, gbc);
-//
-//		// --- Center the entire inputs panel ---
-//		add(inputsPanel);
-		
-		JPanel emailPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
-		emailPanel.add(emailLabel);
-		emailPanel.add(emailInput);
-		emailPanel.add(rmbrMe);
-		emailPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		add(emailPanel);
+	    // ---------------------------------------------------------------------
+	    // I N P U T  F I E L D S
+	    // ---------------------------------------------------------------------
 
-		// ---------------------------------------------------------------------
-		// B U T T O N S
-		// ---------------------------------------------------------------------
-		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-		buttonPanel.setOpaque(false);
-		buttonPanel.add(login);
-		buttonPanel.add(clear);
-		buttonPanel.add(register);
-		buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(buttonPanel);
+	    // ----- Email Input -----
+	    JPanel emailPanel = new JPanel(new SpringLayout());
+	    emailPanel.setOpaque(false);
+	    emailPanel.add(emailLabel);
+	    emailPanel.add(emailInput);
+	    emailPanel.add(rmbrMe);
+	    SpringLayout emailLayout = (SpringLayout) emailPanel.getLayout();
+	    emailLayout.putConstraint(SpringLayout.NORTH, emailLabel, 0, SpringLayout.NORTH, emailPanel);
+	    emailLayout.putConstraint(SpringLayout.NORTH, emailInput, 0, SpringLayout.NORTH, emailPanel);
+	    emailLayout.putConstraint(SpringLayout.NORTH, rmbrMe,   0, SpringLayout.NORTH, emailPanel);
+	    emailLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, emailInput, 0, SpringLayout.HORIZONTAL_CENTER, emailPanel);
+	    emailLayout.putConstraint(SpringLayout.EAST, emailLabel, -5, SpringLayout.WEST, emailInput);
+	    emailLayout.putConstraint(SpringLayout.WEST, rmbrMe, 5, SpringLayout.EAST, emailInput);
+	    emailLayout.putConstraint(SpringLayout.SOUTH, emailPanel, 2, SpringLayout.SOUTH, emailInput);
+	    emailLayout.putConstraint(SpringLayout.SOUTH, emailPanel, 2, SpringLayout.SOUTH, rmbrMe);
+
+	    // ----- Password Input -----
+	    JPanel passwordPanel = new JPanel(new SpringLayout());
+	    passwordPanel.setOpaque(false);
+	    passwordPanel.add(pwLabel);
+	    passwordPanel.add(pwInput);
+	    passwordPanel.add(pwReveal);
+	    SpringLayout passwordLayout = (SpringLayout) passwordPanel.getLayout();
+	    passwordLayout.putConstraint(SpringLayout.NORTH, pwLabel,   0, SpringLayout.NORTH, passwordPanel);
+	    passwordLayout.putConstraint(SpringLayout.NORTH, pwInput,   0, SpringLayout.NORTH, passwordPanel);
+	    passwordLayout.putConstraint(SpringLayout.NORTH, pwReveal, 0, SpringLayout.NORTH, passwordPanel);
+	    passwordLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, pwInput, 0, SpringLayout.HORIZONTAL_CENTER, passwordPanel);
+	    passwordLayout.putConstraint(SpringLayout.EAST, pwLabel, -5, SpringLayout.WEST, pwInput);
+	    passwordLayout.putConstraint(SpringLayout.WEST, pwReveal, 5, SpringLayout.EAST, pwInput);
+	    passwordLayout.putConstraint(SpringLayout.SOUTH, passwordPanel, 2, SpringLayout.SOUTH, pwInput);
+	    passwordLayout.putConstraint(SpringLayout.SOUTH, passwordPanel, 2, SpringLayout.SOUTH, pwReveal);
+
+	    // ----- Parent (BoxLayout) -----
+	    JPanel formPanel = new JPanel();
+	    formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
+	    formPanel.setOpaque(false);
+	    formPanel.add(emailPanel);
+	    formPanel.add(Box.createVerticalStrut(8));
+	    formPanel.add(passwordPanel);
+	    formPanel.add(Box.createVerticalStrut(8));
+
+	    // ---------------------------------------------------------------------
+	    // B U T T O N S
+	    // ---------------------------------------------------------------------
+	    buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+	    buttonPanel.setOpaque(false);
+	    buttonPanel.add(login);
+	    buttonPanel.add(clear);
+	    buttonPanel.add(register);
+
+	    // ----- Centering -----
+	    emailPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    passwordPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    logoBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    formPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+	    // ----- Assembling Screen -----
+	    add(logoBanner);
+	    add(formPanel);
+	    add(buttonPanel);
 	}
 
 	@Override

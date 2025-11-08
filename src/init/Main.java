@@ -24,7 +24,6 @@ public class Main {
 		// TODO finish refactoring scaling using BigDecimal
 		// TODO language changing messes with app window size (width)
 		// TODO only one instance open at a time
-		// TODO login screen inputs off center
 		
 	}
 }
