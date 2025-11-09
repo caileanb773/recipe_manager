@@ -45,14 +45,14 @@ public class Loader {
 		} catch (Exception e) {
 			System.err.println("Error while initializing FlatLAF: " + e.getMessage());
 		}
-		
+
 		RecipeMgrModel model = controller.getModel();
 		AppFrame view = controller.getView();
 
 		// Create ProgressListener
 		URL loadingBannerURL = Main.class.getClassLoader().getResource(
 				"img/loadingBanner.png");
-		
+
 		if (loadingBannerURL != null) {
 			icon = new ImageIcon(loadingBannerURL);
 			bannerImage = icon.getImage().getScaledInstance(icon.getIconWidth() / 2,
@@ -62,7 +62,7 @@ public class Loader {
 		} else {
 			System.out.println("Error locating loading screen banner.");
 		}
-		
+
 		JDialog progressDialog = new JDialog((JFrame) null, "Loading", true);
 		JProgressBar progressBar = new JProgressBar(0, 100);
 		JLabel loadingLabel = new JLabel();

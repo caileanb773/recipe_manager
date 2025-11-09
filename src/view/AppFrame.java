@@ -74,6 +74,9 @@ public class AppFrame {
 	private JRadioButtonMenuItem themeDark;
 	private Theme currentTheme;
 
+	// DEBUGGING OPTIONS -- XXX -- TO BE DELETED //
+	private JMenuItem debugLogin;
+
 	// Other
 	private ActionListener listener;
 	private ProgressListener progressListener;
@@ -89,7 +92,7 @@ public class AppFrame {
 
 	public void initialize() {
 		reportProgress(7, "Loading config...");
-		
+
 		// ---------------------------------------------------------------------
 		// C O M P O N E N T S
 		// ---------------------------------------------------------------------
@@ -130,6 +133,14 @@ public class AppFrame {
 		menuBtnImport = new JMenuItem(bundle.getString("menuBtnImport"));
 		menuFile.add(menuBtnImport);
 		menuFile.add(menuBtnExport);
+
+		// XXX Debugging
+		debugLogin = new JMenuItem("DEBUG: Force Login");
+		menuFile.add(debugLogin);
+		debugLogin.addActionListener(ignored -> listener.actionPerformed(new ActionEvent(this,
+				ActionEvent.ACTION_PERFORMED,
+				"login")));
+
 		menuOpt = new JMenu(bundle.getString("menuOpt"));
 		menuLang = new JMenu(bundle.getString("menuLang"));
 		menuBtnReadMe = new JMenuItem(bundle.getString("menuBtnReadMe"));

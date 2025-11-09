@@ -1,7 +1,6 @@
 package init;
 
 import javax.swing.JOptionPane;
-
 import controller.AppController;
 import model.RecipeMgrModel;
 import util.InstanceLocker;
@@ -32,12 +31,10 @@ public class Main {
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 		new Loader(controller).run();
-		controller.login();
 
 		// TODO finish refactoring scaling using BigDecimal
-		// TODO language changing messes with app window size (width)
-		// TODO would be nice if, when expanding window on y-axis, scrollable area became bigger
 		// TODO logging functionality
+		// TODO dsktp / laptop are 2 diff java ver. consider j17
 		
 	}
 }

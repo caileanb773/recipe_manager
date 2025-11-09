@@ -373,7 +373,7 @@ public class AppController implements ActionListener {
 	// TODO edit this to include JSON format eventually
 	public void handleExportRecipes() {
 		bundle = view.getBundle();
-		
+
 		if (model.getRecipes().isEmpty()) {
 			JOptionPane.showMessageDialog(null,
 					bundle.getString("export.noRecipes"),
@@ -381,7 +381,7 @@ public class AppController implements ActionListener {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		
+
 		JFileChooser chooser = new JFileChooser();
 		chooser.setDialogTitle(bundle.getString("export"));
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -508,19 +508,19 @@ public class AppController implements ActionListener {
 							}
 						};
 
-//						progressDialog.addWindowListener(new WindowAdapter() {
-//							@Override
-//							public void windowClosing(WindowEvent e) {
-//								worker.cancel(true);
-//								progressDialog.dispose();
-//
-//								// TODO show "cancelled" dialog
-//								// TODO actually "cancel" the import. load into 
-//								// temporary array and only commit the import if 
-//								// it wasn't cancelled so things aren't
-//							}
-//						});
-						
+						//						progressDialog.addWindowListener(new WindowAdapter() {
+						//							@Override
+						//							public void windowClosing(WindowEvent e) {
+						//								worker.cancel(true);
+						//								progressDialog.dispose();
+						//
+						//								// TODO show "cancelled" dialog
+						//								// TODO actually "cancel" the import. load into 
+						//								// temporary array and only commit the import if 
+						//								// it wasn't cancelled so things aren't
+						//							}
+						//						});
+
 						worker.execute();
 						progressDialog.setVisible(true);
 					}
@@ -588,11 +588,11 @@ public class AppController implements ActionListener {
 		reg.updateBundle(locale);
 		reg.refreshTranslatable();
 	}
-	
+
 	public RecipeMgrModel getModel() {
 		return this.model;
 	}
-	
+
 	public AppFrame getView() {
 		return this.view;
 	}

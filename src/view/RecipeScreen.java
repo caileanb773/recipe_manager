@@ -82,7 +82,7 @@ public class RecipeScreen extends JPanel {
 	// Selected (active) Recipe information (UI right side)
 	private JPanel selectedRcpDescPanel;
 	private JPanel selectedRcpInfo;
-	private JLabel selectedDescLabel;
+	private JLabel selectedDescLabel; // XXX currently unused
 	private JTextArea selectedRcpTxt;
 	private JScrollPane selectedRcpTxtScrollPane;
 	private JLabel scaleRcpLabel;
@@ -118,7 +118,7 @@ public class RecipeScreen extends JPanel {
 		rcpSelectList = new ArrayList<RecipeSelectButton>();
 		scaleVal = BigDecimal.ONE;
 		detachedRcps = new ArrayList<>();
-		
+
 		topGradient = LIGHT_GRADIENT_TOP;
 		botGradient = LIGHT_GRADIENT_BOTTOM;
 		rcpBtnColor = LIGHT_THEME_RECIPE_BTN_COL;
@@ -202,10 +202,9 @@ public class RecipeScreen extends JPanel {
 		// ---------------------------------------------------------------------
 		// S E L E C T E D  R E C I P E  D I S P L A Y
 		// ---------------------------------------------------------------------
-		selectedRcpDescPanel = new JPanel();
-		BoxLayout recipeDescLayout = new BoxLayout(selectedRcpDescPanel, BoxLayout.Y_AXIS);
-		selectedRcpDescPanel.setLayout(recipeDescLayout);
-		selectedRcpInfo = new JPanel();
+		selectedRcpDescPanel = new JPanel(new BorderLayout());
+		//BoxLayout recipeDescLayout = new BoxLayout(selectedRcpDescPanel, BoxLayout.Y_AXIS);
+		//selectedRcpDescPanel.setLayout(recipeDescLayout);
 		selectedRcpTxt = new JTextArea();
 		selectedRcpTxt.setBackground(panelBgCol);
 		selectedRcpTxt.setEditable(false);
@@ -246,19 +245,20 @@ public class RecipeScreen extends JPanel {
 				SELECTED_RCP_TXT_TEXT_AREA_HEIGHT));
 		selectedRcpTxtScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		selectedRcpTxtScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		selectedRcpInfo.add(selectedRcpTxtScrollPane);
-		selectedRcpDescPanel.add(selectedRcpInfo);
+		selectedRcpDescPanel.add(selectedRcpTxtScrollPane, BorderLayout.CENTER);
+		selectedRcpTxtScrollPane.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createEmptyBorder(5,5,5,5),					// outside
+				BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED)));	// inside
 		selectedRcpTxtScrollPane.setBorder(BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED));
-		selectedRcpDescPanel.add(scaleRcpPanel);
+		selectedRcpDescPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		selectedRcpDescPanel.add(scaleRcpPanel, BorderLayout.SOUTH);
 
 		// ----- Build Panel ----- 
 		add(selectedRcpDescPanel, BorderLayout.CENTER);
 		add(rcpSelectPanel, BorderLayout.WEST);
 
 		// ----- Panel Graphical Settings -----
-		rcpSelectListPanel.setBackground(Constants.LIGHT_THEME_BG_COL); // XXX this will need to be changed
 		selectedRcpDescPanel.setOpaque(false);
-		selectedRcpInfo.setOpaque(false);
 		rcpSelectPanel.setOpaque(false);
 		rcpSelectPanel.setOpaque(false);
 		rcpEditPanel.setOpaque(false);
@@ -354,12 +354,12 @@ public class RecipeScreen extends JPanel {
 
 		return scaledIngredients;
 	}
-	
+
 	public void focusFirstRecipe() {
 		if (rcpSelectList.size() == 0) {
 			return;
 		}
-		
+
 		RecipeSelectButton  b = rcpSelectList.get(0);
 		b.requestFocus();
 		setActiveRecipe(b.getBtnRecipe());
@@ -385,7 +385,7 @@ public class RecipeScreen extends JPanel {
 				setActiveRecipe(rcp);
 				scaleRcpSpinner.setValue(1);
 			});
-			
+
 			if (rcp.getTitle().length() >= 20) {
 				newRcpButton.setText(rcp.getTitle().substring(0, 20) + "...");
 			}
@@ -406,8 +406,6 @@ public class RecipeScreen extends JPanel {
 			rcpSelectListPanel.add(r);
 		}
 
-		rcpSelectListPanel.setSize(new Dimension(Constants.BUTTON_WIDTH, 
-				Constants.BUTTON_HEIGHT * rcpSelectList.size()));
 		rcpSelectListPanel.revalidate();
 		rcpSelectListPanel.repaint();
 	}
@@ -447,18 +445,8 @@ public class RecipeScreen extends JPanel {
 			}
 		}
 
-		rcpSelectListPanel.setSize(new Dimension(Constants.BUTTON_WIDTH, 
-				Constants.BUTTON_HEIGHT * rcpSelectList.size()));
-
-		rcpSelectScrollPane.setSize(new Dimension(Constants.BUTTON_WIDTH, 
-				Constants.BUTTON_HEIGHT * rcpSelectList.size()));
-
 		rcpSelectListPanel.revalidate();
 		rcpSelectListPanel.repaint();
-	}
-	
-	public void fixRcpSelectListPanelWidth() {
-		
 	}
 
 	public void clearFilters() {
@@ -557,9 +545,9 @@ public class RecipeScreen extends JPanel {
 		filterClear.setText(bundle.getString("filterClear"));
 		detachRecipeBtn.setText(bundle.getString("detachRcp"));
 	}
-	
+
 	public void changeTheme(Theme theme) {
-		
+
 		switch (theme) {
 		case LIGHT:
 			topGradient = LIGHT_GRADIENT_TOP;
@@ -582,7 +570,7 @@ public class RecipeScreen extends JPanel {
 		default:
 			System.err.println("Unrecognized theme: " + theme);
 		}
-				
+
 		for (JDialog d : detachedRcps) {
 			if (d != null) {
 				d.setBackground(panelBgCol);
@@ -590,7 +578,7 @@ public class RecipeScreen extends JPanel {
 				System.out.println("Error changing dialog BGCol, null dialog.");
 			}
 		}
-		
+
 		// TODO there is a method in controller that does this. call that instead?
 		displayRecipeButtons();
 	}
@@ -604,7 +592,7 @@ public class RecipeScreen extends JPanel {
 		if (activeRecipe == null) {
 			return;
 		}
-		
+
 		if (mode == UNSCALED) {
 			selectedRcpTxt.setText(activeRecipe.formatRecipeForTextDisplay());
 		} else if (mode == SCALED) {

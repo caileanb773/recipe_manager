@@ -45,6 +45,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -89,101 +90,102 @@ public class LoginScreen extends JPanel {
 
 
 	public LoginScreen(ResourceBundle bundle) {
-	    this.bundle = bundle;
-	    BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-	    setLayout(layout);
-	    setBackground(Constants.LIGHT_THEME_BG_COL);
-	    banners = new ArrayList<>();
+		this.bundle = bundle;
+		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
+		setLayout(layout);
+		setBackground(Constants.LIGHT_THEME_BG_COL);
+		banners = new ArrayList<>();
 
-	    // ---------------------------------------------------------------------
-	    // P A N E L S
-	    // ---------------------------------------------------------------------
-	    buttonPanel = new JPanel();
-	    buttonPanel.setOpaque(false);
+		// ---------------------------------------------------------------------
+		// P A N E L S
+		// ---------------------------------------------------------------------
+		buttonPanel = new JPanel();
+		buttonPanel.setOpaque(false);
 
-	    // ---------------------------------------------------------------------
-	    // C O M P O N E N T S
-	    // ---------------------------------------------------------------------
-	    emailLabel = new JLabel(bundle.getString("email"));
-	    pwLabel = new JLabel(bundle.getString("password"));
-	    pwReveal = new JCheckBox(bundle.getString("revealPassword"), false);
-	    rmbrMe = new JCheckBox(bundle.getString("remember"), false);
-	    login = new JButton(bundle.getString("login"));
-	    clear = new JButton(bundle.getString("clear"));
-	    register = new JButton(bundle.getString("register"));
-	    emailInput = new JTextField(15);
-	    pwInput = new JPasswordField(15);
-	    logoBanner = new JLabel();
+		// ---------------------------------------------------------------------
+		// C O M P O N E N T S
+		// ---------------------------------------------------------------------
+		emailLabel = new JLabel(bundle.getString("email"));
+		pwLabel = new JLabel(bundle.getString("password"));
+		pwReveal = new JCheckBox(bundle.getString("revealPassword"), false);
+		rmbrMe = new JCheckBox(bundle.getString("remember"), false);
+		login = new JButton(bundle.getString("login"));
+		clear = new JButton(bundle.getString("clear"));
+		register = new JButton(bundle.getString("register"));
+		emailInput = new JTextField(15);
+		pwInput = new JPasswordField(15);
+		logoBanner = new JLabel();
 
-	    // ----- Banner -----
-	    loadBanner("img/banner_bluegray.png");
-	    loadBanner("img/banner_blackred.png");
+		// ----- Banner -----
+		loadBanner("img/banner_bluegray.png");
+		loadBanner("img/banner_blackred.png");
 
-	    // ---------------------------------------------------------------------
-	    // I N P U T  F I E L D S
-	    // ---------------------------------------------------------------------
+		// ---------------------------------------------------------------------
+		// I N P U T  F I E L D S
+		// ---------------------------------------------------------------------
 
-	    // ----- Email Input -----
-	    JPanel emailPanel = new JPanel(new SpringLayout());
-	    emailPanel.setOpaque(false);
-	    emailPanel.add(emailLabel);
-	    emailPanel.add(emailInput);
-	    emailPanel.add(rmbrMe);
-	    SpringLayout emailLayout = (SpringLayout) emailPanel.getLayout();
-	    emailLayout.putConstraint(SpringLayout.NORTH, emailLabel, 0, SpringLayout.NORTH, emailPanel);
-	    emailLayout.putConstraint(SpringLayout.NORTH, emailInput, 0, SpringLayout.NORTH, emailPanel);
-	    emailLayout.putConstraint(SpringLayout.NORTH, rmbrMe,   0, SpringLayout.NORTH, emailPanel);
-	    emailLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, emailInput, 0, SpringLayout.HORIZONTAL_CENTER, emailPanel);
-	    emailLayout.putConstraint(SpringLayout.EAST, emailLabel, -5, SpringLayout.WEST, emailInput);
-	    emailLayout.putConstraint(SpringLayout.WEST, rmbrMe, 5, SpringLayout.EAST, emailInput);
-	    emailLayout.putConstraint(SpringLayout.SOUTH, emailPanel, 2, SpringLayout.SOUTH, emailInput);
-	    emailLayout.putConstraint(SpringLayout.SOUTH, emailPanel, 2, SpringLayout.SOUTH, rmbrMe);
+		// ----- Email Input -----
+		JPanel emailPanel = new JPanel(new SpringLayout());
+		emailPanel.setOpaque(false);
+		emailPanel.add(emailLabel);
+		emailPanel.add(emailInput);
+		emailPanel.add(rmbrMe);
+		SpringLayout emailLayout = (SpringLayout) emailPanel.getLayout();
+		emailLayout.putConstraint(SpringLayout.NORTH, emailLabel, 0, SpringLayout.NORTH, emailPanel);
+		emailLayout.putConstraint(SpringLayout.NORTH, emailInput, 0, SpringLayout.NORTH, emailPanel);
+		emailLayout.putConstraint(SpringLayout.NORTH, rmbrMe,   0, SpringLayout.NORTH, emailPanel);
+		emailLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, emailInput, 0, SpringLayout.HORIZONTAL_CENTER, emailPanel);
+		emailLayout.putConstraint(SpringLayout.EAST, emailLabel, -5, SpringLayout.WEST, emailInput);
+		emailLayout.putConstraint(SpringLayout.WEST, rmbrMe, 5, SpringLayout.EAST, emailInput);
+		emailLayout.putConstraint(SpringLayout.SOUTH, emailPanel, 2, SpringLayout.SOUTH, emailInput);
+		emailLayout.putConstraint(SpringLayout.SOUTH, emailPanel, 2, SpringLayout.SOUTH, rmbrMe);
 
-	    // ----- Password Input -----
-	    JPanel passwordPanel = new JPanel(new SpringLayout());
-	    passwordPanel.setOpaque(false);
-	    passwordPanel.add(pwLabel);
-	    passwordPanel.add(pwInput);
-	    passwordPanel.add(pwReveal);
-	    SpringLayout passwordLayout = (SpringLayout) passwordPanel.getLayout();
-	    passwordLayout.putConstraint(SpringLayout.NORTH, pwLabel,   0, SpringLayout.NORTH, passwordPanel);
-	    passwordLayout.putConstraint(SpringLayout.NORTH, pwInput,   0, SpringLayout.NORTH, passwordPanel);
-	    passwordLayout.putConstraint(SpringLayout.NORTH, pwReveal, 0, SpringLayout.NORTH, passwordPanel);
-	    passwordLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, pwInput, 0, SpringLayout.HORIZONTAL_CENTER, passwordPanel);
-	    passwordLayout.putConstraint(SpringLayout.EAST, pwLabel, -5, SpringLayout.WEST, pwInput);
-	    passwordLayout.putConstraint(SpringLayout.WEST, pwReveal, 5, SpringLayout.EAST, pwInput);
-	    passwordLayout.putConstraint(SpringLayout.SOUTH, passwordPanel, 2, SpringLayout.SOUTH, pwInput);
-	    passwordLayout.putConstraint(SpringLayout.SOUTH, passwordPanel, 2, SpringLayout.SOUTH, pwReveal);
+		// ----- Password Input -----
+		JPanel passwordPanel = new JPanel(new SpringLayout());
+		passwordPanel.setOpaque(false);
+		passwordPanel.add(pwLabel);
+		passwordPanel.add(pwInput);
+		passwordPanel.add(pwReveal);
+		SpringLayout passwordLayout = (SpringLayout) passwordPanel.getLayout();
+		passwordLayout.putConstraint(SpringLayout.NORTH, pwLabel,   0, SpringLayout.NORTH, passwordPanel);
+		passwordLayout.putConstraint(SpringLayout.NORTH, pwInput,   0, SpringLayout.NORTH, passwordPanel);
+		passwordLayout.putConstraint(SpringLayout.NORTH, pwReveal, 0, SpringLayout.NORTH, passwordPanel);
+		passwordLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, pwInput, 0, SpringLayout.HORIZONTAL_CENTER, passwordPanel);
+		passwordLayout.putConstraint(SpringLayout.EAST, pwLabel, -5, SpringLayout.WEST, pwInput);
+		passwordLayout.putConstraint(SpringLayout.WEST, pwReveal, 5, SpringLayout.EAST, pwInput);
+		passwordLayout.putConstraint(SpringLayout.SOUTH, passwordPanel, 2, SpringLayout.SOUTH, pwInput);
+		passwordLayout.putConstraint(SpringLayout.SOUTH, passwordPanel, 2, SpringLayout.SOUTH, pwReveal);
 
-	    // ----- Parent (BoxLayout) -----
-	    JPanel formPanel = new JPanel();
-	    formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
-	    formPanel.setOpaque(false);
-	    formPanel.add(emailPanel);
-	    formPanel.add(Box.createVerticalStrut(8));
-	    formPanel.add(passwordPanel);
-	    formPanel.add(Box.createVerticalStrut(8));
+		// ----- Parent (BoxLayout) -----
+		JPanel formPanel = new JPanel();
+		formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
+		formPanel.setOpaque(false);
+		formPanel.add(emailPanel);
+		formPanel.add(Box.createVerticalStrut(8));
+		formPanel.add(passwordPanel);
+		formPanel.add(Box.createVerticalStrut(8));
 
-	    // ---------------------------------------------------------------------
-	    // B U T T O N S
-	    // ---------------------------------------------------------------------
-	    buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-	    buttonPanel.setOpaque(false);
-	    buttonPanel.add(login);
-	    buttonPanel.add(clear);
-	    buttonPanel.add(register);
+		// ---------------------------------------------------------------------
+		// B U T T O N S
+		// ---------------------------------------------------------------------
+		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+		buttonPanel.setOpaque(false);
+		buttonPanel.add(login);
+		buttonPanel.add(clear);
+		buttonPanel.add(register);
 
-	    // ----- Centering -----
-	    emailPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-	    passwordPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-	    logoBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
-	    buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-	    formPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		// ----- Centering -----
+		emailPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		passwordPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		logoBanner.setAlignmentX(Component.CENTER_ALIGNMENT);
+		logoBanner.setHorizontalAlignment(SwingConstants.CENTER);
+		buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		formPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-	    // ----- Assembling Screen -----
-	    add(logoBanner);
-	    add(formPanel);
-	    add(buttonPanel);
+		// ----- Assembling Screen -----
+		add(logoBanner);
+		add(formPanel);
+		add(buttonPanel);
 	}
 
 	@Override
@@ -198,7 +200,7 @@ public class LoginScreen extends JPanel {
 		g2d.fillRect(0, 0, w, h);
 		g2d.dispose();
 	}
-	
+
 	private void loadBanner(String resourcePath) {
 		URL bannerLightUrl = Main.class.getClassLoader().getResource(
 				resourcePath);
@@ -378,7 +380,7 @@ public class LoginScreen extends JPanel {
 	}
 
 	public void changeTheme(Theme theme) {
-		
+
 		switch (theme) {
 		case LIGHT:
 			logoBanner.setIcon(banners.get(LIGHT_THEME_BANNER));
@@ -415,7 +417,7 @@ public class LoginScreen extends JPanel {
 		}
 
 	}
-	
+
 	public void clearPwField() {
 		pwInput.setText("");
 	}
@@ -427,7 +429,7 @@ public class LoginScreen extends JPanel {
 	public void setEmail(String email) {
 		emailInput.setText(email);
 	}
-	
+
 	public void requestPwFocus() {
 		pwInput.requestFocusInWindow();
 	}
