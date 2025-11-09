@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
 import definitions.Constants;
@@ -93,11 +94,17 @@ public class AddRecipeDialog extends JDialog {
 		recipeIngredients.setAlignmentX(CENTER_ALIGNMENT);
 		recipeDirections.setAlignmentX(CENTER_ALIGNMENT);
 		recipeTags.setAlignmentX(CENTER_ALIGNMENT);
-
-		recipeTitle.putClientProperty("FlatLaf.styleClass", "h3");
-		recipeIngredients.putClientProperty("FlatLaf.styleClass", "h3");
-		recipeDirections.putClientProperty("FlatLaf.styleClass", "h3");
-		recipeTags.putClientProperty("FlatLaf.styleClass", "h3");
+		
+		// ----- Spacing Above Labels -----
+		Border spacedBorder = BorderFactory.createEmptyBorder(10,0,0,0);
+		recipeIngredients.setBorder(spacedBorder);
+		recipeDirections.setBorder(spacedBorder);
+		recipeTags.setBorder(spacedBorder);
+		
+//		recipeTitle.putClientProperty("FlatLaf.styleClass", "h3");
+//		recipeIngredients.putClientProperty("FlatLaf.styleClass", "h3");
+//		recipeDirections.putClientProperty("FlatLaf.styleClass", "h3");
+//		recipeTags.putClientProperty("FlatLaf.styleClass", "h3");
 
 		inputIngredients.setLineWrap(true);
 		inputIngredients.setWrapStyleWord(true);
@@ -119,13 +126,13 @@ public class AddRecipeDialog extends JDialog {
 		dialogPanel.add(directionsScrollPane);
 		dialogPanel.add(recipeTags);
 		dialogPanel.add(inputTags);
-		Border blackLineBorder = BorderFactory.createLineBorder(Color.black, 1);
+		Border depressedInputBorder = BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED);
 		dialogPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		btnPanel.setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
-		inputTitle.setBorder(blackLineBorder);
-		inputIngredients.setBorder(blackLineBorder);
-		inputDirections.setBorder(blackLineBorder);
-		inputTags.setBorder(blackLineBorder);
+		inputTitle.setBorder(depressedInputBorder);
+		inputIngredients.setBorder(depressedInputBorder);
+		inputDirections.setBorder(depressedInputBorder);
+		inputTags.setBorder(depressedInputBorder);
 		btnPanel.add(btnConfirm);
 		btnPanel.add(btnCancel);
 		btnPanel.add(btnHelp);

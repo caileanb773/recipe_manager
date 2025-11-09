@@ -31,7 +31,9 @@ public class Main {
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 		new Loader(controller).run();
-
+		controller.login();
+		controller.displayCreateRecipeDialog();
+		
 		// TODO finish refactoring scaling using BigDecimal
 		// TODO logging functionality
 		// TODO dsktp / laptop are 2 diff java ver. consider j17

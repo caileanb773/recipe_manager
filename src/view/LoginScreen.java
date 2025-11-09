@@ -112,8 +112,8 @@ public class LoginScreen extends JPanel {
 		login = new JButton(bundle.getString("login"));
 		clear = new JButton(bundle.getString("clear"));
 		register = new JButton(bundle.getString("register"));
-		emailInput = new JTextField(15);
-		pwInput = new JPasswordField(15);
+		emailInput = new JTextField(19);
+		pwInput = new JPasswordField(19);
 		logoBanner = new JLabel();
 
 		// ----- Banner -----
