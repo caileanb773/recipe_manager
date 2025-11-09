@@ -10,7 +10,7 @@
 
 # What this app is for
 
-At its' core, Macromise [macro-MEEZ] is a simple recipe manager that allows multiple users to access the same database of recipes. Administrators can use the desktop application to manage a master list of recipes, while users on the (upcoming) mobile application who are connected to the same restaurant database can suggest new recipes or edits to existing ones. The administrator can then either approve or reject these changes.
+At its core, Macromise [macro-MEEZ] is a simple recipe manager that allows multiple users to access the same database of recipes. Administrators can use the desktop application to manage a master list of recipes, while users on the (upcoming) mobile application who are connected to the same restaurant database can suggest new recipes or edits to existing ones. The administrator can then either approve or reject these changes.
 
 In this way, multiple members of staff can have the shared responsibility of creating new recipes and maintaining the accuracy of old ones, instead of the executive and sous chef being solely responsible for recipe upkeep.
 
