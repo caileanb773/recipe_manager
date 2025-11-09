@@ -35,6 +35,7 @@ public class Main {
 		// TODO finish refactoring scaling using BigDecimal
 		// TODO logging functionality
 		// TODO dsktp / laptop are 2 diff java ver. consider j17
+		// TODO 'add recipe' dialog look/feel inconsistent w/ rest of app
 		
 	}
 }
