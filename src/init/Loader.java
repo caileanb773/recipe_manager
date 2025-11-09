@@ -116,7 +116,6 @@ public class Loader {
 
 		worker.execute();
 		progressDialog.setVisible(true);
-		view.packFrame();
 	}
 
 }

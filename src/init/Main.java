@@ -32,14 +32,11 @@ public class Main {
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 		new Loader(controller).run();
-		//controller.login();
+		controller.login();
 
 		// TODO finish refactoring scaling using BigDecimal
 		// TODO language changing messes with app window size (width)
 		// TODO would be nice if, when expanding window on y-axis, scrollable area became bigger
-		// XXX BUG: when recipes are imported such that there are enough to enable a scrollable area,
-		// upon closing/reopening the app, the window will not constrain the rcp buttons to the max
-		// size of the scrollable area
 		// TODO logging functionality
 		
 	}
