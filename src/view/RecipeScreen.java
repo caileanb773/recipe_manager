@@ -81,8 +81,6 @@ public class RecipeScreen extends JPanel {
 
 	// Selected (active) Recipe information (UI right side)
 	private JPanel selectedRcpDescPanel;
-	private JPanel selectedRcpInfo;
-	private JLabel selectedDescLabel; // XXX currently unused
 	private JTextArea selectedRcpTxt;
 	private JScrollPane selectedRcpTxtScrollPane;
 	private JLabel scaleRcpLabel;
@@ -148,7 +146,7 @@ public class RecipeScreen extends JPanel {
 		// R E C I P E  S E L E C T I O N  S U B S E C T I O N
 		// ---------------------------------------------------------------------
 		rcpSelectPanel = new JPanel(new BorderLayout());
-		rcpSelectPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		rcpSelectPanel.setBorder(BorderFactory.createEmptyBorder(10,10,5,5));
 		rcpSelectListPanel = new JPanel() {
 			@Override
 			public Dimension getPreferredSize() {
@@ -213,9 +211,6 @@ public class RecipeScreen extends JPanel {
 		selectedRcpTxt.setWrapStyleWord(true);
 		selectedRcpTxt.setLineWrap(true);
 		selectedRcpTxt.setFont(Constants.textFont);
-		selectedRcpTxt.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		selectedDescLabel = new JLabel(bundle.getString("selectedDescLabel"));
-		selectedDescLabel.setAlignmentX(CENTER_ALIGNMENT);
 
 		// ----- Scale Recipe Spinner -----
 		scaleRcpPanel = new JPanel(new FlowLayout());
@@ -246,11 +241,8 @@ public class RecipeScreen extends JPanel {
 		selectedRcpTxtScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		selectedRcpTxtScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		selectedRcpDescPanel.add(selectedRcpTxtScrollPane, BorderLayout.CENTER);
-		selectedRcpTxtScrollPane.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createEmptyBorder(5,5,5,5),					// outside
-				BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED)));	// inside
 		selectedRcpTxtScrollPane.setBorder(BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED));
-		selectedRcpDescPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		selectedRcpDescPanel.setBorder(BorderFactory.createEmptyBorder(10,5,5,10));
 		selectedRcpDescPanel.add(scaleRcpPanel, BorderLayout.SOUTH);
 
 		// ----- Build Panel ----- 
@@ -536,7 +528,6 @@ public class RecipeScreen extends JPanel {
 
 	public void refreshTranslatable() {
 		rcpSelectLabel.setText(bundle.getString("rcpSelectLabel"));
-		selectedDescLabel.setText(bundle.getString("selectedDescLabel"));
 		rcpListAdd.setText(bundle.getString("rcpListAdd"));
 		rcpListRemove.setText(bundle.getString("rcpListRemove"));
 		rcpListEdit.setText(bundle.getString("rcpListEdit"));

@@ -51,10 +51,6 @@ public class AppController implements ActionListener {
 	private ResourceBundle bundle;
 	private ProgressListener progressListener;
 
-	// Constants
-	private final int ONLINE = 1;
-	private final int OFFLINE = 0;
-
 
 	public AppController(RecipeMgrModel model, AppFrame view) {
 		this.model = model;
@@ -67,15 +63,15 @@ public class AppController implements ActionListener {
 		//		}
 	}
 
-	public void initialize(int mode) {
+	public void initialize(boolean mode) {
 		reportProgress(40, "Initializing controller...");
 		bundle = view.getBundle();
 
-		if (mode == ONLINE) {
+		if (mode == Constants.ONLINE) {
 			reportProgress(50, "Loading recipes...");
 			recipeDao.init();
 			model.setRecipes(recipeDao.selectAllRecipesAsList());
-		} if (mode == OFFLINE) { // XXX for now, this is never called.
+		} if (mode == Constants.OFFLINE) { // XXX for now, this is never called.
 			reportProgress(50, "Loading recipes...");
 			model.initModelOffline("backup.rcp");
 		}
@@ -196,10 +192,6 @@ public class AppController implements ActionListener {
 
 	public void handleThemeSwitch(String themeTitle) {
 		System.out.println("Switching theme: " + themeTitle);
-		// Font colours
-		// Background colours
-		// In each Jpanel of cardlayout
-
 		view.changeThemeInChildren(Theme.valueOf(themeTitle));
 	}
 

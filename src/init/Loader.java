@@ -18,6 +18,7 @@ import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import controller.AppController;
+import definitions.Constants;
 import model.RecipeMgrModel;
 import util.ProgressListener;
 import view.AppFrame;
@@ -94,10 +95,9 @@ public class Loader {
 		SwingWorker<Void, Integer> worker = new SwingWorker<>() {
 			@Override
 			protected Void doInBackground() throws Exception {
-				model.initialize(true); // magic number, false is offline
+				model.initialize(Constants.ONLINE);
 				view.initialize();
-				controller.initialize(1); // magic number, and diff from model. 0 is offline
-
+				controller.initialize(Constants.ONLINE);
 				return null;
 			}
 

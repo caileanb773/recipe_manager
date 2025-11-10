@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Window;
@@ -18,6 +19,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -30,8 +32,10 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+
 import definitions.Recipe;
 import definitions.Theme;
 import init.Main;
@@ -257,6 +261,13 @@ public class AppFrame {
 				break;
 			case DARK:
 				UIManager.setLookAndFeel(new FlatDarkLaf());
+				
+		        UIManager.put("Component.focusColor", new Color(224, 116, 129));
+		        UIManager.put("Button.hoverBorderColor", new Color(224, 57, 77));
+		        UIManager.put("Button.focusedBorderColor", new Color(122, 31, 42));
+		        UIManager.put("TextComponent.selectionBackground", new Color(122, 31, 42));
+		        UIManager.put("TextComponent.caretForeground", new Color(122, 31, 42));
+				
 				break;
 			default:
 				return;

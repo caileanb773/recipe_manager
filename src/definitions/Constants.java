@@ -36,6 +36,8 @@ public class Constants {
 	public static final int 	ERROR = -2;
 	public static final boolean SUCCESS = true;
 	public static final boolean FAIL = false;
+	public static final boolean ONLINE = true;
+	public static final boolean OFFLINE = false;
 	public static final String 	ASCII_SPECIAL_CHARS = "!@#$%^&*()_+-=`~|\\[]{};':\",./<>?";
 	public static final String 	ILLEGAL_EMAIL_CHARS = "()[]:;<>%,\\%&*+=?{}|";
 	public static final String 	RECIPE_SECT_DELIM = "§§";
@@ -45,6 +47,8 @@ public class Constants {
 	public static final Font 	buttonFont = new Font("Serif", Font.BOLD, 16);
 	public static final Font 	textFont = new Font("Segoe UI", Font.PLAIN, 15);
 	public static final Font 	recipeTxtFont;
+	
+	// Theme-specific constants
 	public static final Theme[] VALID_THEMES = { Theme.LIGHT, Theme.DARK };
 	public static final Color 	LIGHT_THEME_BG_COL = new Color(240,240,240);
 	public static final Color 	LIGHT_THEME_RECIPE_BTN_COL = new Color(217,217,217);
@@ -54,7 +58,6 @@ public class Constants {
 	public static final Color 	DARK_THEME_RECIPE_BTN_COL = new Color(83,83,83);
 	public static final Color 	DARK_GRADIENT_TOP = new Color(69,69,69);
 	public static final Color 	DARK_GRADIENT_BOTTOM = new Color(31,31,31);
-
 
 	static {
 		Font font = null;
@@ -72,7 +75,6 @@ public class Constants {
 		}
 		recipeTxtFont = font;
 	}
-
 
 	/**
 	 * Private constructor prevents instantiation of this class.
