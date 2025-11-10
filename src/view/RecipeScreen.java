@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.InputMap;
 import javax.swing.JButton;
@@ -169,10 +170,10 @@ public class RecipeScreen extends JPanel {
 		rcpSelectListPanel.setLayout(new BoxLayout(rcpSelectListPanel, BoxLayout.Y_AXIS));
 
 		// Ensure buttons expand to fill the available width
-		for (RecipeSelectButton btn : rcpSelectList) {
-			btn.setAlignmentX(Component.LEFT_ALIGNMENT);
-			btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, btn.getPreferredSize().height));
-		}
+//		for (RecipeSelectButton btn : rcpSelectList) {
+//			btn.setAlignmentX(Component.LEFT_ALIGNMENT);
+//			btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, btn.getPreferredSize().height));
+//		}
 
 		// ---------------------------------------------------------------------
 		// R E C I P E  S E L E C T I O N  L I S T
@@ -396,6 +397,7 @@ public class RecipeScreen extends JPanel {
 			r.setBackground(rcpBtnColor);
 			r.setForeground(rcpBtnFontCol);
 			rcpSelectListPanel.add(r);
+			rcpSelectListPanel.add(Box.createVerticalStrut(2));
 		}
 
 		rcpSelectListPanel.revalidate();

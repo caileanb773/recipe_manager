@@ -38,6 +38,7 @@ public class Main {
 		// TODO: UI stuff:
 			// rcp buttons too close together vertically
 			// rcp btns font needs more spacing, test diff fonts
+			// switching ui changes button look/feel in one direction
 		
 	}
 }

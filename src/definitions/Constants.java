@@ -62,9 +62,9 @@ public class Constants {
 	static {
 		Font font = null;
 		try {
-			InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("Montserrat-VariableFont_wght.ttf");
+			InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("font/Geist/static/Geist-SemiBold.ttf");
 			if (fontStream != null) {
-				font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.BOLD, 15);
+				font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, 15);
 			} else {
 				System.err.println("Font file not found");
 				font = new Font("SansSerif", Font.BOLD, 15);
