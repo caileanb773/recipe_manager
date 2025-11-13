@@ -93,7 +93,7 @@ public class LoginScreen extends JPanel implements ApplicationScreen {
 		this.bundle = bundle;
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(layout);
-		setBackground(Constants.LIGHT_THEME_BG_COL);
+		setBackground(Constants.LIGHT_BG_COL);
 		banners = new ArrayList<>();
 
 		// ---------------------------------------------------------------------

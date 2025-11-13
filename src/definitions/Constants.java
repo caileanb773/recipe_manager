@@ -49,15 +49,17 @@ public class Constants {
 	public static final Font 	recipeTxtFont;
 	
 	// Theme-specific constants
-	public static final Theme[] VALID_THEMES = { Theme.LIGHT, Theme.DARK };
-	public static final Color 	LIGHT_THEME_BG_COL = new Color(240,240,240);
-	public static final Color 	LIGHT_THEME_RECIPE_BTN_COL = new Color(217,217,217);
-	public static final Color 	LIGHT_GRADIENT_TOP = new Color(170,170,170);
-	public static final Color 	LIGHT_GRADIENT_BOTTOM = new Color(225,225,225);
-	public static final Color 	DARK_THEME_BG_COL = new Color(46,46,46);
-	public static final Color 	DARK_THEME_RECIPE_BTN_COL = new Color(83,83,83);
-	public static final Color 	DARK_GRADIENT_TOP = new Color(69,69,69);
-	public static final Color 	DARK_GRADIENT_BOTTOM = new Color(31,31,31);
+	public static final Theme[] VALID_THEMES 			= { Theme.LIGHT, Theme.DARK };
+	public static final Color 	LIGHT_BG_COL 			= new Color(240,240,240);
+	public static final Color 	LIGHT_RECIPE_BTN_COL 	= new Color(217,217,217);
+	public static final Color 	LIGHT_GRADIENT_TOP 		= new Color(170,170,170);
+	public static final Color 	LIGHT_GRADIENT_BOTTOM 	= new Color(225,225,225);
+	public static final Color  	LIGHT_FG_COL	 		= new Color(200,200,200);
+	public static final Color 	DARK_BG_COL 			= new Color(46,46,46);
+	public static final Color 	DARK_RECIPE_BTN_COL 	= new Color(83,83,83);
+	public static final Color 	DARK_GRADIENT_TOP 		= new Color(69,69,69);
+	public static final Color 	DARK_GRADIENT_BOTTOM 	= new Color(31,31,31);
+	public static final Color 	DARK_FG_COL 			= new Color(90,90,90);
 
 	static {
 		Font font = null;

@@ -2,12 +2,12 @@ package view;
 
 import static definitions.Constants.DARK_GRADIENT_BOTTOM;
 import static definitions.Constants.DARK_GRADIENT_TOP;
-import static definitions.Constants.DARK_THEME_BG_COL;
-import static definitions.Constants.DARK_THEME_RECIPE_BTN_COL;
+import static definitions.Constants.DARK_BG_COL;
+import static definitions.Constants.DARK_RECIPE_BTN_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
-import static definitions.Constants.LIGHT_THEME_BG_COL;
-import static definitions.Constants.LIGHT_THEME_RECIPE_BTN_COL;
+import static definitions.Constants.LIGHT_BG_COL;
+import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -121,28 +121,31 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 
 		topGradient = LIGHT_GRADIENT_TOP;
 		botGradient = LIGHT_GRADIENT_BOTTOM;
-		rcpBtnColor = LIGHT_THEME_RECIPE_BTN_COL;
+		rcpBtnColor = LIGHT_RECIPE_BTN_COL;
 		rcpBtnFontCol = Color.black;
-		panelBgCol = LIGHT_THEME_BG_COL;
+		panelBgCol = LIGHT_BG_COL;
 
 		// ---------------------------------------------------------------------
 		// T A G S
 		// ---------------------------------------------------------------------
 		filterLabelCombo = new JPanel(new BorderLayout());
 		filterInputPanel = new JPanel(new BorderLayout());
+		filterInputPanel.setOpaque(false);
 		filterInput = new JTextField(10);
 		filterApply = new JButton(bundle.getString("filterApply"));
 		filterLabel = new JLabel(bundle.getString("filterLabel"));
 		filterLabel.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
 		filterClear = new JButton(bundle.getString("filterClear"));
 		JPanel filterBtns = new JPanel();
+		filterBtns.setOpaque(false);
 		filterBtns.add(filterApply);
 		filterBtns.add(filterClear);
 		filterInputPanel.add(filterLabel, BorderLayout.WEST);
 		filterInputPanel.add(filterInput, BorderLayout.CENTER);
 		filterInputPanel.add(filterBtns, BorderLayout.SOUTH);
 		filterLabelCombo.add(filterInputPanel, BorderLayout.SOUTH);
-		filterLabelCombo.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+		filterLabelCombo.setBorder(BorderFactory.createSoftBevelBorder(BevelBorder.RAISED));
+		filterLabelCombo.setBackground(Constants.LIGHT_FG_COL);
 
 		// ---------------------------------------------------------------------
 		// R E C I P E  S E L E C T I O N  S U B S E C T I O N
@@ -168,8 +171,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 				return new Dimension(width, height);
 			}
 		};
-		//rcpSelectListPanel.setLayout(new BoxLayout(rcpSelectListPanel, BoxLayout.Y_AXIS));
-
+		
 		// ---------------------------------------------------------------------
 		// R E C I P E  S E L E C T I O N  L I S T
 		// ---------------------------------------------------------------------
@@ -557,16 +559,18 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		case LIGHT:
 			topGradient = LIGHT_GRADIENT_TOP;
 			botGradient = LIGHT_GRADIENT_BOTTOM;
-			panelBgCol = LIGHT_THEME_BG_COL;
-			rcpBtnColor = LIGHT_THEME_RECIPE_BTN_COL;
+			panelBgCol = LIGHT_BG_COL;
+			rcpBtnColor = LIGHT_RECIPE_BTN_COL;
 			rcpBtnFontCol = Color.black;
+			filterLabelCombo.setBackground(Constants.LIGHT_FG_COL);
 			break;
 		case DARK:
 			topGradient = DARK_GRADIENT_TOP;
 			botGradient = DARK_GRADIENT_BOTTOM;
-			panelBgCol = DARK_THEME_BG_COL;
-			rcpBtnColor = DARK_THEME_RECIPE_BTN_COL;
+			panelBgCol = DARK_BG_COL;
+			rcpBtnColor = DARK_RECIPE_BTN_COL;
 			rcpBtnFontCol = Color.white;
+			filterLabelCombo.setBackground(Constants.DARK_FG_COL);
 			break;
 		default:
 			System.err.println("Unrecognized theme: " + theme);
@@ -583,7 +587,6 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 			}
 		}
 
-		// TODO there is a method in controller that does this. call that instead?
 		displayRecipeButtons();
 	}
 

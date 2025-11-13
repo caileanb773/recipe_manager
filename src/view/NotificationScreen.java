@@ -2,12 +2,13 @@ package view;
 
 import static definitions.Constants.DARK_GRADIENT_BOTTOM;
 import static definitions.Constants.DARK_GRADIENT_TOP;
-import static definitions.Constants.DARK_THEME_BG_COL;
+import static definitions.Constants.DARK_BG_COL;
+import static definitions.Constants.DARK_FG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
-import static definitions.Constants.LIGHT_THEME_BG_COL;
-import static definitions.Constants.LIGHT_THEME_RECIPE_BTN_COL;
-
+import static definitions.Constants.LIGHT_BG_COL;
+import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
+import static definitions.Constants.LIGHT_FG_COL;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -18,14 +19,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
+import javax.swing.border.BevelBorder;
 import definitions.Constants;
 import definitions.Notification;
 import definitions.Theme;
@@ -47,6 +47,8 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	private JButton rejectBtn;
 	private JButton backBtn;
 	
+	// Constants
+	
 	// Other
 	private ArrayList<Notification> notifications;
 	private ResourceBundle bundle;
@@ -55,6 +57,8 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	private Color botGradient;
 	private Color rcpBtnColor;
 	private Color rcpBtnFontCol;
+	private Color headerPanelCol;
+	private Color footerPanelCol;
 	private Color panelBgCol;
 	
 	public NotificationScreen(ResourceBundle bundle) {
@@ -66,9 +70,11 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		// Default theme
 		topGradient = LIGHT_GRADIENT_TOP;
 		botGradient = LIGHT_GRADIENT_BOTTOM;
-		rcpBtnColor = LIGHT_THEME_RECIPE_BTN_COL;
+		rcpBtnColor = LIGHT_RECIPE_BTN_COL;
 		rcpBtnFontCol = Color.black;
-		panelBgCol = LIGHT_THEME_BG_COL;
+		panelBgCol = LIGHT_BG_COL;
+		headerPanelCol = LIGHT_FG_COL;
+		footerPanelCol = LIGHT_FG_COL;
 		
 		// ---------------------------------------------------------------------
 		// C O M P O N E N T S
@@ -79,18 +85,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		notificationsListPanel = new JPanel();
 		notificationsListScrollPane = new JScrollPane(notificationsListPanel);
 		footerPanel = new JPanel();
-		
-		// ----- Panel Settings -----
-		BoxLayout notifListLayout = new BoxLayout(notificationsListPanel, BoxLayout.Y_AXIS);
-		notificationsListPanel.setLayout(notifListLayout);
-		headerPanel.setBackground(panelBgCol);
-		notificationsListPanel.setBackground(panelBgCol);
-		footerPanel.setBackground(panelBgCol);
-		notificationsListScrollPane.getVerticalScrollBar().setUnitIncrement(
-				Constants.SCROLL_SPEED);
-		notificationsListScrollPane.setHorizontalScrollBarPolicy(
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
+				
 		// ----- Clickables -----
 		selectAll = new JCheckBox();
 		typeBtn = new JButton(bundle.getString("typeBtn"));
@@ -117,6 +112,39 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		footerPanel.add(confirmBtn);
 		footerPanel.add(rejectBtn);
 		footerPanel.add(backBtn);
+		
+		// ---------------------------------------------------------------------
+		// P A N E L  S E T T I N G S
+		// ---------------------------------------------------------------------
+		
+		// ----- Inner Notifications Panel -----
+		BoxLayout notifListLayout = new BoxLayout(notificationsListPanel, BoxLayout.Y_AXIS);
+		notificationsListPanel.setLayout(notifListLayout);
+		notificationsListPanel.setBackground(panelBgCol);
+		
+		// ----- Scrollable Area for Notifications Panel -----
+		notificationsListScrollPane.getVerticalScrollBar().setUnitIncrement(
+				Constants.SCROLL_SPEED);
+		notificationsListScrollPane.setHorizontalScrollBarPolicy(
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		notificationsListScrollPane.setVerticalScrollBarPolicy(
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		notificationsListScrollPane.setBorder(BorderFactory.createSoftBevelBorder(
+				BevelBorder.LOWERED));
+		
+		// ----- Header -----
+		headerPanel.setBackground(headerPanelCol);
+		headerPanel.setBorder(BorderFactory.createSoftBevelBorder(
+				BevelBorder.RAISED));
+		
+		// ----- Footer -----
+		footerPanel.setBackground(footerPanelCol);
+		footerPanel.setBorder(BorderFactory.createSoftBevelBorder(
+				BevelBorder.RAISED));
+			
+		// ---------------------------------------------------------------------
+		// S C R E E N  A S S E M B L Y
+		// ---------------------------------------------------------------------
 		
 		add(headerPanel, BorderLayout.NORTH);
 		add(notificationsListScrollPane, BorderLayout.CENTER);
@@ -172,18 +200,24 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		case LIGHT:
 			topGradient = LIGHT_GRADIENT_TOP;
 			botGradient = LIGHT_GRADIENT_BOTTOM;
-			panelBgCol = LIGHT_THEME_BG_COL;
+			panelBgCol = LIGHT_BG_COL;
+			headerPanelCol = LIGHT_FG_COL;
+			footerPanelCol = LIGHT_FG_COL;
 			break;
 		case DARK:
 			topGradient = DARK_GRADIENT_TOP;
 			botGradient = DARK_GRADIENT_BOTTOM;
-			panelBgCol = DARK_THEME_BG_COL;
+			panelBgCol = DARK_BG_COL;
+			headerPanelCol = DARK_FG_COL;
+			footerPanelCol = DARK_FG_COL;
 			break;
 		default:
 			System.err.println("Unrecognized theme: " + theme);
 		}
 		
 		notificationsListPanel.setBackground(panelBgCol);
+		headerPanel.setBackground(headerPanelCol);
+		footerPanel.setBackground(footerPanelCol);
 	}
 	
 }
