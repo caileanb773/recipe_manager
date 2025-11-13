@@ -1,24 +1,44 @@
 package view;
 
+import static definitions.Constants.DARK_GRADIENT_BOTTOM;
+import static definitions.Constants.DARK_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_THEME_BG_COL;
 import static definitions.Constants.LIGHT_THEME_RECIPE_BTN_COL;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.ResourceBundle;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import definitions.Constants;
 import definitions.Notification;
+import definitions.Theme;
 
-public class NotificationScreen extends JPanel {
+public class NotificationScreen extends JPanel implements ApplicationScreen {
 	
-
-	// Constant
-
+	// Swing
+	private JPanel headerPanel;
+	private JPanel footerPanel;
+	private JPanel notificationsListPanel;
+	private JPanel expandedNotificationInfo;
+	private JScrollPane notificationsListScrollPane;
+	private JButton typeBtn;	// These buttons are for sorting notifications
+	private JButton rcpBtn;		// These buttons are for sorting notifications
+	private JButton senderBtn;	// These buttons are for sorting notifications
+	private JButton expandBtn;
+	private JButton confirmBtn;
+	private JButton rejectBtn;
+	private JButton backBtn;
 	
 	// Other
 	private ArrayList<Notification> notifications;
@@ -32,6 +52,9 @@ public class NotificationScreen extends JPanel {
 	
 	public NotificationScreen(ResourceBundle bundle) {
 		this.bundle = bundle;
+		setLayout(new BorderLayout());
+		setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		setOpaque(false);
 		
 		// Default theme
 		topGradient = LIGHT_GRADIENT_TOP;
@@ -40,8 +63,44 @@ public class NotificationScreen extends JPanel {
 		rcpBtnFontCol = Color.black;
 		panelBgCol = LIGHT_THEME_BG_COL;
 		
-		// Swing init
+		// ---------------------------------------------------------------------
+		// C O M P O N E N T S
+		// ---------------------------------------------------------------------
 		
+		// ----- Panel init -----
+		headerPanel = new JPanel();
+		notificationsListPanel = new JPanel();
+		notificationsListScrollPane = new JScrollPane(notificationsListPanel);
+		footerPanel = new JPanel();
+		
+		// ----- Panel Settings -----
+		BoxLayout notifListLayout = new BoxLayout(notificationsListPanel, BoxLayout.Y_AXIS);
+		notificationsListPanel.setLayout(notifListLayout);
+		headerPanel.setBackground(panelBgCol);
+		notificationsListPanel.setBackground(panelBgCol);
+		footerPanel.setBackground(panelBgCol);
+		notificationsListScrollPane.getVerticalScrollBar().setUnitIncrement(
+				Constants.SCROLL_SPEED);
+		notificationsListScrollPane.setHorizontalScrollBarPolicy(
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		// ----- Buttons -----
+		typeBtn = new JButton(bundle.getString("typeBtn"));
+		rcpBtn = new JButton(bundle.getString("rcpBtn"));
+		senderBtn = new JButton(bundle.getString("senderBtn"));
+		expandBtn = new JButton(bundle.getString("expandBtn"));
+		confirmBtn = new JButton(bundle.getString("confirmBtn"));
+		rejectBtn = new JButton(bundle.getString("rejectBtn"));
+		backBtn = new JButton(bundle.getString("backBtn"));
+		initButtons();
+		
+		add(headerPanel, BorderLayout.NORTH);
+		add(notificationsListScrollPane, BorderLayout.CENTER);
+		add(footerPanel, BorderLayout.SOUTH);
+	}
+	
+	private void initButtons() {
+		// TODO stub
 	}
 	
 	@Override
@@ -55,6 +114,44 @@ public class NotificationScreen extends JPanel {
 		g2d.setPaint(new GradientPaint(0, 0, topGradient, 0, h, botGradient));
 		g2d.fillRect(0, 0, w, h);
 		g2d.dispose();
+	}
+
+	@Override
+	public void registerController(ActionListener controller) {
+		this.listener = controller;
+	}
+
+	@Override
+	public void updateBundle(Locale locale) {
+		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
+	}
+
+	@Override
+	public void refreshTranslatable() {
+		typeBtn.setText(bundle.getString("typeBtn"));
+		rcpBtn.setText(bundle.getString("rcpBtn"));
+		senderBtn.setText(bundle.getString("senderBtn"));
+		expandBtn.setText(bundle.getString("expandBtn"));
+		confirmBtn.setText(bundle.getString("confirmBtn"));
+		rejectBtn.setText(bundle.getString("rejectBtn"));
+		backBtn.setText(bundle.getString("backBtn"));
+	}
+
+	@Override
+	public void changeTheme(Theme theme) {
+		
+		switch (theme) {
+		case LIGHT:
+			topGradient = LIGHT_GRADIENT_TOP;
+			botGradient = LIGHT_GRADIENT_BOTTOM;
+			break;
+		case DARK:
+			topGradient = DARK_GRADIENT_TOP;
+			botGradient = DARK_GRADIENT_BOTTOM;
+			break;
+		default:
+			System.err.println("Unrecognized theme: " + theme);
+		}
 	}
 	
 }

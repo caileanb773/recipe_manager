@@ -62,7 +62,7 @@ import util.Utility;
  */
 
 @SuppressWarnings("serial")
-public class LoginScreen extends JPanel {
+public class LoginScreen extends JPanel implements ApplicationScreen {
 
 	// Swing
 	private static JCheckBox rmbrMe;
@@ -215,6 +215,7 @@ public class LoginScreen extends JPanel {
 		}
 	}
 
+	@Override
 	public void registerController(ActionListener listener) {
 		this.listener = listener;
 	}
@@ -365,10 +366,12 @@ public class LoginScreen extends JPanel {
 		listener.actionPerformed(event);
 	}
 
+	@Override
 	public void updateBundle(Locale locale) {
 		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
 	}
 
+	@Override
 	public void refreshTranslatable() {
 		rmbrMe.setText(bundle.getString("remember"));
 		emailLabel.setText(bundle.getString("email"));
@@ -379,6 +382,7 @@ public class LoginScreen extends JPanel {
 		register.setText(bundle.getString("register"));
 	}
 
+	@Override
 	public void changeTheme(Theme theme) {
 
 		switch (theme) {

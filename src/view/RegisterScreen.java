@@ -59,7 +59,7 @@ import util.Utility;
  * Contents: Allows user to register with an email and password.
  */
 @SuppressWarnings("serial")
-public class RegisterScreen extends JPanel {
+public class RegisterScreen extends JPanel implements ApplicationScreen {
 
 	// Swing
 	private JPasswordField passwordInput;
@@ -231,6 +231,7 @@ public class RegisterScreen extends JPanel {
 		});
 	}
 
+	@Override
 	public void registerController(ActionListener listener) {
 		this.listener = listener;
 	}
@@ -472,10 +473,12 @@ public class RegisterScreen extends JPanel {
 		return false;
 	}
 
+	@Override
 	public void updateBundle(Locale locale) {
 		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
 	}
 
+	@Override
 	public void refreshTranslatable() {
 		confirmBtn.setText(bundle.getString("btnConfirm"));
 		cancelBtn.setText(bundle.getString("btnCancel"));
@@ -485,6 +488,7 @@ public class RegisterScreen extends JPanel {
 		passwordRequirements.setText(bundle.getString("register.weakPassword"));
 	}
 	
+	@Override
 	public void changeTheme(Theme theme) {
 		
 		switch (theme) {

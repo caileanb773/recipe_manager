@@ -8,6 +8,7 @@ import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_THEME_BG_COL;
 import static definitions.Constants.LIGHT_THEME_RECIPE_BTN_COL;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -47,6 +49,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
+
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
@@ -61,7 +64,7 @@ import definitions.Theme;
  */
 
 @SuppressWarnings("serial")
-public class RecipeScreen extends JPanel {
+public class RecipeScreen extends JPanel implements ApplicationScreen {
 
 	// Recipe selection list (UI left side)
 	private JPanel rcpSelectPanel;
@@ -88,7 +91,8 @@ public class RecipeScreen extends JPanel {
 	private JSpinner scaleRcpSpinner;
 	private JPanel scaleRcpPanel;
 	private JButton detachRecipeBtn;
-
+	private JButton notificationsBtn;
+	
 	// Other
 	private ResourceBundle bundle;
 	private Recipe activeRecipe;
@@ -167,13 +171,7 @@ public class RecipeScreen extends JPanel {
 				return new Dimension(width, height);
 			}
 		};
-		rcpSelectListPanel.setLayout(new BoxLayout(rcpSelectListPanel, BoxLayout.Y_AXIS));
-
-		// Ensure buttons expand to fill the available width
-//		for (RecipeSelectButton btn : rcpSelectList) {
-//			btn.setAlignmentX(Component.LEFT_ALIGNMENT);
-//			btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, btn.getPreferredSize().height));
-//		}
+		//rcpSelectListPanel.setLayout(new BoxLayout(rcpSelectListPanel, BoxLayout.Y_AXIS));
 
 		// ---------------------------------------------------------------------
 		// R E C I P E  S E L E C T I O N  L I S T
@@ -202,8 +200,6 @@ public class RecipeScreen extends JPanel {
 		// S E L E C T E D  R E C I P E  D I S P L A Y
 		// ---------------------------------------------------------------------
 		selectedRcpDescPanel = new JPanel(new BorderLayout());
-		//BoxLayout recipeDescLayout = new BoxLayout(selectedRcpDescPanel, BoxLayout.Y_AXIS);
-		//selectedRcpDescPanel.setLayout(recipeDescLayout);
 		selectedRcpTxt = new JTextArea();
 		selectedRcpTxt.setBackground(panelBgCol);
 		selectedRcpTxt.setEditable(false);
@@ -233,7 +229,15 @@ public class RecipeScreen extends JPanel {
 		});
 		scaleRcpPanel.add(detachRecipeBtn);
 		detachRecipeBtn.setToolTipText(bundle.getString("detachRcpToolTip"));
-
+		
+		// ----- Go to Notification Center -----
+		notificationsBtn = new JButton(bundle.getString("notifications"));
+		notificationsBtn.addActionListener(ignored -> {
+			gotoNotifications();
+		});
+		
+		scaleRcpPanel.add(notificationsBtn);
+		
 		// ----- Selected Recipe Scrollpane -----
 		selectedRcpTxtScrollPane = new JScrollPane(selectedRcpTxt);
 		selectedRcpTxtScrollPane.setPreferredSize(new Dimension(
@@ -256,6 +260,12 @@ public class RecipeScreen extends JPanel {
 		rcpSelectPanel.setOpaque(false);
 		rcpEditPanel.setOpaque(false);
 		initKeyBindings();
+	}
+	
+	private void gotoNotifications() {
+		listener.actionPerformed(new ActionEvent(notificationsBtn, 
+				ActionEvent.ACTION_PERFORMED,
+				"notifications"));
 	}
 
 	@Override
@@ -326,7 +336,7 @@ public class RecipeScreen extends JPanel {
 		// Add to the list
 		detachedRcps.add(detachedRecipe);
 	}
-
+	
 	public List<Ingredient> scaleRecipe(BigDecimal amt) {
 		if (amt.compareTo(BigDecimal.ZERO) == -1) {
 			System.err.println("Negative scale val. passed to scaleRecipe().");
@@ -358,6 +368,7 @@ public class RecipeScreen extends JPanel {
 		setActiveRecipe(b.getBtnRecipe());
 	}
 
+	@Override
 	public void registerController(ActionListener listener) {
 		this.listener = listener;
 	}
@@ -508,6 +519,7 @@ public class RecipeScreen extends JPanel {
 		selectedRcpTxt.setText("");
 	}
 
+	@Override
 	public void updateBundle(Locale locale) {
 		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
 	}
@@ -527,7 +539,8 @@ public class RecipeScreen extends JPanel {
 			}
 		});
 	}
-
+	
+	@Override
 	public void refreshTranslatable() {
 		rcpSelectLabel.setText(bundle.getString("rcpSelectLabel"));
 		rcpListAdd.setText(bundle.getString("rcpListAdd"));
@@ -537,8 +550,10 @@ public class RecipeScreen extends JPanel {
 		filterLabel.setText(bundle.getString("filterLabel"));
 		filterClear.setText(bundle.getString("filterClear"));
 		detachRecipeBtn.setText(bundle.getString("detachRcp"));
+		notificationsBtn.setText(bundle.getString("notifications"));
 	}
 
+	@Override
 	public void changeTheme(Theme theme) {
 
 		switch (theme) {

@@ -184,6 +184,10 @@ public class AppController implements ActionListener {
 		case "switchTheme":
 			handleThemeSwitch(cmdData[1]);
 			break;
+		case "notifications":
+			System.out.println("dfgsgdsf");
+			notifications();
+			break;
 		default:
 			System.err.println("Unrecognized button actionCommand.");
 			break;
@@ -227,6 +231,11 @@ public class AppController implements ActionListener {
 		System.out.println("Logging out");
 		view.switchScreen("LOGIN");
 		view.getLoginScreen().grabFocus("PASSWORD_FIELD");
+	}
+	
+	public void notifications() {
+		System.out.println("Going to Notification Center...");
+		view.switchScreen("NOTIFICATIONS");
 	}
 
 	public void handleCloseWithBackup() {

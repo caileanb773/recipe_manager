@@ -55,6 +55,7 @@ public class AppFrame {
 	private RecipeScreen recipeScreen;
 	private LoginScreen loginScreen;
 	private RegisterScreen registerScreen;
+	private NotificationScreen notificationScreen;
 	private Config config;
 	private ResourceBundle bundle;
 	private CardLayout cardLayout;
@@ -107,6 +108,7 @@ public class AppFrame {
 		recipeScreen = new RecipeScreen(bundle);
 		loginScreen = new LoginScreen(bundle);
 		registerScreen = new RegisterScreen(bundle);
+		notificationScreen = new NotificationScreen(bundle);
 		container = frame.getContentPane();
 		currentTheme = config.getTheme();
 		reportProgress(12, "Loading images...");
@@ -126,6 +128,7 @@ public class AppFrame {
 		container.add(loginScreen, "LOGIN");
 		container.add(recipeScreen, "RECIPE_SCREEN");
 		container.add(registerScreen, "REGISTER_SCREEN");
+		container.add(notificationScreen, "NOTIFICATION_SCREEN");
 		reportProgress(20, "Initializing screens...");
 
 		// ---------------------------------------------------------------------
@@ -251,6 +254,7 @@ public class AppFrame {
 		loginScreen.changeTheme(theme);
 		registerScreen.changeTheme(theme);
 		recipeScreen.changeTheme(theme);
+		notificationScreen.changeTheme(theme);
 	}
 
 	public void applyTheme(Theme theme) {
@@ -384,6 +388,7 @@ public class AppFrame {
 		loginScreen.registerController(listener);
 		registerScreen.registerController(listener);
 		recipeScreen.registerController(listener);
+		notificationScreen.registerController(listener);
 	}
 
 	public void initCloseBtn() {
@@ -445,6 +450,11 @@ public class AppFrame {
 				registerScreen.initFocus();
 				loginScreen.clearPwField();
 				break;
+			case "NOTIFICATIONS":
+				System.out.println("Switching to noficiations screen");
+				cardLayout.show(container, "NOTIFICATION_SCREEN");
+				setEnabledButtons(screenName);
+				break;
 			default:
 				System.err.println("Unknown screen type passed to switchScreen().");
 				break;
@@ -467,6 +477,11 @@ public class AppFrame {
 		case "RECIPE_SCREEN":
 			menuBtnExport.setEnabled(true);
 			menuBtnImport.setEnabled(true);
+			menuBtnLogout.setEnabled(true);
+			break;
+		case "NOTIFICATION_SCREEN":
+			menuBtnExport.setEnabled(false);
+			menuBtnImport.setEnabled(false);
 			menuBtnLogout.setEnabled(true);
 			break;
 		default:
