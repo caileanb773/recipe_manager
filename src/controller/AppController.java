@@ -185,8 +185,10 @@ public class AppController implements ActionListener {
 			handleThemeSwitch(cmdData[1]);
 			break;
 		case "notifications":
-			System.out.println("dfgsgdsf");
 			notifications();
+			break;
+		case "showRcpScreen":
+			showRcpScreen();
 			break;
 		default:
 			System.err.println("Unrecognized button actionCommand.");
@@ -218,9 +220,18 @@ public class AppController implements ActionListener {
 
 	public void login() {
 		System.out.println("Attempting to log in");
-		LoginScreen login = view.getLoginScreen();
 		if (LoginScreen.isRemembering()) {
-			Config.setLastEmail(login.getEmail());
+			Config.setLastEmail(view.getLoginScreen().getEmail());
+		} else {
+			Config.setLastEmail(null);
+		}
+		view.switchScreen("RECIPE_SCREEN");
+	}
+	
+	public void showRcpScreen() {
+		System.out.println("Going to Recipe Screen...");
+		if (LoginScreen.isRemembering()) {
+			Config.setLastEmail(view.getLoginScreen().getEmail());
 		} else {
 			Config.setLastEmail(null);
 		}

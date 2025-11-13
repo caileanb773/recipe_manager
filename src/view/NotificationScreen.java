@@ -2,24 +2,30 @@ package view;
 
 import static definitions.Constants.DARK_GRADIENT_BOTTOM;
 import static definitions.Constants.DARK_GRADIENT_TOP;
+import static definitions.Constants.DARK_THEME_BG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_THEME_BG_COL;
 import static definitions.Constants.LIGHT_THEME_RECIPE_BTN_COL;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import definitions.Constants;
 import definitions.Notification;
 import definitions.Theme;
@@ -32,6 +38,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	private JPanel notificationsListPanel;
 	private JPanel expandedNotificationInfo;
 	private JScrollPane notificationsListScrollPane;
+	private JCheckBox selectAll;
 	private JButton typeBtn;	// These buttons are for sorting notifications
 	private JButton rcpBtn;		// These buttons are for sorting notifications
 	private JButton senderBtn;	// These buttons are for sorting notifications
@@ -84,7 +91,8 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		notificationsListScrollPane.setHorizontalScrollBarPolicy(
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		// ----- Buttons -----
+		// ----- Clickables -----
+		selectAll = new JCheckBox();
 		typeBtn = new JButton(bundle.getString("typeBtn"));
 		rcpBtn = new JButton(bundle.getString("rcpBtn"));
 		senderBtn = new JButton(bundle.getString("senderBtn"));
@@ -94,13 +102,33 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		backBtn = new JButton(bundle.getString("backBtn"));
 		initButtons();
 		
+		// ---------------------------------------------------------------------
+		// P A N E L  L A Y O U T
+		// ---------------------------------------------------------------------
+		
+		// ----- Header Panel -----
+		headerPanel.add(selectAll);
+		headerPanel.add(typeBtn);
+		headerPanel.add(rcpBtn);
+		headerPanel.add(senderBtn);
+		headerPanel.add(expandBtn);
+		
+		// ----- Footer Panel -----
+		footerPanel.add(confirmBtn);
+		footerPanel.add(rejectBtn);
+		footerPanel.add(backBtn);
+		
 		add(headerPanel, BorderLayout.NORTH);
 		add(notificationsListScrollPane, BorderLayout.CENTER);
 		add(footerPanel, BorderLayout.SOUTH);
 	}
 	
 	private void initButtons() {
-		// TODO stub
+		backBtn.addActionListener(ignored -> {
+			listener.actionPerformed(new ActionEvent(backBtn, 
+					ActionEvent.ACTION_PERFORMED, 
+					"showRcpScreen"));
+		});
 	}
 	
 	@Override
@@ -144,14 +172,18 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		case LIGHT:
 			topGradient = LIGHT_GRADIENT_TOP;
 			botGradient = LIGHT_GRADIENT_BOTTOM;
+			panelBgCol = LIGHT_THEME_BG_COL;
 			break;
 		case DARK:
 			topGradient = DARK_GRADIENT_TOP;
 			botGradient = DARK_GRADIENT_BOTTOM;
+			panelBgCol = DARK_THEME_BG_COL;
 			break;
 		default:
 			System.err.println("Unrecognized theme: " + theme);
 		}
+		
+		notificationsListPanel.setBackground(panelBgCol);
 	}
 	
 }

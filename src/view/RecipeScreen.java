@@ -8,7 +8,6 @@ import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_THEME_BG_COL;
 import static definitions.Constants.LIGHT_THEME_RECIPE_BTN_COL;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -27,7 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -49,7 +47,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
-
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
@@ -561,8 +558,6 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 			topGradient = LIGHT_GRADIENT_TOP;
 			botGradient = LIGHT_GRADIENT_BOTTOM;
 			panelBgCol = LIGHT_THEME_BG_COL;
-			selectedRcpTxt.setBackground(panelBgCol);
-			rcpSelectListPanel.setBackground(panelBgCol);
 			rcpBtnColor = LIGHT_THEME_RECIPE_BTN_COL;
 			rcpBtnFontCol = Color.black;
 			break;
@@ -570,14 +565,15 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 			topGradient = DARK_GRADIENT_TOP;
 			botGradient = DARK_GRADIENT_BOTTOM;
 			panelBgCol = DARK_THEME_BG_COL;
-			selectedRcpTxt.setBackground(panelBgCol);
-			rcpSelectListPanel.setBackground(panelBgCol);
 			rcpBtnColor = DARK_THEME_RECIPE_BTN_COL;
 			rcpBtnFontCol = Color.white;
 			break;
 		default:
 			System.err.println("Unrecognized theme: " + theme);
 		}
+		
+		selectedRcpTxt.setBackground(panelBgCol);
+		rcpSelectListPanel.setBackground(panelBgCol);
 
 		for (JDialog d : detachedRcps) {
 			if (d != null) {
