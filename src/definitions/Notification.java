@@ -58,6 +58,22 @@ public class Notification {
 		this.timeSent = timeSent;
 	}
 	
+	public Recipe getRecipe() {
+		return this.recipe;
+	}
+	
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
+	}
+	
+	public String getNotes() {
+		return optionalNotes;
+	}
+	
+	public void setNotes(String notes) {
+		this.optionalNotes = notes;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

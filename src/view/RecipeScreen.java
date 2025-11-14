@@ -1,13 +1,14 @@
 package view;
 
+import static definitions.Constants.DARK_BG_COL;
 import static definitions.Constants.DARK_GRADIENT_BOTTOM;
 import static definitions.Constants.DARK_GRADIENT_TOP;
-import static definitions.Constants.DARK_BG_COL;
 import static definitions.Constants.DARK_RECIPE_BTN_COL;
+import static definitions.Constants.LIGHT_BG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
-import static definitions.Constants.LIGHT_BG_COL;
 import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -47,6 +49,8 @@ import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
@@ -132,6 +136,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		filterInputPanel = new JPanel(new BorderLayout());
 		filterInputPanel.setOpaque(false);
 		filterInput = new JTextField(10);
+		filterInput.setBorder(BorderFactory.createLineBorder(Color.gray));
 		filterApply = new JButton(bundle.getString("filterApply"));
 		filterLabel = new JLabel(bundle.getString("filterLabel"));
 		filterLabel.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
@@ -144,7 +149,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		filterInputPanel.add(filterInput, BorderLayout.CENTER);
 		filterInputPanel.add(filterBtns, BorderLayout.SOUTH);
 		filterLabelCombo.add(filterInputPanel, BorderLayout.SOUTH);
-		filterLabelCombo.setBorder(BorderFactory.createSoftBevelBorder(BevelBorder.RAISED));
+		filterLabelCombo.setBorder(Constants.softRaisedBorder);
 		filterLabelCombo.setBackground(Constants.LIGHT_FG_COL);
 
 		// ---------------------------------------------------------------------
@@ -184,7 +189,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		rcpSelectLabel.setFont(Constants.titleFont);
 		BoxLayout rcpSelectListLayout = new BoxLayout(rcpSelectListPanel, BoxLayout.Y_AXIS);
 		rcpSelectListPanel.setLayout(rcpSelectListLayout);
-		rcpSelectListPanel.setBorder(BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED));
+		rcpSelectListPanel.setBorder(Constants.softLoweredBorder);
 		rcpListAdd = new JButton(bundle.getString("rcpListAdd"));
 		rcpListRemove = new JButton(bundle.getString("rcpListRemove"));
 		rcpListEdit = new JButton(bundle.getString("rcpListEdit"));
@@ -245,7 +250,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		selectedRcpTxtScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		selectedRcpTxtScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		selectedRcpDescPanel.add(selectedRcpTxtScrollPane, BorderLayout.CENTER);
-		selectedRcpTxtScrollPane.setBorder(BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED));
+		selectedRcpTxtScrollPane.setBorder(Constants.softLoweredBorder);
 		selectedRcpDescPanel.setBorder(BorderFactory.createEmptyBorder(10,5,5,10));
 		selectedRcpDescPanel.add(scaleRcpPanel, BorderLayout.SOUTH);
 

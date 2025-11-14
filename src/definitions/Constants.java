@@ -6,6 +6,10 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.swing.BorderFactory;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+
 import init.Main;
 
 /*
@@ -47,6 +51,10 @@ public class Constants {
 	public static final Font 	buttonFont = new Font("Serif", Font.BOLD, 16);
 	public static final Font 	textFont = new Font("Segoe UI", Font.PLAIN, 15);
 	public static final Font 	recipeTxtFont;
+	
+	// UI Constants
+	public static final Border	softLoweredBorder = BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED);
+	public static final Border	softRaisedBorder = BorderFactory.createSoftBevelBorder(BevelBorder.RAISED);
 	
 	// Theme-specific constants
 	public static final Theme[] VALID_THEMES 			= { Theme.LIGHT, Theme.DARK };
