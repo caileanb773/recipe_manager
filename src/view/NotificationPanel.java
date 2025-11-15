@@ -26,7 +26,6 @@ public class NotificationPanel extends JPanel {
 	private JLabel notes;
 	private JButton expand;
 	//private ImageIcon divider;	// separates each visual element of the notif btn 
-	private final JLabel divider = new JLabel("|"); // might look okay as just "|"
 	
 	public NotificationPanel(Notification notification) {
 		new JPanel(new FlowLayout());
@@ -60,18 +59,17 @@ public class NotificationPanel extends JPanel {
 		
 		// Lay out button components
 		add(checkBx);
-		add(divider);
 		add(type);
-		add(divider);
+		add(new JLabel("|"));
 		add(rcpName);
-		add(divider);
+		add(new JLabel("|"));
 		add(sender);
-		add(divider);
+		add(new JLabel("|"));
 		
 		// probably will need to add some kind of placeholder if we're not displaying notes
 		if (displayWithNotes) {
 			add(notes);
-			add(divider);
+			add(new JLabel("|"));
 		}
 		
 		add(expand);

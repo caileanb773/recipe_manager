@@ -12,6 +12,7 @@ import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -53,9 +54,10 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	private JButton backBtn;
 	
 	// Constants
+	private final int NOTIFICATION_ROW_HEIGHT = 45;
 	
 	// Other
-	private ArrayList<NotificationPanel> notificationButtons;
+	private ArrayList<NotificationPanel> notificationVisuals;
 	private ArrayList<Notification> notifications;
 	private ResourceBundle bundle;
 	private ActionListener listener;
@@ -72,7 +74,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		setOpaque(false);
-		notificationButtons = new ArrayList<>();
+		notificationVisuals = new ArrayList<>();
 		notifications = new ArrayList<>();
 		
 		// Default theme
@@ -195,10 +197,15 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 			return;
 		}
 		
+		// Remove all existing notification visuals
+		notificationVisuals.clear();
+		
+		// Make graphical representations for each notification that exists
 		for (Notification n : notificationList) {
 			// add actions and such here if needed
-			NotificationPanel nBtn = new NotificationPanel(n);
-			notificationButtons.add(nBtn);
+			NotificationPanel newNotif = new NotificationPanel(n);
+			newNotif.setMaximumSize(new Dimension(Integer.MAX_VALUE, NOTIFICATION_ROW_HEIGHT));
+			notificationVisuals.add(newNotif);
 		}
 	}
 	
@@ -206,9 +213,9 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		// This method handles a quick null check
 		removeAllDisplayedNotifications();
 		
-		for (NotificationPanel nBtn : notificationButtons) {
+		for (NotificationPanel nBtn : notificationVisuals) {
 			notificationsListPanel.add(nBtn);
-			notificationsListPanel.add(Box.createVerticalStrut(2));
+			notificationsListPanel.add(Box.createVerticalStrut(1));
 		}
 		
 		Utility.revalidateAndRepaint(notificationsListPanel);
@@ -225,7 +232,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	
 	
 	public void removeAllDisplayedNotifications() {
-		if (notificationButtons == null) {
+		if (notificationVisuals == null) {
 			System.err.println("NotificationButton list is null: removeAllDisplayedNotifications().");
 			return;
 		}

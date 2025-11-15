@@ -40,7 +40,6 @@ public class Main {
 			// rcp btns font needs more spacing, test diff fonts
 			// switching ui changes button look/feel in one direction
 		// TODO register screen input boxes alignment
-		// TODO define color for header/footer light/dark theme notifs screen
 		
 	}
 }
