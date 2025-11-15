@@ -1,17 +1,17 @@
 package definitions;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Notification {
 
-	private Timestamp timeSent;
+	private LocalDateTime timeSent;
 	private StaffMember sender;
 	private NotificationType notificationType;
 	private Recipe recipe;
 	private String optionalNotes;
 
 
-	public Notification(Timestamp time, StaffMember sender, NotificationType nType,
+	public Notification(LocalDateTime time, StaffMember sender, NotificationType nType,
 			Recipe recipe) {
 		this.timeSent = time;
 		this.sender = sender;
@@ -20,7 +20,7 @@ public class Notification {
 		optionalNotes = null;
 	}
 	
-	public Notification(Timestamp time, StaffMember sender, NotificationType nType,
+	public Notification(LocalDateTime time, StaffMember sender, NotificationType nType,
 			Recipe recipe, String optionalNotes) {
 		this.timeSent = time;
 		this.sender = sender;
@@ -49,12 +49,12 @@ public class Notification {
 	}
 
 
-	public Timestamp getTimeSent() {
+	public LocalDateTime getTimeSent() {
 		return timeSent;
 	}
 
 
-	public void setTimeSent(Timestamp timeSent) {
+	public void setTimeSent(LocalDateTime timeSent) {
 		this.timeSent = timeSent;
 	}
 	
@@ -77,7 +77,7 @@ public class Notification {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(timeSent);
+		sb.append(timeSent).toString();
 		sb.append(" ");
 		sb.append(sender.getEmail());
 		sb.append(" ");

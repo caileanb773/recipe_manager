@@ -1,5 +1,7 @@
 package util;
 
+import javax.swing.JPanel;
+
 import org.apache.commons.validator.routines.EmailValidator;
 
 import definitions.Constants;
@@ -34,6 +36,11 @@ public class Utility {
 		}
 
 		return validator.isValid(email);
+	}
+	
+	public static void revalidateAndRepaint(JPanel panel) {
+		panel.revalidate();
+		panel.repaint();
 	}
 
 }

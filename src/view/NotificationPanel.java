@@ -1,10 +1,13 @@
 package view;
 
-import javax.swing.ImageIcon;
+import java.awt.FlowLayout;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import definitions.Constants;
 import definitions.Notification;
 
 /*
@@ -13,7 +16,7 @@ import definitions.Notification;
  * 
  */
 
-public class NotificationButton extends JButton {
+public class NotificationPanel extends JPanel {
 
 	private Notification notification;
 	private JCheckBox checkBx;
@@ -25,10 +28,12 @@ public class NotificationButton extends JButton {
 	//private ImageIcon divider;	// separates each visual element of the notif btn 
 	private final JLabel divider = new JLabel("|"); // might look okay as just "|"
 	
-	public NotificationButton(Notification notification) {
-		new JButton();
+	public NotificationPanel(Notification notification) {
+		new JPanel(new FlowLayout());
+		Border emptyBorder = BorderFactory.createEmptyBorder(2,2,0,2);
+		setBorder(BorderFactory.createCompoundBorder(emptyBorder,
+				Constants.softRaisedBorder));
 		this.notification = notification;
-		setFocusable(true);
 		boolean displayWithNotes = false;
 		
 		// Store the values locally for now, maybe try without this if it is slow
@@ -70,6 +75,10 @@ public class NotificationButton extends JButton {
 		}
 		
 		add(expand);
+	}
+	
+	public Notification getNotification() {
+		return this.notification;
 	}
 	
 }

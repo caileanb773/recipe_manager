@@ -8,9 +8,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -18,10 +21,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.apache.commons.io.FilenameUtils;
+
 import db.RecipeDAO;
 import definitions.Constants;
+import definitions.Ingredient;
+import definitions.Notification;
+import definitions.NotificationType;
 import definitions.Recipe;
+import definitions.StaffMember;
 import definitions.Theme;
 import model.RecipeMgrModel;
 import util.Config;
@@ -29,6 +38,7 @@ import util.ProgressListener;
 import view.AddRecipeDialog;
 import view.AppFrame;
 import view.LoginScreen;
+import view.NotificationScreen;
 import view.RecipeScreen;
 import view.RegisterScreen;
 
@@ -190,6 +200,11 @@ public class AppController implements ActionListener {
 		case "showRcpScreen":
 			showRcpScreen();
 			break;
+
+			// XXX Debug Options
+		case "dbgAddNotif":
+			dbgAddNotif();
+			break;
 		default:
 			System.err.println("Unrecognized button actionCommand.");
 			break;
@@ -227,7 +242,7 @@ public class AppController implements ActionListener {
 		}
 		view.switchScreen("RECIPE_SCREEN");
 	}
-	
+
 	public void showRcpScreen() {
 		System.out.println("Going to Recipe Screen...");
 		if (LoginScreen.isRemembering()) {
@@ -243,7 +258,7 @@ public class AppController implements ActionListener {
 		view.switchScreen("LOGIN");
 		view.getLoginScreen().grabFocus("PASSWORD_FIELD");
 	}
-	
+
 	public void notifications() {
 		System.out.println("Going to Notification Center...");
 		view.switchScreen("NOTIFICATIONS");
@@ -607,6 +622,28 @@ public class AppController implements ActionListener {
 
 	public AppFrame getView() {
 		return this.view;
+	}
+
+	// XXX Debugging methods
+	public void dbgAddNotif() {
+		// create a notification
+		// call "addnotif" from notif screen
+		LocalDateTime timeSent = LocalDateTime.now();
+		StaffMember staff = new StaffMember(0, "bob@gmail.com", "Bob");
+		NotificationType type = NotificationType.ADD;
+		Recipe rcp = new Recipe("Burger", new ArrayList<Ingredient>(), "Make burger");
+		String optNotes = "This is a test of how long optional notes can be";
+		
+		Notification n = new Notification(timeSent, staff, type, rcp, optNotes);
+		
+		NotificationScreen notifScreen = view.getNotificationScreen();
+		
+		notifScreen.addNotification(n);
+		ArrayList<Notification> notifs = notifScreen.getNotifications();
+		
+		notifScreen.populateNotificationButtonList(notifs);
+		
+		notifScreen.displayNotifications();
 	}
 
 }

@@ -1,14 +1,15 @@
 package view;
 
-import static definitions.Constants.DARK_GRADIENT_BOTTOM;
-import static definitions.Constants.DARK_GRADIENT_TOP;
 import static definitions.Constants.DARK_BG_COL;
 import static definitions.Constants.DARK_FG_COL;
+import static definitions.Constants.DARK_GRADIENT_BOTTOM;
+import static definitions.Constants.DARK_GRADIENT_TOP;
+import static definitions.Constants.LIGHT_BG_COL;
+import static definitions.Constants.LIGHT_FG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
-import static definitions.Constants.LIGHT_BG_COL;
 import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
-import static definitions.Constants.LIGHT_FG_COL;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -17,18 +18,22 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.BevelBorder;
+
 import definitions.Constants;
 import definitions.Notification;
 import definitions.Theme;
+import util.Utility;
 
 public class NotificationScreen extends JPanel implements ApplicationScreen {
 	
@@ -50,6 +55,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	// Constants
 	
 	// Other
+	private ArrayList<NotificationPanel> notificationButtons;
 	private ArrayList<Notification> notifications;
 	private ResourceBundle bundle;
 	private ActionListener listener;
@@ -66,6 +72,8 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		setOpaque(false);
+		notificationButtons = new ArrayList<>();
+		notifications = new ArrayList<>();
 		
 		// Default theme
 		topGradient = LIGHT_GRADIENT_TOP;
@@ -156,6 +164,80 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		});
 	}
 	
+	public void addNotification(Notification n) {
+		if (n == null) {
+			System.err.println("Null notification passed to addNotification().");
+			return;
+		}
+		
+		if (notifications == null) {
+			System.err.println("Notification list uninitialized: addNotification().");
+			return;
+		}
+		
+		if (!isNotificationValid(n)) {
+			System.err.println("Notification does not have valid format/bad fields: addNotification().");
+			return;
+		}
+		
+		notifications.add(n);
+	}
+	
+	// Should this take ArrayList<Notification>?
+	public void populateNotificationButtonList(List<Notification> notificationList) {
+		if (notifications == null) {
+			System.err.println("Notifications is null: populateNotificationList().");
+			return;
+		}
+		
+		if (notifications.isEmpty()) {
+			System.out.println("No notifications to display: populateNotificationList().");
+			return;
+		}
+		
+		for (Notification n : notificationList) {
+			// add actions and such here if needed
+			NotificationPanel nBtn = new NotificationPanel(n);
+			notificationButtons.add(nBtn);
+		}
+	}
+	
+	public void displayNotifications() {
+		// This method handles a quick null check
+		removeAllDisplayedNotifications();
+		
+		for (NotificationPanel nBtn : notificationButtons) {
+			notificationsListPanel.add(nBtn);
+			notificationsListPanel.add(Box.createVerticalStrut(2));
+		}
+		
+		Utility.revalidateAndRepaint(notificationsListPanel);
+	}
+	
+	public void displayNotifications(String filter) {
+		// This method handles a quick null check
+		removeAllDisplayedNotifications();
+		
+		// TODO filtering logic
+		
+		Utility.revalidateAndRepaint(notificationsListPanel);
+	}
+	
+	
+	public void removeAllDisplayedNotifications() {
+		if (notificationButtons == null) {
+			System.err.println("NotificationButton list is null: removeAllDisplayedNotifications().");
+			return;
+		}
+		
+		notificationsListPanel.removeAll();
+	}
+
+	public boolean isNotificationValid(Notification n) {
+		// TODO method stub
+		return true;
+	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -215,6 +297,10 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		notificationsListPanel.setBackground(panelBgCol);
 		headerPanel.setBackground(headerPanelCol);
 		footerPanel.setBackground(footerPanelCol);
+	}
+	
+	public ArrayList<Notification> getNotifications() {
+		return notifications;
 	}
 	
 }

@@ -55,6 +55,7 @@ import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Theme;
+import util.Utility;
 
 /*
  * Author: Cailean Bernard
@@ -415,8 +416,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 			rcpSelectListPanel.add(Box.createVerticalStrut(2));
 		}
 
-		rcpSelectListPanel.revalidate();
-		rcpSelectListPanel.repaint();
+		Utility.revalidateAndRepaint(rcpSelectListPanel);
 	}
 
 	public void displayRecipeButtons(List<String> filters) {
@@ -454,8 +454,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 			}
 		}
 
-		rcpSelectListPanel.revalidate();
-		rcpSelectListPanel.repaint();
+		Utility.revalidateAndRepaint(rcpSelectListPanel);
 	}
 
 	public void clearFilters() {

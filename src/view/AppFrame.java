@@ -81,6 +81,7 @@ public class AppFrame {
 
 	// DEBUGGING OPTIONS -- XXX -- TO BE DELETED //
 	private JMenuItem debugLogin;
+	private JMenuItem debugAddNotif;
 
 	// Other
 	private ActionListener listener;
@@ -144,9 +145,13 @@ public class AppFrame {
 		// XXX Debugging
 		debugLogin = new JMenuItem("DEBUG: Force Login");
 		menuFile.add(debugLogin);
-		debugLogin.addActionListener(ignored -> listener.actionPerformed(new ActionEvent(this,
-				ActionEvent.ACTION_PERFORMED,
-				"login")));
+		debugLogin.addActionListener(ignored -> listener.actionPerformed(
+				new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "login")));
+		
+		debugAddNotif = new JMenuItem("DEBUG: Add Notification");
+		menuFile.add(debugAddNotif);
+		debugAddNotif.addActionListener(ignored -> listener.actionPerformed(
+				new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "dbgAddNotif")));
 
 		menuOpt = new JMenu(bundle.getString("menuOpt"));
 		menuLang = new JMenu(bundle.getString("menuLang"));
@@ -520,6 +525,10 @@ public class AppFrame {
 
 	public RecipeScreen getRecipeScreen() {
 		return recipeScreen;
+	}
+	
+	public NotificationScreen getNotificationScreen() {
+		return notificationScreen;
 	}
 
 }
