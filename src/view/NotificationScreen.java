@@ -12,6 +12,7 @@ import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -148,7 +149,13 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		// ----- Footer -----
 		footerPanel.setBackground(footerPanelCol);
 		footerPanel.setBorder(Constants.softRaisedBorder);
+		
+		// ---------------------------------------------------------------------
+		// A C T I O N  L I S T E N E R S
+		// ---------------------------------------------------------------------
 			
+		selectAll.addActionListener(ignored -> toggleNotificationSelectionStatus());
+		
 		// ---------------------------------------------------------------------
 		// S C R E E N  A S S E M B L Y
 		// ---------------------------------------------------------------------
@@ -243,6 +250,32 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	public boolean isNotificationValid(Notification n) {
 		// TODO method stub
 		return true;
+	}
+	
+	public void toggleNotificationSelectionStatus() {
+		boolean isSelected = selectAll.isSelected();
+		setAllNotificationsSelected(isSelected);
+	}
+	
+	// There's probably a more efficient way to do this than removeAll()
+	private void setAllNotificationsSelected(boolean isSelected) {
+		if (notificationsListPanel == null) {
+			System.err.println("Notification list Panel was not initialized:"
+					+ "setAllNotificationsSelected().");
+			return;
+		}
+		
+		System.out.println("Setting all notifications selected: " + isSelected);
+		
+		notificationsListPanel.removeAll();
+		
+		for (NotificationPanel np : notificationVisuals) {
+			np.setSelected(isSelected);
+			notificationsListPanel.add(np);
+			notificationsListPanel.add(Box.createVerticalStrut(1));
+		}
+		
+		Utility.revalidateAndRepaint(notificationsListPanel);
 	}
 	
 	@Override

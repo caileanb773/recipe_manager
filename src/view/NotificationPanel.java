@@ -79,4 +79,8 @@ public class NotificationPanel extends JPanel {
 		return this.notification;
 	}
 	
+	public void setSelected(boolean isSelected) {
+		this.checkBx.setSelected(isSelected);
+	}
+	
 }

@@ -40,6 +40,7 @@ public class Main {
 			// rcp btns font needs more spacing, test diff fonts
 			// switching ui changes button look/feel in one direction
 		// TODO register screen input boxes alignment
+		// TODO expected behaviour when toggling notifications selected and a new one is added
 		
 	}
 }
