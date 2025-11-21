@@ -58,6 +58,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	// Constants and Flags
 	private final int NOTIFICATION_ROW_HEIGHT = 45;
 	private boolean timeStampSortingOrder = Constants.ASCENDING; // Newest to oldest by default
+	private boolean nameSortingOrder = Constants.ASCENDING; // Newest to oldest by default
 	
 	// Other
 	private ArrayList<NotificationPanel> notificationVisuals;
@@ -163,7 +164,10 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 			sort(Constants.SORT_TIME);
 			timeStampSortingOrder = !timeStampSortingOrder;
 		});
-		
+		senderBtn.addActionListener(ignored -> {
+			sort(Constants.SORT_SENDER);
+			nameSortingOrder = !nameSortingOrder;			
+		});
 		
 		// ---------------------------------------------------------------------
 		// S C R E E N  A S S E M B L Y

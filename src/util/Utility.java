@@ -7,7 +7,6 @@ import static definitions.Constants.SORT_SENDER;
 import static definitions.Constants.SORT_TIME;
 import static definitions.Constants.SORT_TYPE;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -70,7 +69,7 @@ public class Utility {
 			sortByTime(list, direction);
 			break;
 		case SORT_SENDER:
-			sortBySender(list);
+			sortBySender(list, direction);
 			break;
 		case SORT_TYPE:
 			sortByType(list);
@@ -115,12 +114,10 @@ public class Utility {
 					}
 				}
 
-
 			}
 		} while (elmtSwapped);
 	}
-	
-	
+
 	private static void sortByTime(ArrayList<Notification> list, boolean direction) {
 		if (direction == DESCENDING) {
 			list.sort(Comparator.comparing(Notification::getTimeSent));
@@ -130,25 +127,29 @@ public class Utility {
 
 	}
 
-	private static void sortBySender(ArrayList<Notification> list) {
-		if (list == null || list.isEmpty()) {
-			System.err.println("Cannot sort a null/empty list.");
-			return;
-		}
+	private static void sortBySender(ArrayList<Notification> list, boolean direction) {
+
+	    Comparator<Notification> cmp =
+	        Comparator.comparing(
+	            n -> n.getSender().getName(),
+	            String.CASE_INSENSITIVE_ORDER
+	        );
+
+	    if (direction == ASCENDING) {
+	        list.sort(cmp);
+	    } else {
+	        list.sort(cmp.reversed());
+	    }
 	}
 
+
+
 	private static void sortByType(ArrayList<Notification> list) {
-		if (list == null || list.isEmpty()) {
-			System.err.println("Cannot sort a null/empty list.");
-			return;
-		}
+
 	}
 
 	private static void sortByRcpName(ArrayList<Notification> list) {
-		if (list == null || list.isEmpty()) {
-			System.err.println("Cannot sort a null/empty list.");
-			return;
-		}
+
 	}
 
 }
