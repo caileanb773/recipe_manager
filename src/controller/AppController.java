@@ -626,23 +626,36 @@ public class AppController implements ActionListener {
 
 	// XXX Debugging methods
 	public void dbgAddNotif() {
-		// create a notification
-		// call "addnotif" from notif screen
-		LocalDateTime timeSent = LocalDateTime.now();
+		NotificationScreen notifScreen = view.getNotificationScreen();
+		ArrayList<Notification> notifs = notifScreen.getNotifications();
+
+		// First
+		LocalDateTime timeSent = LocalDateTime.now().minusDays(1);
 		StaffMember staff = new StaffMember(0, "bob@gmail.com", "Bob");
 		NotificationType type = NotificationType.ADD;
 		Recipe rcp = new Recipe("Burger", new ArrayList<Ingredient>(), "Make burger");
 		String optNotes = "This is a test of how long optional notes can be";
-		
 		Notification n = new Notification(timeSent, staff, type, rcp, optNotes);
-		
-		NotificationScreen notifScreen = view.getNotificationScreen();
-		
 		notifScreen.addNotification(n);
-		ArrayList<Notification> notifs = notifScreen.getNotifications();
+
+		timeSent = LocalDateTime.now().plusDays(3);
+		staff = new StaffMember(0, "frank@gmoil.com", "Frank");
+		type = NotificationType.EDIT;
+		rcp = new Recipe("Aioli", new ArrayList<Ingredient>(), "Mix it all up");
+		optNotes = "No notes";
+		n = new Notification(timeSent, staff, type, rcp, optNotes);
+		notifScreen.addNotification(n);
 		
+		timeSent = LocalDateTime.now();
+		staff = new StaffMember(0, "derek@gmoil.com", "Derek");
+		type = NotificationType.ADD;
+		rcp = new Recipe("Secret Sauce", new ArrayList<Ingredient>(), "Wahoo");
+		optNotes = "Mix it good";
+		n = new Notification(timeSent, staff, type, rcp, optNotes);
+		notifScreen.addNotification(n);
+		
+		// Refresh
 		notifScreen.populateNotificationButtonList(notifs);
-		
 		notifScreen.displayNotifications();
 	}
 

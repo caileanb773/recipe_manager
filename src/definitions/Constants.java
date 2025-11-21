@@ -42,6 +42,8 @@ public class Constants {
 	public static final boolean FAIL = false;
 	public static final boolean ONLINE = true;
 	public static final boolean OFFLINE = false;
+	public static final boolean	ASCENDING = true;
+	public static final boolean	DESCENDING = false;
 	public static final String 	ASCII_SPECIAL_CHARS = "!@#$%^&*()_+-=`~|\\[]{};':\",./<>?";
 	public static final String 	ILLEGAL_EMAIL_CHARS = "()[]:;<>%,\\%&*+=?{}|";
 	public static final String 	RECIPE_SECT_DELIM = "§§";
@@ -51,6 +53,12 @@ public class Constants {
 	public static final Font 	buttonFont = new Font("Serif", Font.BOLD, 16);
 	public static final Font 	textFont = new Font("Segoe UI", Font.PLAIN, 15);
 	public static final Font 	recipeTxtFont;
+	
+	// NotificationPanel
+	public static final int SORT_TIME = 0;
+	public static final int SORT_SENDER = 1;
+	public static final int SORT_TYPE = 2;
+	public static final int SORT_RCPNAME = 3;
 	
 	// UI Constants
 	public static final Border	softLoweredBorder = BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED);

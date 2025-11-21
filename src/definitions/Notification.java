@@ -74,6 +74,24 @@ public class Notification {
 		this.optionalNotes = notes;
 	}
 	
+	public String timeString() {
+		
+		// Format: 1999-06-25 14:30
+		// Military time only for now
+		StringBuilder sb = new StringBuilder();
+		sb.append(timeSent.getYear());
+		sb.append("-");
+		sb.append(timeSent.getMonthValue());
+		sb.append("-");
+		sb.append(timeSent.getDayOfMonth());
+		sb.append(" ");
+		sb.append(timeSent.getHour());
+		sb.append(":");
+		sb.append(timeSent.getMinute());
+		
+		return sb.toString();
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

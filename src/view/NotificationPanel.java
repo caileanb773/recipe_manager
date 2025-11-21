@@ -1,12 +1,15 @@
 package view;
 
 import java.awt.FlowLayout;
+import java.time.LocalDateTime;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+
 import definitions.Constants;
 import definitions.Notification;
 
@@ -20,6 +23,7 @@ public class NotificationPanel extends JPanel {
 
 	private Notification notification;
 	private JCheckBox checkBx;
+	private JLabel timeStamp;
 	private JLabel type;
 	private JLabel rcpName;
 	private JLabel sender;
@@ -36,6 +40,7 @@ public class NotificationPanel extends JPanel {
 		boolean displayWithNotes = false;
 		
 		// Store the values locally for now, maybe try without this if it is slow
+		String time = notification.timeString();
 		String notifType = notification.getNotificationType().name();
 		String notifRcpName = notification.getRecipe().getTitle();
 		String notifSenderName = notification.getSender().getName();
@@ -47,6 +52,7 @@ public class NotificationPanel extends JPanel {
 		
 		// Initialize button components with notification properties
 		checkBx = new JCheckBox();
+		timeStamp = new JLabel(time);
 		type = new JLabel(notifType);
 		rcpName = new JLabel(notifRcpName);
 		sender = new JLabel(notifSenderName);
@@ -59,6 +65,8 @@ public class NotificationPanel extends JPanel {
 		
 		// Lay out button components
 		add(checkBx);
+		add(timeStamp);
+		add(new JLabel("|"));
 		add(type);
 		add(new JLabel("|"));
 		add(rcpName);

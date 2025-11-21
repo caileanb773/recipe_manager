@@ -46,6 +46,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	private JPanel expandedNotificationInfo;
 	private JScrollPane notificationsListScrollPane;
 	private JCheckBox selectAll;
+	private JButton timeBtn;	// These buttons are for sorting notifications
 	private JButton typeBtn;	// These buttons are for sorting notifications
 	private JButton rcpBtn;		// These buttons are for sorting notifications
 	private JButton senderBtn;	// These buttons are for sorting notifications
@@ -54,8 +55,9 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	private JButton rejectBtn;
 	private JButton backBtn;
 	
-	// Constants
+	// Constants and Flags
 	private final int NOTIFICATION_ROW_HEIGHT = 45;
+	private boolean timeStampSortingOrder = Constants.ASCENDING; // Newest to oldest by default
 	
 	// Other
 	private ArrayList<NotificationPanel> notificationVisuals;
@@ -99,6 +101,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 				
 		// ----- Clickables -----
 		selectAll = new JCheckBox();
+		timeBtn = new JButton(bundle.getString("timeBtn"));
 		typeBtn = new JButton(bundle.getString("typeBtn"));
 		rcpBtn = new JButton(bundle.getString("rcpBtn"));
 		senderBtn = new JButton(bundle.getString("senderBtn"));
@@ -114,6 +117,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		
 		// ----- Header Panel -----
 		headerPanel.add(selectAll);
+		headerPanel.add(timeBtn);
 		headerPanel.add(typeBtn);
 		headerPanel.add(rcpBtn);
 		headerPanel.add(senderBtn);
@@ -155,6 +159,11 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		// ---------------------------------------------------------------------
 			
 		selectAll.addActionListener(ignored -> toggleNotificationSelectionStatus());
+		timeBtn.addActionListener(ignored -> {
+			sort(Constants.SORT_TIME);
+			timeStampSortingOrder = !timeStampSortingOrder;
+		});
+		
 		
 		// ---------------------------------------------------------------------
 		// S C R E E N  A S S E M B L Y
@@ -165,6 +174,12 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		add(footerPanel, BorderLayout.SOUTH);
 	}
 	
+	private void sort(int mode) {
+		Utility.sortNotifications(notifications, mode, timeStampSortingOrder);
+		populateNotificationButtonList(notifications);
+		displayNotifications();
+	}
+		
 	private void initButtons() {
 		backBtn.addActionListener(ignored -> {
 			listener.actionPerformed(new ActionEvent(backBtn, 
@@ -194,6 +209,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	
 	// Should this take ArrayList<Notification>?
 	public void populateNotificationButtonList(List<Notification> notificationList) {
+		
 		if (notifications == null) {
 			System.err.println("Notifications is null: populateNotificationList().");
 			return;
@@ -303,6 +319,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 
 	@Override
 	public void refreshTranslatable() {
+		timeBtn.setText(bundle.getString("timeBtn"));
 		typeBtn.setText(bundle.getString("typeBtn"));
 		rcpBtn.setText(bundle.getString("rcpBtn"));
 		senderBtn.setText(bundle.getString("senderBtn"));
