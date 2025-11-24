@@ -161,11 +161,11 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 			
 		selectAll.addActionListener(ignored -> toggleNotificationSelectionStatus());
 		timeBtn.addActionListener(ignored -> {
-			sort(Constants.SORT_TIME);
+			sort(Constants.SORT_TIME, timeStampSortingOrder);
 			timeStampSortingOrder = !timeStampSortingOrder;
 		});
 		senderBtn.addActionListener(ignored -> {
-			sort(Constants.SORT_SENDER);
+			sort(Constants.SORT_SENDER, nameSortingOrder);
 			nameSortingOrder = !nameSortingOrder;			
 		});
 		
@@ -178,8 +178,8 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 		add(footerPanel, BorderLayout.SOUTH);
 	}
 	
-	private void sort(int mode) {
-		Utility.sortNotifications(notifications, mode, timeStampSortingOrder);
+	private void sort(int mode, boolean direction) {
+		Utility.sortNotifications(notifications, mode, direction);
 		populateNotificationButtonList(notifications);
 		displayNotifications();
 	}
