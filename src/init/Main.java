@@ -31,17 +31,15 @@ public class Main {
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 		new Loader(controller).run();
-		
-		
-		
+			
 		// TODO finish refactoring scaling using BigDecimal
 		// TODO logging functionality
-		// TODO dsktp / laptop are 2 diff java ver. consider j17
 		// TODO: UI stuff:
    			// rcp btns font needs more spacing, test diff fonts
 			// switching ui changes button look/feel in one direction
 		// TODO register screen input boxes alignment
-		// TODO expected behaviour when toggling notifications selected and a new one is added
+		// TODO expected behaviour when toggling notifications selected 
+		// and a new one is added
 		
 	}
 }
