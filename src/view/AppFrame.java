@@ -38,6 +38,8 @@ import definitions.Theme;
 import init.Main;
 import util.Config;
 import util.ProgressListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -83,6 +85,7 @@ public class AppFrame {
 	// Other
 	private ActionListener listener;
 	private ProgressListener progressListener;
+	private static final Logger logger = LoggerFactory.getLogger(AppFrame.class);
 
 
 	public AppFrame() {
@@ -117,7 +120,7 @@ public class AppFrame {
 			ImageIcon icon = new ImageIcon(iconUrl);
 			frame.setIconImage(icon.getImage());
 		} catch (NullPointerException e) {
-			System.err.println("Could not find icon.png");
+			logger.error("Could not find icon.png");
 		}
 
 		reportProgress(15, "Loading screens...");
@@ -228,12 +231,12 @@ public class AppFrame {
 
 	public void fireThemeChangeEvent(Theme theme) {
 		if (theme.toString().isEmpty()) {
-			System.err.println("No theme passed to fireThemeChangeEvent().");
+			logger.error("No theme passed to fireThemeChangeEvent().");
 			return;
 		}
 
 		if (!(theme == Theme.LIGHT || theme == Theme.DARK)) {
-			System.err.println("Unrecognized theme passed to fireThemeChangeEvent().");
+			logger.error("Unrecognized theme passed to fireThemeChangeEvent().");
 			return;
 		}
 
@@ -280,11 +283,9 @@ public class AppFrame {
 			}
 
 		} catch (UnsupportedLookAndFeelException e) {
-			System.err.println("Exception caught while switching theme: "
-					+ e.getMessage());
+			logger.error("Exception caught while switching theme: {}", e.getMessage());
 		} catch (Exception e) {
-			System.err.println("Exception caught while switching theme: "
-					+ e.getMessage());
+			logger.error("Exception caught while switching theme: {}", e.getMessage());
 		}
 
 		for (Window w : Window.getWindows()) {
@@ -324,10 +325,10 @@ public class AppFrame {
 			Desktop.getDesktop().browse(new URI(
 					"https://github.com/caileanb773/recipe_manager/blob/main/README.md"));
 		} catch (IOException e) {
-			System.err.println("IOException while opening browser: "
+			logger.error("IOException while opening browser: "
 					+ e.getMessage());
 		} catch (URISyntaxException e) {
-			System.err.println("URISyntaxException while opening browser: "
+			logger.error("URISyntaxException while opening browser: "
 					+ e.getMessage());
 		}
 
@@ -349,9 +350,9 @@ public class AppFrame {
 			readMe = sb.toString();
 
 		} catch (FileNotFoundException e) {
-			System.err.println("Could not find README.md");
+			logger.error("Could not find README.md");
 		} catch (IOException e) {
-			System.err.println("IO Exception");
+			logger.error("IO Exception");
 		}
 
 		JOptionPane.showMessageDialog(frame, readMe);
@@ -434,37 +435,37 @@ public class AppFrame {
 		if (!screenName.isEmpty()) {
 			switch (screenName) {
 			case "LOGIN":
-				System.out.println("Switching to Login screen");
+				logger.debug("Switching to Login screen");
 				cardLayout.show(container, "LOGIN");
 				setEnabledButtons(screenName);
 				loginScreen.grabFocus("EMAIL_FIELD");
 				break;
 			case "RECIPE_SCREEN":
-				System.out.println("Switching to UI");
+				logger.debug("Switching to UI");
 				cardLayout.show(container, "RECIPE_SCREEN");
 				setEnabledButtons(screenName);
 				recipeScreen.initFocus();
 				break;
 			case "REGISTER_SCREEN":
-				System.out.println("Switching to register screen");
+				logger.debug("Switching to register screen");
 				cardLayout.show(container, "REGISTER_SCREEN");
 				setEnabledButtons(screenName);
 				registerScreen.initFocus();
 				loginScreen.clearPwField();
 				break;
 			case "NOTIFICATIONS":
-				System.out.println("Switching to noficiations screen");
+				logger.debug("Switching to noficiations screen");
 				cardLayout.show(container, "NOTIFICATION_SCREEN");
 				setEnabledButtons(screenName);
 				break;
 			default:
-				System.err.println("Unknown screen type passed to switchScreen().");
+				logger.error("Unknown screen type passed to switchScreen().");
 				break;
 			}
 			container.revalidate();
 			container.repaint();
 		} else {
-			System.err.println("Empty screen ID string passed to switchScreen().");
+			logger.warn("Empty screen ID string passed to switchScreen().");
 		}
 	}
 
