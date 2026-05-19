@@ -10,11 +10,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import definitions.Fraction;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Unit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -24,6 +25,7 @@ import definitions.Unit;
 public class RecipeDAO {
 
 	private static final String URL = "jdbc:sqlite:recipes.db";
+	private static final Logger logger = LoggerFactory.getLogger(RecipeDAO.class);
 
 	private Connection connect() throws SQLException {
 		return DriverManager.getConnection(URL);
@@ -75,8 +77,7 @@ public class RecipeDAO {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Something went wrong in insertPartialRecipe()");
-			e.printStackTrace();
+			logger.warn("SQL Exception in insertPartialRecipe(): {}", e.getMessage());
 		}
 		return -1;
 
@@ -88,7 +89,7 @@ public class RecipeDAO {
 				String.join(",", recipe.getTags()));
 
 		if (recipeId == -1) {
-			System.out.println("Recipe with id " + recipeId + " not found.");
+			logger.error("Recipe with id {} not found.", recipeId);
 			return -1;
 		}
 
@@ -107,8 +108,7 @@ public class RecipeDAO {
 
 			pstmt.executeBatch();
 		} catch (SQLException e) {
-			System.out.println("Something went wrong in insertRecipe()");
-			e.printStackTrace();
+			logger.warn("SQL Exception in insertRecipe(): {}", e.getMessage());
 		}
 		return recipeId;
 	}
@@ -129,7 +129,7 @@ public class RecipeDAO {
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println("Update failed: " + e.getMessage());
+			logger.error("SQL Exception - Update failed: {}", e.getMessage());
 		}
 	}
 
@@ -149,12 +149,12 @@ public class RecipeDAO {
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println("Update operation failed: " + e.getMessage());
+			logger.error("SQL Exception - Update operation failed: {}", e.getMessage());
 		}
 	}
 
 	public void updateRecipe(Recipe recipe) {
-		System.out.println("Updating recipe in database");
+		logger.info("Updating {} in database.", recipe.getTitle());
 		String rcpSql = "UPDATE recipes SET title = ?, directions = ?, tags = ? WHERE id = ?";
 		String delIngSql = "DELETE FROM ingredients WHERE recipe_id = ?";
 		String insIngSql = "INSERT INTO ingredients (recipe_id, amount, unit, name) VALUES (?, ?, ?, ?)";
@@ -171,7 +171,7 @@ public class RecipeDAO {
 
 				int rows = pstmt.executeUpdate();
 				if (rows == 0) {
-					System.out.println("No recipe found with ID " + recipe.getId());
+					logger.warn("No recipe found with ID ", recipe.getId());
 					conn.rollback();
 					return;
 				}
@@ -196,11 +196,10 @@ public class RecipeDAO {
 			}
 
 			conn.commit();
-			System.out.println("Recipe updated successfully.");
+			logger.info("Recipe updated successfully.");
 
 		} catch (SQLException e) {
-			System.err.println("Update operation failed: " + e.getMessage());
-			e.printStackTrace();
+			logger.error("SQL Exception - Update operation failed: {}", e.getMessage());
 		}
 	}
 
@@ -215,10 +214,10 @@ public class RecipeDAO {
 			int affectedRows = pstmt.executeUpdate();
 
 			if (affectedRows == 0) {
-				System.out.println("No recipe found with id " + id);
+				logger.warn("No recipe found with id {}.", id);
 			}
 		} catch (SQLException e) {
-			System.err.println("Remove operation failed: " + e.getMessage());
+			logger.error("SQL Exception - Remove operation failed: {}", e.getMessage());
 		}
 	}
 
@@ -232,10 +231,10 @@ public class RecipeDAO {
 			int affectedRows = pstmt.executeUpdate();
 
 			if (affectedRows == 0) {
-				System.out.println("No recipe found with id " + id);
+				logger.warn("No recipe found with id {}.", id);
 			}
 		} catch (SQLException e) {
-			System.err.println("Remove operation failed: " + e.getMessage());
+			logger.error("SQL Exception - Remove operation failed: {}", e.getMessage());
 		}
 	}
 
@@ -280,7 +279,7 @@ public class RecipeDAO {
 				recipe = new Recipe(id, title, ingredients, directions, tags);
 			}
 		} catch (SQLException e) {
-			System.err.println("Select operation failed: " + e.getMessage());
+			logger.error("SQL Exception - Select operation failed: ", e.getMessage());
 		}
 
 		return recipe;
@@ -293,14 +292,13 @@ public class RecipeDAO {
 				Statement stmt = conn.createStatement()) {
 			stmt.execute(sql);
 		} catch (SQLException e) {
-			System.out.println("Could not drop table.");
-			e.printStackTrace();
+			logger.error("SQL Exception - Could not drop table: {}.", e.getMessage());
 		}
-		System.out.println("Table dropped.");
+		logger.info("Table dropped.");
 	}
 
 	public List<Recipe> selectAllRecipesAsList() {
-		System.out.println("Fetching recipes from database");
+		logger.info("Fetching recipes from database.");
 		String rcpSql = "SELECT * FROM recipes";
 		String ingSql = "SELECT * FROM ingredients WHERE recipe_id = ?";
 		List<Recipe> recipes = new ArrayList<>();
@@ -356,8 +354,7 @@ public class RecipeDAO {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("selectAllRecipesAsList() failed.");
-			e.printStackTrace();
+			logger.error("SQL Exception - selectAllRecipesAsList() failed: {}", e.getMessage());
 		}
 
 		return recipes;
