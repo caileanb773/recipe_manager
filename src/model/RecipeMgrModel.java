@@ -15,6 +15,8 @@ import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Unit;
 import util.ProgressListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -27,6 +29,7 @@ public class RecipeMgrModel {
 
 	private List<Recipe> recipes;
 	private ProgressListener progressListener;
+	private static final Logger logger = LoggerFactory.getLogger(RecipeMgrModel.class);
 
 	// Constants
 	private static final int INGREDIENT_AMT_IDX = 0;
@@ -41,7 +44,7 @@ public class RecipeMgrModel {
 			recipes = r;
 		}
 		else {
-			System.err.println("RecipeBook instantiated with empty List<Recipe>.");
+			logger.warn("RecipeBook instantiated with empty List<Recipe>.");
 		}
 	}
 
@@ -62,12 +65,12 @@ public class RecipeMgrModel {
 
 	public void initModelOffline(String recipeFilePath) {
 		if (recipeFilePath.isEmpty()) {
-			System.err.println("Empty path passed to initModelOffline().");
+			logger.error("Empty path passed to initModelOffline().");
 			return;
 		}
 
 		if (recipes == null) {
-			System.err.println("Recipes was not initialized before initModelOffline().");
+			logger.error("Recipes was not initialized before initModelOffline().");
 			return;
 		}
 
@@ -124,11 +127,11 @@ public class RecipeMgrModel {
 
 		try {
 			if (malformed || unit == null || name.isEmpty()) {
-				System.err.println("Malformed ingredient encountered during parsing.");
+				logger.warn("Malformed ingredient encountered during parsing.");
 				return null;
 			}
 		} catch (NumberFormatException e) {
-			System.err.println("Error parsing amount as float: " + amount);
+			logger.error("Error parsing amount as float: " + amount);
 			return null;
 		}
 
@@ -137,14 +140,14 @@ public class RecipeMgrModel {
 
 	public void exportRecipeList(String exportPath) throws IOException, SecurityException {
 		if (recipes.isEmpty() || recipes == null) {
-			System.out.println("Cancelling export: empty recipe list.");
+			logger.info("Cancelling export: empty recipe list.");
 			return;
 		} else if (exportPath.isEmpty()) {
-			System.err.println("Invalid export path: blank path.");
+			logger.error("Invalid export path: blank path.");
 			return;
 		}
 
-		System.out.println("Saving recipe list locally");
+		logger.info("Saving recipe list locally");
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(exportPath))) {
 			for (Recipe r : recipes) {
 				writer.write(r.formatRecipeForExport());
@@ -190,18 +193,18 @@ public class RecipeMgrModel {
 						Ingredient newIng = parseIngredientFromStrArr(unparsedIngredientStrArr);
 
 						if (newIng == null) {
-							System.err.println("Malformed recipe encountered during parsing.");
+							logger.warn("Malformed recipe encountered during parsing.");
 							return null;
 						} else {
 							ingredientsList.add(newIng);
 						}
 					}
 				} else {
-					System.err.println("IngredientsArrLen was less than 0 in parseStrArrFromPath().");
+					logger.warn("IngredientsArrLen was less than 0 in parseStrArrFromPath().");
 					return null;
 				}
 
-				System.out.println("Adding new recipe: " + name);
+				logger.info("Adding new recipe: " + name);
 
 				if (recipeStrArr.length == Constants.LENGTH_WITH_TAGS) {
 					String[] tags = recipeStrArr[Constants.TAGS_IDX].split(Constants.ING_TAG_DELIM);
@@ -213,15 +216,15 @@ public class RecipeMgrModel {
 			}
 
 		} catch (FileNotFoundException e) {
-			System.err.println("parseStrArrFromPath() could not find file located at provided path: ");
+			logger.error("parseStrArrFromPath() could not find file located at provided path: ");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("parseStrArrFromPath() encountered an IO exception: ");
+			logger.error("parseStrArrFromPath() encountered an IO exception: ");
 			e.printStackTrace();
 		}
 
 		if (newRecipes.isEmpty()) {
-			System.err.println("No recipes detected in import file.");
+			logger.info("No recipes detected in import file.");
 		}
 
 		recipes.addAll(newRecipes);
@@ -232,7 +235,7 @@ public class RecipeMgrModel {
 		if (newRecipe != null) {
 			recipes.add(newRecipe);
 		} else {
-			System.err.println("Attempted to add a null recipe to list.");
+			logger.warn("Attempted to add a null recipe to list.");
 		}
 	}
 
@@ -240,7 +243,7 @@ public class RecipeMgrModel {
 		if (oldRecipe != null && recipes.contains(oldRecipe)) {
 			recipes.remove(oldRecipe);
 		} else {
-			System.err.println("Attemped to remove null recipe from list");
+			logger.warn("Attemped to remove null recipe from list");
 		}
 	}
 
