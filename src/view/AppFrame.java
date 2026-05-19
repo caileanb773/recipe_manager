@@ -120,7 +120,7 @@ public class AppFrame {
 			ImageIcon icon = new ImageIcon(iconUrl);
 			frame.setIconImage(icon.getImage());
 		} catch (NullPointerException e) {
-			logger.error("Could not find icon.png");
+			logger.error("Could not find icon.png.");
 		}
 
 		reportProgress(15, "Loading screens...");
@@ -325,11 +325,9 @@ public class AppFrame {
 			Desktop.getDesktop().browse(new URI(
 					"https://github.com/caileanb773/recipe_manager/blob/main/README.md"));
 		} catch (IOException e) {
-			logger.error("IOException while opening browser: "
-					+ e.getMessage());
+			logger.error("IOException while opening browser: {}", e.getMessage());
 		} catch (URISyntaxException e) {
-			logger.error("URISyntaxException while opening browser: "
-					+ e.getMessage());
+			logger.error("URISyntaxException while opening browser: {}", e.getMessage());
 		}
 
 	}
@@ -435,26 +433,26 @@ public class AppFrame {
 		if (!screenName.isEmpty()) {
 			switch (screenName) {
 			case "LOGIN":
-				logger.debug("Switching to Login screen");
+				logger.info("Switching to Login screen");
 				cardLayout.show(container, "LOGIN");
 				setEnabledButtons(screenName);
 				loginScreen.grabFocus("EMAIL_FIELD");
 				break;
 			case "RECIPE_SCREEN":
-				logger.debug("Switching to UI");
+				logger.info("Switching to UI");
 				cardLayout.show(container, "RECIPE_SCREEN");
 				setEnabledButtons(screenName);
 				recipeScreen.initFocus();
 				break;
 			case "REGISTER_SCREEN":
-				logger.debug("Switching to register screen");
+				logger.info("Switching to register screen");
 				cardLayout.show(container, "REGISTER_SCREEN");
 				setEnabledButtons(screenName);
 				registerScreen.initFocus();
 				loginScreen.clearPwField();
 				break;
 			case "NOTIFICATIONS":
-				logger.debug("Switching to noficiations screen");
+				logger.info("Switching to noficiations screen");
 				cardLayout.show(container, "NOTIFICATION_SCREEN");
 				setEnabledButtons(screenName);
 				break;

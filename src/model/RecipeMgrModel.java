@@ -44,7 +44,7 @@ public class RecipeMgrModel {
 			recipes = r;
 		}
 		else {
-			logger.warn("RecipeBook instantiated with empty List<Recipe>.");
+			logger.info("RecipeBook instantiated with empty List<Recipe>.");
 		}
 	}
 
@@ -147,7 +147,7 @@ public class RecipeMgrModel {
 			return;
 		}
 
-		logger.info("Saving recipe list locally");
+		logger.info("Saving recipe list locally.");
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(exportPath))) {
 			for (Recipe r : recipes) {
 				writer.write(r.formatRecipeForExport());
@@ -204,7 +204,7 @@ public class RecipeMgrModel {
 					return null;
 				}
 
-				logger.info("Adding new recipe: " + name);
+				logger.info("Adding new recipe: {}", name);
 
 				if (recipeStrArr.length == Constants.LENGTH_WITH_TAGS) {
 					String[] tags = recipeStrArr[Constants.TAGS_IDX].split(Constants.ING_TAG_DELIM);
@@ -216,11 +216,9 @@ public class RecipeMgrModel {
 			}
 
 		} catch (FileNotFoundException e) {
-			logger.error("parseStrArrFromPath() could not find file located at provided path: ");
-			e.printStackTrace();
+			logger.error("parseStrArrFromPath() could not find file located at provided path: {}", e.getMessage());
 		} catch (IOException e) {
-			logger.error("parseStrArrFromPath() encountered an IO exception: ");
-			e.printStackTrace();
+			logger.error("parseStrArrFromPath() encountered an IO exception: {}", e.getMessage());
 		}
 
 		if (newRecipes.isEmpty()) {
@@ -243,7 +241,7 @@ public class RecipeMgrModel {
 		if (oldRecipe != null && recipes.contains(oldRecipe)) {
 			recipes.remove(oldRecipe);
 		} else {
-			logger.warn("Attemped to remove null recipe from list");
+			logger.warn("Attemped to remove null recipe from list.");
 		}
 	}
 

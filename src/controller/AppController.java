@@ -322,7 +322,7 @@ public class AppController implements ActionListener {
 			model.addRecipe(newRecipe);
 			view.getRecipeScreen().setActiveRecipe(newRecipe);
 			refreshRecipeList();
-			logger.debug("Adding {} to recipe list", newRecipe.getTitle());
+			logger.info("Adding {} to recipe list", newRecipe.getTitle());
 			rcpDialog.setCreatedRecipeToNull();
 			rcpDialog.dispose();
 			rcpDialog = null;
@@ -375,7 +375,7 @@ public class AppController implements ActionListener {
 				recipeDao.removeRecipe(recipeToRemove.getId());
 			}
 			model.removeRecipe(recipeToRemove);
-			logger.debug("Removing {}", recipeToRemove.getTitle());
+			logger.info("Removing {}", recipeToRemove.getTitle());
 		} else {
 			logger.warn("Recipe == null or not found in local memory.");
 			return;
@@ -435,7 +435,7 @@ public class AppController implements ActionListener {
 						JOptionPane.YES_NO_OPTION);
 
 				if (confirm != JOptionPane.YES_OPTION) {
-					logger.debug("Export cancelled: user chose not to overwrite.");
+					logger.info("Export cancelled: user chose not to overwrite.");
 					return;
 				}
 			}
@@ -446,7 +446,7 @@ public class AppController implements ActionListener {
 						bundle.getString("export.success"),
 						bundle.getString("export.title"),
 						JOptionPane.INFORMATION_MESSAGE);
-				logger.debug("Recipes exported to: {}", filePath);
+				logger.info("Recipes exported to: {}", filePath);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,
 						bundle.getString("export.ioerror") + "\n" + e.getMessage(),
@@ -460,7 +460,7 @@ public class AppController implements ActionListener {
 			}
 
 		} else {
-			logger.debug("Cancelling export");
+			logger.info("Cancelling export.");
 		}
 	}
 
