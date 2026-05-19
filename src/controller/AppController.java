@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -21,9 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import org.apache.commons.io.FilenameUtils;
-
 import db.RecipeDAO;
 import definitions.Constants;
 import definitions.Ingredient;
@@ -41,6 +38,9 @@ import view.LoginScreen;
 import view.NotificationScreen;
 import view.RecipeScreen;
 import view.RegisterScreen;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /*
  * Author: Cailean Bernard
@@ -60,6 +60,7 @@ public class AppController implements ActionListener {
 	private RecipeDAO recipeDao;
 	private ResourceBundle bundle;
 	private ProgressListener progressListener;
+	private static final Logger logger = LoggerFactory.getLogger(AppController.class);
 
 
 	public AppController(RecipeMgrModel model, AppFrame view) {
@@ -134,31 +135,31 @@ public class AppController implements ActionListener {
 
 		switch (cmd) {
 		case "add":
-			System.out.println("Attempting to add recipe");
+			logger.info("Attempting to add recipe");
 			displayCreateRecipeDialog();
 			break;
 		case "remove":
-			System.out.println("Attempting to remove recipe");
+			logger.info("Attempting to remove recipe");
 			handleRemoveRecipe();
 			break;
 		case "edit":
-			System.out.println("Attempting to edit recipe");
+			logger.info("Attempting to edit recipe");
 			displayEditRecipeDialog();
 			break;
 		case "confirmAdd":
-			System.out.println("Recipe created. Updating model/view");
+			logger.info("Recipe created. Updating model/view");
 			handleAddRecipe(rcpDialog.getCreatedRecipe());
 			break;
 		case "confirmEdit":
-			System.out.println("Confirming edits to recipe");
+			logger.info("Confirming edits to recipe");
 			confirmEditRecipe();
 			break;
 		case "export":
-			System.out.println("Preparing to export recipes");
+			logger.info("Preparing to export recipes");
 			handleExportRecipes();
 			break;
 		case "import":
-			System.out.println("Preparing to import recipes");
+			logger.info("Preparing to import recipes");
 			handleImportRecipes();
 			break;
 		case "applyFilter":
@@ -206,13 +207,13 @@ public class AppController implements ActionListener {
 			dbgAddNotif();
 			break;
 		default:
-			System.err.println("Unrecognized button actionCommand.");
+			logger.warn("Unrecognized button actionCommand.");
 			break;
 		}
 	}
 
 	public void handleThemeSwitch(String themeTitle) {
-		System.out.println("Switching theme: " + themeTitle);
+		logger.info("Switching theme: " + themeTitle);
 		view.changeThemeInChildren(Theme.valueOf(themeTitle));
 	}
 
@@ -234,7 +235,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void login() {
-		System.out.println("Attempting to log in");
+		logger.info("Attempting to log in");
 		if (LoginScreen.isRemembering()) {
 			Config.setLastEmail(view.getLoginScreen().getEmail());
 		} else {
@@ -244,7 +245,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void showRcpScreen() {
-		System.out.println("Going to Recipe Screen...");
+		logger.info("Switching to Recipe Screen...");
 		if (LoginScreen.isRemembering()) {
 			Config.setLastEmail(view.getLoginScreen().getEmail());
 		} else {
@@ -254,13 +255,13 @@ public class AppController implements ActionListener {
 	}
 
 	public void logout() {
-		System.out.println("Logging out");
+		logger.info("Logging out");
 		view.switchScreen("LOGIN");
 		view.getLoginScreen().grabFocus("PASSWORD_FIELD");
 	}
 
 	public void notifications() {
-		System.out.println("Going to Notification Center...");
+		logger.info("Switching to Notification Center...");
 		view.switchScreen("NOTIFICATIONS");
 	}
 
@@ -287,7 +288,7 @@ public class AppController implements ActionListener {
 		List<String> filters = ui.getFilters();
 
 		if (filters == null) {
-			System.out.println("Cancelling filter operation");
+			logger.info("Cancelling filter operation.");
 			return;
 		}
 
@@ -321,12 +322,12 @@ public class AppController implements ActionListener {
 			model.addRecipe(newRecipe);
 			view.getRecipeScreen().setActiveRecipe(newRecipe);
 			refreshRecipeList();
-			System.out.println("Adding " + newRecipe.getTitle() + " to recipe list");
+			logger.debug("Adding {} to recipe list", newRecipe.getTitle());
 			rcpDialog.setCreatedRecipeToNull();
 			rcpDialog.dispose();
 			rcpDialog = null;
 		} else {
-			System.out.println("Created recipe is null inside New Recipe Dialog.");
+			logger.warn("Created recipe is null inside New Recipe Dialog.");
 		}
 	}
 
@@ -336,7 +337,7 @@ public class AppController implements ActionListener {
 		List<Recipe> recipes = model.getRecipes();
 
 		if (rcpEditing == null) {
-			System.out.println("Active recipe in the view does not exist in the model.");
+			logger.warn("Active recipe in the view does not exist in the model.");
 			JOptionPane.showMessageDialog(null,
 					"Select a recipe you wish to edit, then click \"edit\".",
 					"No Recipe Selected", JOptionPane.ERROR_MESSAGE);
@@ -346,7 +347,7 @@ public class AppController implements ActionListener {
 		Recipe rcpEdited = rcpDialog.getCreatedRecipe();
 
 		if (rcpEdited == null) {
-			System.err.println("Cancelling recipe edit.");
+			logger.info("Cancelling recipe edit.");
 			rcpDialog.setCreatedRecipeToNull();
 			rcpDialog.dispose();
 			rcpDialog = null;
@@ -374,9 +375,9 @@ public class AppController implements ActionListener {
 				recipeDao.removeRecipe(recipeToRemove.getId());
 			}
 			model.removeRecipe(recipeToRemove);
-			System.out.println("Removing " + recipeToRemove.getTitle());
+			logger.debug("Removing {}", recipeToRemove.getTitle());
 		} else {
-			System.out.println("Recipe == null or not found in local memory.");
+			logger.warn("Recipe == null or not found in local memory.");
 			return;
 		}
 
@@ -434,7 +435,7 @@ public class AppController implements ActionListener {
 						JOptionPane.YES_NO_OPTION);
 
 				if (confirm != JOptionPane.YES_OPTION) {
-					System.out.println("Export cancelled: user chose not to overwrite.");
+					logger.debug("Export cancelled: user chose not to overwrite.");
 					return;
 				}
 			}
@@ -445,7 +446,7 @@ public class AppController implements ActionListener {
 						bundle.getString("export.success"),
 						bundle.getString("export.title"),
 						JOptionPane.INFORMATION_MESSAGE);
-				System.out.println("Recipes exported to: " + filePath);
+				logger.debug("Recipes exported to: {}", filePath);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null,
 						bundle.getString("export.ioerror") + "\n" + e.getMessage(),
@@ -459,7 +460,7 @@ public class AppController implements ActionListener {
 			}
 
 		} else {
-			System.out.println("Cancelling export");
+			logger.debug("Cancelling export");
 		}
 	}
 
@@ -484,7 +485,7 @@ public class AppController implements ActionListener {
 				try {
 					int totalRecipes = countLines(file.getAbsolutePath());
 					List<Recipe> rcpList = model.importRecipeList(file.getAbsolutePath());
-					System.out.println("Preparing to import " + totalRecipes + " recipes.");
+					logger.info("Preparing to import " + totalRecipes + " recipes.");
 
 					if (rcpList.size() == 0) {
 						JOptionPane.showMessageDialog(null,
@@ -598,7 +599,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void setLanguage(Locale locale) {
-		System.out.println("Switching language to " + locale);
+		logger.info("Switching language to {}", locale);
 		Config cfg = view.getConfig();
 		RecipeScreen rcp = view.getRecipeScreen();
 		LoginScreen log = view.getLoginScreen();
