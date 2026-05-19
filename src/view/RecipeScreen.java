@@ -8,7 +8,6 @@ import static definitions.Constants.LIGHT_BG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -27,7 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -48,14 +46,13 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
-
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Theme;
 import util.Utility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -106,6 +103,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 	private Color rcpBtnFontCol;
 	private Color panelBgCol;
 	private List<JDialog> detachedRcps;
+	private static final Logger logger = LoggerFactory.getLogger(RecipeScreen.class);
 
 	// Constant
 	private final int UNSCALED = 0;
@@ -344,10 +342,10 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 	
 	public List<Ingredient> scaleRecipe(BigDecimal amt) {
 		if (amt.compareTo(BigDecimal.ZERO) == -1) {
-			System.err.println("Negative scale val. passed to scaleRecipe().");
+			logger.warn("Negative scale val. passed to scaleRecipe().");
 			return null;
 		} else if (activeRecipe == null) {
-			System.err.println("No recipe to scale.");
+			logger.info("No recipe to scale.");
 			scaleRcpSpinner.setValue(1);
 			return null;
 		}
@@ -380,7 +378,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 
 	public void populateRecipeSelectList(List<Recipe> recipes) {
 		if (recipes == null || rcpSelectList == null) {
-			System.err.println("Recipe list in model or view was not properly initialized: populateRecipeList().");
+			logger.warn("Recipe list in model or view was not properly initialized: populateRecipeList().");
 			return;
 		}
 
@@ -403,7 +401,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 
 	public void displayRecipeButtons() {
 		if (rcpSelectList == null) {
-			System.err.println("Recipe Select List was not initialized before display.");
+			logger.warn("Recipe Select List was not initialized before display.");
 			return;
 		}
 
@@ -421,7 +419,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 
 	public void displayRecipeButtons(List<String> filters) {
 		if (rcpSelectList == null) {
-			System.err.println("Recipe Select List was not initialized before display.");
+			logger.warn("Recipe Select List was not initialized before display.");
 			return;
 		}
 
@@ -459,7 +457,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 
 	public void clearFilters() {
 		if (filterInput == null) {
-			System.err.println("Filter input uninitialized.");
+			logger.warn("Filter input uninitialized.");
 			return;
 		}
 
@@ -505,7 +503,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		rcpListEdit.setActionCommand("edit");
 		rcpListEdit.addActionListener(ignored -> {
 			if (activeRecipe == null) {
-				System.out.println("Aborting edit recipe dialog: no active recipe.");
+				logger.info("Aborting edit recipe dialog: no active recipe.");
 				JOptionPane.showMessageDialog(null,
 						bundle.getString("noRcpSelEdit"),
 						bundle.getString("noRcpSelEditTitle"),
@@ -577,7 +575,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 			filterLabelCombo.setBackground(Constants.DARK_FG_COL);
 			break;
 		default:
-			System.err.println("Unrecognized theme: " + theme);
+			logger.warn("Unrecognized theme: {}", theme.toString());
 		}
 		
 		selectedRcpTxt.setBackground(panelBgCol);
@@ -587,7 +585,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 			if (d != null) {
 				d.setBackground(panelBgCol);
 			} else {
-				System.out.println("Error changing dialog BGCol, null dialog.");
+				logger.warn("Error changing dialog BGCol, null dialog.");
 			}
 		}
 
@@ -624,10 +622,10 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 
 	public List<String> getFilters() {
 		if (filterInput == null) {
-			System.err.println("Filter input uninitialized.");
+			logger.warn("Filter input uninitialized in getFilters().");
 			return null;
 		} else if (filterInput.getText().isEmpty()) {
-			System.out.println("Nothing to filter by.");
+			logger.info("Nothing to filter by in getFilters().");
 			return null;
 		}
 

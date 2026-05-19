@@ -1,15 +1,12 @@
 package view;
 
 import java.awt.FlowLayout;
-import java.time.LocalDateTime;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-
 import definitions.Constants;
 import definitions.Notification;
 

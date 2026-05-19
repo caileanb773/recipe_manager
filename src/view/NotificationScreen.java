@@ -9,10 +9,8 @@ import static definitions.Constants.LIGHT_FG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -23,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -31,11 +28,12 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
 import definitions.Constants;
 import definitions.Notification;
 import definitions.Theme;
 import util.Utility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NotificationScreen extends JPanel implements ApplicationScreen {
 	
@@ -72,6 +70,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	private Color headerPanelCol;
 	private Color footerPanelCol;
 	private Color panelBgCol;
+	private static final Logger logger = LoggerFactory.getLogger(NotificationScreen.class);
 	
 	public NotificationScreen(ResourceBundle bundle) {
 		this.bundle = bundle;
@@ -194,17 +193,17 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	
 	public void addNotification(Notification n) {
 		if (n == null) {
-			System.err.println("Null notification passed to addNotification().");
+			logger.warn("Null notification passed to addNotification().");
 			return;
 		}
 		
 		if (notifications == null) {
-			System.err.println("Notification list uninitialized: addNotification().");
+			logger.warn("Notification list uninitialized: addNotification().");
 			return;
 		}
 		
 		if (!isNotificationValid(n)) {
-			System.err.println("Notification does not have valid format/bad fields: addNotification().");
+			logger.warn("Notification does not have valid format/bad fields: addNotification().");
 			return;
 		}
 		
@@ -215,12 +214,12 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	public void populateNotificationButtonList(List<Notification> notificationList) {
 		
 		if (notifications == null) {
-			System.err.println("Notifications is null: populateNotificationList().");
+			logger.warn("Notifications is null: populateNotificationList().");
 			return;
 		}
 		
 		if (notifications.isEmpty()) {
-			System.out.println("No notifications to display: populateNotificationList().");
+			logger.info("No notifications to display: populateNotificationList().");
 			return;
 		}
 		
@@ -260,7 +259,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	
 	public void removeAllDisplayedNotifications() {
 		if (notificationVisuals == null) {
-			System.err.println("NotificationButton list is null: removeAllDisplayedNotifications().");
+			logger.info("NotificationButton list is null: removeAllDisplayedNotifications().");
 			return;
 		}
 		
@@ -280,13 +279,11 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 	// There's probably a more efficient way to do this than removeAll()
 	private void setAllNotificationsSelected(boolean isSelected) {
 		if (notificationsListPanel == null) {
-			System.err.println("Notification list Panel was not initialized:"
-					+ "setAllNotificationsSelected().");
+			logger.warn("Notification list Panel was not initialized in setAllNotificationsSelected().");
 			return;
 		}
 		
-		System.out.println("Setting all notifications selected: " + isSelected);
-		
+		logger.info("Setting all notifications selected: " + isSelected);
 		notificationsListPanel.removeAll();
 		
 		for (NotificationPanel np : notificationVisuals) {
@@ -352,7 +349,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 			footerPanelCol = DARK_FG_COL;
 			break;
 		default:
-			System.err.println("Unrecognized theme: " + theme);
+			logger.warn("Unrecognized theme: {}", theme.toString());
 		}
 		
 		notificationsListPanel.setBackground(panelBgCol);

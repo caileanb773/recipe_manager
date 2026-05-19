@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.StringJoiner;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -24,12 +22,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-
 import definitions.Constants;
 import definitions.Fraction;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Unit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -68,6 +67,7 @@ public class AddRecipeDialog extends JDialog {
 	private Recipe createdRecipe;
 	private ResourceBundle bundle;
 	private int tempRecipeId;
+	private static final Logger logger = LoggerFactory.getLogger(AddRecipeDialog.class);
 
 
 	public AddRecipeDialog(ActionListener listener,
@@ -174,12 +174,12 @@ public class AddRecipeDialog extends JDialog {
 		}
 
 		btnConfirm.addActionListener(ignored -> {
-			System.out.println("Checking validity of recipe fields...");
+			logger.info("Checking validity of recipe fields...");
 			Recipe newRecipe = getRecipeFromFields();
 			if (newRecipe != null) {
 				createdRecipe = newRecipe;
 			} else {
-				System.out.println("getRecipeFromFields() failed.");
+				logger.info("getRecipeFromFields() failed.");
 				createdRecipe = null;
 			}
 
@@ -300,7 +300,7 @@ public class AddRecipeDialog extends JDialog {
 
 	public Recipe getCreatedRecipe() {
 		if (createdRecipe == null) {
-			System.err.println("getCreatedRecipe() returned null.");
+			logger.warn("getCreatedRecipe() returned null.");
 			return null;
 		} else {
 			createdRecipe.setId(tempRecipeId);

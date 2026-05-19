@@ -48,6 +48,8 @@ import com.sun.tools.javac.Main;
 import definitions.Constants;
 import definitions.Theme;
 import util.Utility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -89,7 +91,8 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 	private ResourceBundle bundle;
 	private Color topGradient;
 	private Color botGradient;
-
+	private static final Logger logger = LoggerFactory.getLogger(RegisterScreen.class);
+	
 
 	public RegisterScreen(ResourceBundle bundle) {
 		this.bundle = bundle;
@@ -251,7 +254,7 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 			pwStrengthIndicators[GRAY_CHECK] = scaledGrayChk;
 			pwStrengthIndicators[GREEN_CHECK] = scaledGreenChk;
 		} else {
-			System.err.println("Could not resolve path(s) to password strength indicators.");
+			logger.warn("Could not resolve path(s) to password strength indicator icon(s).");
 		}
 
 		pwStrengthIndicator = new JLabel(new ImageIcon(pwStrengthIndicators[GRAY_CHECK]));
@@ -273,7 +276,7 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 			pwRevealIcons[EYE_OPEN_ROLL] = loadScaledIcon(eyeOpenRollUrl, ICON_SCALE);
 			pwRevealIcons[EYE_CLOSED_ROLL] = loadScaledIcon(eyeClosedRollUrl, ICON_SCALE);
 		} else {
-			System.err.println("Could not resolve path(s) to password reveal button icon.");
+			logger.warn("Could not resolve path(s) to password reveal button icon(s).");
 		}
 
 		pwRevealBtn.setIcon(pwRevealIcons[EYE_CLOSED]);
@@ -313,7 +316,7 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 	}
 
 	public void togglePwReveal() {
-		System.out.println("Toggling pw reveal");
+		logger.info("Toggling password hidden: {}", isPasswordHidden);
 		char echoChar = '•';
 
 		if (isPasswordHidden) {
@@ -380,7 +383,7 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 
 	// XXX for now, this stores credentials locally. this will need to be changed to a db in the future
 	public void storeCredentials(String newUserEmail) {
-		System.out.println("Storing new credentials");
+		logger.info("Storing new User credentials.");
 		String email;
 		char[] pw = passwordInput.getPassword();
 
@@ -395,7 +398,7 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 			writer.write('\n');
 
 		} catch (IOException e) {
-			System.out.println("IO exception encountered: " + e.getMessage());
+			logger.error("IO exception encountered in storeCredentials(): {}", e.getMessage());
 			clearFields();
 			return;
 		} finally {
@@ -409,13 +412,14 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 		File credentials = new File("resources/credentials.txt");
 
 		if (!credentials.exists()) {
-			System.out.println("Credentials file not found. Creating...");
+			logger.info("Credentials file not found. Creating...");
 
 			try {
 				credentials.createNewFile();
 			} catch (IOException e) {
-				System.out.println("IOException while creating default credentials file: "
-						+ e.getMessage());
+				logger.error(
+						"IOException while creating default credentials file in emailIsRegistered(): {}",
+						e.getMessage());
 			}
 		}
 
@@ -432,11 +436,14 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 			}
 
 		} catch (FileNotFoundException e) {
-			System.out.println("Could not find credentials file: " + e.getMessage());
+			logger.error(
+					"FileNotFoundException: Could not find credentials file in emailIsRegistered: {}",
+					e.getMessage());
 			return true;
 		} catch (IOException e) {
-			System.out.println("IO exception while checking if email is registered: "
-					+ e.getMessage());
+			logger.error(
+					"IO exception while checking emailIsRegistered(): {}",
+					e.getMessage());
 			return true;
 		}
 
@@ -496,7 +503,7 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 			botGradient = DARK_GRADIENT_BOTTOM;
 			break;
 		default:
-			System.err.println("Unrecognized theme: " + theme);
+			logger.warn("Unrecognized theme: {}", theme);
 		}
 	}
 

@@ -9,7 +9,6 @@ import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.NONEXISTENT_EMAIL;
 import static definitions.Constants.PW_IDX;
 import static definitions.Constants.VALID;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Box;
@@ -47,14 +45,13 @@ import javax.swing.KeyStroke;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-
 import org.mindrot.jbcrypt.BCrypt;
-
 import com.sun.tools.javac.Main;
-
 import definitions.Constants;
 import definitions.Theme;
 import util.Utility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -83,6 +80,7 @@ public class LoginScreen extends JPanel implements ApplicationScreen {
 
 	// Other
 	private ActionListener listener;
+	private static final Logger logger = LoggerFactory.getLogger(LoginScreen.class);
 
 	// Constants
 	private final int LIGHT_THEME_BANNER = 0;
@@ -211,7 +209,7 @@ public class LoginScreen extends JPanel implements ApplicationScreen {
 					Image.SCALE_SMOOTH);
 			banners.add(new ImageIcon(scaledImage));
 		} else {
-			System.err.println("Could not resolve path to banner.");
+			logger.warn("Could not resolve path to banner.");
 		}
 	}
 
@@ -308,10 +306,10 @@ public class LoginScreen extends JPanel implements ApplicationScreen {
 			}
 
 		} catch (FileNotFoundException e) {
-			System.err.println("Could not find credentials file.");
+			logger.error("FileNotFoundException: Could not find credentials file in validatePassword(): {}", e.getMessage());
 			return ERROR;
 		} catch (IOException e) {
-			System.err.println("IO Exception while checking for existing email." + e.getMessage());
+			logger.error("IOException while checking for existing email in validatePassword(): {}", e.getMessage());
 			return ERROR;
 		} finally {
 			java.util.Arrays.fill(pw, '\0');
@@ -334,10 +332,10 @@ public class LoginScreen extends JPanel implements ApplicationScreen {
 
 			}
 		} catch (FileNotFoundException e) {
-			System.err.println("Could not find credentials file.");
+			logger.error("FileNotFoundException: Could not find credentials file in emailIsRegistered(): {}", e.getMessage());
 			return false;
 		} catch (IOException e) {
-			System.err.println("IO Exception while checking for existing email." + e.getMessage());
+			logger.error("IOException while checking for existing email in emailIsRegistered(): {}", e.getMessage());
 			return false;
 		}
 
@@ -345,7 +343,7 @@ public class LoginScreen extends JPanel implements ApplicationScreen {
 	}
 
 	private void login() {
-		System.out.println("Credentials validated, logging in");
+		logger.info("Credentials validated, logging in.");
 		ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "login");
 		listener.actionPerformed(event);
 	}
@@ -397,7 +395,7 @@ public class LoginScreen extends JPanel implements ApplicationScreen {
 			botGradient = DARK_GRADIENT_BOTTOM;
 			break;
 		default:
-			System.err.println("Unrecognized theme: " + theme);
+			logger.warn("Unrecognized theme: {}", theme.toString());
 		}
 	}
 
