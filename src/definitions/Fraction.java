@@ -3,6 +3,8 @@ package definitions;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -13,11 +15,12 @@ public class Fraction {
 
 	private int numerator;
 	private int denominator;
+	private static final Logger logger = LoggerFactory.getLogger(Fraction.class);
 
 
 	public Fraction(int num, int den) {
 		if (den == 0) {
-			System.err.println("Denominator set to 0 in new fraction.");
+			logger.warn("Denominator set to 0 in new fraction: Fraction().");
 		}
 		numerator = num;
 		denominator = den;
@@ -37,6 +40,7 @@ public class Fraction {
 	// Constructor for BigDecimal
 	public Fraction(BigDecimal decimal) {
 		if (decimal == null) {
+			logger.error("Input BigDecimal cannot be null: Fraction().");
 			throw new IllegalArgumentException("Input BigDecimal cannot be null");
 		}
 
@@ -51,6 +55,7 @@ public class Fraction {
 		int maxScale = 3;
 		int scale = decimal.scale();
 		if (scale > maxScale) {
+			logger.error("Decimal precision too high for recipes: scale {} exceeds maximum {}: Fraction().", scale, maxScale);
 			throw new IllegalArgumentException("Decimal precision too high for recipes: scale " + scale + " exceeds maximum " + maxScale);
 		}
 
@@ -87,6 +92,7 @@ public class Fraction {
 
 		// Check for int overflow
 		if (numerator.bitLength() > 31 || denominator.bitLength() > 31) {
+			logger.error("Numerator/denominator exceeds int range after simplification: Fraction().");
 			throw new ArithmeticException("Numerator or denominator exceeds int range after simplification");
 		}
 
@@ -153,6 +159,7 @@ public class Fraction {
 			int wholeNum = Integer.parseInt(trimmed);
 			return new Fraction(wholeNum, 1);
 		} else {
+			logger.error("Invalid fractional format: parseFraction().");
 			throw new NumberFormatException("Invalid fractional format.");
 		}
 	}

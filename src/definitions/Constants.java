@@ -5,12 +5,12 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-
 import init.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -77,6 +77,8 @@ public class Constants {
 	public static final Color 	DARK_GRADIENT_BOTTOM 	= new Color(31,31,31);
 	public static final Color 	DARK_FG_COL 			= new Color(90,90,90);
 
+	private static final Logger logger = LoggerFactory.getLogger(Constants.class);
+	
 	static {
 		Font font = null;
 		try {
@@ -88,7 +90,7 @@ public class Constants {
 				font = new Font("SansSerif", Font.BOLD, 15);
 			}
 		} catch (FontFormatException | IOException e) {
-			System.err.println("Error loading font: " + e.getMessage());
+			logger.error("Error loading font: {}", e.getMessage());
 			font = new Font("SansSerif", Font.BOLD, 15);
 		}
 		recipeTxtFont = font;
