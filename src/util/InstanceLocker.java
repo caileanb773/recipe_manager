@@ -3,6 +3,8 @@ package util;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -10,6 +12,8 @@ import java.nio.channels.FileLock;
  * running at a time.
  */
 public class InstanceLocker {
+	
+	private static final Logger logger = LoggerFactory.getLogger(InstanceLocker.class);
 	
 	/**
 	 * 
@@ -30,14 +34,14 @@ public class InstanceLocker {
 	                        randomAccessFile.close();
 	                        file.delete();
 	                    } catch (Exception e) {
-	                        System.err.println("Unable to remove lock file: " + lockFile.toString() + e);
+	                    	logger.error("Unable to remove lock file: {} {}", lockFile.toString(), e);
 	                    }
 	                }
 	            });
 	            return true;
 	        }
 	    } catch (Exception e) {
-	        System.err.println("Unable to create and/or lock file: " + lockFile.toString() + e);
+	        logger.error("Unable to create and/or lock file: {} {}", lockFile.toString(), e);
 	    }
 	    return false;
 	}

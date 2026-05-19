@@ -6,16 +6,14 @@ import static definitions.Constants.SORT_RCPNAME;
 import static definitions.Constants.SORT_SENDER;
 import static definitions.Constants.SORT_TIME;
 import static definitions.Constants.SORT_TYPE;
-
 import java.util.ArrayList;
 import java.util.Comparator;
-
 import javax.swing.JPanel;
-
 import org.apache.commons.validator.routines.EmailValidator;
-
 import definitions.Constants;
 import definitions.Notification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -24,6 +22,8 @@ import definitions.Notification;
 
 public class Utility {
 
+	private static final Logger logger = LoggerFactory.getLogger(Utility.class);
+	
 	public static float getAmountAsFloat(String amount) throws NumberFormatException {
 		try {
 			if (amount.contains("/")) {
@@ -60,7 +60,7 @@ public class Utility {
 			boolean direction) {
 
 		if (list == null || list.isEmpty()) {
-			System.err.println("Can't sort a null/empty list: sortNotifications()");
+			logger.warn("Can't sort a null/empty list: sortNotifications().");
 			return;			
 		}
 
@@ -83,7 +83,7 @@ public class Utility {
 	@Deprecated
 	private static void bubbleSort(ArrayList<Notification> list, boolean direction) {
 		if (list == null || list.isEmpty()) {
-			System.err.println("Cannot sort a null/empty list.");
+			logger.warn("Cannot sort a null/empty list: bubbleSort().");
 			return;
 		}
 

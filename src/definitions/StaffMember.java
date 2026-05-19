@@ -14,7 +14,6 @@ public class StaffMember {
 
 	public StaffMember(int id, String email, String name) {
 		if (id < 0 || email == null || name == null || email.isEmpty() || name.isEmpty()) {
-			System.err.println("Invalid use of StaffMember constructor.");
 			return;
 		}
 

@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Image;
 import java.net.URL;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -14,14 +13,14 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
-
 import com.formdev.flatlaf.FlatLightLaf;
-
 import controller.AppController;
 import definitions.Constants;
 import model.RecipeMgrModel;
 import util.ProgressListener;
 import view.AppFrame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -33,6 +32,7 @@ public class Loader {
 	private AppController controller;
 	private Image bannerImage;
 	private ImageIcon icon;
+	private static final Logger logger = LoggerFactory.getLogger(Loader.class);
 
 
 	public Loader(AppController controller) {
@@ -44,7 +44,7 @@ public class Loader {
 		try {
 			UIManager.setLookAndFeel(new FlatLightLaf());
 		} catch (Exception e) {
-			System.err.println("Error while initializing FlatLAF: " + e.getMessage());
+			logger.error("Exception while initializing FlatLAF: {}", e.getMessage());
 		}
 
 		RecipeMgrModel model = controller.getModel();
@@ -55,13 +55,14 @@ public class Loader {
 				"img/loadingBanner.png");
 
 		if (loadingBannerURL != null) {
+			logger.info("Banner successfully loaded: {}", loadingBannerURL.toString());
 			icon = new ImageIcon(loadingBannerURL);
 			bannerImage = icon.getImage().getScaledInstance(icon.getIconWidth() / 2,
 					icon.getIconHeight() / 2,
 					Image.SCALE_SMOOTH);
 			icon = new ImageIcon(bannerImage);
 		} else {
-			System.out.println("Error locating loading screen banner.");
+			logger.error("Error locating loading screen banner.");
 		}
 
 		JDialog progressDialog = new JDialog((JFrame) null, "Loading", true);

@@ -5,6 +5,8 @@ import controller.AppController;
 import model.RecipeMgrModel;
 import util.InstanceLocker;
 import view.AppFrame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -13,12 +15,14 @@ import view.AppFrame;
  * model and view.
  */
 public class Main {
+	
+	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String[] args) {
 		
 		// Detect if an instance is already running
 		if (!InstanceLocker.lockInstance("MMLock")) {
-			System.err.println("Application is already running.");
+			logger.warn("Application is already running.");
 			JOptionPane.showMessageDialog(null,
 					"There is already an instance of Macromise running.",
 					"Error",
@@ -33,7 +37,6 @@ public class Main {
 		new Loader(controller).run();
 			
 		// TODO finish refactoring scaling using BigDecimal
-		// TODO logging functionality
 		// TODO: UI stuff:
    			// rcp btns font needs more spacing, test diff fonts
 			// switching ui changes button look/feel in one direction

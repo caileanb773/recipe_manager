@@ -8,11 +8,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import definitions.Constants;
 import definitions.Theme;
 import view.AppFrame;
 import view.LoginScreen;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Configuration class for loading and storing last used configurations.
@@ -29,6 +30,7 @@ public class Config {
 	private static boolean autoBackup;
 	private final String[] configs = { "language", "lastEmail", "autoBackup", "theme" };
 	private int loadTimeout;
+	private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
 	// Local constants
 	private final static int VALUE_IDX = 1;
@@ -49,8 +51,8 @@ public class Config {
 	}
 
 	public void setResourceBundle(String baseName, Locale locale) {
-	    ResourceBundle.clearCache();
-	    bundle = ResourceBundle.getBundle(baseName, locale);
+		ResourceBundle.clearCache();
+		bundle = ResourceBundle.getBundle(baseName, locale);
 	}
 	public void setLocale(Locale l) {
 		locale = l;
@@ -60,11 +62,11 @@ public class Config {
 	 * Fetches any past configurations that were saved when the app was last closed.
 	 */
 	public void loadConfig() {
-		System.out.println("Loading settings");
+		logger.info("Loading settings.");
 		loadTimeout++;
 
 		if (loadTimeout >= 10) {
-			System.err.println("Could not load settings; too many attempts.");
+			logger.info("Could not load settings; too many attempts.");
 			loadFailsafeConfig();
 			return;
 		}
@@ -119,7 +121,7 @@ public class Config {
 			}
 
 		} catch (FileNotFoundException e) {
-			System.out.println("Initialization file not found for Config.");
+			logger.info("Initialization file not found for Config.");
 			createDefaultConfig();
 			return;
 		} catch (IOException e) {
@@ -151,30 +153,31 @@ public class Config {
 	 * Saves the current configuration to the config.ini file.
 	 */
 	public void saveConfig() {
-		System.out.println("Saving settings");
+		logger.info
+		("Saving settings: ");
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("resources/config.ini"))) {
 			writer.write("# do not edit this unless you know what you are doing\n");
 
 			for (String cfg : configs) {
 				switch (cfg) {
 				case "language":
-					System.out.println("Saving language as " + locale);
+					logger.info("Saving language as: {}", locale);
 					writer.write("language=" + locale);
 					break;
 				case "lastEmail":
 					if (!LoginScreen.isRemembering()) { // if not remembering email, reset
 						lastEmail = null;
 					}
-					System.out.println("Saving lastEmail as " + lastEmail);
+					logger.info("Saving lastEmail as: {}", lastEmail);
 					writer.write("lastEmail=" + lastEmail);
 					break;
 				case "autoBackup":
-					System.out.println("Autobackup: " + AppFrame.isBackingUp());
+					logger.info("Saving autobackup as: {}", AppFrame.isBackingUp());
 					writer.write("autoBackup=");
 					writer.write(AppFrame.isBackingUp() ? "true" : "false");
 					break;
 				case "theme":
-					System.out.println("Saving theme: " + theme);
+					logger.info("Saving theme as: {}", theme);
 					writer.write("theme=" + theme.toString().toUpperCase());
 					break;
 				default:
@@ -188,7 +191,7 @@ public class Config {
 	}
 
 	public void createDefaultConfig() {
-		System.out.println("Creating config.ini");
+		logger.info("Creating config.ini.");
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("resources/config.ini"))) {
 			writer.write("# do not edit this unless you know what you are doing\n");
@@ -213,8 +216,7 @@ public class Config {
 				writer.write("\n");
 			}
 		} catch (IOException e) {
-			System.err.println("IO Exception encountered while writing config.ini");
-			e.printStackTrace();
+			logger.error("IO Exception encountered while writing config.ini{}", e.getMessage());
 		}
 
 		// XXX this could lead to an infinite loop. There's probably a better way
