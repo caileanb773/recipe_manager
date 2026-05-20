@@ -16,6 +16,7 @@ import definitions.Notification;
  * 
  */
 
+@SuppressWarnings("serial")
 public class NotificationPanel extends JPanel {
 
 	private Notification notification;

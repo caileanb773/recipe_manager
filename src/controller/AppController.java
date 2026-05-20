@@ -603,6 +603,7 @@ public class AppController implements ActionListener {
 		RecipeScreen rcp = view.getRecipeScreen();
 		LoginScreen log = view.getLoginScreen();
 		RegisterScreen reg = view.getRegisterScreen();
+		NotificationScreen notif = view.getNotificationScreen();
 		cfg.setLocale(locale);
 		cfg.setResourceBundle("MessagesBundle", locale);
 		view.updateBundle();
@@ -614,6 +615,8 @@ public class AppController implements ActionListener {
 		log.refreshTranslatable();
 		reg.updateBundle(locale);
 		reg.refreshTranslatable();
+		notif.updateBundle(locale);
+		notif.refreshTranslatable();
 	}
 
 	public Model getModel() {

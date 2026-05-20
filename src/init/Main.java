@@ -38,6 +38,5 @@ public class Main {
 			
 		// TODO (8) implement half and quarter-step scaling of recipes
 		// TODO (5) expected behaviour when toggling notifications selected 
-		// TODO (3) language switching staying as french for notification screen
 	}
 }
