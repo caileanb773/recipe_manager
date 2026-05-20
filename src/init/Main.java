@@ -35,8 +35,5 @@ public class Main {
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 		new Loader(controller).run();
-			
-		// TODO (8) implement half and quarter-step scaling of recipes
-		// TODO (5) expected behaviour when toggling notifications selected 
 	}
 }
