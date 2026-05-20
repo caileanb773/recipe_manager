@@ -29,7 +29,7 @@ import definitions.NotificationType;
 import definitions.Recipe;
 import definitions.StaffMember;
 import definitions.Theme;
-import model.RecipeMgrModel;
+import model.Model;
 import util.Config;
 import util.ProgressListener;
 import view.AddRecipeDialog;
@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
 public class AppController implements ActionListener {
 
 	// Swing
-	private RecipeMgrModel model;
+	private Model model;
 	private AppFrame view;
 	private AddRecipeDialog rcpDialog;
 
@@ -63,7 +63,7 @@ public class AppController implements ActionListener {
 	private static final Logger logger = LoggerFactory.getLogger(AppController.class);
 
 
-	public AppController(RecipeMgrModel model, AppFrame view) {
+	public AppController(Model model, AppFrame view) {
 		this.model = model;
 		this.view = view;
 		this.recipeDao = new RecipeDAO();
@@ -122,15 +122,14 @@ public class AppController implements ActionListener {
 		}
 	}
 
-	// TODO magic numbers here
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String[] cmdData = e.getActionCommand().split("&");
-		String cmd = cmdData[0];
+		String cmd = cmdData[Constants.CMD_IDX];
 		String cmdOpt = null;
 
-		if (cmdData.length > 1) {
-			cmdOpt = cmdData[1];
+		if (cmdData.length > Constants.MAX_VALID_DATA_LEN) {
+			cmdOpt = cmdData[Constants.DATA_IDX];
 		}
 
 		switch (cmd) {
@@ -193,7 +192,7 @@ public class AppController implements ActionListener {
 			returnToLoginAfterRegister(cmdOpt);
 			break;
 		case "switchTheme":
-			handleThemeSwitch(cmdData[1]);
+			handleThemeSwitch(cmdData[Constants.DATA_IDX]);
 			break;
 		case "notifications":
 			notifications();
@@ -202,7 +201,7 @@ public class AppController implements ActionListener {
 			showRcpScreen();
 			break;
 
-			// XXX Debug Options
+			// XXX Debug Options, remove when finished
 		case "dbgAddNotif":
 			dbgAddNotif();
 			break;
@@ -617,7 +616,7 @@ public class AppController implements ActionListener {
 		reg.refreshTranslatable();
 	}
 
-	public RecipeMgrModel getModel() {
+	public Model getModel() {
 		return this.model;
 	}
 
@@ -625,7 +624,11 @@ public class AppController implements ActionListener {
 		return this.view;
 	}
 
-	// XXX Debugging methods
+	////////////////////////////////////////////////////////////////////////////
+	// 
+	// D E B U G G I N G  M E T H O D S
+	//
+	////////////////////////////////////////////////////////////////////////////
 	public void dbgAddNotif() {
 		NotificationScreen notifScreen = view.getNotificationScreen();
 		ArrayList<Notification> notifs = notifScreen.getNotifications();

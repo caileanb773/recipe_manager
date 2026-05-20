@@ -25,11 +25,11 @@ import org.slf4j.LoggerFactory;
  * removed.
  */
 
-public class RecipeMgrModel {
+public class Model {
 
 	private List<Recipe> recipes;
 	private ProgressListener progressListener;
-	private static final Logger logger = LoggerFactory.getLogger(RecipeMgrModel.class);
+	private static final Logger logger = LoggerFactory.getLogger(Model.class);
 
 	// Constants
 	private static final int INGREDIENT_AMT_IDX = 0;
@@ -39,7 +39,7 @@ public class RecipeMgrModel {
 	private static final int RECIPE_INSTRUCTIONS_IDX = 2;
 
 
-	public RecipeMgrModel(List<Recipe> r) {
+	public Model(List<Recipe> r) {
 		if (!r.isEmpty()) {
 			recipes = r;
 		}
@@ -48,7 +48,7 @@ public class RecipeMgrModel {
 		}
 	}
 
-	public RecipeMgrModel() {
+	public Model() {
 		recipes = new ArrayList<Recipe>();
 	}
 	

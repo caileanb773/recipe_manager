@@ -32,7 +32,7 @@ public class NotificationPanel extends JPanel {
 		new JPanel(new FlowLayout());
 		Border emptyBorder = BorderFactory.createEmptyBorder(2,2,0,2);
 		setBorder(BorderFactory.createCompoundBorder(emptyBorder,
-				Constants.softRaisedBorder));
+				Constants.SOFT_RAISED_BORDER));
 		this.notification = notification;
 		boolean displayWithNotes = false;
 		

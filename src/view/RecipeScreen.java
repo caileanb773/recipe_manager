@@ -8,7 +8,7 @@ import static definitions.Constants.LIGHT_BG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
-import static definitions.Constants.START;
+import static definitions.Constants.CARET_START;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -149,7 +149,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		filterInputPanel.add(filterInput, BorderLayout.CENTER);
 		filterInputPanel.add(filterBtns, BorderLayout.SOUTH);
 		filterLabelCombo.add(filterInputPanel, BorderLayout.SOUTH);
-		filterLabelCombo.setBorder(Constants.softRaisedBorder);
+		filterLabelCombo.setBorder(Constants.SOFT_RAISED_BORDER);
 		filterLabelCombo.setBackground(Constants.LIGHT_FG_COL);
 
 		// ---------------------------------------------------------------------
@@ -189,7 +189,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		rcpSelectLabel.setFont(Constants.titleFont);
 		BoxLayout rcpSelectListLayout = new BoxLayout(rcpSelectListPanel, BoxLayout.Y_AXIS);
 		rcpSelectListPanel.setLayout(rcpSelectListLayout);
-		rcpSelectListPanel.setBorder(Constants.softLoweredBorder);
+		rcpSelectListPanel.setBorder(Constants.SOFT_LOWERED_BORDER);
 		rcpListAdd = new JButton(bundle.getString("rcpListAdd"));
 		rcpListRemove = new JButton(bundle.getString("rcpListRemove"));
 		rcpListEdit = new JButton(bundle.getString("rcpListEdit"));
@@ -208,7 +208,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		selectedRcpTxt.setBackground(panelBgCol);
 		selectedRcpTxt.setEditable(false);
 		selectedRcpTxt.setCaretColor(new Color(0,0,0,0));
-		selectedRcpTxt.setCaretPosition(START);
+		selectedRcpTxt.setCaretPosition(CARET_START);
 		selectedRcpTxt.setWrapStyleWord(true);
 		selectedRcpTxt.setLineWrap(true);
 		selectedRcpTxt.setFont(Constants.textFont);
@@ -250,7 +250,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		selectedRcpTxtScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		selectedRcpTxtScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		selectedRcpDescPanel.add(selectedRcpTxtScrollPane, BorderLayout.CENTER);
-		selectedRcpTxtScrollPane.setBorder(Constants.softLoweredBorder);
+		selectedRcpTxtScrollPane.setBorder(Constants.SOFT_LOWERED_BORDER);
 		selectedRcpDescPanel.setBorder(BorderFactory.createEmptyBorder(10,5,5,10));
 		selectedRcpDescPanel.add(scaleRcpPanel, BorderLayout.SOUTH);
 
@@ -342,7 +342,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		detachedRecipe.setLocation(pnt.x + DETACHED_RECIPE_X_OFFSET,
 				pnt.y - DETACHED_RECIPE_Y_OFFSET);
 		detachedRecipe.setVisible(true);
-		detachedRcpTxt.setCaretPosition(START);
+		detachedRcpTxt.setCaretPosition(CARET_START);
 
 		// Add to the list
 		detachedRcps.add(detachedRecipe);
@@ -393,7 +393,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		rcpSelectList.clear();
 
 		for (Recipe rcp : recipes) {
-			RecipeSelectButton newRcpButton = new RecipeSelectButton(rcp, Constants.recipeTxtFont);
+			RecipeSelectButton newRcpButton = new RecipeSelectButton(rcp, Constants.RECIPE_TXT_FONT);
 			rcpSelectList.add(newRcpButton);
 			newRcpButton.setAlignmentX(CENTER_ALIGNMENT);
 			newRcpButton.addActionListener(ignored -> {
@@ -617,7 +617,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 					scaleRecipe(scaleVal)));
 		}
 
-		selectedRcpTxt.setCaretPosition(START);
+		selectedRcpTxt.setCaretPosition(CARET_START);
 	}
 
 	public void clearActiveRecipe() {

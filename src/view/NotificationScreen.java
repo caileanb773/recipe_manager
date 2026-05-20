@@ -9,6 +9,7 @@ import static definitions.Constants.LIGHT_FG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
+import static definitions.Constants.SOFT_LOWERED_BORDER;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -144,15 +145,15 @@ public class NotificationScreen extends JPanel implements ApplicationScreen {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		notificationsListScrollPane.setVerticalScrollBarPolicy(
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		notificationsListScrollPane.setBorder(Constants.softLoweredBorder);
+		notificationsListScrollPane.setBorder(Constants.SOFT_LOWERED_BORDER);
 		
 		// ----- Header -----
 		headerPanel.setBackground(headerPanelCol);
-		headerPanel.setBorder(Constants.softRaisedBorder);
+		headerPanel.setBorder(Constants.SOFT_RAISED_BORDER);
 		
 		// ----- Footer -----
 		footerPanel.setBackground(footerPanelCol);
-		footerPanel.setBorder(Constants.softRaisedBorder);
+		footerPanel.setBorder(Constants.SOFT_RAISED_BORDER);
 		
 		// ---------------------------------------------------------------------
 		// A C T I O N  L I S T E N E R S

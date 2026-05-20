@@ -2,7 +2,7 @@ package init;
 
 import javax.swing.JOptionPane;
 import controller.AppController;
-import model.RecipeMgrModel;
+import model.Model;
 import util.InstanceLocker;
 import view.AppFrame;
 import org.slf4j.Logger;
@@ -31,12 +31,13 @@ public class Main {
 		}
 		
 		// Create MVC
-		RecipeMgrModel model = new RecipeMgrModel();
+		Model model = new Model();
 		AppFrame view = new AppFrame();
 		AppController controller = new AppController(model, view);
 		new Loader(controller).run();
 			
 		// TODO (8) implement half and quarter-step scaling of recipes
 		// TODO (5) expected behaviour when toggling notifications selected 
+		// TODO (3) language switching staying as french for notification screen
 	}
 }

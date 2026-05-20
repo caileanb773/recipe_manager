@@ -18,52 +18,47 @@ import org.slf4j.LoggerFactory;
  */
 public class Constants {
 
-	public static final int 	BUTTON_HEIGHT = 30;
-	public static final int 	BUTTON_WIDTH = 40;
-	public static final int 	NUM_SHOWN_BUTTONS = 11;
+	////////////////////////////////////////////////////////////////////////////
+	// 
+	// V I E W  C O N S T A N T S
+	// 
+	// Constants that are used in the View. Subsections may have constants that
+	// are used only in that particular subsection.
+	//
+	////////////////////////////////////////////////////////////////////////////
+	public static final Border	SOFT_LOWERED_BORDER = BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED);
+	public static final Border	SOFT_RAISED_BORDER = BorderFactory.createSoftBevelBorder(BevelBorder.RAISED);
+	public static final int		CARET_START = 0;
 	public static final int 	EMAIL_IDX = 0;
-	public static final int 	PW_IDX = 1;
-	public static final int 	AMT_IDX = 0;
-	public static final int 	UNIT_IDX = 1;
-	public static final int		NAME_IDX = 2;
-	public static final int 	TAGS_IDX = 3;
-	public static final int 	VALUE_IDX = 1;
-	public static final int 	LENGTH_WITH_TAGS = 4;
-	public static final int 	DEFAULT_LENGTH = 3;
 	public static final int 	ADD_MODE = 0;
 	public static final int 	EDIT_MODE = 1;
 	public static final int 	SCROLL_SPEED = 19;
-	public static final int 	MIN_PW_LEN = 12;
+	public static final Font 	titleFont = new Font("Serif", Font.BOLD, 16);
+	public static final Font 	textFont = new Font("Segoe UI", Font.PLAIN, 15);
+	
+	// AddRecipeDialog
+	public static final int 	AMT_IDX = 0;
+	public static final int 	UNIT_IDX = 1;
+	public static final int		NAME_IDX = 2;
+	public static final int 	DEFAULT_LENGTH = 3;
+	
+	// LoginScreen
 	public static final int 	VALID = 1;
+	public static final int 	PW_IDX = 1;
 	public static final int 	NONEXISTENT_EMAIL = 0;
 	public static final int 	INCORRECT_PASSWORD = -1;
-	public static final int 	ERROR = -2;
-	public static final boolean SUCCESS = true;
-	public static final boolean FAIL = false;
-	public static final boolean ONLINE = true;
-	public static final boolean OFFLINE = false;
-	public static final boolean	ASCENDING = true;
-	public static final boolean	DESCENDING = false;
+	
+	// RegisterScreen
+	public static final int 	MIN_PW_LEN = 12;
 	public static final String 	ASCII_SPECIAL_CHARS = "!@#$%^&*()_+-=`~|\\[]{};':\",./<>?";
-	public static final String 	ILLEGAL_EMAIL_CHARS = "()[]:;<>%,\\%&*+=?{}|";
-	public static final String 	RECIPE_SECT_DELIM = "§§";
-	public static final String	ING_TAG_DELIM = "¤";
-	public static final String	INGREDIENT_SECT_DELIM = "█";
-	public static final Font 	titleFont = new Font("Serif", Font.BOLD, 16);
-	public static final Font 	buttonFont = new Font("Serif", Font.BOLD, 16);
-	public static final Font 	textFont = new Font("Segoe UI", Font.PLAIN, 15);
-	public static final Font 	recipeTxtFont;
-	public static final int		START = 0;
 	
 	// NotificationPanel
 	public static final int SORT_TIME = 0;
 	public static final int SORT_SENDER = 1;
 	public static final int SORT_TYPE = 2;
 	public static final int SORT_RCPNAME = 3;
-	
-	// UI Constants
-	public static final Border	softLoweredBorder = BorderFactory.createSoftBevelBorder(BevelBorder.LOWERED);
-	public static final Border	softRaisedBorder = BorderFactory.createSoftBevelBorder(BevelBorder.RAISED);
+	public static final boolean	ASCENDING = true;
+	public static final boolean	DESCENDING = false;
 	
 	// Theme-specific constants
 	public static final Theme[] VALID_THEMES 			= { Theme.LIGHT, Theme.DARK };
@@ -77,9 +72,45 @@ public class Constants {
 	public static final Color 	DARK_GRADIENT_TOP 		= new Color(69,69,69);
 	public static final Color 	DARK_GRADIENT_BOTTOM 	= new Color(31,31,31);
 	public static final Color 	DARK_FG_COL 			= new Color(90,90,90);
+	
+	
+	////////////////////////////////////////////////////////////////////////////
+	// 
+	// C O N T R O L L E R  C O N S T A N T S
+	// 
+	// Constants that are used in the Controller. Subsections may have constants
+	// that are used only in that particular subsection.
+	//
+	////////////////////////////////////////////////////////////////////////////
+	public static final boolean ONLINE = true;
+	public static final boolean OFFLINE = false;
+	public static final int CMD_IDX = 0;
+	public static final int DATA_IDX = 1;
+	public static final int MAX_VALID_DATA_LEN = 1;
+	
+	////////////////////////////////////////////////////////////////////////////
+	// 
+	// M O D E L  C O N S T A N T S
+	// 
+	// Constants that are used in the Model. Subsections may have constants that
+	// are used only in that particular subsection.
+	//
+	////////////////////////////////////////////////////////////////////////////
+	public static final String 	RECIPE_SECT_DELIM = "§§";
+	public static final String	ING_TAG_DELIM = "¤";
+	public static final String	INGREDIENT_SECT_DELIM = "█";
+	public static final Font 	RECIPE_TXT_FONT;
+	public static final int 	TAGS_IDX = 3;
+	public static final int 	LENGTH_WITH_TAGS = 4;
 
-	// Logging
+
+	////////////////////////////////////////////////////////////////////////////
+	// 
+	// O T H E R  C O N S T A N T S
+	//
+	////////////////////////////////////////////////////////////////////////////
 	private static final Logger logger = LoggerFactory.getLogger(Constants.class);
+	public static final String 	ILLEGAL_EMAIL_CHARS = "()[]:;<>%,\\%&*+=?{}|";
 	
 	static {
 		Font font = null;
@@ -95,7 +126,7 @@ public class Constants {
 			logger.error("Error loading font: {}", e.getMessage());
 			font = new Font("SansSerif", Font.BOLD, 15);
 		}
-		recipeTxtFont = font;
+		RECIPE_TXT_FONT = font;
 	}
 
 	/**

@@ -16,7 +16,7 @@ import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatLightLaf;
 import controller.AppController;
 import definitions.Constants;
-import model.RecipeMgrModel;
+import model.Model;
 import util.ProgressListener;
 import view.AppFrame;
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class Loader {
 			logger.error("Exception while initializing FlatLAF: {}", e.getMessage());
 		}
 
-		RecipeMgrModel model = controller.getModel();
+		Model model = controller.getModel();
 		AppFrame view = controller.getView();
 
 		// Create ProgressListener
