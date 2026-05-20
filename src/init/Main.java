@@ -1,8 +1,6 @@
 package init;
 
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-
 import controller.AppController;
 import model.RecipeMgrModel;
 import util.InstanceLocker;
@@ -39,7 +37,6 @@ public class Main {
 		new Loader(controller).run();
 			
 		// TODO (8) implement half and quarter-step scaling of recipes
-		// TODO (3) register screen input boxes alignment
 		// TODO (5) expected behaviour when toggling notifications selected 
 	}
 }

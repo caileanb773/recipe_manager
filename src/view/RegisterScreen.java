@@ -4,17 +4,14 @@ import static definitions.Constants.DARK_GRADIENT_BOTTOM;
 import static definitions.Constants.DARK_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -37,12 +34,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
+import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import org.mindrot.jbcrypt.BCrypt;
 import com.sun.tools.javac.Main;
 import definitions.Constants;
@@ -68,11 +63,7 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 	private JLabel registerLbl;
 	private JLabel emailInputLbl;
 	private JLabel passwordInputLbl;
-	private JTextPane passwordRequirements;
-	private JPanel contentPanel;
-	private JPanel pwRqmntPanel;
 	private JPanel buttonPanel;
-	private JPanel wrapperPanel;
 	private Image[] pwStrengthIndicators;
 	private ImageIcon[] pwRevealIcons;
 
@@ -92,111 +83,119 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 	private Color topGradient;
 	private Color botGradient;
 	private static final Logger logger = LoggerFactory.getLogger(RegisterScreen.class);
-	
+
 
 	public RegisterScreen(ResourceBundle bundle) {
 		this.bundle = bundle;
-		setLayout(new BorderLayout());
 		pwStrengthIndicators = new Image[2];
 		pwRevealIcons = new ImageIcon[4];
 		isPasswordHidden = true;
 		topGradient = LIGHT_GRADIENT_TOP;
 		botGradient = LIGHT_GRADIENT_BOTTOM;
-		
-		// ---------------------------------------------------------------------
-		// P A N E L S
-		// ---------------------------------------------------------------------
-		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
-		buttonPanel.setOpaque(false);
 
-		contentPanel = new JPanel();
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(3,3,3,3);
-		contentPanel.setLayout(new GridBagLayout());
-		contentPanel.setOpaque(false);
-
-		pwRqmntPanel = new JPanel();
-		pwRqmntPanel.setOpaque(false);
-
-		// ----- Wrapper for stacking panels vertically -----
-		wrapperPanel = new JPanel();
-		wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.Y_AXIS));
-		wrapperPanel.setOpaque(false);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setOpaque(false);
 
 		// ---------------------------------------------------------------------
 		// C O M P O N E N T S
 		// ---------------------------------------------------------------------
+		registerLbl = new JLabel(bundle.getString("register"));
+		emailInputLbl = new JLabel(bundle.getString("enterEmail"));
+		passwordInputLbl = new JLabel(bundle.getString("enterPass"));
 		emailInput = new JTextField(20);
 		passwordInput = new JPasswordField(20);
 		confirmBtn = new JButton(bundle.getString("btnConfirm"));
 		cancelBtn = new JButton(bundle.getString("btnCancel"));
-		registerLbl = new JLabel(bundle.getString("register"));
-		emailInputLbl = new JLabel(bundle.getString("enterEmail"));
-		passwordInputLbl = new JLabel(bundle.getString("enterPass"));
-		registerLbl.putClientProperty( "FlatLaf.styleClass", "h2" );
-		passwordRequirements = new JTextPane();
-		passwordRequirements.setText(bundle.getString("register.weakPassword"));
-		StyledDocument doc = passwordRequirements.getStyledDocument();
-		SimpleAttributeSet center = new SimpleAttributeSet();
-		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-		doc.setParagraphAttributes(0, doc.getLength(), center, false);
-		passwordRequirements.setEditable(false);
-		passwordRequirements.setOpaque(false);
 
-		// ----- Indicators for weak/strong password & revealing ----- 
+		registerLbl.putClientProperty("FlatLaf.styleClass", "h2");
+
 		initPwStrengthIndicator();
 		initPwRevealBtn();
 		initPwFieldChecking();
 
-		// ---------------------------------------------------------------------
-		// R E G I S T R A T I O N  F O R M
-		// ---------------------------------------------------------------------
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		contentPanel.add(registerLbl, gbc);
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		contentPanel.add(emailInputLbl, gbc);
-		gbc.gridx = 1;
-		contentPanel.add(emailInput, gbc);
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		contentPanel.add(passwordInputLbl, gbc);
-		gbc.gridx = 1;
-		contentPanel.add(passwordInput, gbc);
-		gbc.gridx = 2;
-		contentPanel.add(pwStrengthIndicator, gbc);
-		gbc.gridx = 3;
-		contentPanel.add(pwRevealBtn, gbc);
-
-		// ----- Button Panel -----
+		// Button panel
+		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+		buttonPanel.setOpaque(false);
 		buttonPanel.add(confirmBtn);
 		buttonPanel.add(cancelBtn);
 
-		// ----- Adding Components to Vertical Stacking Panel -----
-		wrapperPanel.add(contentPanel);
-		wrapperPanel.add(Box.createVerticalStrut(10));
-		wrapperPanel.add(buttonPanel);
-		wrapperPanel.add(Box.createVerticalStrut(10));
-		wrapperPanel.add(pwRqmntPanel);
-		wrapperPanel.add(Box.createVerticalStrut(10));
-		wrapperPanel.add(passwordRequirements);
+		// ---------------------------------------------------------------------
+		// I N P U T  P A N E L S
+		// ---------------------------------------------------------------------
+		JPanel emailPanel = createInputPanel(emailInputLbl, emailInput);
+		JPanel passwordPanel = createPasswordPanel();
 
-		// ----- Constrain Size of Panels Vertically -----
-		Dimension pref = contentPanel.getPreferredSize();
-		contentPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, pref.height));
-		pref = buttonPanel.getPreferredSize();
-		buttonPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, pref.height));
-		pref = pwRqmntPanel.getPreferredSize();
-		pwRqmntPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, pref.height));
+		// Form container
+		JPanel formPanel = new JPanel();
+		formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
+		formPanel.setOpaque(false);
+		formPanel.add(emailPanel);
+		formPanel.add(Box.createVerticalStrut(10));
+		formPanel.add(passwordPanel);
 
-		// ----- Center Wrapper Panel Vertically in Outer Panel -----
-		JPanel outer = new JPanel(new GridBagLayout());
-		outer.setOpaque(false);
-		outer.add(wrapperPanel);
+		// ---------------------------------------------------------------------
+		// C E N T E R I N G
+		// ---------------------------------------------------------------------
+		registerLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+		registerLbl.setHorizontalAlignment(SwingConstants.CENTER);
 
-		// Add Centered Panel to Parent
-		add(outer, BorderLayout.CENTER);
+		emailPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		passwordPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		formPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		// ---------------------------------------------------------------------
+		// A S S E M B L Y
+		// ---------------------------------------------------------------------
+		add(Box.createVerticalGlue());
+		add(registerLbl);
+		add(Box.createVerticalStrut(20));
+		add(formPanel);
+		add(Box.createVerticalStrut(20));
+		add(buttonPanel);
+		add(Box.createVerticalGlue());
+	}
+
+	private JPanel createInputPanel(JLabel label, JTextField input) {
+		JPanel panel = new JPanel(new SpringLayout());
+		panel.setOpaque(false);
+		panel.add(label);
+		panel.add(input);
+
+		SpringLayout layout = (SpringLayout) panel.getLayout();
+		layout.putConstraint(SpringLayout.NORTH, label, 0, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.NORTH, input, 0, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, input, 0, SpringLayout.HORIZONTAL_CENTER, panel);
+		layout.putConstraint(SpringLayout.EAST, label, -6, SpringLayout.WEST, input);
+		layout.putConstraint(SpringLayout.SOUTH, panel, 0, SpringLayout.SOUTH, input);
+
+		panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, input.getPreferredSize().height + 6));
+		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		return panel;
+	}
+
+	private JPanel createPasswordPanel() {
+		JPanel panel = new JPanel(new SpringLayout());
+		panel.setOpaque(false);
+		panel.add(passwordInputLbl);
+		panel.add(passwordInput);
+		panel.add(pwStrengthIndicator);
+		panel.add(pwRevealBtn);
+
+		SpringLayout layout = (SpringLayout) panel.getLayout();
+		layout.putConstraint(SpringLayout.NORTH, passwordInputLbl, 0, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.NORTH, passwordInput,    0, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.NORTH, pwStrengthIndicator, 0, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.NORTH, pwRevealBtn,      0, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, passwordInput, 0, SpringLayout.HORIZONTAL_CENTER, panel);
+		layout.putConstraint(SpringLayout.EAST, passwordInputLbl, -6, SpringLayout.WEST, passwordInput);
+		layout.putConstraint(SpringLayout.WEST, pwStrengthIndicator, 6, SpringLayout.EAST, passwordInput);
+		layout.putConstraint(SpringLayout.WEST, pwRevealBtn,         4, SpringLayout.EAST, pwStrengthIndicator);
+		layout.putConstraint(SpringLayout.SOUTH, panel, 0, SpringLayout.SOUTH, passwordInput);
+
+		panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, passwordInput.getPreferredSize().height + 6));
+		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		return panel;
 	}
 
 	private void initPwFieldChecking() {
@@ -316,7 +315,7 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 	}
 
 	public void togglePwReveal() {
-		logger.info("Toggling password hidden: {}", isPasswordHidden);
+		logger.info("Toggling password shown: {}", isPasswordHidden);
 		char echoChar = '•';
 
 		if (isPasswordHidden) {
@@ -487,12 +486,11 @@ public class RegisterScreen extends JPanel implements ApplicationScreen {
 		registerLbl.setText(bundle.getString("register"));
 		emailInputLbl.setText(bundle.getString("enterEmail"));
 		passwordInputLbl.setText(bundle.getString("enterPass"));
-		passwordRequirements.setText(bundle.getString("register.weakPassword"));
 	}
-	
+
 	@Override
 	public void changeTheme(Theme theme) {
-		
+
 		switch (theme) {
 		case LIGHT:
 			topGradient = LIGHT_GRADIENT_TOP;
