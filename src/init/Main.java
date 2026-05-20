@@ -1,6 +1,8 @@
 package init;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+
 import controller.AppController;
 import model.RecipeMgrModel;
 import util.InstanceLocker;
@@ -36,13 +38,9 @@ public class Main {
 		AppController controller = new AppController(model, view);
 		new Loader(controller).run();
 			
-		// TODO finish refactoring scaling using BigDecimal
-		// TODO: UI stuff:
-   			// rcp btns font needs more spacing, test diff fonts
-			// switching ui changes button look/feel in one direction
+		// TODO implement half and quarter-step scaling of recipes
 		// TODO register screen input boxes alignment
 		// TODO expected behaviour when toggling notifications selected 
-		// and a new one is added
-		
+		// TODO detaching recipe will not detach scaled recipes (i.e., only original quantities appear)
 	}
 }

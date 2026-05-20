@@ -267,16 +267,15 @@ public class AppFrame {
 			switch (theme) {
 			case LIGHT:
 				UIManager.setLookAndFeel(new FlatLightLaf());
+		        UIManager.put("Component.focusColor", new Color(152, 195, 235));
+		        UIManager.put("Button.hoverBorderColor", new Color(137, 176, 212));
+		        UIManager.put("Button.focusedBorderColor", new Color(137, 176, 212));		  
 				break;
 			case DARK:
-				UIManager.setLookAndFeel(new FlatDarkLaf());
-				
+				UIManager.setLookAndFeel(new FlatDarkLaf());				
 		        UIManager.put("Component.focusColor", new Color(224, 116, 129));
 		        UIManager.put("Button.hoverBorderColor", new Color(224, 57, 77));
-		        UIManager.put("Button.focusedBorderColor", new Color(122, 31, 42));
-		        UIManager.put("TextComponent.selectionBackground", new Color(122, 31, 42));
-		        UIManager.put("TextComponent.caretForeground", new Color(122, 31, 42));
-				
+		        UIManager.put("Button.focusedBorderColor", new Color(122, 31, 42));		        
 				break;
 			default:
 				return;

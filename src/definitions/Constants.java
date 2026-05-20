@@ -53,6 +53,7 @@ public class Constants {
 	public static final Font 	buttonFont = new Font("Serif", Font.BOLD, 16);
 	public static final Font 	textFont = new Font("Segoe UI", Font.PLAIN, 15);
 	public static final Font 	recipeTxtFont;
+	public static final int		START = 0;
 	
 	// NotificationPanel
 	public static final int SORT_TIME = 0;
@@ -77,6 +78,7 @@ public class Constants {
 	public static final Color 	DARK_GRADIENT_BOTTOM 	= new Color(31,31,31);
 	public static final Color 	DARK_FG_COL 			= new Color(90,90,90);
 
+	// Logging
 	private static final Logger logger = LoggerFactory.getLogger(Constants.class);
 	
 	static {

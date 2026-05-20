@@ -8,6 +8,7 @@ import static definitions.Constants.LIGHT_BG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
+import static definitions.Constants.START;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -207,7 +208,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		selectedRcpTxt.setBackground(panelBgCol);
 		selectedRcpTxt.setEditable(false);
 		selectedRcpTxt.setCaretColor(new Color(0,0,0,0));
-		selectedRcpTxt.setCaretPosition(0);
+		selectedRcpTxt.setCaretPosition(START);
 		selectedRcpTxt.setWrapStyleWord(true);
 		selectedRcpTxt.setLineWrap(true);
 		selectedRcpTxt.setFont(Constants.textFont);
@@ -334,7 +335,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		detachedRecipe.setLocation(pnt.x + DETACHED_RECIPE_X_OFFSET,
 				pnt.y - DETACHED_RECIPE_Y_OFFSET);
 		detachedRecipe.setVisible(true);
-		detachedRcpTxt.setCaretPosition(0);
+		detachedRcpTxt.setCaretPosition(START);
 
 		// Add to the list
 		detachedRcps.add(detachedRecipe);
@@ -609,7 +610,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 					scaleRecipe(scaleVal)));
 		}
 
-		selectedRcpTxt.setCaretPosition(0);
+		selectedRcpTxt.setCaretPosition(START);
 	}
 
 	public void clearActiveRecipe() {
