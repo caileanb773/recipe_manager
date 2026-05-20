@@ -38,9 +38,8 @@ public class Main {
 		AppController controller = new AppController(model, view);
 		new Loader(controller).run();
 			
-		// TODO implement half and quarter-step scaling of recipes
-		// TODO register screen input boxes alignment
-		// TODO expected behaviour when toggling notifications selected 
-		// TODO detaching recipe will not detach scaled recipes (i.e., only original quantities appear)
+		// TODO (8) implement half and quarter-step scaling of recipes
+		// TODO (3) register screen input boxes alignment
+		// TODO (5) expected behaviour when toggling notifications selected 
 	}
 }

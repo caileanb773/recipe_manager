@@ -327,7 +327,14 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 				SELECTED_RCP_TXT_TEXT_AREA_HEIGHT - DETACHED_RECIPE_HEIGHT_OFFSET));
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		detachedRcpTxt.setText(activeRecipe.formatRecipeForTextDisplay());
+		
+		// Check if recipe is scaled, if so, preserve scaling when detaching
+		if (scaleVal.compareTo(BigDecimal.ONE) == 0) {
+			detachedRcpTxt.setText(activeRecipe.formatRecipeForTextDisplay());
+		} else {
+			detachedRcpTxt.setText(selectedRcpTxt.getText());
+		}
+		
 		detachedRecipe.add(scroll);
 		detachedRecipe.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		Point pnt = rcpSelectListPanel.getLocationOnScreen();
