@@ -9,21 +9,14 @@ import java.awt.Graphics2D;
 import javax.swing.JButton;
 
 /**
- * BadgeButton extends JButton and will draw a red pill-shaped graphic over the
- * button on the 
+ * BadgeButton extends JButton and will draw a red circular graphic over the
+ * button at a provided orientation. A number will be drawn inside the graphic
+ * defined by the user.
  * 
  * Author: Cailean Bernard
  * */
 @SuppressWarnings("serial")
 public class BadgeButton extends JButton {
-
-	/* When (in this case) there is a new notification, call increment() on the 
-	 * button itself. When the user deletes/reads a notification, call increment()
-	 * again on the badge.
-	 * 
-	 * When the user navigates back to the recipe screen, call refresh() to show
-	 * the correct number of notifications 
-	 */
 
 	private int minVal; // Min value before badge is displayed (usually 0)
 	private int maxVal; // Max value before badge stops incrementing and displays a "+". ie., "99+"
