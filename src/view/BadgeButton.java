@@ -24,7 +24,6 @@ public class BadgeButton extends JButton {
 	private String displayStr;
 	private int badgeSize;
 	private Orientation orientation; // Where on the button the badge is displayed
-	//private static final Logger logger = LoggerFactory.getLogger(BadgeButton.class); XXX remove if unused
 	private final Color badgeRed = new Color(212, 38, 38);
 	private final Color numColor = new Color(240, 240 ,240);
 
@@ -92,7 +91,7 @@ public class BadgeButton extends JButton {
 			anchorY = 0;
 		}
 
-		// Draw the badge at anchorX and anchorY3
+		// Draw the badge at anchorX and anchorY
 		drawBadge((Graphics2D) g, anchorX, anchorY, badgeSize);
 	}
 
