@@ -21,7 +21,9 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.FilenameUtils;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import datalayer.RecipeDAO;
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Notification;
@@ -38,10 +40,6 @@ import view.LoginScreen;
 import view.NotificationScreen;
 import view.RecipeScreen;
 import view.RegisterScreen;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import datalayer.RecipeDAO;
 
 
 /*

@@ -91,7 +91,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 	private JSpinner scaleRcpSpinner;
 	private JPanel scaleRcpPanel;
 	private JButton detachRecipeBtn;
-	private JButton notificationsBtn;
+	private BadgeButton notificationsBtn;
 	
 	// Other
 	private ResourceBundle bundle;
@@ -235,13 +235,14 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		detachRecipeBtn.setToolTipText(bundle.getString("detachRcpToolTip"));
 		
 		// ----- Go to Notification Center -----
-		notificationsBtn = new JButton(bundle.getString("notifications"));
+		notificationsBtn = new BadgeButton(
+				bundle.getString("notifications"), 0, 99, BadgeButton.Orientation.TOP_RIGHT);
 		notificationsBtn.addActionListener(ignored -> {
 			gotoNotifications();
 		});
 		
 		scaleRcpPanel.add(notificationsBtn);
-		
+				
 		// ----- Selected Recipe Scrollpane -----
 		selectedRcpTxtScrollPane = new JScrollPane(selectedRcpTxt);
 		selectedRcpTxtScrollPane.setPreferredSize(new Dimension(
