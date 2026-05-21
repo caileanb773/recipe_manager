@@ -9,6 +9,7 @@ import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.NONEXISTENT_EMAIL;
 import static definitions.Constants.PW_IDX;
 import static definitions.Constants.VALID;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Box;
@@ -45,21 +47,24 @@ import javax.swing.KeyStroke;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+
 import org.mindrot.jbcrypt.BCrypt;
-import com.sun.tools.javac.Main;
-import definitions.Constants;
-import definitions.Theme;
-import util.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.sun.tools.javac.Main;
+
+import definitions.Constants;
+import definitions.Theme;
+import util.Listenable;
+import util.Utility;
 
 /*
  * Author: Cailean Bernard
  * Contents: Login manager for the application.
  */
-
 @SuppressWarnings("serial")
-public class LoginScreen extends JPanel implements ApplicationScreen {
+public class LoginScreen extends JPanel implements ApplicationScreen, Listenable {
 
 	// Swing
 	private static JCheckBox rmbrMe;

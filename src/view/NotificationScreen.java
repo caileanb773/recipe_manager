@@ -9,7 +9,6 @@ import static definitions.Constants.LIGHT_FG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
-import static definitions.Constants.SOFT_LOWERED_BORDER;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -29,14 +28,20 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import definitions.Constants;
 import definitions.Notification;
 import definitions.Theme;
+import util.Listenable;
 import util.Utility;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class NotificationScreen extends JPanel implements ApplicationScreen {
+/**
+ * Author: Cailean Bernard
+ * Contents: The screen which contains all elements related to displaying notifications
+ * to the user.
+ */
+public class NotificationScreen extends JPanel implements ApplicationScreen, Listenable {
 	
 	// Swing
 	private JPanel headerPanel;

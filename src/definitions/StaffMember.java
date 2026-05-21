@@ -5,7 +5,6 @@ package definitions;
  * Contents: A user is represented by at least an email, as well as other optional
  * descriptive information (DoB, location, name)
  */
-
 public class StaffMember {
 
 	private int id;

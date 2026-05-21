@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.event.ActionListener;
 import java.util.Locale;
 import definitions.Theme;
 
@@ -10,13 +9,6 @@ import definitions.Theme;
  * "screen" of the application and therefore implements this interface.
  */
 public interface ApplicationScreen {
-		
-	/**
-	 * Registers the Controller as a listener within the screen.
-	 * 
-	 * @param listener The instance of the Controller to register.
-	 */
-	void registerController(ActionListener controller);
 	
 	/**
 	 * Updates the locale/bundle that the application relies on for translations.

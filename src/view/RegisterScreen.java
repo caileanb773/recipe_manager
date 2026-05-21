@@ -4,6 +4,7 @@ import static definitions.Constants.DARK_GRADIENT_BOTTOM;
 import static definitions.Constants.DARK_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -25,6 +26,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -38,20 +40,24 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 import org.mindrot.jbcrypt.BCrypt;
-import com.sun.tools.javac.Main;
-import definitions.Constants;
-import definitions.Theme;
-import util.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.sun.tools.javac.Main;
+
+import definitions.Constants;
+import definitions.Theme;
+import util.Listenable;
+import util.Utility;
 
 /*
  * Author: Cailean Bernard
  * Contents: Allows user to register with an email and password.
  */
 @SuppressWarnings("serial")
-public class RegisterScreen extends JPanel implements ApplicationScreen {
+public class RegisterScreen extends JPanel implements ApplicationScreen, Listenable {
 
 	// Swing
 	private JPasswordField passwordInput;

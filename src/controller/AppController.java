@@ -205,6 +205,9 @@ public class AppController implements ActionListener {
 		case "dbgAddNotif":
 			dbgAddNotif();
 			break;
+		case "incrementNotifBadge":
+			incrementNotificationBadge();
+			break;
 		default:
 			logger.warn("Unrecognized button actionCommand.");
 			break;
@@ -632,6 +635,7 @@ public class AppController implements ActionListener {
 	// D E B U G G I N G  M E T H O D S
 	//
 	////////////////////////////////////////////////////////////////////////////
+
 	public void dbgAddNotif() {
 		NotificationScreen notifScreen = view.getNotificationScreen();
 		ArrayList<Notification> notifs = notifScreen.getNotifications();
@@ -664,6 +668,16 @@ public class AppController implements ActionListener {
 		// Refresh
 		notifScreen.populateNotificationButtonList(notifs);
 		notifScreen.displayNotifications();
+	}
+	
+	/**
+	 * Increments the number displayed on the Notification Button Badge. When a
+	 * notification is added, the badge should reflect how many (unread) notifications
+	 * the user has.
+	 * 
+	 */
+	public void incrementNotificationBadge() {
+		RecipeScreen rcp = view.getRecipeScreen();
 	}
 
 }

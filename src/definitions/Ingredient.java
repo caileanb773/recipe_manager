@@ -4,9 +4,8 @@ import java.util.Objects;
 
 /*
  * Author: Cailean Bernard
- * Contents: 
+ * Contents: Ingredient definition.
  */
-
 public class Ingredient {
 	
 	//private String amount;
@@ -53,6 +52,5 @@ public class Ingredient {
 	public int hashCode() {
 	    return Objects.hash(fracAmount, unit, name);
 	}
-
 
 }

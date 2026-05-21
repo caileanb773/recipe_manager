@@ -38,7 +38,6 @@ import org.slf4j.LoggerFactory;
  * the recipe can be fetched using its getter from outside of the dialog before
  * the dialog is disposed.
  */
-
 @SuppressWarnings("serial")
 public class AddRecipeDialog extends JDialog {
 

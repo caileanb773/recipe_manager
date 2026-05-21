@@ -5,9 +5,8 @@ import javax.swing.JProgressBar;
 
 /*
  * Author: Cailean Bernard
- * Contents: 
+ * Contents: Updates the progress bar visually based on what text is passed to it.
  */
-
 public class ProgressListener {
 	
 	private final JProgressBar progressBar;

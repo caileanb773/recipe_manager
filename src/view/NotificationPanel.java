@@ -1,23 +1,26 @@
 package view;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+
 import definitions.Constants;
 import definitions.Notification;
+import util.Listenable;
 
 /*
  * Author: Cailean Bernard
  * Contents: The graphical representation of a Notification object. Contains some
  * 
  */
-
 @SuppressWarnings("serial")
-public class NotificationPanel extends JPanel {
+public class NotificationPanel extends JPanel implements Listenable {
 
 	private Notification notification;
 	private JCheckBox checkBx;
@@ -87,6 +90,12 @@ public class NotificationPanel extends JPanel {
 	
 	public void setSelected(boolean isSelected) {
 		this.checkBx.setSelected(isSelected);
+	}
+
+	@Override
+	public void registerController(ActionListener listener) {
+		
+		System.out.println("Hello World!");
 	}
 	
 }

@@ -27,7 +27,10 @@ import org.slf4j.LoggerFactory;
 
 public class Model {
 
+	// Recipes
 	private List<Recipe> recipes;
+	
+	// Other (Logging, Loading Bar)
 	private ProgressListener progressListener;
 	private static final Logger logger = LoggerFactory.getLogger(Model.class);
 

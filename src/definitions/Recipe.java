@@ -1,5 +1,9 @@
 package definitions;
 
+/**
+ * Author: Cailean Bernard
+ * Contents: Recipe definition and helper methods.
+ */
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

@@ -2,9 +2,9 @@ package definitions;
 
 /*
  * Author: Cailean Bernard
- * Contents: 
+ * Contents: Unit definitions. (mostly) Comprehensive list of US Customary and
+ * Metric measurements of both volume and weight. 
  */
-
 public enum Unit {
 
 	/* ----- VOLUME ----- */

@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
  * Author: Cailean Bernard
  * Contents: Helper methods needed in more than one class.
  */
-
 public class Utility {
 
 	private static final Logger logger = LoggerFactory.getLogger(Utility.class);

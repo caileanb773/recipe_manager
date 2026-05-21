@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
  * Author: Cailean Bernard
  * Contents: DAO (Digital Access Object) for JDBC connections.
  */
-
 public class RecipeDAO {
 
 	private static final String URL = "jdbc:sqlite:recipes.db";

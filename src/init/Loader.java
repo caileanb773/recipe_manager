@@ -24,9 +24,8 @@ import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
- * Contents: 
+ * Contents: Loader class for displaying and controlling the loading bar.
  */
-
 public class Loader {
 
 	private AppController controller;

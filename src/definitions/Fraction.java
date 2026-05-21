@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
- * Contents: 
+ * Contents: Fraction definition along with methods to perform fraction math on 
+ * fractions.
  */
-
 public class Fraction {
 
 	private int numerator;

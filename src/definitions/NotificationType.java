@@ -1,5 +1,9 @@
 package definitions;
 
+/**
+ * Author Cailean Bernard
+ * Contents: Notification Type definition.
+ */
 public enum NotificationType {
 	
 	ADD,	// User is requesting a new recipe be added

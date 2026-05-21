@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -31,23 +32,26 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+
 import definitions.Recipe;
 import definitions.Theme;
 import init.Main;
 import util.Config;
+import util.Listenable;
 import util.ProgressListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
  * Contents: The frame of the app which contains the user interface, the part of
  * the screen that the user interacts with.
  */
-
-public class AppFrame {
+public class AppFrame implements Listenable {
 
 	// Displayed screens & layout
 	private JFrame frame;

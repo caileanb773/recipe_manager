@@ -7,9 +7,8 @@ import definitions.Recipe;
 
 /*
  * Author: Cailean Bernard
- * Contents: 
+ * Contents: The button representing a selected recipe (?)
  */
-
 @SuppressWarnings("serial")
 public class RecipeSelectButton extends JButton {
 	

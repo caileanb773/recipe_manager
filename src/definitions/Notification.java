@@ -2,6 +2,10 @@ package definitions;
 
 import java.time.LocalDateTime;
 
+/**
+ * Author: Cailean Bernard
+ * Contents: Notification definition and helper methods.
+ */
 public class Notification {
 
 	private LocalDateTime timeSent;

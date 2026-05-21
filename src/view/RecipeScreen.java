@@ -1,5 +1,6 @@
 package view;
 
+import static definitions.Constants.CARET_START;
 import static definitions.Constants.DARK_BG_COL;
 import static definitions.Constants.DARK_GRADIENT_BOTTOM;
 import static definitions.Constants.DARK_GRADIENT_TOP;
@@ -8,7 +9,7 @@ import static definitions.Constants.LIGHT_BG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
-import static definitions.Constants.CARET_START;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -27,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -47,13 +49,16 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Theme;
+import util.Listenable;
 import util.Utility;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -62,9 +67,8 @@ import org.slf4j.LoggerFactory;
  * represented by buttons. The right side of the screen contains the recipe
  * ingredients and directions that are displayed when a recipe is clicked.
  */
-
 @SuppressWarnings("serial")
-public class RecipeScreen extends JPanel implements ApplicationScreen {
+public class RecipeScreen extends JPanel implements ApplicationScreen, Listenable {
 
 	// Recipe selection list (UI left side)
 	private JPanel rcpSelectPanel;
@@ -267,11 +271,19 @@ public class RecipeScreen extends JPanel implements ApplicationScreen {
 		initKeyBindings();
 	}
 	
+	////////////////////////////////////////////////////////////////////////////
+	///
+	/// Notifications
+	///
+	////////////////////////////////////////////////////////////////////////////
+	
 	private void gotoNotifications() {
 		listener.actionPerformed(new ActionEvent(notificationsBtn, 
 				ActionEvent.ACTION_PERFORMED,
 				"notifications"));
 	}
+	
+	//////
 
 	@Override
 	protected void paintComponent(Graphics g) {
