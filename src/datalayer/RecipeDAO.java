@@ -1,4 +1,4 @@
-package db;
+package datalayer;
 
 import java.math.BigDecimal;
 import java.sql.Connection;

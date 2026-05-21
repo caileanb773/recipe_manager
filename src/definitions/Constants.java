@@ -119,11 +119,11 @@ public class Constants {
 			if (fontStream != null) {
 				font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, 15);
 			} else {
-				System.err.println("Font file not found");
+				logger.warn("Font file not found");
 				font = new Font("SansSerif", Font.BOLD, 15);
 			}
 		} catch (FontFormatException | IOException e) {
-			logger.error("Error loading font: {}", e.getMessage());
+			logger.warn("Error loading font: {}", e.getMessage());
 			font = new Font("SansSerif", Font.BOLD, 15);
 		}
 		RECIPE_TXT_FONT = font;
