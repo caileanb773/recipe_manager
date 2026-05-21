@@ -13,6 +13,7 @@ public class Notification {
 	private NotificationType notificationType;
 	private Recipe recipe;
 	private String optionalNotes;
+	private boolean isRead;
 
 
 	public Notification(LocalDateTime time, StaffMember sender, NotificationType nType,
@@ -22,6 +23,7 @@ public class Notification {
 		this.notificationType = nType;
 		this.recipe = recipe;
 		optionalNotes = null;
+		this.isRead = false;
 	}
 	
 	public Notification(LocalDateTime time, StaffMember sender, NotificationType nType,
@@ -31,6 +33,7 @@ public class Notification {
 		this.notificationType = nType;
 		this.recipe = recipe;
 		this.optionalNotes = optionalNotes;
+		this.isRead = false;
 	}
 
 	public StaffMember getSender() {
@@ -76,6 +79,14 @@ public class Notification {
 	
 	public void setNotes(String notes) {
 		this.optionalNotes = notes;
+	}
+	
+	public boolean isRead() {
+		return isRead;
+	}
+	
+	public void setRead(boolean read) {
+		isRead = read;
 	}
 	
 	public String timeString() {

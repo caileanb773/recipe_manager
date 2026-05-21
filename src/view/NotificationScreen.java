@@ -66,7 +66,6 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 	
 	// Other
 	private ArrayList<NotificationPanel> notificationVisuals;
-	private ArrayList<Notification> notifications;
 	private ResourceBundle bundle;
 	private ActionListener listener;
 	private Color topGradient;
@@ -84,7 +83,6 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 		setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		setOpaque(false);
 		notificationVisuals = new ArrayList<>();
-		notifications = new ArrayList<>();
 		
 		// Default theme
 		topGradient = LIGHT_GRADIENT_TOP;
@@ -166,11 +164,13 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 			
 		selectAll.addActionListener(ignored -> toggleNotificationSelectionStatus());
 		timeBtn.addActionListener(ignored -> {
-			sort(Constants.SORT_TIME, timeStampSortingOrder);
+			// XXX replace this with call to NotificationService request
+			//sort(Constants.SORT_TIME, timeStampSortingOrder);
 			timeStampSortingOrder = !timeStampSortingOrder;
 		});
 		senderBtn.addActionListener(ignored -> {
-			sort(Constants.SORT_SENDER, nameSortingOrder);
+			// XXX replace this with call to NotificationService request
+			//sort(Constants.SORT_SENDER, nameSortingOrder);
 			nameSortingOrder = !nameSortingOrder;			
 		});
 		
@@ -183,11 +183,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 		add(footerPanel, BorderLayout.SOUTH);
 	}
 	
-	private void sort(int mode, boolean direction) {
-		Utility.sortNotifications(notifications, mode, direction);
-		populateNotificationButtonList(notifications);
-		displayNotifications();
-	}
+
 		
 	private void initButtons() {
 		backBtn.addActionListener(ignored -> {
@@ -197,34 +193,17 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 		});
 	}
 	
-	public void addNotification(Notification n) {
-		if (n == null) {
-			logger.warn("Null notification passed to addNotification().");
-			return;
-		}
-		
-		if (notifications == null) {
-			logger.warn("Notification list uninitialized: addNotification().");
-			return;
-		}
-		
-		if (!isNotificationValid(n)) {
-			logger.warn("Notification does not have valid format/bad fields: addNotification().");
-			return;
-		}
-		
-		notifications.add(n);
-	}
+
 	
 	// Should this take ArrayList<Notification>?
 	public void populateNotificationButtonList(List<Notification> notificationList) {
 		
-		if (notifications == null) {
+		if (notificationList == null) {
 			logger.warn("Notifications is null: populateNotificationList().");
 			return;
 		}
 		
-		if (notifications.isEmpty()) {
+		if (notificationList.isEmpty()) {
 			logger.info("No notifications to display: populateNotificationList().");
 			return;
 		}
@@ -272,10 +251,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 		notificationsListPanel.removeAll();
 	}
 
-	public boolean isNotificationValid(Notification n) {
-		// TODO method stub
-		return true;
-	}
+
 	
 	public void toggleNotificationSelectionStatus() {
 		boolean isSelected = selectAll.isSelected();
@@ -361,10 +337,6 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 		notificationsListPanel.setBackground(panelBgCol);
 		headerPanel.setBackground(headerPanelCol);
 		footerPanel.setBackground(footerPanelCol);
-	}
-	
-	public ArrayList<Notification> getNotifications() {
-		return notifications;
 	}
 	
 }

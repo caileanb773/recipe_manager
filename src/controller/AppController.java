@@ -638,7 +638,7 @@ public class AppController implements ActionListener {
 
 	public void dbgAddNotif() {
 		NotificationScreen notifScreen = view.getNotificationScreen();
-		ArrayList<Notification> notifs = notifScreen.getNotifications();
+		//ArrayList<Notification> notifs = notifScreen.getNotifications();
 
 		// First
 		LocalDateTime timeSent = LocalDateTime.now().minusDays(1);
@@ -647,7 +647,8 @@ public class AppController implements ActionListener {
 		Recipe rcp = new Recipe("Burger", new ArrayList<Ingredient>(), "Make burger");
 		String optNotes = "This is a test of how long optional notes can be";
 		Notification n = new Notification(timeSent, staff, type, rcp, optNotes);
-		notifScreen.addNotification(n);
+		//notifScreen.addNotification(n);
+		// XXX Replace these addNotification calls to calls in the NotificationService
 
 		timeSent = LocalDateTime.now().plusDays(3);
 		staff = new StaffMember(0, "frank@gmoil.com", "Frank");
@@ -655,7 +656,7 @@ public class AppController implements ActionListener {
 		rcp = new Recipe("Aioli", new ArrayList<Ingredient>(), "Mix it all up");
 		optNotes = "No notes";
 		n = new Notification(timeSent, staff, type, rcp, optNotes);
-		notifScreen.addNotification(n);
+		//notifScreen.addNotification(n);
 		
 		timeSent = LocalDateTime.now();
 		staff = new StaffMember(0, "derek@gmoil.com", "Derek");
@@ -663,10 +664,10 @@ public class AppController implements ActionListener {
 		rcp = new Recipe("Secret Sauce", new ArrayList<Ingredient>(), "Wahoo");
 		optNotes = "Mix it good";
 		n = new Notification(timeSent, staff, type, rcp, optNotes);
-		notifScreen.addNotification(n);
+		//notifScreen.addNotification(n);
 		
 		// Refresh
-		notifScreen.populateNotificationButtonList(notifs);
+		// notifScreen.populateNotificationButtonList(notifs);
 		notifScreen.displayNotifications();
 	}
 	
