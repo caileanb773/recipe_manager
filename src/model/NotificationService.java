@@ -14,6 +14,8 @@ import util.Utility;
  */
 public class NotificationService {
 	
+	// TODO defensive programming for methods
+	
 	// Notification-related
 	private List<Notification> notifications;
 	private List<NotificationListener> listeners;
@@ -61,23 +63,38 @@ public class NotificationService {
 		}
 	}
 	
-	// TODO
-	public void removeNotification() {
-		
+	public void removeNotification(Notification n) {
+		if (n != null) {
+			notifications.remove(n);
+		} else {
+			logger.warn("removeNotification(): Notification was null.");
+		}
+	}
+	
+	public void markNotificationRead(Notification n) {
+		if (n != null) {
+			notifications.get(notifications.indexOf(n)).setRead(true);;
+		} else {
+			logger.warn("markNotificationRead(): Notification was null.");
+		}
+	}
+	
+	public void markNotificationUnread(Notification n) {
+		if (n != null) {
+			notifications.get(notifications.indexOf(n)).setRead(false);;
+		} else {
+			logger.warn("markNotificationUnread(): Notification was null.");
+		}
+	}
+	
+	public void markAllNotificationsRead(boolean read) {
+		for (Notification n : notifications) {
+			n.setRead(read);
+		}
 	}
 	
 	// TODO
-	public void markNotificationRead() {
-		
-	}
-	
-	// TODO
-	public void markNotificationUnread() {
-		
-	}
-	
 	public boolean isNotificationValid(Notification n) {
-		// TODO method stub
 		return true;
 	}
 	
