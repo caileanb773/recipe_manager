@@ -335,7 +335,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 
 	@Override
 	public void notificationsChanged() {
-		
+		refreshNotifications();
 	}
 
 	@Override

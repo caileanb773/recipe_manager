@@ -93,7 +93,7 @@ public class BadgeButton extends JButton {
 		drawBadge((Graphics2D) g, anchorX, anchorY, badgeSize);
 	}
 
-	void drawBadge(Graphics2D g2, int x, int y, int size) {
+	private void drawBadge(Graphics2D g2, int x, int y, int size) {
 		Graphics2D g = (Graphics2D) g2.create();
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -130,8 +130,6 @@ public class BadgeButton extends JButton {
 			g.dispose();
 		}
 	}
-
-
 
 	public void increment() {
 		currVal++;

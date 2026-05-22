@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -39,7 +41,11 @@ import org.slf4j.LoggerFactory;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
+import definitions.Ingredient;
+import definitions.Notification;
+import definitions.NotificationType;
 import definitions.Recipe;
+import definitions.StaffMember;
 import definitions.Theme;
 import init.Main;
 import model.NotificationService;
@@ -113,7 +119,7 @@ public class AppFrame implements Listenable {
 		reportProgress(10, "Loading language...");
 
 		bundle = config.getResourceBundle();
-		recipeScreen = new RecipeScreen(bundle);
+		recipeScreen = new RecipeScreen(bundle, notificationService);
 		loginScreen = new LoginScreen(bundle);
 		registerScreen = new RegisterScreen(bundle);
 		notificationScreen = new NotificationScreen(bundle, notificationService);
@@ -154,12 +160,13 @@ public class AppFrame implements Listenable {
 		menuFile.add(debugLogin);
 		debugLogin.addActionListener(ignored -> listener.actionPerformed(
 				new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "login")));
-		
+
 		debugAddNotif = new JMenuItem("DEBUG: Add Notification");
 		menuFile.add(debugAddNotif);
-		debugAddNotif.addActionListener(ignored -> listener.actionPerformed(
-				new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "dbgAddNotif")));
+		//		debugAddNotif.addActionListener(ignored -> listener.actionPerformed(
+		//				new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "dbgAddNotif")));
 
+		debugAddNotif.addActionListener(ignored -> dbgAddNotif());
 		menuOpt = new JMenu(bundle.getString("menuOpt"));
 		menuLang = new JMenu(bundle.getString("menuLang"));
 		menuBtnReadMe = new JMenuItem(bundle.getString("menuBtnReadMe"));
@@ -274,15 +281,15 @@ public class AppFrame implements Listenable {
 			switch (theme) {
 			case LIGHT:
 				UIManager.setLookAndFeel(new FlatLightLaf());
-		        UIManager.put("Component.focusColor", new Color(152, 195, 235));
-		        UIManager.put("Button.hoverBorderColor", new Color(137, 176, 212));
-		        UIManager.put("Button.focusedBorderColor", new Color(137, 176, 212));		  
+				UIManager.put("Component.focusColor", new Color(152, 195, 235));
+				UIManager.put("Button.hoverBorderColor", new Color(137, 176, 212));
+				UIManager.put("Button.focusedBorderColor", new Color(137, 176, 212));		  
 				break;
 			case DARK:
 				UIManager.setLookAndFeel(new FlatDarkLaf());				
-		        UIManager.put("Component.focusColor", new Color(224, 116, 129));
-		        UIManager.put("Button.hoverBorderColor", new Color(224, 57, 77));
-		        UIManager.put("Button.focusedBorderColor", new Color(122, 31, 42));		        
+				UIManager.put("Component.focusColor", new Color(224, 116, 129));
+				UIManager.put("Button.hoverBorderColor", new Color(224, 57, 77));
+				UIManager.put("Button.focusedBorderColor", new Color(122, 31, 42));		        
 				break;
 			default:
 				return;
@@ -509,7 +516,6 @@ public class AppFrame implements Listenable {
 	}
 
 	public ResourceBundle getBundle() {
-		//return bundle;
 		return config.getResourceBundle();
 	}
 
@@ -528,9 +534,41 @@ public class AppFrame implements Listenable {
 	public RecipeScreen getRecipeScreen() {
 		return recipeScreen;
 	}
-	
+
 	public NotificationScreen getNotificationScreen() {
 		return notificationScreen;
 	}
+
+	////////////////////////////////////////////////////////////////////////////
+	// 
+	// D E B U G G I N G  M E T H O D S
+	//
+	////////////////////////////////////////////////////////////////////////////
+
+	public void dbgAddNotif() {
+		LocalDateTime timeSent = LocalDateTime.now().minusDays(1);
+		StaffMember staff = new StaffMember(0, "bob@gmail.com", "Bob");
+		NotificationType type = NotificationType.ADD;
+		Recipe rcp = new Recipe("Burger", new ArrayList<Ingredient>(), "Make burger");
+		String optNotes = "This is a test of how long optional notes can be";
+		Notification n = new Notification(timeSent, staff, type, rcp, optNotes);
+		notificationService.addNotification(n);
+
+		timeSent = LocalDateTime.now().plusDays(3);
+		staff = new StaffMember(0, "frank@gmoil.com", "Frank");
+		type = NotificationType.EDIT;
+		rcp = new Recipe("Aioli", new ArrayList<Ingredient>(), "Mix it all up");
+		optNotes = "No notes";
+		n = new Notification(timeSent, staff, type, rcp, optNotes);
+		notificationService.addNotification(n);
+
+		timeSent = LocalDateTime.now();
+		staff = new StaffMember(0, "derek@gmoil.com", "Derek");
+		type = NotificationType.ADD;
+		rcp = new Recipe("Secret Sauce", new ArrayList<Ingredient>(), "Wahoo");
+		optNotes = "Mix it good";
+		n = new Notification(timeSent, staff, type, rcp, optNotes);
+		notificationService.addNotification(n);
+	}	
 
 }

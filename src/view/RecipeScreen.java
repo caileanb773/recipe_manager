@@ -57,6 +57,8 @@ import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Theme;
+import model.NotificationListener;
+import model.NotificationService;
 import util.Listenable;
 import util.Utility;
 
@@ -68,7 +70,7 @@ import util.Utility;
  * ingredients and directions that are displayed when a recipe is clicked.
  */
 @SuppressWarnings("serial")
-public class RecipeScreen extends JPanel implements ApplicationScreen, Listenable {
+public class RecipeScreen extends JPanel implements ApplicationScreen, Listenable, NotificationListener {
 
 	// Recipe selection list (UI left side)
 	private JPanel rcpSelectPanel;
@@ -109,6 +111,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 	private Color panelBgCol;
 	private List<JDialog> detachedRcps;
 	private static final Logger logger = LoggerFactory.getLogger(RecipeScreen.class);
+	private NotificationService service;
 
 	// Constant
 	private final int UNSCALED = 0;
@@ -120,12 +123,16 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 	private final int DETACHED_RECIPE_Y_OFFSET = 45;
 
 
-	public RecipeScreen(ResourceBundle bundle) {	
+	public RecipeScreen(ResourceBundle bundle, NotificationService service) {	
 		this.bundle = bundle;
 		setLayout(new BorderLayout());
 		rcpSelectList = new ArrayList<RecipeSelectButton>();
 		scaleVal = BigDecimal.ONE;
 		detachedRcps = new ArrayList<>();
+		
+		// Register for events from the NotificationService
+		service.addListener(this);
+		this.service = service;
 
 		topGradient = LIGHT_GRADIENT_TOP;
 		botGradient = LIGHT_GRADIENT_BOTTOM;
@@ -655,6 +662,12 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 
 	public Recipe getActiveRecipe() {
 		return activeRecipe;
+	}
+
+	@Override
+	public void notificationsChanged() {
+		int numNotifications = service.getNumUnreadNotifications();
+		notificationsBtn.setBadgeNum(numNotifications);
 	}
 
 }

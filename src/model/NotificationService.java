@@ -1,12 +1,9 @@
 package model;
 
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import definitions.Notification;
 import util.Utility;
 
@@ -55,6 +52,13 @@ public class NotificationService {
 		}
 		
 		notifications.add(n);
+		notifyListeners();
+	}
+	
+	public void notifyListeners() {
+		for (NotificationListener listener : listeners) {
+			listener.notificationsChanged();
+		}
 	}
 	
 	// TODO
@@ -79,6 +83,16 @@ public class NotificationService {
 	
 	public void sort(int mode, boolean direction) {
 		Utility.sortNotifications(notifications, mode, direction);
+	}
+	
+	public int getNumUnreadNotifications() {
+		int num = 0;
+		for (Notification n : notifications) {
+			if (!n.isRead()) {
+				num++;
+			}
+		}
+		return num;
 	}
 	
 	public List<Notification> getNotifications() {
