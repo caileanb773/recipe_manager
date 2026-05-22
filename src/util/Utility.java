@@ -6,14 +6,19 @@ import static definitions.Constants.SORT_RCPNAME;
 import static definitions.Constants.SORT_SENDER;
 import static definitions.Constants.SORT_TIME;
 import static definitions.Constants.SORT_TYPE;
+
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+
 import javax.swing.JPanel;
+
 import org.apache.commons.validator.routines.EmailValidator;
-import definitions.Constants;
-import definitions.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import definitions.Constants;
+import definitions.Notification;
 
 /*
  * Author: Cailean Bernard
@@ -54,7 +59,7 @@ public class Utility {
 	}
 
 	public static void sortNotifications(
-			ArrayList<Notification> list,
+			List<Notification> list,
 			int mode, 
 			boolean direction) {
 
@@ -117,7 +122,7 @@ public class Utility {
 		} while (elmtSwapped);
 	}
 
-	private static void sortByTime(ArrayList<Notification> list, boolean direction) {
+	private static void sortByTime(List<Notification> list, boolean direction) {
 		if (direction == DESCENDING) {
 			list.sort(Comparator.comparing(Notification::getTimeSent));
 		} else if (direction == ASCENDING) {
@@ -126,7 +131,7 @@ public class Utility {
 
 	}
 
-	private static void sortBySender(ArrayList<Notification> list, boolean direction) {
+	private static void sortBySender(List<Notification> list, boolean direction) {
 
 	    Comparator<Notification> cmp =
 	        Comparator.comparing(
@@ -142,12 +147,13 @@ public class Utility {
 	}
 
 
-
-	private static void sortByType(ArrayList<Notification> list) {
+	// TODO
+	private static void sortByType(List<Notification> list) {
 
 	}
 
-	private static void sortByRcpName(ArrayList<Notification> list) {
+	// TODO
+	private static void sortByRcpName(List<Notification> list) {
 
 	}
 

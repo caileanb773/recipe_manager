@@ -1,12 +1,15 @@
 package init;
 
 import javax.swing.JOptionPane;
-import controller.AppController;
-import model.Model;
-import util.InstanceLocker;
-import view.AppFrame;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import controller.AppController;
+import model.Model;
+import model.NotificationService;
+import util.InstanceLocker;
+import view.AppFrame;
 
 /*
  * Author: Cailean Bernard
@@ -32,7 +35,8 @@ public class Main {
 		
 		// Create MVC
 		Model model = new Model();
-		AppFrame view = new AppFrame();
+		NotificationService notificationService = new NotificationService();
+		AppFrame view = new AppFrame(notificationService);
 		AppController controller = new AppController(model, view);
 		new Loader(controller).run();
 	}

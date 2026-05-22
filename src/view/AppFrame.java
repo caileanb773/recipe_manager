@@ -42,6 +42,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import definitions.Recipe;
 import definitions.Theme;
 import init.Main;
+import model.NotificationService;
 import util.Config;
 import util.Listenable;
 import util.ProgressListener;
@@ -89,12 +90,14 @@ public class AppFrame implements Listenable {
 	// Other
 	private ActionListener listener;
 	private ProgressListener progressListener;
+	private NotificationService notificationService;
 	private static final Logger logger = LoggerFactory.getLogger(AppFrame.class);
 
 
-	public AppFrame() {
+	public AppFrame(NotificationService notificationService) {
 		frame = new JFrame();
 		cardLayout = new CardLayout();
+		this.notificationService = notificationService;
 		frame.getContentPane().setLayout(cardLayout);
 		frame.setTitle("Macromise Recipe Manager");		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -113,7 +116,7 @@ public class AppFrame implements Listenable {
 		recipeScreen = new RecipeScreen(bundle);
 		loginScreen = new LoginScreen(bundle);
 		registerScreen = new RegisterScreen(bundle);
-		notificationScreen = new NotificationScreen(bundle);
+		notificationScreen = new NotificationScreen(bundle, notificationService);
 		container = frame.getContentPane();
 		currentTheme = config.getTheme();
 		reportProgress(12, "Loading images...");

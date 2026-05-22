@@ -2,10 +2,12 @@ package model;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import definitions.Notification;
-import util.Listenable;
 import util.Utility;
 
 /*
@@ -13,15 +15,28 @@ import util.Utility;
  * Contents: Manages read notifications vs. unread notifications and handles when
  * incoming notifications.
  */
-public class NotificationService implements Listenable {
+public class NotificationService {
 	
 	// Notification-related
-	private ArrayList<Notification> notifications;
+	private List<Notification> notifications;
+	private List<NotificationListener> listeners;
 	
 	// Other
-	private ActionListener listener;
 	private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
+	
+	public NotificationService() {
+		this.notifications = new ArrayList<>();
+		this.listeners = new ArrayList<>();
+	}
+	
+	public void addListener(NotificationListener nl) {
+		listeners.add(nl);
+	}
+	
+	public void removeListener(NotificationListener nl) {
+		listeners.remove(nl);
+	}
 	
 	public void addNotification(Notification n) {
 		if (n == null) {
@@ -42,14 +57,17 @@ public class NotificationService implements Listenable {
 		notifications.add(n);
 	}
 	
+	// TODO
 	public void removeNotification() {
 		
 	}
 	
+	// TODO
 	public void markNotificationRead() {
 		
 	}
 	
+	// TODO
 	public void markNotificationUnread() {
 		
 	}
@@ -63,13 +81,8 @@ public class NotificationService implements Listenable {
 		Utility.sortNotifications(notifications, mode, direction);
 	}
 	
-	public ArrayList<Notification> getNotifications() {
+	public List<Notification> getNotifications() {
 		return notifications;
-	}
-	
-	@Override
-	public void registerController(ActionListener listener) {
-		listener = listener;
 	}
 	
 }

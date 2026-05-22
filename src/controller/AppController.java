@@ -668,17 +668,7 @@ public class AppController implements ActionListener {
 		
 		// Refresh
 		// notifScreen.populateNotificationButtonList(notifs);
-		notifScreen.displayNotifications();
+		// notifScreen.displayNotifications();
 	}
 	
-	/**
-	 * Increments the number displayed on the Notification Button Badge. When a
-	 * notification is added, the badge should reflect how many (unread) notifications
-	 * the user has.
-	 * 
-	 */
-	public void incrementNotificationBadge() {
-		RecipeScreen rcp = view.getRecipeScreen();
-	}
-
 }
