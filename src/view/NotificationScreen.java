@@ -9,7 +9,6 @@ import static definitions.Constants.LIGHT_FG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -30,10 +28,8 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import definitions.Constants;
 import definitions.Notification;
 import definitions.Theme;
@@ -341,6 +337,26 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 	@Override
 	public void registerController(ActionListener listener) {
 		this.listener = listener;		
+	}
+
+	@Override
+	public void notificationAdded() {
+		refreshNotifications();
+	}
+
+	@Override
+	public void notificationRemoved() {
+		refreshNotifications();
+	}
+
+	@Override
+	public void notificationMarkedAsRead() {
+		refreshNotifications();
+	}
+
+	@Override
+	public void notificationMarkedAsUnread() {
+		refreshNotifications();
 	}
 
 }

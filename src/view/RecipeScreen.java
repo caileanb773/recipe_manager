@@ -9,7 +9,6 @@ import static definitions.Constants.LIGHT_BG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -28,7 +27,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -49,10 +47,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
@@ -668,6 +664,26 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 	public void notificationsChanged() {
 		int numNotifications = service.getNumUnreadNotifications();
 		notificationsBtn.setBadgeNum(numNotifications);
+	}
+
+	@Override
+	public void notificationAdded() {
+		notificationsBtn.increment();
+	}
+
+	@Override
+	public void notificationRemoved() {
+		notificationsBtn.decrement();
+	}
+
+	@Override
+	public void notificationMarkedAsRead() {
+		notificationsBtn.decrement();
+	}
+
+	@Override
+	public void notificationMarkedAsUnread() {
+		notificationsBtn.increment();
 	}
 
 }
