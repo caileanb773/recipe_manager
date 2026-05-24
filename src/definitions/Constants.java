@@ -115,15 +115,16 @@ public class Constants {
 	static {
 		Font font = null;
 		try {
-			InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("font/Geist/static/Geist-SemiBold.ttf");
+			// InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("font/Geist/static/Geist-SemiBold.ttf");
+			InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("font/Ubuntu/Ubuntu-Regular.ttf");
 			if (fontStream != null) {
-				font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, 15);
+				font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, 16);
 			} else {
-				logger.warn("Font file not found");
+				logger.warn("Recipe List font file not found.");
 				font = new Font("SansSerif", Font.BOLD, 15);
 			}
 		} catch (FontFormatException | IOException e) {
-			logger.warn("Error loading font: {}", e.getMessage());
+			logger.warn("FontFormatException/IOException: Error loading Recipe List font: {}", e.getMessage());
 			font = new Font("SansSerif", Font.BOLD, 15);
 		}
 		RECIPE_TXT_FONT = font;

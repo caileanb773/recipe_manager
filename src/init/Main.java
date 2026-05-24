@@ -20,6 +20,7 @@ public class Main {
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String[] args) {
+		System.setProperty("awt.useSystemAAFontSettings","on"); // For some reason this changes the font app-wide. Test it out for a bit
 		
 		// Detect if an instance is already running
 		if (!InstanceLocker.lockInstance("MMLock")) {
