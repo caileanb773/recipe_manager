@@ -43,12 +43,13 @@ import util.Utility;
  * Contents: The screen which contains all elements related to displaying notifications
  * to the user.
  */
+@SuppressWarnings("serial")
 public class NotificationScreen extends JPanel implements ApplicationScreen, Listenable, NotificationListener {
 
 	// Swing
 	private JPanel headerPanel;
 	private JPanel footerPanel;
-	private JPanel notificationsListPanel;
+	private JPanel notificationListPanel;
 	private JPanel expandedNotificationInfo;
 	private JScrollPane notificationsListScrollPane;
 	private JCheckBox selectAll;
@@ -104,8 +105,8 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 
 		// ----- Panel init -----
 		headerPanel = new JPanel();
-		notificationsListPanel = new JPanel();
-		notificationsListScrollPane = new JScrollPane(notificationsListPanel);
+		notificationListPanel = new JPanel();
+		notificationsListScrollPane = new JScrollPane(notificationListPanel);
 		footerPanel = new JPanel();
 
 		// ----- Clickables -----
@@ -142,9 +143,9 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 		// ---------------------------------------------------------------------
 
 		// ----- Inner Notifications Panel -----
-		BoxLayout notifListLayout = new BoxLayout(notificationsListPanel, BoxLayout.Y_AXIS);
-		notificationsListPanel.setLayout(notifListLayout);
-		notificationsListPanel.setBackground(panelBgCol);
+		BoxLayout notifListLayout = new BoxLayout(notificationListPanel, BoxLayout.Y_AXIS);
+		notificationListPanel.setLayout(notifListLayout);
+		notificationListPanel.setBackground(panelBgCol);
 
 		// ----- Scrollable Area for Notifications Panel -----
 		notificationsListScrollPane.getVerticalScrollBar().setUnitIncrement(
@@ -157,11 +158,11 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 
 		// ----- Header -----
 		headerPanel.setBackground(headerPanelCol);
-		headerPanel.setBorder(Constants.SOFT_RAISED_BORDER);
+		//headerPanel.setBorder(Constants.SOFT_RAISED_BORDER);
 
 		// ----- Footer -----
 		footerPanel.setBackground(footerPanelCol);
-		footerPanel.setBorder(Constants.SOFT_RAISED_BORDER);
+		//footerPanel.setBorder(Constants.SOFT_RAISED_BORDER);
 
 		// ---------------------------------------------------------------------
 		// A C T I O N  L I S T E N E R S
@@ -173,6 +174,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 			//sort(Constants.SORT_TIME, timeStampSortingOrder);
 			timeStampSortingOrder = !timeStampSortingOrder;
 		});
+		
 		senderBtn.addActionListener(ignored -> {
 			// XXX replace this with call to NotificationService request
 			//sort(Constants.SORT_SENDER, nameSortingOrder);
@@ -198,28 +200,45 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 					"showRcpScreen"));
 		});
 	}
-
+	
+	/**
+	 * Fetch the list of active notifications from NotificationService.
+	 * 
+	 * @return List<Notification> a list of all active notifications.
+	 */
+	private List<Notification> fetchNotifications() {
+		return service.getNotifications();
+	}
+	
+	/**
+	 * Refresh the list of notifications displayed in the notification screen
+	 * by fetching and validating the list from the Notification Service, and
+	 * then displaying them. 
+	 */
 	public void refreshNotifications() {
-		List<Notification> notificationList = service.getNotifications();
-
+		List<Notification> notificationList = fetchNotifications();
+		
 		if (notificationList == null) {
-			logger.warn("Notifications is null: refreshNotifications().");
+			logger.error("RefreshNotifications(): Notification list null.");
 			return;
-		}
-
-		if (notificationList.isEmpty()) {
-			logger.info("No notifications to display: refreshNotifications().");
-			return;
+		} else if (notificationList.isEmpty()) {
+			logger.info("RefreshNotifications(): No notifications to display.");
 		}
 		
 		rebuildUI(notificationList);
 	}
 	
-	private void rebuildUI(List<Notification> notificationList) {
+	/**
+	 * Display the notifications passed to this method as visual representations
+	 * in the Notification List Panel.
+	 * 
+	 * @param notifications The list of notifications to display.
+	 */
+	private void rebuildUI(List<Notification> notifications) {
 		List<NotificationPanel> notificationItems = new ArrayList<>();
 
 		// Make graphical representations for each notification that exists
-		for (Notification n : notificationList) {
+		for (Notification n : notifications) {
 			// add actions and such here if needed
 			NotificationPanel newNotif = new NotificationPanel(n);
 			newNotif.setMaximumSize(new Dimension(Integer.MAX_VALUE, NOTIFICATION_ROW_HEIGHT));
@@ -227,49 +246,32 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 		}
 		
 		// Remove whatever was being displayed
-		notificationsListPanel.removeAll();
+		notificationListPanel.removeAll();
 
 		for (NotificationPanel nBtn : notificationItems) {
-			notificationsListPanel.add(nBtn);
-			notificationsListPanel.add(Box.createVerticalStrut(1));
+			notificationListPanel.add(nBtn);
+			notificationListPanel.add(Box.createVerticalStrut(1));
 		}
 
-		Utility.revalidateAndRepaint(notificationsListPanel);
+		Utility.revalidateAndRepaint(notificationListPanel);
 	}
 
-//	// TODO finish
-//	public void displayNotifications(String filter) {
-//		// This method handles a quick null check
-//		removeAllDisplayedNotifications();
-//		Utility.revalidateAndRepaint(notificationsListPanel);
-//	}
-
-//	public void removeAllDisplayedNotifications() {
-//
-//	}
-
 	public void toggleNotificationSelectionStatus() {
-		boolean isSelected = selectAll.isSelected();
-		setAllNotificationsSelected(isSelected);
+		setAllNotificationsSelected(selectAll.isSelected());
 	}
 
 	// There's probably a more efficient way to do this than removeAll()
 	private void setAllNotificationsSelected(boolean isSelected) {
-//		if (notificationsListPanel == null) {
-//			logger.warn("Notification list Panel was not initialized in setAllNotificationsSelected().");
-//			return;
-//		}
-//
-//		logger.info("Setting all notifications selected: " + isSelected);
-//		notificationsListPanel.removeAll();
-//
-//		for (NotificationPanel np : notificationVisuals) {
-//			np.setSelected(isSelected);
-//			notificationsListPanel.add(np);
-//			notificationsListPanel.add(Box.createVerticalStrut(1));
-//		}
-//
-//		Utility.revalidateAndRepaint(notificationsListPanel);
+		if (notificationListPanel == null) {
+			logger.warn("Notification list Panel was not initialized in setAllNotificationsSelected().");
+			return;
+		}
+
+		logger.info("Setting all notifications selected: " + isSelected);		
+		service.setAllNotificationsSelected(isSelected);
+		List<Notification> notifications = service.getNotifications();
+		
+		rebuildUI(notifications);
 	}
 
 	@Override
@@ -324,7 +326,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 			logger.warn("Unrecognized theme: {}", theme.toString());
 		}
 
-		notificationsListPanel.setBackground(panelBgCol);
+		notificationListPanel.setBackground(panelBgCol);
 		headerPanel.setBackground(headerPanelCol);
 		footerPanel.setBackground(footerPanelCol);
 	}

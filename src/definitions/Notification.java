@@ -1,6 +1,8 @@
 package definitions;
 
 import java.time.LocalDateTime;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 /**
  * Author: Cailean Bernard
@@ -8,13 +10,21 @@ import java.time.LocalDateTime;
  */
 public class Notification {
 
+	// Data Members
 	private LocalDateTime timeSent;
 	private StaffMember sender;
 	private NotificationType notificationType;
 	private Recipe recipe;
 	private String optionalNotes;
-	private boolean isRead;
+	private boolean isActive;
+	private boolean isSelected;
 
+	// Other
+	private static final Logger logger = LoggerFactory.getLogger(Notification.class);
+	
+	// Constants
+	private static final boolean INACTIVE = false;
+	private static final boolean ACTIVE = true;
 
 	public Notification(LocalDateTime time, StaffMember sender, NotificationType nType,
 			Recipe recipe) {
@@ -23,7 +33,8 @@ public class Notification {
 		this.notificationType = nType;
 		this.recipe = recipe;
 		optionalNotes = null;
-		this.isRead = false;
+		isActive = ACTIVE;	
+		isSelected = false;
 	}
 	
 	public Notification(LocalDateTime time, StaffMember sender, NotificationType nType,
@@ -33,7 +44,8 @@ public class Notification {
 		this.notificationType = nType;
 		this.recipe = recipe;
 		this.optionalNotes = optionalNotes;
-		this.isRead = false;
+		isActive = ACTIVE;
+		isSelected = false;
 	}
 
 	public StaffMember getSender() {
@@ -80,18 +92,32 @@ public class Notification {
 	public void setNotes(String notes) {
 		this.optionalNotes = notes;
 	}
-	
-	public boolean isRead() {
-		return isRead;
+		
+	public boolean isActive() {
+		return isActive;
 	}
 	
-	public void setRead(boolean read) {
-		isRead = read;
+	/**
+	 * Sets an active recipe as inactive. Cannot set an inactive recipe as
+	 * active.
+	 */
+	public void setInactive() {
+		if (isActive == ACTIVE) {
+			isActive = INACTIVE;
+		}
+	}
+	
+	public boolean isSelected() {
+		return isSelected;
+	}
+	
+	public void setSelected(boolean selected) {
+		isSelected = selected;
 	}
 	
 	public String timeString() {
 		
-		// Format: 1999-06-25 14:30
+		// Format: 1969-07-24 16:50
 		// Military time only for now
 		StringBuilder sb = new StringBuilder();
 		sb.append(timeSent.getYear());

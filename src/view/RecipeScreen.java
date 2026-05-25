@@ -662,7 +662,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 
 	@Override
 	public void notificationsChanged() {
-		int numNotifications = service.getNumUnreadNotifications();
+		int numNotifications = service.getNumActiveNotifications();
 		notificationsBtn.setBadgeNum(numNotifications);
 	}
 

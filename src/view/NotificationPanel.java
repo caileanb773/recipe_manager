@@ -53,6 +53,7 @@ public class NotificationPanel extends JPanel implements Listenable {
 		
 		// Initialize button components with notification properties
 		checkBx = new JCheckBox();
+		checkBx.setSelected(notification.isSelected());
 		timeStamp = new JLabel(time);
 		type = new JLabel(notifType);
 		rcpName = new JLabel(notifRcpName);
