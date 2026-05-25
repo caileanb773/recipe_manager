@@ -23,39 +23,44 @@ import org.slf4j.LoggerFactory;
  */
 public class RecipeDAO {
 
-	private static final String URL = "jdbc:sqlite:recipes.db";
+	private static final String URL = "jdbc:postgresql://192.168.0.187:5432/recipes";
+	private static final String USER = "recipe_app_user";
+	private static final String PASSWORD = "D4mnF1n3C0ff33!1990";
 	private static final Logger logger = LoggerFactory.getLogger(RecipeDAO.class);
-
+	
+	
 	private Connection connect() throws SQLException {
-		return DriverManager.getConnection(URL);
+		return DriverManager.getConnection(URL, USER, PASSWORD);
 	}
 
-
 	// Create the tables
-	public void init() {
-		String recipesTable = "CREATE TABLE IF NOT EXISTS recipes ("
-				+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+ "title TEXT NOT NULL,"
-				+ "directions TEXT,"
-				+ "tags TEXT"
-				+ ");";
+	public void init() throws SQLException {
+	    String recipesTable = "CREATE TABLE IF NOT EXISTS recipes ("
+	            + "id SERIAL PRIMARY KEY,"
+	            + "title TEXT NOT NULL,"
+	            + "directions TEXT,"
+	            + "tags TEXT"
+	            + ");";
 
-		String ingredientsTable = "CREATE TABLE IF NOT EXISTS ingredients ("
-				+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+ "recipe_id INTEGER NOT NULL,"
-				+ "amount TEXT,"
-				+ "unit TEXT,"
-				+ "name NOT NULL,"
-				+ "FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE"
-				+ ")";
+	    String ingredientsTable = "CREATE TABLE IF NOT EXISTS ingredients ("
+	            + "id SERIAL PRIMARY KEY,"
+	            + "recipe_id INTEGER NOT NULL,"
+	            + "amount TEXT,"
+	            + "unit TEXT,"
+	            + "name TEXT NOT NULL,"
+	            + "FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE"
+	            + ");";
 
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement()) {
-			stmt.execute(recipesTable);
-			stmt.execute(ingredientsTable);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    try (Connection conn = connect();
+	         Statement stmt = conn.createStatement()) {
+	        
+	        stmt.execute(recipesTable);
+	        stmt.execute(ingredientsTable);
+	        logger.info("Tables initialized successfully.");
+	        
+	    } catch (SQLException e) {
+	    	throw e;
+	    }
 	}
 
 	public int insertPartialRecipe(String title, String directions, String tags) {
@@ -82,34 +87,87 @@ public class RecipeDAO {
 
 	}
 
+//	public int insertRecipe(Recipe recipe) {
+//		int recipeId = insertPartialRecipe(recipe.getTitle(),
+//				recipe.getDirections(),
+//				String.join(",", recipe.getTags()));
+//
+//		if (recipeId == -1) {
+//			logger.error("Recipe with id {} not found.", recipeId);
+//			return -1;
+//		}
+//
+//		String sql = "INSERT INTO ingredients(recipe_id, amount, unit, name) VALUES (?, ?, ?, ?)";
+//
+//		try (Connection conn = connect();
+//				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+//
+//			for (Ingredient ing : recipe.getIngredients()) {
+//				pstmt.setInt(1, recipeId);
+//				pstmt.setString(2, ing.getAmount().toString());
+//				pstmt.setString(3, ing.getUnit().toString());
+//				pstmt.setString(4, ing.getName());
+//				pstmt.addBatch();
+//			}
+//
+//			pstmt.executeBatch();
+//		} catch (SQLException e) {
+//			logger.warn("SQL Exception in insertRecipe(): {}", e.getMessage());
+//		}
+//		return recipeId;
+//	}
+	
 	public int insertRecipe(Recipe recipe) {
-		int recipeId = insertPartialRecipe(recipe.getTitle(),
-				recipe.getDirections(),
-				String.join(",", recipe.getTags()));
+	    String insertRecipeSql = "INSERT INTO recipes(title, directions, tags) VALUES(?, ?, ?)";
+	    String insertIngredientSql = "INSERT INTO ingredients(recipe_id, amount, unit, name) VALUES (?, ?, ?, ?)";
 
-		if (recipeId == -1) {
-			logger.error("Recipe with id {} not found.", recipeId);
-			return -1;
-		}
+	    int recipeId = -1;
 
-		String sql = "INSERT INTO ingredients(recipe_id, amount, unit, name) VALUES (?, ?, ?, ?)";
+	    try (Connection conn = connect()) {
+	        conn.setAutoCommit(false);   // Start transaction
 
-		try (Connection conn = connect();
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        // Insert recipe
+	        try (PreparedStatement pstmt = conn.prepareStatement(insertRecipeSql, Statement.RETURN_GENERATED_KEYS)) {
+	            pstmt.setString(1, recipe.getTitle());
+	            pstmt.setString(2, recipe.getDirections());
+	            pstmt.setString(3, recipe.stringifyTags() != null ? recipe.stringifyTags() : "");
 
-			for (Ingredient ing : recipe.getIngredients()) {
-				pstmt.setInt(1, recipeId);
-				pstmt.setString(2, ing.getAmount().toString());
-				pstmt.setString(3, ing.getUnit().toString());
-				pstmt.setString(4, ing.getName());
-				pstmt.addBatch();
-			}
+	            pstmt.executeUpdate();
 
-			pstmt.executeBatch();
-		} catch (SQLException e) {
-			logger.warn("SQL Exception in insertRecipe(): {}", e.getMessage());
-		}
-		return recipeId;
+	            try (ResultSet rs = pstmt.getGeneratedKeys()) {
+	                if (rs.next()) {
+	                    recipeId = rs.getInt(1);
+	                }
+	            }
+	        }
+
+	        if (recipeId == -1) {
+	            conn.rollback();
+	            logger.error("Failed to generate recipe ID");
+	            return -1;
+	        }
+
+	        // Insert ingredients
+	        try (PreparedStatement pstmt = conn.prepareStatement(insertIngredientSql)) {
+	            for (Ingredient ing : recipe.getIngredients()) {
+	                pstmt.setInt(1, recipeId);
+	                pstmt.setString(2, ing.getAmount().toString());
+	                pstmt.setString(3, ing.getUnit().toString());
+	                pstmt.setString(4, ing.getName());
+	                pstmt.addBatch();
+	            }
+	            pstmt.executeBatch();
+	        }
+
+	        // Commit both recipe and ingredients
+	        conn.commit();
+	        logger.info("Recipe '{}' inserted successfully with ID {}", recipe.getTitle(), recipeId);
+
+	    } catch (SQLException e) {
+	        logger.error("Failed to insert recipe: {}", recipe.getTitle(), e);
+	    }
+
+	    return recipeId;
 	}
 
 	public void updateRecipe(String title, String directions, String tags, String id) {
@@ -285,15 +343,16 @@ public class RecipeDAO {
 	}
 
 	public void clearRecipes() {
-		String sql = "DELETE FROM recipes";
-
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement()) {
-			stmt.execute(sql);
-		} catch (SQLException e) {
-			logger.error("SQL Exception - Could not drop table: {}.", e.getMessage());
-		}
-		logger.info("Table dropped.");
+	    String sql = "DELETE FROM recipes";
+	    try (Connection conn = connect();
+	         Statement stmt = conn.createStatement()) {
+	        
+	        int rows = stmt.executeUpdate(sql);
+	        logger.info("Cleared {} recipes from database.", rows);
+	        
+	    } catch (SQLException e) {
+	        logger.error("ClearRecipes(): Failed to clear recipes", e);
+	    }
 	}
 
 	public List<Recipe> selectAllRecipesAsList() {

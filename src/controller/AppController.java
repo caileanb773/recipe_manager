@@ -8,8 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -25,11 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import datalayer.RecipeDAO;
 import definitions.Constants;
-import definitions.Ingredient;
-import definitions.Notification;
-import definitions.NotificationType;
 import definitions.Recipe;
-import definitions.StaffMember;
 import definitions.Theme;
 import model.Model;
 import util.Config;
@@ -40,7 +35,6 @@ import view.LoginScreen;
 import view.NotificationScreen;
 import view.RecipeScreen;
 import view.RegisterScreen;
-
 
 /*
  * Author: Cailean Bernard
@@ -67,11 +61,6 @@ public class AppController implements ActionListener {
 		this.model = model;
 		this.view = view;
 		this.recipeDao = new RecipeDAO();
-		//		if (appIsOnline) {
-		//			initialize(ONLINE);
-		//		} else {
-		//			initialize(OFFLINE);
-		//		}
 	}
 
 	public void initialize(boolean mode) {
@@ -79,11 +68,20 @@ public class AppController implements ActionListener {
 		bundle = view.getBundle();
 
 		if (mode == Constants.ONLINE) {
-			reportProgress(50, "Loading recipes...");
-			recipeDao.init();
+			reportProgress(50, "Connecting to database...");
+			
+			try {
+				recipeDao.init();
+			} catch (SQLException e) {
+		    	logger.error("Initialize(): Database connection failed.", e);
+			} finally {
+				// XXX Initialize in offline mode instead
+			}
+			
+			reportProgress(55, "Loading recipes from database...");
 			model.setRecipes(recipeDao.selectAllRecipesAsList());
 		} if (mode == Constants.OFFLINE) { // XXX for now, this is never called.
-			reportProgress(50, "Loading recipes...");
+			reportProgress(50, "Loading recipes from file...");
 			model.initModelOffline("backup.rcp");
 		}
 
