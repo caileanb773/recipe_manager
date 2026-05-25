@@ -1,5 +1,6 @@
 package datalayer;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,12 +11,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import definitions.Fraction;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Unit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
@@ -23,14 +25,36 @@ import org.slf4j.LoggerFactory;
  */
 public class RecipeDAO {
 
-	private static final String URL = "jdbc:postgresql://192.168.0.187:5432/recipes";
-	private static final String USER = "recipe_app_user";
-	private static final String PASSWORD = "D4mnF1n3C0ff33!1990";
+	private static String DB_HOST;
+	private static String DB_USER;
+	private static String DB_PASSWORD;
 	private static final Logger logger = LoggerFactory.getLogger(RecipeDAO.class);
 	
+	/* db.properties layout:
+	 * 
+	 * db.host=				// ip
+	 * db.port=				// port
+	 * db.name=				// database name
+	 * db.user=				// user who has permission to make changes to database
+	 * db.password=			// password for above user
+	 */
+	static {
+	    Properties props = new Properties();
+	    try (InputStream is = RecipeDAO.class.getClassLoader().getResourceAsStream("db.properties")) {
+	        props.load(is);
+	        DB_HOST = props.getProperty("db.host");
+	        DB_USER = props.getProperty("db.user");
+	        DB_PASSWORD = props.getProperty("db.password");
+	    } catch (Exception e) {
+	        logger.error("Failed to load database config", e);
+	        throw new RuntimeException("Database configuration missing", e);
+	    }
+	}
+
+	private static final String URL = "jdbc:postgresql://" + DB_HOST + ":5432/recipes";
 	
 	private Connection connect() throws SQLException {
-		return DriverManager.getConnection(URL, USER, PASSWORD);
+		return DriverManager.getConnection(URL, DB_USER, DB_PASSWORD);
 	}
 
 	// Create the tables
@@ -56,8 +80,7 @@ public class RecipeDAO {
 	        
 	        stmt.execute(recipesTable);
 	        stmt.execute(ingredientsTable);
-	        logger.info("Tables initialized successfully.");
-	        
+	        logger.info("Successfully connected to database.");
 	    } catch (SQLException e) {
 	    	throw e;
 	    }
