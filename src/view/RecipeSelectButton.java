@@ -7,7 +7,7 @@ import definitions.Recipe;
 
 /*
  * Author: Cailean Bernard
- * Contents: The button representing a selected recipe (?)
+ * Contents: A clickable entry in the list of recipes on the Recipe List screen.
  */
 @SuppressWarnings("serial")
 public class RecipeSelectButton extends JButton {

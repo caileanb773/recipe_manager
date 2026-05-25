@@ -115,8 +115,7 @@ public class Constants {
 	static {
 		Font font = null;
 		try {
-			// InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("font/Geist/static/Geist-SemiBold.ttf");
-			InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("font/Ubuntu/Ubuntu-Regular.ttf");
+			InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("font/Ubuntu/Ubuntu-Regular.ttf"); 
 			if (fontStream != null) {
 				font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, 16);
 			} else {
