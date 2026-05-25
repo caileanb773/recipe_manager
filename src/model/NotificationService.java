@@ -20,8 +20,6 @@ import util.Utility;
  */
 public class NotificationService {
 
-	// TODO defensive programming for methods
-
 	// Notification-related
 	private List<Notification> notifications;
 	private List<NotificationListener> listeners;

@@ -31,12 +31,14 @@ public class NotificationPanel extends JPanel implements Listenable {
 	private JLabel notes;
 	private JButton expand;
 	//private ImageIcon divider;	// separates each visual element of the notif btn 
+	private Border emptyBorder = BorderFactory.createEmptyBorder(2,2,0,2);
+	private Border ACTIVE_BORDER = BorderFactory.createCompoundBorder(emptyBorder, Constants.SOFT_RAISED_BORDER);
+	private Border INACTIVE_BORDER = BorderFactory.createCompoundBorder(emptyBorder, Constants.SOFT_LOWERED_BORDER);
+	
 	
 	public NotificationPanel(Notification notification) {
 		new JPanel(new FlowLayout());
-		Border emptyBorder = BorderFactory.createEmptyBorder(2,2,0,2);
-		setBorder(BorderFactory.createCompoundBorder(emptyBorder,
-				Constants.SOFT_RAISED_BORDER));
+		setBorder(notification.isActive() ? ACTIVE_BORDER : INACTIVE_BORDER);
 		this.notification = notification;
 		boolean displayWithNotes = false;
 		
@@ -91,6 +93,10 @@ public class NotificationPanel extends JPanel implements Listenable {
 	
 	public void setSelected(boolean isSelected) {
 		this.checkBx.setSelected(isSelected);
+	}
+	
+	public void setBorder(boolean active) {
+		setBorder(active ? ACTIVE_BORDER : INACTIVE_BORDER);
 	}
 
 	@Override

@@ -609,7 +609,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 			if (d != null) {
 				d.setBackground(panelBgCol);
 			} else {
-				logger.warn("Error changing dialog BGCol, null dialog.");
+				logger.warn("ChangeTheme(): Error changing dialog BGCol, null dialog.");
 			}
 		}
 
@@ -677,13 +677,19 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 	}
 
 	@Override
-	public void notificationMarkedAsRead() {
+	public void notificationMarkedAsSelected() {
 		notificationsBtn.decrement();
 	}
 
 	@Override
-	public void notificationMarkedAsUnread() {
+	public void notificationMarkedAsUnselected() {
 		notificationsBtn.increment();
+	}
+
+	@Override
+	public void notificationMarkedAsInactive() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

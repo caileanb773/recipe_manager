@@ -26,13 +26,18 @@ public interface NotificationListener {
 	void notificationRemoved();
 	
 	/**
-	 * Called when a notification is marked as read.
+	 * Called when a notification is marked as selected.
 	 */
-	void notificationMarkedAsRead();
+	void notificationMarkedAsSelected();
 	
 	/**
-	 * Called when a notification is marked as unread.
+	 * Called when a notification is marked as unselected.
 	 */
-	void notificationMarkedAsUnread();
+	void notificationMarkedAsUnselected();
+	
+	/**
+	 * Called when a notification is marked as inactive.
+	 */
+	void notificationMarkedAsInactive();
 
 }

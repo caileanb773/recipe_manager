@@ -4,11 +4,14 @@ import static definitions.Constants.DARK_BG_COL;
 import static definitions.Constants.DARK_FG_COL;
 import static definitions.Constants.DARK_GRADIENT_BOTTOM;
 import static definitions.Constants.DARK_GRADIENT_TOP;
+import static definitions.Constants.DARK_ACTIVE_NOTIF_COL;
+import static definitions.Constants.DARK_INACTIVE_NOTIF_COL;
 import static definitions.Constants.LIGHT_BG_COL;
 import static definitions.Constants.LIGHT_FG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
-import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
+import static definitions.Constants.LIGHT_ACTIVE_NOTIF_COL;
+import static definitions.Constants.LIGHT_INACTIVE_NOTIF_COL;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -73,8 +76,8 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 	private NotificationService service;
 	private Color topGradient;
 	private Color botGradient;
-	private Color rcpBtnColor;
-	private Color rcpBtnFontCol;
+	private Color activeCol;
+	private Color inactiveCol;
 	private Color headerPanelCol;
 	private Color footerPanelCol;
 	private Color panelBgCol;
@@ -93,8 +96,8 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 		// Default theme
 		topGradient = LIGHT_GRADIENT_TOP;
 		botGradient = LIGHT_GRADIENT_BOTTOM;
-		rcpBtnColor = LIGHT_RECIPE_BTN_COL;
-		rcpBtnFontCol = Color.black;
+		activeCol = LIGHT_ACTIVE_NOTIF_COL;
+		inactiveCol = LIGHT_INACTIVE_NOTIF_COL;
 		panelBgCol = LIGHT_BG_COL;
 		headerPanelCol = LIGHT_FG_COL;
 		footerPanelCol = LIGHT_FG_COL;
@@ -165,10 +168,11 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 		//footerPanel.setBorder(Constants.SOFT_RAISED_BORDER);
 
 		// ---------------------------------------------------------------------
-		// A C T I O N  L I S T E N E R S
+		// B U T T O N  A C T I O N S
 		// ---------------------------------------------------------------------
 
 		selectAll.addActionListener(ignored -> toggleNotificationSelectionStatus());
+		
 		timeBtn.addActionListener(ignored -> {
 			// XXX replace this with call to NotificationService request
 			//sort(Constants.SORT_TIME, timeStampSortingOrder);
@@ -179,6 +183,14 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 			// XXX replace this with call to NotificationService request
 			//sort(Constants.SORT_SENDER, nameSortingOrder);
 			nameSortingOrder = !nameSortingOrder;			
+		});
+		
+		confirmBtn.addActionListener(ignored -> {
+			confirmSelected();
+		});
+		
+		rejectBtn.addActionListener(ignored -> {
+			rejectSelected();
 		});
 
 		// ---------------------------------------------------------------------
@@ -215,7 +227,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 	 * by fetching and validating the list from the Notification Service, and
 	 * then displaying them. 
 	 */
-	public void refreshNotifications() {
+	private void refreshNotifications() {
 		List<Notification> notificationList = fetchNotifications();
 		
 		if (notificationList == null) {
@@ -250,13 +262,14 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 
 		for (NotificationPanel nBtn : notificationItems) {
 			notificationListPanel.add(nBtn);
+			nBtn.setBackground(nBtn.getNotification().isActive() ? activeCol : inactiveCol);
 			notificationListPanel.add(Box.createVerticalStrut(1));
 		}
 
 		Utility.revalidateAndRepaint(notificationListPanel);
 	}
 
-	public void toggleNotificationSelectionStatus() {
+	private void toggleNotificationSelectionStatus() {
 		setAllNotificationsSelected(selectAll.isSelected());
 	}
 
@@ -272,6 +285,67 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 		List<Notification> notifications = service.getNotifications();
 		
 		rebuildUI(notifications);
+	}
+	
+	/**
+	 * Confirm the changes proposed by all notifications selected (via tickbox).
+	 */
+	private void confirmSelected() {
+		List<Notification> list = service.getNotifications();
+		
+		if (list == null) {
+			logger.warn("ConfirmSelected(): Notification List is null.");
+			return;
+		}
+		
+		selectAll.setSelected(false);
+		
+		for (Notification n : list) {
+			if (n.isSelected()) {
+				n.setSelected(false);
+				
+				if (n.isActive()) {
+					applyProposedChanges(); // Method stub
+					n.setInactive();
+				}
+			}
+		}
+		
+		rebuildUI(list);
+	}
+	
+	private void rejectSelected() {
+		List<Notification> list = service.getNotifications();
+		
+		if (list == null) {
+			logger.warn("RejectSelected(): Notification List is null.");
+			return;
+		}
+		
+		selectAll.setSelected(false);
+		
+		for (Notification n : list) {
+			if (n.isSelected()) {
+				n.setSelected(false);
+				
+				if (n.isActive()) {
+					rejectProposedChanges(); // Method stub
+					n.setInactive();
+				}
+			}
+		}
+		
+		rebuildUI(list);
+	}
+	
+	private void applyProposedChanges() {
+		// TODO way down the line
+		logger.info("Applying proposed changes");
+	}
+	
+	private void rejectProposedChanges() {
+		// TODO way down the line
+		logger.info("Rejecting proposed changes");
 	}
 
 	@Override
@@ -314,6 +388,8 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 			panelBgCol = LIGHT_BG_COL;
 			headerPanelCol = LIGHT_FG_COL;
 			footerPanelCol = LIGHT_FG_COL;
+			activeCol = LIGHT_ACTIVE_NOTIF_COL;
+			inactiveCol = LIGHT_INACTIVE_NOTIF_COL;
 			break;
 		case DARK:
 			topGradient = DARK_GRADIENT_TOP;
@@ -321,6 +397,8 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 			panelBgCol = DARK_BG_COL;
 			headerPanelCol = DARK_FG_COL;
 			footerPanelCol = DARK_FG_COL;
+			activeCol = DARK_ACTIVE_NOTIF_COL;
+			inactiveCol = DARK_INACTIVE_NOTIF_COL;
 			break;
 		default:
 			logger.warn("Unrecognized theme: {}", theme.toString());
@@ -329,6 +407,8 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 		notificationListPanel.setBackground(panelBgCol);
 		headerPanel.setBackground(headerPanelCol);
 		footerPanel.setBackground(footerPanelCol);
+		
+		refreshNotifications();
 	}
 
 	@Override
@@ -352,13 +432,19 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 	}
 
 	@Override
-	public void notificationMarkedAsRead() {
+	public void notificationMarkedAsSelected() {
 		refreshNotifications();
 	}
 
 	@Override
-	public void notificationMarkedAsUnread() {
+	public void notificationMarkedAsUnselected() {
 		refreshNotifications();
+	}
+
+	@Override
+	public void notificationMarkedAsInactive() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
