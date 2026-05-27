@@ -61,7 +61,7 @@ public class RecipeDAO {
 	}
 
 	// Create the tables
-	public void initialize() throws SQLException {
+	public void initialize() throws SQLException, PSQLException {
 	    String recipesTable = "CREATE TABLE IF NOT EXISTS recipes ("
 	            + "id SERIAL PRIMARY KEY,"
 	            + "title TEXT NOT NULL,"

@@ -142,7 +142,7 @@ public class Model {
 	}
 
 	public void exportRecipeList(String exportPath) throws IOException, SecurityException {
-		if (recipes.isEmpty() || recipes == null) {
+		if (recipes == null || recipes.isEmpty()) {
 			logger.info("Cancelling export: empty recipe list.");
 			return;
 		} else if (exportPath.isEmpty()) {

@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -20,12 +19,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import org.apache.commons.io.FilenameUtils;
 import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import datalayer.RecipeDAO;
 import definitions.Constants;
 import definitions.Recipe;
@@ -54,7 +51,7 @@ public class AppController implements ActionListener {
 	private AddRecipeDialog rcpDialog;
 
 	// Other
-	private boolean appIsOnline = true;
+	private boolean isOnline = true;
 	private RecipeDAO recipeDao;
 	private ResourceBundle bundle;
 	private ProgressListener progressListener;
@@ -310,7 +307,7 @@ public class AppController implements ActionListener {
 
 	public void handleAddRecipe(Recipe newRecipe) {
 		if (newRecipe != null) {
-			if (appIsOnline) {
+			if (isOnline) {
 				int newRcpId = recipeDao.insertRecipe(newRecipe);
 				newRecipe.setId(newRcpId);
 			}
@@ -350,7 +347,7 @@ public class AppController implements ActionListener {
 			return;
 		}
 
-		if (appIsOnline) {
+		if (isOnline) {
 			recipeDao.updateRecipe(rcpEdited);
 		}
 
@@ -367,7 +364,7 @@ public class AppController implements ActionListener {
 		Recipe recipeToRemove = recipeScreen.getActiveRecipe();
 
 		if (recipeToRemove != null && model.getRecipes().contains(recipeToRemove)) {
-			if (appIsOnline) {
+			if (isOnline) {
 				recipeDao.removeRecipe(recipeToRemove.getId());
 			}
 			model.removeRecipe(recipeToRemove);
@@ -385,7 +382,7 @@ public class AppController implements ActionListener {
 
 	public void refreshRecipeList() {
 		RecipeScreen ui = view.getRecipeScreen();
-		if (appIsOnline) {
+		if (isOnline) {
 			ui.populateRecipeSelectList(recipeDao.selectAllRecipesAsList());
 		} else {
 			ui.populateRecipeSelectList(model.getRecipes());
@@ -490,7 +487,7 @@ public class AppController implements ActionListener {
 								JOptionPane.ERROR_MESSAGE);
 					}
 
-					if (appIsOnline) {
+					if (isOnline) {
 
 						// XXX Loading bar for recipes
 						JDialog progressDialog = new JDialog((JFrame) null,
@@ -622,6 +619,14 @@ public class AppController implements ActionListener {
 
 	public AppFrame getView() {
 		return this.view;
+	}
+	
+	public boolean isOnline() {
+		return isOnline;
+	}
+	
+	public void setOnline(boolean online) {
+		isOnline = online;
 	}
 	
 }
