@@ -12,8 +12,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+
+import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import definitions.Fraction;
 import definitions.Ingredient;
 import definitions.Recipe;
@@ -58,7 +61,7 @@ public class RecipeDAO {
 	}
 
 	// Create the tables
-	public void init() throws SQLException {
+	public void initialize() throws SQLException {
 	    String recipesTable = "CREATE TABLE IF NOT EXISTS recipes ("
 	            + "id SERIAL PRIMARY KEY,"
 	            + "title TEXT NOT NULL,"
@@ -81,65 +84,13 @@ public class RecipeDAO {
 	        stmt.execute(recipesTable);
 	        stmt.execute(ingredientsTable);
 	        logger.info("Successfully connected to database.");
+	    } catch (PSQLException e) {
+	    	throw e;
 	    } catch (SQLException e) {
 	    	throw e;
 	    }
 	}
 
-	public int insertPartialRecipe(String title, String directions, String tags) {
-		String sql = "INSERT INTO recipes(title, directions, tags) VALUES(?, ?, ?)";
-
-		try (Connection conn = connect();
-				PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-			pstmt.setString(1, title);
-			pstmt.setString(2, directions);
-			pstmt.setString(3, tags);
-			pstmt.executeUpdate();
-
-			try (ResultSet rs = pstmt.getGeneratedKeys()) {
-				if (rs.next()) {
-					return rs.getInt(1); // return generated recipe id
-				}
-			}
-
-		} catch (SQLException e) {
-			logger.warn("SQL Exception in insertPartialRecipe(): {}", e.getMessage());
-		}
-		return -1;
-
-	}
-
-//	public int insertRecipe(Recipe recipe) {
-//		int recipeId = insertPartialRecipe(recipe.getTitle(),
-//				recipe.getDirections(),
-//				String.join(",", recipe.getTags()));
-//
-//		if (recipeId == -1) {
-//			logger.error("Recipe with id {} not found.", recipeId);
-//			return -1;
-//		}
-//
-//		String sql = "INSERT INTO ingredients(recipe_id, amount, unit, name) VALUES (?, ?, ?, ?)";
-//
-//		try (Connection conn = connect();
-//				PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//
-//			for (Ingredient ing : recipe.getIngredients()) {
-//				pstmt.setInt(1, recipeId);
-//				pstmt.setString(2, ing.getAmount().toString());
-//				pstmt.setString(3, ing.getUnit().toString());
-//				pstmt.setString(4, ing.getName());
-//				pstmt.addBatch();
-//			}
-//
-//			pstmt.executeBatch();
-//		} catch (SQLException e) {
-//			logger.warn("SQL Exception in insertRecipe(): {}", e.getMessage());
-//		}
-//		return recipeId;
-//	}
-	
 	public int insertRecipe(Recipe recipe) {
 	    String insertRecipeSql = "INSERT INTO recipes(title, directions, tags) VALUES(?, ?, ?)";
 	    String insertIngredientSql = "INSERT INTO ingredients(recipe_id, amount, unit, name) VALUES (?, ?, ?, ?)";
@@ -185,9 +136,12 @@ public class RecipeDAO {
 	        // Commit both recipe and ingredients
 	        conn.commit();
 	        logger.info("Recipe '{}' inserted successfully with ID {}", recipe.getTitle(), recipeId);
-
+	    } catch (PSQLException e) {
+	    	logger.error("InsertRecipe(): Couldn't establish connection to db", e);
+	    	return -1;
 	    } catch (SQLException e) {
-	        logger.error("Failed to insert recipe: {}", recipe.getTitle(), e);
+	        logger.error("Failed to insert recipe: {}: {}", recipe.getTitle(), e);
+	        return -1;
 	    }
 
 	    return recipeId;
@@ -208,8 +162,10 @@ public class RecipeDAO {
 			pstmt.setInt(4, Integer.parseInt(id));
 
 			pstmt.executeUpdate();
+	    } catch (PSQLException e) {
+	    	logger.error("UpdateRecipe(String,String,String,String): Couldn't establish connection to db", e);
 		} catch (SQLException e) {
-			logger.error("SQL Exception - Update failed: {}", e.getMessage());
+			logger.error("UpdateRecipe(String,String,String,String): Update failed", e);
 		}
 	}
 
@@ -228,8 +184,10 @@ public class RecipeDAO {
 			pstmt.setInt(4, id);
 
 			pstmt.executeUpdate();
+	    } catch (PSQLException e) {
+	    	logger.error("UpdateRecipe(String,String,String,int): Couldn't establish connection to db", e);
 		} catch (SQLException e) {
-			logger.error("SQL Exception - Update operation failed: {}", e.getMessage());
+			logger.error("UpdateRecipe(String,String,String,int): Update operation failed", e);
 		}
 	}
 
@@ -277,9 +235,10 @@ public class RecipeDAO {
 
 			conn.commit();
 			logger.info("Recipe updated successfully.");
-
+	    } catch (PSQLException e) {
+	    	logger.error("UpdateRecipe(Recipe): Couldn't establish connection to db", e);
 		} catch (SQLException e) {
-			logger.error("SQL Exception - Update operation failed: {}", e.getMessage());
+			logger.error("UpdateRecipe(Recipe): Update operation failed", e);
 		}
 	}
 
@@ -296,8 +255,10 @@ public class RecipeDAO {
 			if (affectedRows == 0) {
 				logger.warn("No recipe found with id {}.", id);
 			}
+	    } catch (PSQLException e) {
+	    	logger.error("RemoveRecipe(int): Couldn't establish connection to db", e);
 		} catch (SQLException e) {
-			logger.error("SQL Exception - Remove operation failed: {}", e.getMessage());
+			logger.error("RemoveRecipe(int): Remove operation failed", e);
 		}
 	}
 
@@ -313,8 +274,10 @@ public class RecipeDAO {
 			if (affectedRows == 0) {
 				logger.warn("No recipe found with id {}.", id);
 			}
+	    } catch (PSQLException e) {
+	    	logger.error("RemoveRecipe(String): Couldn't establish connection to db", e);
 		} catch (SQLException e) {
-			logger.error("SQL Exception - Remove operation failed: {}", e.getMessage());
+			logger.error("RemoveRecipe(String): Remove operation failed", e);
 		}
 	}
 
@@ -358,8 +321,12 @@ public class RecipeDAO {
 
 				recipe = new Recipe(id, title, ingredients, directions, tags);
 			}
+	    } catch (PSQLException e) {
+	    	logger.error("FetchRecipe(): Couldn't establish connection to db", e);
+	    	return null;
 		} catch (SQLException e) {
-			logger.error("SQL Exception - Select operation failed: ", e.getMessage());
+			logger.error("FetchRecipe(): Select operation failed", e);
+			return null;
 		}
 
 		return recipe;
@@ -372,7 +339,8 @@ public class RecipeDAO {
 	        
 	        int rows = stmt.executeUpdate(sql);
 	        logger.info("Cleared {} recipes from database.", rows);
-	        
+	    } catch (PSQLException e) {
+	    	logger.error("ClearRecipes(): Couldn't establish connection to db", e);
 	    } catch (SQLException e) {
 	        logger.error("ClearRecipes(): Failed to clear recipes", e);
 	    }
@@ -433,9 +401,12 @@ public class RecipeDAO {
 				Recipe recipe = new Recipe(id, title, ingredients, directions, tags);
 				recipes.add(recipe);
 			}
-
+	    } catch (PSQLException e) {
+	    	logger.error("SelectAllRecipesAsList(): Couldn't establish connection to db", e);
+	    	return null;
 		} catch (SQLException e) {
-			logger.error("SQL Exception - selectAllRecipesAsList() failed: {}", e.getMessage());
+			logger.error("SelectAllRecipesAsList(): failed", e);
+			return null;
 		}
 
 		return recipes;

@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -19,9 +20,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.apache.commons.io.FilenameUtils;
+import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import datalayer.RecipeDAO;
 import definitions.Constants;
 import definitions.Recipe;
@@ -71,11 +75,11 @@ public class AppController implements ActionListener {
 			reportProgress(50, "Connecting to database...");
 			
 			try {
-				recipeDao.init();
+				recipeDao.initialize();
+			} catch (PSQLException e) {
+				logger.warn("Initialize(): Couldn't establish connection to database.", e);
 			} catch (SQLException e) {
 		    	logger.error("Initialize(): Database connection failed.", e);
-			} finally {
-				// XXX Initialize in offline mode instead
 			}
 			
 			reportProgress(55, "Loading recipes from database...");
