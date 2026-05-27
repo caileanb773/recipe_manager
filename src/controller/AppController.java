@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -19,10 +20,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.apache.commons.io.FilenameUtils;
 import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import datalayer.RecipeDAO;
 import definitions.Constants;
 import definitions.Recipe;
@@ -32,6 +35,7 @@ import util.Config;
 import util.ProgressListener;
 import view.AddRecipeDialog;
 import view.AppFrame;
+import view.ApplicationScreen;
 import view.LoginScreen;
 import view.NotificationScreen;
 import view.RecipeScreen;
@@ -593,24 +597,33 @@ public class AppController implements ActionListener {
 
 	public void setLanguage(Locale locale) {
 		logger.info("Switching language to {}", locale);
+		
+		// Temporary reference to all screens of application
 		Config cfg = view.getConfig();
 		RecipeScreen rcp = view.getRecipeScreen();
 		LoginScreen log = view.getLoginScreen();
 		RegisterScreen reg = view.getRegisterScreen();
 		NotificationScreen notif = view.getNotificationScreen();
+		
+		// Single source of truth for the current locale is in config
 		cfg.setLocale(locale);
 		cfg.setResourceBundle("MessagesBundle", locale);
+		
+		// View fetches current active resource bundle from Config
 		view.updateBundle();
 		view.toggleLangButton(locale);
 		view.refreshTranslatableText();
-		rcp.updateBundle(locale);
-		rcp.refreshTranslatable();
-		log.updateBundle(locale);
-		log.refreshTranslatable();
-		reg.updateBundle(locale);
-		reg.refreshTranslatable();
-		notif.updateBundle(locale);
-		notif.refreshTranslatable();
+		
+		// Update each Application Screen's locale and refresh translatable elements
+		updateLocaleAndRefreshTranslatable(rcp, locale);
+		updateLocaleAndRefreshTranslatable(log, locale);
+		updateLocaleAndRefreshTranslatable(reg, locale);
+		updateLocaleAndRefreshTranslatable(notif, locale);
+	}
+	
+	private void updateLocaleAndRefreshTranslatable(ApplicationScreen screen, Locale locale) {
+		screen.updateBundle(locale);
+		screen.refreshTranslatable();
 	}
 
 	public Model getModel() {
