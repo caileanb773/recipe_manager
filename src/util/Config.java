@@ -67,7 +67,7 @@ public class Config {
 
 		if (loadTimeout >= 10) {
 			logger.info("Could not load settings; too many attempts.");
-			loadFailsafeConfig();
+			loadDefaultConfig();
 			return;
 		}
 
@@ -141,7 +141,7 @@ public class Config {
 		return false;
 	}
 
-	private void loadFailsafeConfig() {
+	private void loadDefaultConfig() {
 		locale = new Locale("en");
 		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
 		lastEmail = null;
@@ -213,10 +213,11 @@ public class Config {
 				default:
 					break;
 				}
-				writer.write("\n");
+				writer.newLine();
 			}
 		} catch (IOException e) {
-			logger.error("IO Exception encountered while writing config.ini{}", e.getMessage());
+			logger.error("CreateDefaultConfig():"
+					+ "IO Exception encountered while writing config.ini", e);
 		}
 
 		// XXX this could lead to an infinite loop. There's probably a better way
