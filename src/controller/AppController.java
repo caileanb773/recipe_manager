@@ -398,8 +398,10 @@ public class AppController implements ActionListener {
 	// TODO edit this to include JSON format eventually
 	public void handleExportRecipes() {
 		bundle = view.getBundle();
+		
+		List<Recipe> recipes = model.getRecipes();
 
-		if (model.getRecipes().isEmpty()) {
+		if (recipes == null || recipes.isEmpty()) {
 			JOptionPane.showMessageDialog(null,
 					bundle.getString("export.noRecipes"),
 					bundle.getString("error.title"),
