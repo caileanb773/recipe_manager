@@ -18,6 +18,8 @@ import view.AppFrame;
 public class Main {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
+	
+	// XXX Don't forget to reset Mode to ONLINE in Loader (Controller initialize).
 
 	public static void main(String[] args) {
 		System.setProperty("awt.useSystemAAFontSettings","on"); // For some reason this changes the font app-wide. Test it out for a bit

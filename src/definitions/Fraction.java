@@ -3,8 +3,11 @@ package definitions;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 /*
  * Author: Cailean Bernard
@@ -13,11 +16,31 @@ import org.slf4j.LoggerFactory;
  */
 public class Fraction {
 
+	// Fields
 	private int numerator;
 	private int denominator;
 	private static final Logger logger = LoggerFactory.getLogger(Fraction.class);
+	
+	// Constants
+	private static final int NUMERATOR = 0;
+	private static final int DENOMINATOR = 1;
 
-
+	public Fraction() {}
+	
+	@JsonCreator
+	public Fraction(String number) {
+		
+		// Whole number
+		if (!number.contains("/")) {
+			numerator = Integer.parseInt(number);
+			denominator = 1;
+		} else {
+			String[] parts = number.split("/");
+			numerator = Integer.parseInt(parts[NUMERATOR]);
+			denominator = Integer.parseInt(parts[DENOMINATOR]);
+		}
+	}
+	
 	public Fraction(int num, int den) {
 		if (den == 0) {
 			logger.warn("Denominator set to 0 in new fraction: Fraction().");

@@ -2,19 +2,24 @@ package definitions;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /*
  * Author: Cailean Bernard
  * Contents: Ingredient definition.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Ingredient {
 	
-	private Fraction quantity;
+	private Fraction amount;
 	private Unit unit;
 	private String name;
 
 	
+	public Ingredient() {}
+	
 	public Ingredient(Fraction amount, Unit u, String n) {
-		quantity = amount;
+		this.amount = amount;
 		name = n;
 		unit = u;
 	}
@@ -27,13 +32,13 @@ public class Ingredient {
 		return unit;
 	}
 	
-	public Fraction getQuantity() {
-		return quantity;
+	public Fraction getAmount() {
+		return amount;
 	}
 	
 	@Override
 	public String toString() {
-		return quantity.toString() + " " + unit.toString().toLowerCase() + " " + name;
+		return amount.toString() + " " + unit.toString().toLowerCase() + " " + name;
 	}
 	
 	@Override
@@ -42,14 +47,14 @@ public class Ingredient {
 	    if (!(o instanceof Ingredient)) return false;
 
 	    Ingredient other = (Ingredient) o;
-	    return Objects.equals(quantity, other.quantity) &&
+	    return Objects.equals(amount, other.amount) &&
 	           unit == other.unit &&
 	           Objects.equals(name, other.name);
 	}
 
 	@Override
 	public int hashCode() {
-	    return Objects.hash(quantity, unit, name);
+	    return Objects.hash(amount, unit, name);
 	}
 
 }
