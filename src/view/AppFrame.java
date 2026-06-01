@@ -92,6 +92,7 @@ public class AppFrame implements Listenable {
 	// DEBUGGING OPTIONS -- XXX -- TO BE DELETED //
 	private JMenuItem debugLogin;
 	private JMenuItem debugAddNotif;
+	private JMenuItem debugQuerySpring;
 
 	// Other
 	private ActionListener listener;
@@ -163,10 +164,13 @@ public class AppFrame implements Listenable {
 
 		debugAddNotif = new JMenuItem("DEBUG: Add Notification");
 		menuFile.add(debugAddNotif);
-		//		debugAddNotif.addActionListener(ignored -> listener.actionPerformed(
-		//				new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "dbgAddNotif")));
-
 		debugAddNotif.addActionListener(ignored -> dbgAddNotif());
+		
+		debugQuerySpring = new JMenuItem("DEBUG: Query Spring Boot");
+		menuFile.add(debugQuerySpring);
+		debugQuerySpring.addActionListener(ignored -> listener.actionPerformed(
+				new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "debugQuerySpring")));
+		
 		menuOpt = new JMenu(bundle.getString("menuOpt"));
 		menuLang = new JMenu(bundle.getString("menuLang"));
 		menuBtnReadMe = new JMenuItem(bundle.getString("menuBtnReadMe"));

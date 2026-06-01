@@ -8,14 +8,13 @@ import java.util.Objects;
  */
 public class Ingredient {
 	
-	//private String amount;
-	private Fraction fracAmount;
+	private Fraction quantity;
 	private Unit unit;
 	private String name;
 
 	
 	public Ingredient(Fraction amount, Unit u, String n) {
-		fracAmount = amount;
+		quantity = amount;
 		name = n;
 		unit = u;
 	}
@@ -28,13 +27,13 @@ public class Ingredient {
 		return unit;
 	}
 	
-	public Fraction getAmount() {
-		return fracAmount;
+	public Fraction getQuantity() {
+		return quantity;
 	}
 	
 	@Override
 	public String toString() {
-		return fracAmount.toString() + " " + unit.toString().toLowerCase() + " " + name;
+		return quantity.toString() + " " + unit.toString().toLowerCase() + " " + name;
 	}
 	
 	@Override
@@ -43,14 +42,14 @@ public class Ingredient {
 	    if (!(o instanceof Ingredient)) return false;
 
 	    Ingredient other = (Ingredient) o;
-	    return Objects.equals(fracAmount, other.fracAmount) &&
+	    return Objects.equals(quantity, other.quantity) &&
 	           unit == other.unit &&
 	           Objects.equals(name, other.name);
 	}
 
 	@Override
 	public int hashCode() {
-	    return Objects.hash(fracAmount, unit, name);
+	    return Objects.hash(quantity, unit, name);
 	}
 
 }

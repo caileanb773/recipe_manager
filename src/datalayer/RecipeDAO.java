@@ -231,7 +231,7 @@ public class RecipeDAO {
 			try (PreparedStatement pstmt = conn.prepareStatement(insertIngredientSql)) {
 				for (Ingredient ing : recipe.getIngredients()) {
 					pstmt.setInt(1, recipeId);
-					pstmt.setString(2, ing.getAmount().toString());
+					pstmt.setString(2, ing.getQuantity().toString());
 					pstmt.setString(3, ing.getUnit().toString());
 					pstmt.setString(4, ing.getName());
 					pstmt.addBatch();
@@ -331,7 +331,7 @@ public class RecipeDAO {
 			try (PreparedStatement pstmt = conn.prepareStatement(insIngSql)) {
 				for (Ingredient ing : recipe.getIngredients()) {
 					pstmt.setInt(1, recipe.getId());
-					pstmt.setString(2, ing.getAmount().toString());
+					pstmt.setString(2, ing.getQuantity().toString());
 					pstmt.setString(3, ing.getUnit().toString());
 					pstmt.setString(4, ing.getName());
 					pstmt.addBatch();

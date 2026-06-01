@@ -26,6 +26,7 @@ import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import datalayer.RecipeApiClient;
 import datalayer.RecipeDAO;
 import definitions.Constants;
 import definitions.Recipe;
@@ -53,6 +54,9 @@ public class AppController implements ActionListener {
 	private Model model;
 	private AppFrame view;
 	private AddRecipeDialog rcpDialog;
+	
+	// Bridge to Spring Boot
+	private RecipeApiClient client;
 
 	// Other
 	private boolean isOnline = true;
@@ -66,6 +70,7 @@ public class AppController implements ActionListener {
 		this.model = model;
 		this.view = view;
 		this.recipeDao = new RecipeDAO();
+		this.client = new RecipeApiClient("http://localhost:8080");
 	}
 
 	public void initialize(boolean mode) {
@@ -202,6 +207,9 @@ public class AppController implements ActionListener {
 			break;
 		case "showRcpScreen":
 			showRcpScreen();
+			break;
+		case "debugQuerySpring":
+			debugQuerySpring();
 			break;
 		default:
 			logger.warn("Unrecognized button actionCommand.");
@@ -642,6 +650,29 @@ public class AppController implements ActionListener {
 	
 	public void setOnline(boolean online) {
 		isOnline = online;
+	}
+	
+	////////////////////////////////////////////////////////////////////////////
+	/// 
+	/// Debugging Methods
+	/// 
+	////////////////////////////////////////////////////////////////////////////
+	
+	public void debugQuerySpring() {
+		Recipe recipe = null;
+		
+		try {
+			recipe = client.getRecipe(2);
+		} catch (Exception e) {
+			logger.error("DebugQuerySpring(): Spring query failed.", e);
+		}
+
+		if (recipe == null) {
+			logger.error("DebugQuerySpring(): Recipe null after Spring query.");
+			return;
+		}
+		
+		view.getRecipeScreen().setActiveRecipe(recipe);
 	}
 	
 }

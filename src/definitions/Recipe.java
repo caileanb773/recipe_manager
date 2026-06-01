@@ -25,6 +25,12 @@ public class Recipe {
 	private String directions;
 	private List<String> tags;
 	
+	
+	/**
+	 * No arg constructor.
+	 */
+	public Recipe() {}
+	
 	/**
 	 * Constructs a new Recipe object (without tags).
 	 */
@@ -72,7 +78,7 @@ public class Recipe {
 		StringJoiner sj = new StringJoiner(Constants.ING_TAG_DELIM);
 
 		for (Ingredient ing : ingredients) {
-			sj.add(ing.getAmount().toString() + Constants.INGREDIENT_SECT_DELIM +
+			sj.add(ing.getQuantity().toString() + Constants.INGREDIENT_SECT_DELIM +
 					ing.getUnit().toString().toLowerCase() + Constants.INGREDIENT_SECT_DELIM +
 					ing.getName().replace(" ", "_"));
 		}
@@ -98,7 +104,7 @@ public class Recipe {
 		sb.append(title + "\n\n");
 
 		for (Ingredient ing : ingredients) {
-			sb.append(ing.getAmount().toString() + " ");
+			sb.append(ing.getQuantity().toString() + " ");
 			sb.append(ing.getUnit().toString().toLowerCase() + " ");
 			sb.append(ing.getName() + "\n");
 		}
@@ -117,7 +123,7 @@ public class Recipe {
 		sb.append(title + "\n\n");
 
 		for (Ingredient ing : scaledIngredients) {
-			sb.append(ing.getAmount().toString() + " ");
+			sb.append(ing.getQuantity().toString() + " ");
 			sb.append(ing.getUnit().toString().toLowerCase() + " ");
 			sb.append(ing.getName() + "\n");
 		}
@@ -157,7 +163,7 @@ public class Recipe {
 		sb.append("Recipe: " + title + "\n" + "Ingredients:\n");
 
 		for (Ingredient ingredient : ingredients) {
-			sb.append(ingredient.getAmount().toString() + " ");
+			sb.append(ingredient.getQuantity().toString() + " ");
 			sb.append(ingredient.getUnit() + " ");
 			sb.append(ingredient.getName() + "\n");
 		}
