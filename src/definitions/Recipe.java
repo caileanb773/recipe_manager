@@ -5,9 +5,12 @@ package definitions;
  * Contents: Recipe definition and helper methods.
  */
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
+
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 /*
  * Author: Cailean Bernard
@@ -61,6 +64,19 @@ public class Recipe {
 		this.directions = directions;
 		tags = tagsList;
 	}
+	
+//	public Recipe(int id, String title, List<Ingredient> ingredients, String directions, String tagsList) {
+//		this.id = id;
+//		this.title = title;
+//		this.ingredients = ingredients;
+//		this.directions = directions;
+//		List<String> tags = new ArrayList<>();
+//		
+//		for (String t : tagsList.split(",")) {
+//			//t.trim();
+//			tags.add(t);
+//		}
+//	}	
 
 	public List<String> getTags() {
 		return tags;
@@ -112,7 +128,7 @@ public class Recipe {
 		sb.append("\n" + directions + "\n\n");
 
 		if (tags != null && !tags.isEmpty()) {
-				sb.append("Tags: " + stringifyTags());
+			sb.append("Tags: " + stringifyTags());
 		}
 
 		return sb.toString();
@@ -190,6 +206,15 @@ public class Recipe {
 	
 	public List<Ingredient> getIngredients() {
 		return ingredients;
+	}
+	
+	@JsonSetter("tags")
+	public void setTags(String tagsString) {
+		if (tagsString == null || tagsString.isBlank()) {
+			tags = new ArrayList<>();
+		} else {
+			tags = Arrays.stream(tagsString.split(",")).map(String::trim).toList();
+		}
 	}
 	
 	@Override
