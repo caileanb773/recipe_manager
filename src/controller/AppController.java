@@ -77,19 +77,36 @@ public class AppController implements ActionListener {
 		reportProgress(40, "Initializing controller...");
 		bundle = view.getBundle();
 
+		/* XXX
+		 * This whole block doesn't really make sense. We're telling the app to
+		 * start in online mode before it knows if it can connect or not. By default,
+		 * it should try to start in online mode. If that fails, THEN it should
+		 * start in offline mode. Whatever, fix later. 
+		 */
 		if (mode == Constants.ONLINE) {
 			reportProgress(50, "Connecting to database...");
+			List<Recipe> recipes = null;
 			
 			try {
-				recipeDao.initialize();
+				//recipeDao.initialize();
+				recipes = client.getAllRecipes();
+				
+				logger.info("Query to recipe database returned {} recipes.", recipes.size());
 			} catch (PSQLException e) {
 				logger.warn("Initialize(): Couldn't establish connection to database.", e);
 			} catch (SQLException e) {
 		    	logger.error("Initialize(): Database connection failed.", e);
+			} catch (Exception e) {
+		    	logger.error("Initialize(): Database connection failed.", e);
+			}
+			
+			// XXX delete this
+			if (recipes == null) {
+		    	logger.error("Initialize(): Connection succeeded, but query on all recipes failed.");
 			}
 			
 			reportProgress(55, "Loading recipes from database...");
-			model.setRecipes(recipeDao.selectAllRecipesAsList());
+			model.setRecipes(recipes);
 		} if (mode == Constants.OFFLINE) { // XXX for now, this is never called.
 			reportProgress(50, "Loading recipes from file...");
 			model.initModelOffline("backup.rcp");

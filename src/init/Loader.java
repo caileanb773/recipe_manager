@@ -97,7 +97,7 @@ public class Loader {
 			protected Void doInBackground() throws Exception {
 				model.initialize(Constants.ONLINE);
 				view.initialize();
-				controller.initialize(Constants.OFFLINE);
+				controller.initialize(Constants.ONLINE);
 				return null;
 			}
 

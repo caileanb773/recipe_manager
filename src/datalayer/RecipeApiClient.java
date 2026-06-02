@@ -38,6 +38,22 @@ public class RecipeApiClient {
 		return mapper.readValue(response.body(), Recipe.class);
 	}
 	
+	// Get all recipes
+	public List<Recipe> getAllRecipes() throws Exception {
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create(baseUrl + "/recipes"))
+				.GET()
+				.build();
+		
+		HttpResponse<String> response = client.send(
+				request,
+				HttpResponse.BodyHandlers.ofString());
+		
+	    return mapper.readValue(
+	    		response.body(),
+	    		new com.fasterxml.jackson.core.type.TypeReference<List<Recipe>>() {});
+	}
+	
 	// Search recipes by title
 	public List<Recipe> searchRecipes(String title) throws Exception
 	{
@@ -77,5 +93,5 @@ public class RecipeApiClient {
 
 	    return mapper.readValue(response.body(), Recipe.class);
 	}
-
+	
 }

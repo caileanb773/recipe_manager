@@ -24,6 +24,8 @@ public class Fraction {
 	// Constants
 	private static final int NUMERATOR = 0;
 	private static final int DENOMINATOR = 1;
+	private static final int WHOLE_NUMBER = 0;
+	private static final int FRACTIONAL = 1;
 
 	public Fraction() {}
 	
@@ -31,13 +33,25 @@ public class Fraction {
 	public Fraction(String number) {
 		
 		// Whole number
-		if (!number.contains("/")) {
-			numerator = Integer.parseInt(number);
-			denominator = 1;
+		if (number.contains("/")) {
+			if (number.contains(" ")) {
+				String[] wholeAndFraction = number.split(" ");
+				int wholeNum = Integer.parseInt(wholeAndFraction[WHOLE_NUMBER]);
+
+				String[] fractionalPart = wholeAndFraction[FRACTIONAL].split("/");
+				int num = Integer.parseInt(fractionalPart[NUMERATOR]);
+				int den = Integer.parseInt(fractionalPart[DENOMINATOR]);
+				
+				this.numerator = den * wholeNum + num;
+				this.denominator = den;
+			} else {
+				String[] parts = number.split("/");
+				this.numerator = Integer.parseInt(parts[NUMERATOR]);
+				this.denominator = Integer.parseInt(parts[DENOMINATOR]);
+			}
 		} else {
-			String[] parts = number.split("/");
-			numerator = Integer.parseInt(parts[NUMERATOR]);
-			denominator = Integer.parseInt(parts[DENOMINATOR]);
+			this.numerator = Integer.parseInt(number);
+			this.denominator = 1;
 		}
 	}
 	
