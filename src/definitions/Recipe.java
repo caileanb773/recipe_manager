@@ -209,12 +209,8 @@ public class Recipe {
 	}
 	
 	@JsonSetter("tags")
-	public void setTags(String tagsString) {
-		if (tagsString == null || tagsString.isBlank()) {
-			tags = new ArrayList<>();
-		} else {
-			tags = Arrays.stream(tagsString.split(",")).map(String::trim).toList();
-		}
+	public void setTags(List<String> tags) {
+		this.tags = tags;
 	}
 	
 	@Override

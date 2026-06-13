@@ -51,7 +51,7 @@ public class RecipeApiClient {
 		
 	    return mapper.readValue(
 	    		response.body(),
-	    		new com.fasterxml.jackson.core.type.TypeReference<List<Recipe>>() {});
+	    		new TypeReference<List<Recipe>>() {});
 	}
 	
 	// Search recipes by title
