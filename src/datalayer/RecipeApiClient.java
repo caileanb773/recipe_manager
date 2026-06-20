@@ -1,10 +1,14 @@
 package datalayer;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.SQLException;
 import java.util.List;
+
+import org.postgresql.util.PSQLException;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +29,8 @@ public class RecipeApiClient {
 	}
 	
 	// Get recipe by id
-	public Recipe getRecipe(long id) throws Exception {	
+	public Recipe getRecipe(long id)
+			throws InterruptedException, IOException {	
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create(baseUrl + "/recipes/" + id))
 				.GET()
@@ -39,12 +44,13 @@ public class RecipeApiClient {
 	}
 	
 	// Get all recipes
-	public List<Recipe> getAllRecipes() throws Exception {
+	public List<Recipe> getAllRecipes()
+			throws InterruptedException, IOException, PSQLException, SQLException {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create(baseUrl + "/recipes"))
 				.GET()
 				.build();
-		
+				
 		HttpResponse<String> response = client.send(
 				request,
 				HttpResponse.BodyHandlers.ofString());
@@ -55,8 +61,8 @@ public class RecipeApiClient {
 	}
 	
 	// Search recipes by title
-	public List<Recipe> searchRecipes(String title) throws Exception
-	{
+	public List<Recipe> searchRecipes(String title)
+			throws InterruptedException, IOException {
 	    String url = baseUrl + "/recipes/search?title=" + title;
 
 	    HttpRequest request = HttpRequest.newBuilder()
@@ -76,8 +82,8 @@ public class RecipeApiClient {
 	}
 	
 	// Create recipe (POST)
-	public Recipe createRecipe(Recipe recipe) throws Exception
-	{
+	public Recipe createRecipe(Recipe recipe)
+			throws InterruptedException, IOException {
 	    String json = mapper.writeValueAsString(recipe);
 
 	    HttpRequest request = HttpRequest.newBuilder()
@@ -92,6 +98,26 @@ public class RecipeApiClient {
 	    );
 
 	    return mapper.readValue(response.body(), Recipe.class);
+	}
+	
+	// Get Heartbeat
+	public String getSpringAPIHeartbeat()
+			throws InterruptedException, IOException {
+		
+		String heartbeatMsg = null;
+		
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create(baseUrl + "/health"))
+				.GET()
+				.build();
+		
+		HttpResponse<String> response = client.send(
+				request,
+				HttpResponse.BodyHandlers.ofString()
+				);
+		
+		heartbeatMsg = response.body();	
+		return heartbeatMsg;
 	}
 	
 }

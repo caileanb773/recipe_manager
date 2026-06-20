@@ -92,6 +92,7 @@ public class AppController implements ActionListener {
 				recipes = client.getAllRecipes();
 				
 				logger.info("Query to recipe database returned {} recipes.", recipes.size());
+				
 			} catch (PSQLException e) {
 				logger.warn("Initialize(): Couldn't establish connection to database.", e);
 			} catch (SQLException e) {
@@ -226,7 +227,7 @@ public class AppController implements ActionListener {
 			showRcpScreen();
 			break;
 		case "debugQuerySpring":
-			debugQuerySpring();
+			debugQuerySpringHealth();
 			break;
 		default:
 			logger.warn("Unrecognized button actionCommand.");
@@ -675,21 +676,26 @@ public class AppController implements ActionListener {
 	/// 
 	////////////////////////////////////////////////////////////////////////////
 	
-	public void debugQuerySpring() {
-		Recipe recipe = null;
+	public boolean debugQuerySpringHealth() {
+		String response;
 		
 		try {
-			recipe = client.getRecipe(2);
+			response = client.getSpringAPIHeartbeat();
+			
+			if (response.equalsIgnoreCase("Healthy")) {
+				logger.info("Spring API Server Heartbeat message received: " + response);
+				return true;
+			}
 		} catch (Exception e) {
 			logger.error("DebugQuerySpring(): Spring query failed.", e);
+			response = null;
 		}
 
-		if (recipe == null) {
-			logger.error("DebugQuerySpring(): Recipe null after Spring query.");
-			return;
+		if (response == null || response.isEmpty()) {
+			logger.error("debugQuerySpringHealth(): Recipe null after Spring query.");
 		}
 		
-		view.getRecipeScreen().setActiveRecipe(recipe);
+		return false;
 	}
 	
 }
