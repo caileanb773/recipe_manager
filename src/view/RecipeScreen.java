@@ -9,6 +9,7 @@ import static definitions.Constants.LIGHT_BG_COL;
 import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
 import static definitions.Constants.LIGHT_GRADIENT_TOP;
 import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -17,7 +18,6 @@ import java.awt.FlowLayout;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -47,8 +48,10 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import definitions.Constants;
 import definitions.Ingredient;
 import definitions.Recipe;
@@ -115,8 +118,6 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 	private final int SELECTED_RCP_TXT_TEXT_AREA_WIDTH = 500;
 	private final int SELECTED_RCP_TXT_TEXT_AREA_HEIGHT = 500;
 	private final int DETACHED_RECIPE_HEIGHT_OFFSET = 18;
-	private final int DETACHED_RECIPE_X_OFFSET = 285;
-	private final int DETACHED_RECIPE_Y_OFFSET = 45;
 
 
 	public RecipeScreen(ResourceBundle bundle, NotificationService service) {	
@@ -353,10 +354,8 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 		
 		detachedRecipe.add(scroll);
 		detachedRecipe.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		Point pnt = rcpSelectListPanel.getLocationOnScreen();
 		detachedRecipe.pack();
-		detachedRecipe.setLocation(pnt.x + DETACHED_RECIPE_X_OFFSET,
-				pnt.y - DETACHED_RECIPE_Y_OFFSET);
+		detachedRecipe.setLocationRelativeTo(null);
 		detachedRecipe.setVisible(true);
 		detachedRcpTxt.setCaretPosition(CARET_START);
 
