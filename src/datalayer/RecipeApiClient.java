@@ -84,6 +84,9 @@ public class RecipeApiClient {
 	// Create recipe (POST)
 	public Recipe createRecipe(Recipe recipe)
 			throws InterruptedException, IOException {
+		
+		System.out.println("USING SPRING API TO ADD RECIPE");
+		
 	    String json = mapper.writeValueAsString(recipe);
 
 	    HttpRequest request = HttpRequest.newBuilder()

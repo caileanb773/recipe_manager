@@ -60,7 +60,7 @@ public class AppController implements ActionListener {
 
 	// Other
 	private boolean isOnline = true;
-	private RecipeDAO recipeDao;
+	//private RecipeDAO recipeDao;
 	private ResourceBundle bundle;
 	private ProgressListener progressListener;
 	private static final Logger logger = LoggerFactory.getLogger(AppController.class);
@@ -69,8 +69,8 @@ public class AppController implements ActionListener {
 	public AppController(Model model, AppFrame view) {
 		this.model = model;
 		this.view = view;
-		this.recipeDao = new RecipeDAO();
-		this.client = new RecipeApiClient("http://localhost:8080");
+		//this.recipeDao = new RecipeDAO();
+		this.client = new RecipeApiClient("http://localhost:8080"); // XXX Shouldn't be hardcoded; replace with env vars or config file
 	}
 
 	public void initialize(boolean mode) {
@@ -338,8 +338,21 @@ public class AppController implements ActionListener {
 	public void handleAddRecipe(Recipe newRecipe) {
 		if (newRecipe != null) {
 			if (isOnline) {
-				int newRcpId = recipeDao.insertRecipe(newRecipe);
-				newRecipe.setId(newRcpId);
+//				int newRcpId = recipeDao.insertRecipe(newRecipe);
+//				newRecipe.setId(newRcpId);
+				
+				try {
+					client.createRecipe(newRecipe);
+				} catch (InterruptedException e) {
+					logger.error("handleAddRecipe() Connection interrupted: {}", e);
+					return;
+				} catch (IOException e) {
+					logger.error("handleAddRecipe() IO Exception: {}", e);
+					return;
+				}					
+				
+			} else if (!isOnline) {
+				// handle offline behavior
 			}
 
 			model.addRecipe(newRecipe);
