@@ -2,7 +2,9 @@ package definitions;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /*
  * Author: Cailean Bernard
@@ -32,8 +34,14 @@ public class Ingredient {
 		return unit;
 	}
 	
+	@JsonIgnore
 	public Fraction getAmount() {
 		return amount;
+	}
+	
+	@JsonProperty("amount")
+	public String getAmountString() {
+		return amount.toString();
 	}
 	
 	@Override

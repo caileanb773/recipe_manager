@@ -88,6 +88,8 @@ public class RecipeApiClient {
 		System.out.println("USING SPRING API TO ADD RECIPE");
 		
 	    String json = mapper.writeValueAsString(recipe);
+	    
+	    System.out.println("JSON: " + json);
 
 	    HttpRequest request = HttpRequest.newBuilder()
 	            .uri(URI.create(baseUrl + "/recipes"))
