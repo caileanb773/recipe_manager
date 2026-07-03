@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class Recipe {
 
-	private int id;
+	private Long id;
 	private String title;
 	private List<Ingredient> ingredients;
 	private String directions;
@@ -57,7 +57,7 @@ public class Recipe {
 		}
 	}
 	
-	public Recipe(int id, String title, List<Ingredient> ingredients, String directions, List<String> tagsList) {
+	public Recipe(Long id, String title, List<Ingredient> ingredients, String directions, List<String> tagsList) {
 		this.id = id;
 		this.title = title;
 		this.ingredients = ingredients;
@@ -192,11 +192,11 @@ public class Recipe {
 		return title;
 	}
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

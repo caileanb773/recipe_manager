@@ -35,12 +35,12 @@ public class Ingredient {
 	}
 	
 	@JsonIgnore
-	public Fraction getAmount() {
+	public Fraction getAmountFraction() {
 		return amount;
 	}
 	
 	@JsonProperty("amount")
-	public String getAmountString() {
+	public String getAmount() {
 		return amount.toString();
 	}
 	

@@ -113,8 +113,6 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 	private NotificationService service;
 
 	// Constant
-	private final int UNSCALED = 0;
-	private final int SCALED = 1;
 	private final int SELECTED_RCP_TXT_TEXT_AREA_WIDTH = 500;
 	private final int SELECTED_RCP_TXT_TEXT_AREA_HEIGHT = 500;
 	private final int DETACHED_RECIPE_HEIGHT_OFFSET = 18;
@@ -229,7 +227,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 		scaleRcpSpinner = new JSpinner(spinnerModel);
 		scaleRcpSpinner.addChangeListener(ignored -> {
 			scaleVal = BigDecimal.valueOf((int)scaleRcpSpinner.getValue());
-			displayActiveRecipe(SCALED);
+			displayActiveRecipe(Constants.SCALED);
 		});
 		scaleRcpPanel.add(scaleRcpLabel);
 		scaleRcpPanel.add(scaleRcpSpinner);
@@ -376,7 +374,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 		List<Ingredient> scaledIngredients = new ArrayList<>();
 		for (Ingredient baseIngredient : activeRecipe.getIngredients()) {
 			scaledIngredients.add(new Ingredient(
-					baseIngredient.getAmount().multiply(amt),
+					baseIngredient.getAmountFraction().multiply(amt),
 					baseIngredient.getUnit(),
 					baseIngredient.getName()));
 		}
@@ -392,6 +390,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 		RecipeSelectButton  b = rcpSelectList.get(0);
 		b.requestFocus();
 		setActiveRecipe(b.getBtnRecipe());
+		displayActiveRecipe(Constants.UNSCALED);
 	}
 
 	@Override
@@ -412,8 +411,13 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 			rcpSelectList.add(newRcpButton);
 			newRcpButton.setAlignmentX(CENTER_ALIGNMENT);
 			newRcpButton.addActionListener(ignored -> {
-				setActiveRecipe(rcp);
-				scaleRcpSpinner.setValue(1);
+//				setActiveRecipe(rcp);
+//				scaleRcpSpinner.setValue(1);
+				
+				listener.actionPerformed(new ActionEvent(
+						newRcpButton,
+						ActionEvent.ACTION_PERFORMED,
+						"queryRecipeById&" + rcp.getId()));
 			});
 
 			if (rcp.getTitle().length() >= 20) {
@@ -617,17 +621,16 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 
 	public void setActiveRecipe(Recipe recipe) {
 		activeRecipe = recipe;
-		displayActiveRecipe(UNSCALED);
 	}
 
-	private void displayActiveRecipe(int mode) {
+	public void displayActiveRecipe(int mode) {
 		if (activeRecipe == null) {
 			return;
 		}
 
-		if (mode == UNSCALED) {
+		if (mode == Constants.UNSCALED) {
 			selectedRcpTxt.setText(activeRecipe.formatRecipeForTextDisplay());
-		} else if (mode == SCALED) {
+		} else if (mode == Constants.SCALED) {
 			selectedRcpTxt.setText(activeRecipe.formatScaledRecipeForTextDisplay(
 					scaleRecipe(scaleVal)));
 		}

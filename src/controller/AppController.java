@@ -27,8 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import datalayer.RecipeApiClient;
-import datalayer.RecipeDAO;
 import definitions.Constants;
+import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Theme;
 import model.Model;
@@ -54,7 +54,7 @@ public class AppController implements ActionListener {
 	private Model model;
 	private AppFrame view;
 	private AddRecipeDialog rcpDialog;
-	
+
 	// Bridge to Spring Boot
 	private RecipeApiClient client;
 
@@ -86,26 +86,26 @@ public class AppController implements ActionListener {
 		if (mode == Constants.ONLINE) {
 			reportProgress(50, "Connecting to database...");
 			List<Recipe> recipes = null;
-			
+
 			try {
 				//recipeDao.initialize();
 				recipes = client.getAllRecipes();
-				
+			
 				logger.info("Query to recipe database returned {} recipes.", recipes.size());
-				
+
 			} catch (PSQLException e) {
 				logger.warn("Initialize(): Couldn't establish connection to database.", e);
 			} catch (SQLException e) {
-		    	logger.error("Initialize(): Database connection failed.", e);
+				logger.error("Initialize(): Database connection failed.", e);
 			} catch (Exception e) {
-		    	logger.error("Initialize(): Database connection failed.", e);
+				logger.error("Initialize(): Database connection failed.", e);
 			}
-			
+
 			// XXX delete this
 			if (recipes == null) {
-		    	logger.error("Initialize(): Connection succeeded, but query on all recipes failed.");
+				logger.error("Initialize(): Connection succeeded, but query on all recipes failed.");
 			}
-			
+
 			reportProgress(55, "Loading recipes from database...");
 			model.setRecipes(recipes);
 		} if (mode == Constants.OFFLINE) { // XXX for now, this is never called.
@@ -124,7 +124,7 @@ public class AppController implements ActionListener {
 	}
 
 	private void initAllButtons() {
-		view.initiRecipeScreenButtons();
+		view.initRecipeScreenButtons();
 		view.initLoginScreenButtons();
 		view.initRegisterScreenButtons();
 		view.initCloseBtn();
@@ -154,7 +154,7 @@ public class AppController implements ActionListener {
 		String cmd = cmdData[Constants.CMD_IDX];
 		String cmdOpt = null;
 
-		if (cmdData.length > Constants.MAX_VALID_DATA_LEN) {
+		if (cmdData.length > Constants.CMD_WITH_DATA) {
 			cmdOpt = cmdData[Constants.DATA_IDX];
 		}
 
@@ -226,6 +226,9 @@ public class AppController implements ActionListener {
 		case "showRcpScreen":
 			showRcpScreen();
 			break;
+		case "queryRecipeById":
+			queryRecipeById(Long.parseLong(cmdOpt));
+			break;
 		case "debugQuerySpring":
 			debugQuerySpringHealth();
 			break;
@@ -275,6 +278,27 @@ public class AppController implements ActionListener {
 			Config.setLastEmail(null);
 		}
 		view.switchScreen("RECIPE_SCREEN");
+	}
+	
+	public void queryRecipeById(Long id) {
+		Recipe recipeToDisplay = null;
+		// Fetch recipe from DB
+		try {
+			recipeToDisplay = client.getRecipe(id);
+			
+		} catch (InterruptedException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		if (recipeToDisplay == null) {
+			logger.error("queryRecipeById(): RecipeToDisplay is null, id: {}", id);
+			return;
+		}
+				
+		// Display the recipe
+		RecipeScreen rcpScrn = view.getRecipeScreen();
+		rcpScrn.setActiveRecipe(recipeToDisplay);
+		rcpScrn.displayActiveRecipe(Constants.UNSCALED);
 	}
 
 	public void logout() {
@@ -338,10 +362,8 @@ public class AppController implements ActionListener {
 	public void handleAddRecipe(Recipe newRecipe) {
 		if (newRecipe != null) {
 			if (isOnline) {
-//				int newRcpId = recipeDao.insertRecipe(newRecipe);
-//				newRecipe.setId(newRcpId);
-				
 				try {
+					System.out.println("ID of recipe at time of creation: " + newRecipe.getId());
 					client.createRecipe(newRecipe);
 				} catch (InterruptedException e) {
 					logger.error("handleAddRecipe() Connection interrupted: {}", e);
@@ -350,13 +372,16 @@ public class AppController implements ActionListener {
 					logger.error("handleAddRecipe() IO Exception: {}", e);
 					return;
 				}					
-				
+
 			} else if (!isOnline) {
 				// handle offline behavior
 			}
 
 			model.addRecipe(newRecipe);
-			view.getRecipeScreen().setActiveRecipe(newRecipe);
+			
+			RecipeScreen rcpScrn = view.getRecipeScreen();
+			rcpScrn.setActiveRecipe(newRecipe);
+			rcpScrn.displayActiveRecipe(Constants.UNSCALED);
 			refreshRecipeList();
 			logger.info("Adding {} to recipe list", newRecipe.getTitle());
 			rcpDialog.setCreatedRecipeToNull();
@@ -391,11 +416,12 @@ public class AppController implements ActionListener {
 		}
 
 		if (isOnline) {
-			recipeDao.updateRecipe(rcpEdited);
+			//recipeDao.updateRecipe(rcpEdited);
 		}
 
 		recipes.set(idx, rcpEdited);
 		recipeScreen.setActiveRecipe(rcpEdited);
+		recipeScreen.displayActiveRecipe(Constants.UNSCALED);
 		refreshRecipeList();
 		rcpDialog.setCreatedRecipeToNull();
 		rcpDialog.dispose();
@@ -408,7 +434,7 @@ public class AppController implements ActionListener {
 
 		if (recipeToRemove != null && model.getRecipes().contains(recipeToRemove)) {
 			if (isOnline) {
-				recipeDao.removeRecipe(recipeToRemove.getId());
+				//recipeDao.removeRecipe(recipeToRemove.getId());
 			}
 			model.removeRecipe(recipeToRemove);
 			logger.info("Removing {}", recipeToRemove.getTitle());
@@ -426,9 +452,23 @@ public class AppController implements ActionListener {
 	public void refreshRecipeList() {
 		RecipeScreen ui = view.getRecipeScreen();
 		if (isOnline) {
-			ui.populateRecipeSelectList(recipeDao.selectAllRecipesAsList());
+
+			try {
+				ui.populateRecipeSelectList(client.getAllRecipes());
+
+				// logger.info("Query to recipe database returned {} recipes.", recipes.size());
+
+			} catch (PSQLException e) {
+				logger.warn("Initialize(): Couldn't establish connection to database.", e);
+			} catch (SQLException e) {
+				logger.error("Initialize(): Database connection failed.", e);
+			} catch (Exception e) {
+				logger.error("Initialize(): Database connection failed.", e);
+			}
+
 		} else {
-			ui.populateRecipeSelectList(model.getRecipes());
+			// handle offline mode
+			//ui.populateRecipeSelectList(model.getRecipes());
 		}
 
 		ui.displayRecipeButtons();
@@ -437,7 +477,7 @@ public class AppController implements ActionListener {
 	// TODO edit this to include JSON format eventually
 	public void handleExportRecipes() {
 		bundle = view.getBundle();
-		
+
 		List<Recipe> recipes = model.getRecipes();
 
 		if (recipes == null || recipes.isEmpty()) {
@@ -551,8 +591,8 @@ public class AppController implements ActionListener {
 								int progress = 0;
 
 								for (Recipe rcp : rcpList) {
-									int id = recipeDao.insertRecipe(rcp);
-									rcp.setId(id);
+									//int id = recipeDao.insertRecipe(rcp);
+									//rcp.setId(id);
 									publish(++progress);
 								}
 								return null;
@@ -638,30 +678,30 @@ public class AppController implements ActionListener {
 
 	public void setLanguage(Locale locale) {
 		logger.info("Switching language to {}", locale);
-		
+
 		// Temporary reference to all screens of application
 		Config cfg = view.getConfig();
 		RecipeScreen rcp = view.getRecipeScreen();
 		LoginScreen log = view.getLoginScreen();
 		RegisterScreen reg = view.getRegisterScreen();
 		NotificationScreen notif = view.getNotificationScreen();
-		
+
 		// Single source of truth for the current locale is in config
 		cfg.setLocale(locale);
 		cfg.setResourceBundle("MessagesBundle", locale);
-		
+
 		// View fetches current active resource bundle from Config
 		view.updateBundle();
 		view.toggleLangButton(locale);
 		view.refreshTranslatableText();
-		
+
 		// Update each Application Screen's locale and refresh translatable elements
 		updateLocaleAndRefreshTranslatable(rcp, locale);
 		updateLocaleAndRefreshTranslatable(log, locale);
 		updateLocaleAndRefreshTranslatable(reg, locale);
 		updateLocaleAndRefreshTranslatable(notif, locale);
 	}
-	
+
 	private void updateLocaleAndRefreshTranslatable(ApplicationScreen screen, Locale locale) {
 		screen.updateBundle(locale);
 		screen.refreshTranslatable();
@@ -674,27 +714,27 @@ public class AppController implements ActionListener {
 	public AppFrame getView() {
 		return this.view;
 	}
-	
+
 	public boolean isOnline() {
 		return isOnline;
 	}
-	
+
 	public void setOnline(boolean online) {
 		isOnline = online;
 	}
-	
+
 	////////////////////////////////////////////////////////////////////////////
 	/// 
 	/// Debugging Methods
 	/// 
 	////////////////////////////////////////////////////////////////////////////
-	
+
 	public boolean debugQuerySpringHealth() {
 		String response;
-		
+
 		try {
 			response = client.getSpringAPIHeartbeat();
-			
+
 			if (response.equalsIgnoreCase("Healthy")) {
 				logger.info("Spring API Server Heartbeat message received: " + response);
 				return true;
@@ -707,8 +747,8 @@ public class AppController implements ActionListener {
 		if (response == null || response.isEmpty()) {
 			logger.error("debugQuerySpringHealth(): Recipe null after Spring query.");
 		}
-		
+
 		return false;
 	}
-	
+
 }

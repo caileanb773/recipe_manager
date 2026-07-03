@@ -39,7 +39,7 @@ public class RecipeApiClient {
 		HttpResponse<String> response = client.send(
 				request,
 				HttpResponse.BodyHandlers.ofString());
-			
+					
 		return mapper.readValue(response.body(), Recipe.class);
 	}
 	

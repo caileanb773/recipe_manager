@@ -65,7 +65,7 @@ public class AddRecipeDialog extends JDialog {
 	// Other
 	private Recipe createdRecipe;
 	private ResourceBundle bundle;
-	private int tempRecipeId;
+	private Long tempRecipeId;
 	private static final Logger logger = LoggerFactory.getLogger(AddRecipeDialog.class);
 
 
@@ -302,8 +302,8 @@ public class AddRecipeDialog extends JDialog {
 			logger.warn("getCreatedRecipe() returned null.");
 			return null;
 		} else {
-			createdRecipe.setId(tempRecipeId);
-			tempRecipeId = -1;
+//			createdRecipe.setId(tempRecipeId);
+//			tempRecipeId = -1;
 			return createdRecipe;
 		}
 	}

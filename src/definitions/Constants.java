@@ -35,6 +35,8 @@ public class Constants {
 	public static final int 	SCROLL_SPEED = 19;
 	public static final Font 	titleFont = new Font("Serif", Font.BOLD, 16);
 	public static final Font 	textFont = new Font("Segoe UI", Font.PLAIN, 15);
+	public static final int 	UNSCALED = 0;
+	public static final int 	SCALED = 1;
 	
 	// AddRecipeDialog
 	public static final int 	AMT_IDX = 0;
@@ -90,7 +92,7 @@ public class Constants {
 	public static final boolean OFFLINE = false;
 	public static final int CMD_IDX = 0;
 	public static final int DATA_IDX = 1;
-	public static final int MAX_VALID_DATA_LEN = 1;
+	public static final int CMD_WITH_DATA = 1;
 	
 	////////////////////////////////////////////////////////////////////////////
 	// 

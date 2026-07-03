@@ -373,7 +373,7 @@ public class AppFrame implements Listenable {
 		JOptionPane.showMessageDialog(frame, readMe);
 	}
 
-	public void initiRecipeScreenButtons() {
+	public void initRecipeScreenButtons() {
 		recipeScreen.initRemoveButton();
 		recipeScreen.initAddButton();
 		recipeScreen.initEditButton();
