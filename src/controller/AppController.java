@@ -165,7 +165,7 @@ public class AppController implements ActionListener {
 			break;
 		case "remove":
 			logger.info("Attempting to remove recipe");
-			handleRemoveRecipe();
+			handleRemoveRecipe(Long.parseLong(cmdOpt));
 			break;
 		case "edit":
 			logger.info("Attempting to edit recipe");
@@ -374,7 +374,7 @@ public class AppController implements ActionListener {
 				}					
 
 			} else if (!isOnline) {
-				// handle offline behavior
+				// TODO handle offline behavior
 			}
 
 			model.addRecipe(newRecipe);
@@ -428,20 +428,27 @@ public class AppController implements ActionListener {
 		rcpDialog = null;
 	}
 
-	public void handleRemoveRecipe() {
+	public void handleRemoveRecipe(Long id) {
 		RecipeScreen recipeScreen = view.getRecipeScreen();
 		Recipe recipeToRemove = recipeScreen.getActiveRecipe();
 
-		if (recipeToRemove != null && model.getRecipes().contains(recipeToRemove)) {
+		//if (recipeToRemove != null && model.getRecipes().contains(recipeToRemove)) {
 			if (isOnline) {
-				//recipeDao.removeRecipe(recipeToRemove.getId());
+				try {
+					client.deleteRecipe(id);
+					model.removeRecipe(recipeToRemove);
+					logger.info("Removed {}", recipeToRemove.getTitle());
+				} catch (InterruptedException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				// TODO handle offline behavior
 			}
-			model.removeRecipe(recipeToRemove);
-			logger.info("Removing {}", recipeToRemove.getTitle());
-		} else {
-			logger.warn("Recipe == null or not found in local memory.");
-			return;
-		}
+		//} else {
+//			logger.warn("Recipe == null or not found in local memory.");
+//			return;
+//		}
 
 		recipeScreen.clearActiveRecipe();
 		recipeScreen.clearSelectedRecipeText();

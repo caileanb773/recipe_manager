@@ -522,7 +522,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 		if (choice == JOptionPane.OK_OPTION) {
 			listener.actionPerformed(new ActionEvent(
 					rcpListRemove, ActionEvent.ACTION_PERFORMED,
-					"remove"));
+					"remove&" + activeRecipe.getId()));
 		}
 	}
 
