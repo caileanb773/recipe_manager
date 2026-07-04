@@ -647,7 +647,10 @@ public class AppController implements ActionListener {
 
 						worker.execute();
 						progressDialog.setVisible(true);
+					} else {
+						// TODO handle offline behavior
 					}
+						
 
 					// no need to handle if !appIsOnline, already handled by importRecipeList()
 				} catch (IOException e) {
