@@ -460,6 +460,10 @@ public class AppFrame implements Listenable {
 				cardLayout.show(container, "RECIPE_SCREEN");
 				setEnabledButtons(screenName);
 				recipeScreen.initFocus();
+				listener.actionPerformed(new ActionEvent(
+						this,
+						ActionEvent.ACTION_PERFORMED,
+						"refreshRecipeList"));
 				break;
 			case "REGISTER_SCREEN":
 				logger.info("Switching to register screen");

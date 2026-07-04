@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 
 import datalayer.RecipeApiClient;
 import definitions.Constants;
-import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Theme;
 import model.Model;
@@ -232,6 +231,9 @@ public class AppController implements ActionListener {
 		case "debugQuerySpring":
 			debugQuerySpringHealth();
 			break;
+		case "refreshRecipeList":
+			refreshRecipeList();
+			break;
 		default:
 			logger.warn("Unrecognized button actionCommand.");
 			break;
@@ -421,7 +423,6 @@ public class AppController implements ActionListener {
 		if (isOnline) {
 			//recipeDao.updateRecipe(rcpEdited);
 			try {
-				System.out.println("rcpEditing ID: " + rcpEditing.getId());
 				client.updateRecipe(rcpEdited, rcpEditing.getId());
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block
@@ -473,14 +474,13 @@ public class AppController implements ActionListener {
 	}
 
 	public void refreshRecipeList() {
+		logger.info("Refreshing recipe list.");
 		RecipeScreen ui = view.getRecipeScreen();
+		
 		if (isOnline) {
 
 			try {
 				ui.populateRecipeSelectList(client.getAllRecipes());
-
-				// logger.info("Query to recipe database returned {} recipes.", recipes.size());
-
 			} catch (PSQLException e) {
 				logger.warn("Initialize(): Couldn't establish connection to database.", e);
 			} catch (SQLException e) {
@@ -491,7 +491,6 @@ public class AppController implements ActionListener {
 
 		} else {
 			// handle offline mode
-			//ui.populateRecipeSelectList(model.getRecipes());
 		}
 
 		ui.displayRecipeButtons();
@@ -614,7 +613,6 @@ public class AppController implements ActionListener {
 								int progress = 0;
 
 								for (Recipe rcp : rcpList) {
-									
 									// POST to Spring
 									client.createRecipe(rcp);									
 									publish(++progress);
