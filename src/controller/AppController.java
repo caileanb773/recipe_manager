@@ -614,8 +614,9 @@ public class AppController implements ActionListener {
 								int progress = 0;
 
 								for (Recipe rcp : rcpList) {
-									//int id = recipeDao.insertRecipe(rcp);
-									//rcp.setId(id);
+									
+									// POST to Spring
+									client.createRecipe(rcp);									
 									publish(++progress);
 								}
 								return null;
