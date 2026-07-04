@@ -393,6 +393,7 @@ public class AppController implements ActionListener {
 	}
 
 	public void confirmEditRecipe() {
+		// Get the recipe that we are editing
 		RecipeScreen recipeScreen = view.getRecipeScreen();
 		Recipe rcpEditing = recipeScreen.getActiveRecipe();
 		List<Recipe> recipes = model.getRecipes();
@@ -404,6 +405,7 @@ public class AppController implements ActionListener {
 					"No Recipe Selected", JOptionPane.ERROR_MESSAGE);
 		}
 
+		// Get the index of the recipe in local memory array
 		int idx = recipes.indexOf(rcpEditing);
 		Recipe rcpEdited = rcpDialog.getCreatedRecipe();
 
@@ -417,6 +419,15 @@ public class AppController implements ActionListener {
 
 		if (isOnline) {
 			//recipeDao.updateRecipe(rcpEdited);
+			try {
+				
+				client.updateRecipe(rcpEdited, rcpEditing.getId());
+			} catch (InterruptedException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			// TODO handle offline behavior
 		}
 
 		recipes.set(idx, rcpEdited);

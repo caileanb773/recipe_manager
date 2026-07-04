@@ -141,6 +141,25 @@ public class RecipeApiClient {
 	//
 	////////////////////////////////////////////////////////////////////////////	
 
+	public Recipe updateRecipe(Recipe recipe, Long existingRecipeId) 
+			throws InterruptedException, IOException {
+		String json = mapper.writeValueAsString(recipe);
+
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create(baseUrl + "/recipes/" + existingRecipeId))
+				.header("Content-Type", "application/json")
+				.PUT(HttpRequest.BodyPublishers.ofString(json))
+				.build();
+
+		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+		if (response.statusCode() != 200) {
+			throw new IOException("PUT failed. HTTP: " + response.statusCode()
+			+ "\n" + response.body());
+		}
+
+		return mapper.readValue(response.body(), Recipe.class);
+	}
 
 	////////////////////////////////////////////////////////////////////////////
 	//
