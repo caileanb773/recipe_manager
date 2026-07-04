@@ -367,7 +367,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 			return null;
 		} else if (activeRecipe == null) {
 			logger.info("No recipe to scale.");
-			scaleRcpSpinner.setValue(1);
+			scaleVal = BigDecimal.valueOf((int)1);
 			return null;
 		}
 
@@ -624,14 +624,19 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 	}
 
 	public void displayActiveRecipe(int mode) {
-		if (activeRecipe == null) {
-			logger.warn("DisplayActiveRecipe(): Tried displaying a null recipe.");
-			return;
-		}
-
 		if (mode == Constants.UNSCALED) {
+			if (activeRecipe == null) {
+				logger.warn("DisplayActiveRecipe(): Tried displaying a null recipe.");
+				return;
+			}
+			
 			selectedRcpTxt.setText(activeRecipe.formatRecipeForTextDisplay());
 		} else if (mode == Constants.SCALED) {
+			if (activeRecipe == null) {
+				logger.warn("DisplayActiveRecipe(): Tried scaling a null recipe.");
+				return;
+			}
+			
 			selectedRcpTxt.setText(activeRecipe.formatScaledRecipeForTextDisplay(
 					scaleRecipe(scaleVal)));
 		}

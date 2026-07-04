@@ -360,11 +360,11 @@ public class AppController implements ActionListener {
 	}
 
 	public void handleAddRecipe(Recipe newRecipe) {
+		Recipe createdRecipe = null;
 		if (newRecipe != null) {
 			if (isOnline) {
 				try {
-					System.out.println("ID of recipe at time of creation: " + newRecipe.getId());
-					client.createRecipe(newRecipe);
+					createdRecipe = client.createRecipe(newRecipe);
 				} catch (InterruptedException e) {
 					logger.error("handleAddRecipe() Connection interrupted: {}", e);
 					return;
@@ -380,7 +380,7 @@ public class AppController implements ActionListener {
 			model.addRecipe(newRecipe);
 			
 			RecipeScreen rcpScrn = view.getRecipeScreen();
-			rcpScrn.setActiveRecipe(newRecipe);
+			rcpScrn.setActiveRecipe(createdRecipe);
 			rcpScrn.displayActiveRecipe(Constants.UNSCALED);
 			refreshRecipeList();
 			logger.info("Adding {} to recipe list", newRecipe.getTitle());
