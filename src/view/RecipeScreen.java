@@ -625,6 +625,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 
 	public void displayActiveRecipe(int mode) {
 		if (activeRecipe == null) {
+			logger.warn("DisplayActiveRecipe(): Tried displaying a null recipe.");
 			return;
 		}
 

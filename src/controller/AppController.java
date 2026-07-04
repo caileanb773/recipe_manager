@@ -396,7 +396,7 @@ public class AppController implements ActionListener {
 		// Get the recipe that we are editing
 		RecipeScreen recipeScreen = view.getRecipeScreen();
 		Recipe rcpEditing = recipeScreen.getActiveRecipe();
-		List<Recipe> recipes = model.getRecipes();
+//		List<Recipe> recipes = model.getRecipes();
 
 		if (rcpEditing == null) {
 			logger.warn("Active recipe in the view does not exist in the model.");
@@ -406,34 +406,39 @@ public class AppController implements ActionListener {
 		}
 
 		// Get the index of the recipe in local memory array
-		int idx = recipes.indexOf(rcpEditing);
+//		int idx = recipes.indexOf(rcpEditing);
+				
+		// Get the "new" recipe created by the dialog that will replace recipeEdited
 		Recipe rcpEdited = rcpDialog.getCreatedRecipe();
 
 		if (rcpEdited == null) {
-			logger.info("Cancelling recipe edit.");
-			rcpDialog.setCreatedRecipeToNull();
-			rcpDialog.dispose();
-			rcpDialog = null;
+			logger.info("ConfirmEditRecipe(): Can't obtain the Recipe from dialog. "
+					+ "Cancelling recipe edit.");
+			cleanupAfterEdit();
 			return;
 		}
 
 		if (isOnline) {
 			//recipeDao.updateRecipe(rcpEdited);
 			try {
-				
+				System.out.println("rcpEditing ID: " + rcpEditing.getId());
 				client.updateRecipe(rcpEdited, rcpEditing.getId());
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else {
-			// TODO handle offline behavior
 		}
 
-		recipes.set(idx, rcpEdited);
-		recipeScreen.setActiveRecipe(rcpEdited);
-		recipeScreen.displayActiveRecipe(Constants.UNSCALED);
+//		recipes.set(idx, rcpEdited);
 		refreshRecipeList();
+//		recipeScreen.setActiveRecipe(null);
+//		recipeScreen.displayActiveRecipe(Constants.UNSCALED);
+		recipeScreen.clearActiveRecipe();
+		recipeScreen.clearSelectedRecipeText();
+		cleanupAfterEdit();
+	}
+	
+	private void cleanupAfterEdit() {
 		rcpDialog.setCreatedRecipeToNull();
 		rcpDialog.dispose();
 		rcpDialog = null;
