@@ -95,9 +95,17 @@ public class Loader {
 		SwingWorker<Void, Integer> worker = new SwingWorker<>() {
 			@Override
 			protected Void doInBackground() throws Exception {
-				model.initialize(Constants.ONLINE);
-				view.initialize();
-				controller.initialize(Constants.ONLINE);
+				boolean canApiBeReached = controller.querySpringHeartbeat();
+				if (canApiBeReached) {
+					model.initialize(Constants.ONLINE);
+					view.initialize();
+					controller.initialize(Constants.ONLINE);
+				} else {
+					model.initialize(Constants.OFFLINE);
+					view.initialize();
+					controller.initialize(Constants.OFFLINE);
+				}
+				
 				return null;
 			}
 

@@ -58,8 +58,7 @@ public class AppController implements ActionListener {
 	private RecipeApiClient client;
 
 	// Other
-	private boolean isOnline = true;
-	//private RecipeDAO recipeDao;
+	private boolean isOnline;
 	private ResourceBundle bundle;
 	private ProgressListener progressListener;
 	private static final Logger logger = LoggerFactory.getLogger(AppController.class);
@@ -76,18 +75,12 @@ public class AppController implements ActionListener {
 		reportProgress(40, "Initializing controller...");
 		bundle = view.getBundle();
 
-		/* XXX
-		 * This whole block doesn't really make sense. We're telling the app to
-		 * start in online mode before it knows if it can connect or not. By default,
-		 * it should try to start in online mode. If that fails, THEN it should
-		 * start in offline mode. Whatever, fix later. 
-		 */
 		if (mode == Constants.ONLINE) {
+			setOnline(true);
 			reportProgress(50, "Connecting to database...");
 			List<Recipe> recipes = null;
 
 			try {
-				//recipeDao.initialize();
 				recipes = client.getAllRecipes();
 			
 				logger.info("Query to recipe database returned {} recipes.", recipes.size());
@@ -107,9 +100,13 @@ public class AppController implements ActionListener {
 
 			reportProgress(55, "Loading recipes from database...");
 			model.setRecipes(recipes);
-		} if (mode == Constants.OFFLINE) { // XXX for now, this is never called.
+			
+		} else if (mode == Constants.OFFLINE) {
+			setOnline(false);
 			reportProgress(50, "Loading recipes from file...");
-			model.initModelOffline("backup.rcp");
+			
+			// XXX commented out until load order for MVC is fixed as model.init already loaded recipes from backup
+			// model.initModelOffline("backup.rcp");
 		}
 
 		reportProgress(60, "Recipes loaded.");
@@ -225,14 +222,24 @@ public class AppController implements ActionListener {
 		case "showRcpScreen":
 			showRcpScreen();
 			break;
-		case "queryRecipeById":
-			queryRecipeById(Long.parseLong(cmdOpt));
+		case "handleRecipeButtonClicked":
+			if (isOnline) {
+				Long rcpId = Long.parseLong(cmdOpt);
+				logger.info("Displaying recipe in online mode: id " + rcpId);
+				queryRecipeById(rcpId);
+			} else {
+				logger.info("Displaying recipe in offline mode.");
+				view.getRecipeScreen().displayActiveRecipe(Constants.UNSCALED);
+			}
 			break;
 		case "debugQuerySpring":
-			debugQuerySpringHealth();
+			querySpringHeartbeat();
 			break;
 		case "refreshRecipeList":
 			refreshRecipeList();
+			break;
+		case "getOnlineStatus":
+			
 			break;
 		default:
 			logger.warn("Unrecognized button actionCommand.");
@@ -482,11 +489,11 @@ public class AppController implements ActionListener {
 			try {
 				ui.populateRecipeSelectList(client.getAllRecipes());
 			} catch (PSQLException e) {
-				logger.warn("Initialize(): Couldn't establish connection to database.", e);
+				logger.warn("refreshRecipeList(): Couldn't establish connection to database.", e);
 			} catch (SQLException e) {
-				logger.error("Initialize(): Database connection failed.", e);
+				logger.error("refreshRecipeList(): Database connection failed.", e);
 			} catch (Exception e) {
-				logger.error("Initialize(): Database connection failed.", e);
+				logger.error("refreshRecipeList(): Database connection failed.", e);
 			}
 
 		} else {
@@ -731,7 +738,29 @@ public class AppController implements ActionListener {
 		screen.updateBundle(locale);
 		screen.refreshTranslatable();
 	}
+	
+	public boolean querySpringHeartbeat() {
+		String response;
 
+		try {
+			response = client.getSpringAPIHeartbeat();
+
+			if (response.equalsIgnoreCase("Healthy")) {
+				logger.info("Spring API Server Heartbeat message received: " + response);
+				return true;
+			}
+		} catch (Exception e) {
+			logger.error("DebugQuerySpring(): Spring query failed.", e);
+			response = null;
+		}
+
+		if (response == null || response.isEmpty()) {
+			logger.error("debugQuerySpringHealth(): Recipe null after Spring query.");
+		}
+
+		return false;
+	}
+	
 	public Model getModel() {
 		return this.model;
 	}
@@ -754,26 +783,6 @@ public class AppController implements ActionListener {
 	/// 
 	////////////////////////////////////////////////////////////////////////////
 
-	public boolean debugQuerySpringHealth() {
-		String response;
 
-		try {
-			response = client.getSpringAPIHeartbeat();
-
-			if (response.equalsIgnoreCase("Healthy")) {
-				logger.info("Spring API Server Heartbeat message received: " + response);
-				return true;
-			}
-		} catch (Exception e) {
-			logger.error("DebugQuerySpring(): Spring query failed.", e);
-			response = null;
-		}
-
-		if (response == null || response.isEmpty()) {
-			logger.error("debugQuerySpringHealth(): Recipe null after Spring query.");
-		}
-
-		return false;
-	}
 
 }
