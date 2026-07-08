@@ -80,9 +80,9 @@ public class LoginScreen extends JPanel implements ApplicationScreen, Listenable
 	private ResourceBundle bundle;
 	private JLabel logoBanner;
 	private List<ImageIcon> banners;
-	private Color topGradient;
-	private Color botGradient;
-
+	private Color topGradient = LIGHT_GRADIENT_TOP;
+	private Color botGradient = LIGHT_GRADIENT_BOTTOM;
+	
 	// Other
 	private ActionListener listener;
 	private static final Logger logger = LoggerFactory.getLogger(LoginScreen.class);

@@ -97,13 +97,15 @@ public class Loader {
 			protected Void doInBackground() throws Exception {
 				boolean canApiBeReached = controller.querySpringHeartbeat();
 				if (canApiBeReached) {
+					logger.info("Initializing in online mode.");
 					model.initialize(Constants.ONLINE);
 					view.initialize();
-					controller.initialize(Constants.ONLINE);
+					controller.initialize(Constants.ONLINE);					
 				} else {
+					logger.info("Initializing in offline mode.");
 					model.initialize(Constants.OFFLINE);
 					view.initialize();
-					controller.initialize(Constants.OFFLINE);
+					controller.initialize(Constants.OFFLINE);					
 				}
 				
 				return null;
@@ -111,6 +113,7 @@ public class Loader {
 
 			@Override
 			protected void process(List<Integer> chunks) {
+				System.out.println(chunks);
 				Integer percent = chunks.get(chunks.size() -1);
 				progressBar.setValue(percent);
 			}
@@ -119,6 +122,11 @@ public class Loader {
 			protected void done() {
 				progressDialog.dispose();
 				view.setViewVisible(true);
+				
+				// In the event that the heartbeat message request failed
+				if (!controller.isOnline()) {
+					view.showCantConnectDialog();	
+				}
 			}
 		};
 

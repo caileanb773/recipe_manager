@@ -510,6 +510,22 @@ public class AppFrame implements Listenable {
 			break;
 		}
 	}
+	
+	public void showCantConnectDialog() {
+		JOptionPane.showMessageDialog(
+				null,
+				bundle.getString("errCantConnectMessage"),
+				bundle.getString("errCantConnectTitle"),
+				JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void showCantFindBackupDialog() {
+		JOptionPane.showMessageDialog(
+				null,
+				bundle.getString("errCantFindBackupTitle"),
+				bundle.getString("errCantFindBackupMessage"),
+				JOptionPane.ERROR_MESSAGE);
+	}
 
 	public static boolean isBackingUp() {
 		return autoBackup.isSelected();

@@ -9,26 +9,27 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import definitions.Constants;
 import definitions.Fraction;
 import definitions.Ingredient;
 import definitions.Recipe;
 import definitions.Unit;
 import util.ProgressListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
  * Author: Cailean Bernard
  * Contents: Internal storage for the List of Recipe objects that is loaded when
- * the application is launched. The model is modified whenever recipes are added,
- * removed.
+ * the application is launched.
  */
 
 public class Model {
 
-	// Recipes
 	private List<Recipe> recipes;
+	private boolean backupRecipeListLoadSucceeded = false;
 	
 	// Other (Logging, Loading Bar)
 	private ProgressListener progressListener;
@@ -57,11 +58,11 @@ public class Model {
 	
 	public void initialize(boolean online) {
 		reportProgress(0, "Loading model...");
-		if (online) {
-			// wait for recipes from controller
-		} else {
-			initModelOffline("backup.rcp");
-		}
+//		if (online) {
+//			// wait for recipes from controller
+//		} else {
+//			initModelOffline("backup.rcp");
+//		}
 		
 		reportProgress(5, "Model loaded.");
 	}
@@ -80,12 +81,16 @@ public class Model {
 		try {
 			recipes = importRecipeList(recipeFilePath);
 		} catch (FileNotFoundException e) {
+			logger.warn("initModelOffline(): Couldn't find recipe list at path: ",
+					recipeFilePath);
 			e.printStackTrace();
 		} catch (IOException e) {
+			logger.warn("initModelOffline(): IOException while finding file: ",
+					recipeFilePath);
 			e.printStackTrace();
 		}
 	}
-	
+		
 	public void setProgressListener(ProgressListener progressListener) {
 		if (progressListener != null) {
 			this.progressListener = progressListener;
@@ -220,9 +225,13 @@ public class Model {
 
 		} catch (FileNotFoundException e) {
 			logger.error("parseStrArrFromPath() could not find file located at provided path: {}", e.getMessage());
+			backupRecipeListLoadSucceeded = false;
 		} catch (IOException e) {
 			logger.error("parseStrArrFromPath() encountered an IO exception: {}", e.getMessage());
+			backupRecipeListLoadSucceeded = false;
 		}
+		
+		backupRecipeListLoadSucceeded = true;
 
 		if (newRecipes.isEmpty()) {
 			logger.info("No recipes detected in import file.");
@@ -250,6 +259,10 @@ public class Model {
 
 	public List<Recipe> getRecipes() {
 		return recipes;
+	}
+	
+	public boolean getBackupRecipeListLoadSucceeded() {
+		return backupRecipeListLoadSucceeded;
 	}
 
 	public void setRecipes(List<Recipe> recipes) {

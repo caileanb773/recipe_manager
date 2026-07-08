@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
@@ -72,17 +73,18 @@ public class AppController implements ActionListener {
 	}
 
 	public void initialize(boolean mode) {
-		reportProgress(40, "Initializing controller...");
+		reportProgress(0, "Initializing controller...");
+
 		bundle = view.getBundle();
 
 		if (mode == Constants.ONLINE) {
 			setOnline(true);
-			reportProgress(50, "Connecting to database...");
+			reportProgress(10, "Connecting to database...");
 			List<Recipe> recipes = null;
-
+			
 			try {
 				recipes = client.getAllRecipes();
-			
+
 				logger.info("Query to recipe database returned {} recipes.", recipes.size());
 
 			} catch (PSQLException e) {
@@ -98,18 +100,19 @@ public class AppController implements ActionListener {
 				logger.error("Initialize(): Connection succeeded, but query on all recipes failed.");
 			}
 
-			reportProgress(55, "Loading recipes from database...");
+			reportProgress(20, "Loading recipes from database...");
 			model.setRecipes(recipes);
-			
+
 		} else if (mode == Constants.OFFLINE) {
 			setOnline(false);
-			reportProgress(50, "Loading recipes from file...");
-			
-			// XXX commented out until load order for MVC is fixed as model.init already loaded recipes from backup
-			// model.initModelOffline("backup.rcp");
+			reportProgress(20, "Loading recipes from file...");
+
+			 // XXX commented out until load order for MVC is fixed as model.init already loaded recipes from backup
+			 model.initModelOffline("backup.rcp");
 		}
 
-		reportProgress(60, "Recipes loaded.");
+		reportProgress(30, "Registering listeners...");
+		
 		view.registerController(this);
 		view.registerControllerInSubscreens(this);
 		reportProgress(70, "Finishing up...");
@@ -239,7 +242,10 @@ public class AppController implements ActionListener {
 			refreshRecipeList();
 			break;
 		case "getOnlineStatus":
-			
+			// XXX Delete?
+			break;
+		case "displayCantFindBackupDialog":
+			view.showCantFindBackupDialog();
 			break;
 		default:
 			logger.warn("Unrecognized button actionCommand.");
@@ -288,22 +294,22 @@ public class AppController implements ActionListener {
 		}
 		view.switchScreen("RECIPE_SCREEN");
 	}
-	
+
 	public void queryRecipeById(Long id) {
 		Recipe recipeToDisplay = null;
 		// Fetch recipe from DB
 		try {
 			recipeToDisplay = client.getRecipe(id);
-			
+
 		} catch (InterruptedException | IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		if (recipeToDisplay == null) {
 			logger.error("queryRecipeById(): RecipeToDisplay is null, id: {}", id);
 			return;
 		}
-				
+
 		// Display the recipe
 		RecipeScreen rcpScrn = view.getRecipeScreen();
 		rcpScrn.setActiveRecipe(recipeToDisplay);
@@ -387,7 +393,7 @@ public class AppController implements ActionListener {
 			}
 
 			model.addRecipe(newRecipe);
-			
+
 			RecipeScreen rcpScrn = view.getRecipeScreen();
 			rcpScrn.setActiveRecipe(createdRecipe);
 			rcpScrn.displayActiveRecipe(Constants.UNSCALED);
@@ -405,7 +411,7 @@ public class AppController implements ActionListener {
 		// Get the recipe that we are editing
 		RecipeScreen recipeScreen = view.getRecipeScreen();
 		Recipe rcpEditing = recipeScreen.getActiveRecipe();
-//		List<Recipe> recipes = model.getRecipes();
+		//		List<Recipe> recipes = model.getRecipes();
 
 		if (rcpEditing == null) {
 			logger.warn("Active recipe in the view does not exist in the model.");
@@ -415,8 +421,8 @@ public class AppController implements ActionListener {
 		}
 
 		// Get the index of the recipe in local memory array
-//		int idx = recipes.indexOf(rcpEditing);
-				
+		//		int idx = recipes.indexOf(rcpEditing);
+
 		// Get the "new" recipe created by the dialog that will replace recipeEdited
 		Recipe rcpEdited = rcpDialog.getCreatedRecipe();
 
@@ -437,15 +443,15 @@ public class AppController implements ActionListener {
 			}
 		}
 
-//		recipes.set(idx, rcpEdited);
+		//		recipes.set(idx, rcpEdited);
 		refreshRecipeList();
-//		recipeScreen.setActiveRecipe(null);
-//		recipeScreen.displayActiveRecipe(Constants.UNSCALED);
+		//		recipeScreen.setActiveRecipe(null);
+		//		recipeScreen.displayActiveRecipe(Constants.UNSCALED);
 		recipeScreen.clearActiveRecipe();
 		recipeScreen.clearSelectedRecipeText();
 		cleanupAfterEdit();
 	}
-	
+
 	private void cleanupAfterEdit() {
 		rcpDialog.setCreatedRecipeToNull();
 		rcpDialog.dispose();
@@ -457,22 +463,22 @@ public class AppController implements ActionListener {
 		Recipe recipeToRemove = recipeScreen.getActiveRecipe();
 
 		//if (recipeToRemove != null && model.getRecipes().contains(recipeToRemove)) {
-			if (isOnline) {
-				try {
-					client.deleteRecipe(id);
-					model.removeRecipe(recipeToRemove);
-					logger.info("Removed {}", recipeToRemove.getTitle());
-				} catch (InterruptedException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
-				// TODO handle offline behavior
+		if (isOnline) {
+			try {
+				client.deleteRecipe(id);
+				model.removeRecipe(recipeToRemove);
+				logger.info("Removed {}", recipeToRemove.getTitle());
+			} catch (InterruptedException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+		} else {
+			// TODO handle offline behavior
+		}
 		//} else {
-//			logger.warn("Recipe == null or not found in local memory.");
-//			return;
-//		}
+		//			logger.warn("Recipe == null or not found in local memory.");
+		//			return;
+		//		}
 
 		recipeScreen.clearActiveRecipe();
 		recipeScreen.clearSelectedRecipeText();
@@ -483,7 +489,7 @@ public class AppController implements ActionListener {
 	public void refreshRecipeList() {
 		logger.info("Refreshing recipe list.");
 		RecipeScreen ui = view.getRecipeScreen();
-		
+
 		if (isOnline) {
 
 			try {
@@ -661,7 +667,7 @@ public class AppController implements ActionListener {
 					} else {
 						// TODO handle offline behavior
 					}
-						
+
 
 					// no need to handle if !appIsOnline, already handled by importRecipeList()
 				} catch (IOException e) {
@@ -738,7 +744,7 @@ public class AppController implements ActionListener {
 		screen.updateBundle(locale);
 		screen.refreshTranslatable();
 	}
-	
+
 	public boolean querySpringHeartbeat() {
 		String response;
 
@@ -746,21 +752,31 @@ public class AppController implements ActionListener {
 			response = client.getSpringAPIHeartbeat();
 
 			if (response.equalsIgnoreCase("Healthy")) {
-				logger.info("Spring API Server Heartbeat message received: " + response);
+				logger.info("Spring API Server Heartbeat message received: "
+						+ response);
 				return true;
+			} else {
+				logger.warn("querySpringHeartbeat: Received unexpected heartbeat"
+						+ "message from Spring server.");
 			}
-		} catch (Exception e) {
-			logger.error("DebugQuerySpring(): Spring query failed.", e);
-			response = null;
-		}
 
-		if (response == null || response.isEmpty()) {
-			logger.error("debugQuerySpringHealth(): Recipe null after Spring query.");
+		} catch (ConnectException e) {
+			logger.error("querySpringHeartbeat(): "
+					+ "Cannot communicate with Spring server.");
+			response = null;
+		} catch (IOException e) {
+			logger.error("querySpringHeartbeat(): "
+					+ "IOException while getting Spring server heartbeat.");
+			response = null;
+		} catch (InterruptedException e) {
+			logger.error("querySpringHeartbeat(): "
+					+ "InterruptedException while getting Spring server heartbeat.");
+			response = null;
 		}
 
 		return false;
 	}
-	
+
 	public Model getModel() {
 		return this.model;
 	}
