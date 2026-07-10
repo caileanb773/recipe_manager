@@ -69,7 +69,7 @@ public class AppController implements ActionListener {
 		this.model = model;
 		this.view = view;
 		//this.recipeDao = new RecipeDAO();
-		this.client = new RecipeApiClient("http://localhost:8080"); // XXX Shouldn't be hardcoded; replace with env vars or config file
+		this.client = new RecipeApiClient("https://macromise-server-production.up.railway.app"); // XXX Shouldn't be hardcoded; replace with env vars or config file
 	}
 
 	public void initialize(boolean mode) {
