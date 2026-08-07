@@ -433,6 +433,9 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 		}
 
 		rcpSelectListPanel.removeAll();
+		
+		// a little space before the list of buttons begins
+		rcpSelectListPanel.add(Box.createVerticalStrut(2));
 
 		for (RecipeSelectButton r : rcpSelectList) {
 			r.setBackground(rcpBtnColor);
