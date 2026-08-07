@@ -33,7 +33,7 @@ public class Constants {
 	public static final int 	ADD_MODE = 0;
 	public static final int 	EDIT_MODE = 1;
 	public static final int 	SCROLL_SPEED = 19;
-	public static final Font 	titleFont = new Font("Serif", Font.BOLD, 16);
+	public static final Font 	titleFont = new Font("Serif", Font.BOLD, 17);
 	public static final Font 	textFont = new Font("Segoe UI", Font.PLAIN, 15);
 	public static final int 	UNSCALED = 0;
 	public static final int 	SCALED = 1;
@@ -123,14 +123,14 @@ public class Constants {
 		try {
 			InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("font/Ubuntu/Ubuntu-Regular.ttf"); 
 			if (fontStream != null) {
-				font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, 16);
+				font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, 18);
 			} else {
 				logger.warn("Recipe List font file not found.");
-				font = new Font("SansSerif", Font.BOLD, 15);
+				font = new Font("SansSerif", Font.BOLD, 18);
 			}
 		} catch (FontFormatException | IOException e) {
 			logger.warn("FontFormatException/IOException: Error loading Recipe List font: {}", e.getMessage());
-			font = new Font("SansSerif", Font.BOLD, 15);
+			font = new Font("SansSerif", Font.BOLD, 18);
 		}
 		RECIPE_TXT_FONT = font;
 	}
