@@ -123,7 +123,7 @@ public class Constants {
 		try {
 			InputStream fontStream = Main.class.getClassLoader().getResourceAsStream("font/Ubuntu/Ubuntu-Regular.ttf"); 
 			if (fontStream != null) {
-				font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, 16);
+				font = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, 18);
 			} else {
 				logger.warn("Recipe List font file not found.");
 				font = new Font("SansSerif", Font.BOLD, 15);

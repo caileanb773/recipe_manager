@@ -41,11 +41,12 @@ import view.NotificationScreen;
 import view.RecipeScreen;
 import view.RegisterScreen;
 
-/*
- * Author: Cailean Bernard
+/**
  * Contents: The controller extends ActionListener and registers itself as a listener
  * to necessary buttons contained in the User Interface. When those buttons are
  * clicked, it filters by button and handles the events accordingly.
+ * 
+ * @author Cailean Bernard
  */
 public class AppController implements ActionListener {
 

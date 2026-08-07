@@ -9,11 +9,11 @@ import model.NotificationService;
 import util.InstanceLocker;
 import view.AppFrame;
 
-/*
- * Author: Cailean Bernard
+/**
  * Contents: Injection point for the application. An instance of the model,
  * the Notification Service, and the view is instantiated, and then a new 
  * Controller is created using the passed model and view.
+ * @author: Cailean Bernard
  */
 public class Main {
 	

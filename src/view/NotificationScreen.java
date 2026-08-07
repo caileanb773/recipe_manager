@@ -157,7 +157,7 @@ public class NotificationScreen extends JPanel implements ApplicationScreen, Lis
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		notificationsListScrollPane.setVerticalScrollBarPolicy(
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		notificationsListScrollPane.setBorder(Constants.SOFT_LOWERED_BORDER);
+		//notificationsListScrollPane.setBorder(Constants.SOFT_LOWERED_BORDER);
 
 		// ----- Header -----
 		headerPanel.setBackground(headerPanelCol);
