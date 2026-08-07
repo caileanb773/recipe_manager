@@ -41,11 +41,12 @@ import view.NotificationScreen;
 import view.RecipeScreen;
 import view.RegisterScreen;
 
-/*
- * Author: Cailean Bernard
+/**
  * Contents: The controller extends ActionListener and registers itself as a listener
  * to necessary buttons contained in the User Interface. When those buttons are
  * clicked, it filters by button and handles the events accordingly.
+ * 
+ * @author Cailean Bernard
  */
 public class AppController implements ActionListener {
 
@@ -69,7 +70,7 @@ public class AppController implements ActionListener {
 		this.model = model;
 		this.view = view;
 		//this.recipeDao = new RecipeDAO();
-		this.client = new RecipeApiClient("http://localhost:8080"); // XXX Shouldn't be hardcoded; replace with env vars or config file
+		this.client = new RecipeApiClient("https://macromise-server-production.up.railway.app"); // XXX Shouldn't be hardcoded; replace with env vars or config file
 	}
 
 	public void initialize(boolean mode) {
