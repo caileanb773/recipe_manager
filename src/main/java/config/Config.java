@@ -136,7 +136,7 @@ public class Config {
 		}
 
 		locale = new Locale(lang);
-		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
+		bundle = ResourceBundle.getBundle("i18n.MessagesBundle", locale);
 	}
 
 	public boolean isValidTheme(Theme theme) {
@@ -150,7 +150,7 @@ public class Config {
 
 	private void loadDefaultConfig() {
 		locale = new Locale("en");
-		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
+		bundle = ResourceBundle.getBundle("i18n.MessagesBundle", locale);
 		lastEmail = null;
 		autoBackup = true;
 		theme = Theme.LIGHT;

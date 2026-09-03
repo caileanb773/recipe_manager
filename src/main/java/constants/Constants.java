@@ -83,6 +83,9 @@ public class Constants {
 	public static final Color 	DARK_GRADIENT_BOTTOM 		= new Color(31,31,31);
 	public static final Color 	DARK_FG_COL 				= new Color(90,90,90);
 	
+	// i18n
+	public static final String	BUNDLE_LOC = "i18n.MessagesBundle";
+	
 	
 	////////////////////////////////////////////////////////////////////////////
 	// 

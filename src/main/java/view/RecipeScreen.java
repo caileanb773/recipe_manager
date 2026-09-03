@@ -551,7 +551,7 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 
 	@Override
 	public void updateBundle(Locale locale) {
-		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
+		bundle = ResourceBundle.getBundle(Constants.BUNDLE_LOC, locale);
 	}
 
 	public void initFilter() {

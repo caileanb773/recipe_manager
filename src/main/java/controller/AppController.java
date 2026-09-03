@@ -731,7 +731,7 @@ public class AppController implements ActionListener {
 
 		// Single source of truth for the current locale is in config
 		cfg.setLocale(locale);
-		cfg.setResourceBundle("MessagesBundle", locale);
+		cfg.setResourceBundle(Constants.BUNDLE_LOC, locale);
 
 		// View fetches current active resource bundle from Config
 		view.updateBundle();

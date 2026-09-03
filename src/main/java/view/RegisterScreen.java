@@ -481,7 +481,7 @@ public class RegisterScreen extends JPanel implements ApplicationScreen, Listena
 
 	@Override
 	public void updateBundle(Locale locale) {
-		bundle = ResourceBundle.getBundle("MessagesBundle", locale);
+		bundle = ResourceBundle.getBundle(Constants.BUNDLE_LOC, locale);
 	}
 
 	@Override
