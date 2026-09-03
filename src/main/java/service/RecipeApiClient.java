@@ -1,4 +1,4 @@
-package datalayer;
+package service;
 
 import java.io.IOException;
 import java.net.URI;
@@ -13,7 +13,7 @@ import org.postgresql.util.PSQLException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import definitions.Recipe;
+import model.Recipe;
 
 public class RecipeApiClient {
 

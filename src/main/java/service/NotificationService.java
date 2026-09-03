@@ -1,4 +1,4 @@
-package model;
+package service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,10 +7,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import definitions.Notification;
-import definitions.NotificationType;
-import definitions.Recipe;
-import definitions.StaffMember;
+import model.Notification;
+import model.NotificationType;
+import model.Recipe;
+import model.StaffMember;
 import util.Utility;
 
 /*

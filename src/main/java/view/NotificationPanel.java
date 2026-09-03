@@ -10,9 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import definitions.Constants;
-import definitions.Notification;
-import util.Listenable;
+import constants.Constants;
+import model.Notification;
 
 /*
  * Author: Cailean Bernard

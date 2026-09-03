@@ -1,12 +1,14 @@
-package init;
+package app;
+
 
 import javax.swing.JOptionPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import controller.AppController;
+import init.AppLoadingBar;
 import model.Model;
-import model.NotificationService;
-import util.InstanceLocker;
+import service.NotificationService;
+import util.SingleInstanceLocker;
 import view.AppFrame;
 
 /**
@@ -25,7 +27,7 @@ public class Main {
 		System.setProperty("awt.useSystemAAFontSettings","on"); // For some reason this changes the font app-wide. Test it out for a bit
 		
 		// Detect if an instance is already running
-		if (!InstanceLocker.lockInstance("MMLock")) {
+		if (!SingleInstanceLocker.lockInstance("MMLock")) {
 			logger.error("Application is already running.");
 			JOptionPane.showMessageDialog(null,
 					"There is already an instance of Macromise running.",
@@ -39,6 +41,6 @@ public class Main {
 		NotificationService notificationService = new NotificationService();
 		AppFrame view = new AppFrame(notificationService);
 		AppController controller = new AppController(model, view);
-		new Loader(controller).run();
+		new AppLoadingBar(controller).run();
 	}
 }

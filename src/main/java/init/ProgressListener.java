@@ -1,4 +1,4 @@
-package util;
+package init;
 
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;

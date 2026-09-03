@@ -1,4 +1,4 @@
-package definitions;
+package constants;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -8,9 +8,13 @@ import java.io.InputStream;
 import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import init.Main;
+
+import model.Theme;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import app.Main;
 
 /*
  * Author: Cailean Bernard

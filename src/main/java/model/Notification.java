@@ -1,4 +1,4 @@
-package definitions;
+package model;
 
 import java.time.LocalDateTime;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package definitions;
+package model;
 
 /**
  * Author: Cailean Bernard
@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
+
+import constants.Constants;
 
 /*
  * Author: Cailean Bernard

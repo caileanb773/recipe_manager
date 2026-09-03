@@ -41,17 +41,16 @@ import org.slf4j.LoggerFactory;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
-import definitions.Ingredient;
-import definitions.Notification;
-import definitions.NotificationType;
-import definitions.Recipe;
-import definitions.StaffMember;
-import definitions.Theme;
-import init.Main;
-import model.NotificationService;
-import util.Config;
-import util.Listenable;
-import util.ProgressListener;
+import app.Main;
+import config.Config;
+import init.ProgressListener;
+import model.Ingredient;
+import model.Notification;
+import model.NotificationType;
+import model.Recipe;
+import model.StaffMember;
+import model.Theme;
+import service.NotificationService;
 
 /*
  * Author: Cailean Bernard

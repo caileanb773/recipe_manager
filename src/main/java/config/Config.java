@@ -1,4 +1,4 @@
-package util;
+package config;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,8 +15,8 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import definitions.Constants;
-import definitions.Theme;
+import constants.Constants;
+import model.Theme;
 import view.AppFrame;
 import view.LoginScreen;
 

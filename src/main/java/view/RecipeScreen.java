@@ -1,14 +1,14 @@
 package view;
 
-import static definitions.Constants.CARET_START;
-import static definitions.Constants.DARK_BG_COL;
-import static definitions.Constants.DARK_GRADIENT_BOTTOM;
-import static definitions.Constants.DARK_GRADIENT_TOP;
-import static definitions.Constants.DARK_RECIPE_BTN_COL;
-import static definitions.Constants.LIGHT_BG_COL;
-import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
-import static definitions.Constants.LIGHT_GRADIENT_TOP;
-import static definitions.Constants.LIGHT_RECIPE_BTN_COL;
+import static constants.Constants.CARET_START;
+import static constants.Constants.DARK_BG_COL;
+import static constants.Constants.DARK_GRADIENT_BOTTOM;
+import static constants.Constants.DARK_GRADIENT_TOP;
+import static constants.Constants.DARK_RECIPE_BTN_COL;
+import static constants.Constants.LIGHT_BG_COL;
+import static constants.Constants.LIGHT_GRADIENT_BOTTOM;
+import static constants.Constants.LIGHT_GRADIENT_TOP;
+import static constants.Constants.LIGHT_RECIPE_BTN_COL;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -52,13 +52,12 @@ import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import definitions.Constants;
-import definitions.Ingredient;
-import definitions.Recipe;
-import definitions.Theme;
-import model.NotificationListener;
-import model.NotificationService;
-import util.Listenable;
+import constants.Constants;
+import model.Ingredient;
+import model.Recipe;
+import model.Theme;
+import service.NotificationListener;
+import service.NotificationService;
 import util.Utility;
 
 /*

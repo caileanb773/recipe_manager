@@ -1,7 +1,8 @@
 package view;
 
 import java.util.Locale;
-import definitions.Theme;
+
+import model.Theme;
 
 /**
  * The collection of methods that each screen of the application must implement.

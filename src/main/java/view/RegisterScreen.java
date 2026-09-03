@@ -1,9 +1,9 @@
 package view;
 
-import static definitions.Constants.DARK_GRADIENT_BOTTOM;
-import static definitions.Constants.DARK_GRADIENT_TOP;
-import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
-import static definitions.Constants.LIGHT_GRADIENT_TOP;
+import static constants.Constants.DARK_GRADIENT_BOTTOM;
+import static constants.Constants.DARK_GRADIENT_TOP;
+import static constants.Constants.LIGHT_GRADIENT_BOTTOM;
+import static constants.Constants.LIGHT_GRADIENT_TOP;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -47,9 +47,8 @@ import org.slf4j.LoggerFactory;
 
 import com.sun.tools.javac.Main;
 
-import definitions.Constants;
-import definitions.Theme;
-import util.Listenable;
+import constants.Constants;
+import model.Theme;
 import util.Utility;
 
 /*

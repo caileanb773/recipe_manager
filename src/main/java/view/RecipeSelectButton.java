@@ -3,7 +3,8 @@ package view;
 import java.awt.Font;
 import java.util.List;
 import javax.swing.JButton;
-import definitions.Recipe;
+
+import model.Recipe;
 
 /*
  * Author: Cailean Bernard

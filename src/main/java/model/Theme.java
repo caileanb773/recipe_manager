@@ -1,4 +1,4 @@
-package definitions;
+package model;
 
 /**
  * Author: Cailean Bernard

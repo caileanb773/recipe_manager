@@ -14,10 +14,11 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatLightLaf;
+
+import app.Main;
+import constants.Constants;
 import controller.AppController;
-import definitions.Constants;
 import model.Model;
-import util.ProgressListener;
 import view.AppFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,15 +27,15 @@ import org.slf4j.LoggerFactory;
  * Author: Cailean Bernard
  * Contents: Loader class for displaying and controlling the loading bar.
  */
-public class Loader {
+public class AppLoadingBar {
 
 	private AppController controller;
 	private Image bannerImage;
 	private ImageIcon icon;
-	private static final Logger logger = LoggerFactory.getLogger(Loader.class);
+	private static final Logger logger = LoggerFactory.getLogger(AppLoadingBar.class);
 
 
-	public Loader(AppController controller) {
+	public AppLoadingBar(AppController controller) {
 		this.controller = controller;
 	}
 

@@ -1,11 +1,11 @@
 package util;
 
-import static definitions.Constants.ASCENDING;
-import static definitions.Constants.DESCENDING;
-import static definitions.Constants.SORT_RCPNAME;
-import static definitions.Constants.SORT_SENDER;
-import static definitions.Constants.SORT_TIME;
-import static definitions.Constants.SORT_TYPE;
+import static constants.Constants.ASCENDING;
+import static constants.Constants.DESCENDING;
+import static constants.Constants.SORT_RCPNAME;
+import static constants.Constants.SORT_SENDER;
+import static constants.Constants.SORT_TIME;
+import static constants.Constants.SORT_TYPE;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,8 +17,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import definitions.Constants;
-import definitions.Notification;
+import constants.Constants;
+import model.Notification;
 
 /*
  * Author: Cailean Bernard

@@ -22,13 +22,16 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import definitions.Constants;
-import definitions.Fraction;
-import definitions.Ingredient;
-import definitions.Recipe;
-import definitions.Unit;
+
+import model.Fraction;
+import model.Ingredient;
+import model.Recipe;
+import model.Unit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import constants.Constants;
 
 /*
  * Author: Cailean Bernard

@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
  * Contents: Contains the method that restricts the application to one instance
  * running at a time.
  */
-public class InstanceLocker {
+public class SingleInstanceLocker {
 	
-	private static final Logger logger = LoggerFactory.getLogger(InstanceLocker.class);
+	private static final Logger logger = LoggerFactory.getLogger(SingleInstanceLocker.class);
 	
 	/**
 	 * 

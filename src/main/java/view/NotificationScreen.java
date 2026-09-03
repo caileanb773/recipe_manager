@@ -1,17 +1,18 @@
 package view;
 
-import static definitions.Constants.DARK_BG_COL;
-import static definitions.Constants.DARK_FG_COL;
-import static definitions.Constants.DARK_GRADIENT_BOTTOM;
-import static definitions.Constants.DARK_GRADIENT_TOP;
-import static definitions.Constants.DARK_ACTIVE_NOTIF_COL;
-import static definitions.Constants.DARK_INACTIVE_NOTIF_COL;
-import static definitions.Constants.LIGHT_BG_COL;
-import static definitions.Constants.LIGHT_FG_COL;
-import static definitions.Constants.LIGHT_GRADIENT_BOTTOM;
-import static definitions.Constants.LIGHT_GRADIENT_TOP;
-import static definitions.Constants.LIGHT_ACTIVE_NOTIF_COL;
-import static definitions.Constants.LIGHT_INACTIVE_NOTIF_COL;
+import static constants.Constants.DARK_ACTIVE_NOTIF_COL;
+import static constants.Constants.DARK_BG_COL;
+import static constants.Constants.DARK_FG_COL;
+import static constants.Constants.DARK_GRADIENT_BOTTOM;
+import static constants.Constants.DARK_GRADIENT_TOP;
+import static constants.Constants.DARK_INACTIVE_NOTIF_COL;
+import static constants.Constants.LIGHT_ACTIVE_NOTIF_COL;
+import static constants.Constants.LIGHT_BG_COL;
+import static constants.Constants.LIGHT_FG_COL;
+import static constants.Constants.LIGHT_GRADIENT_BOTTOM;
+import static constants.Constants.LIGHT_GRADIENT_TOP;
+import static constants.Constants.LIGHT_INACTIVE_NOTIF_COL;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,12 +34,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import definitions.Constants;
-import definitions.Notification;
-import definitions.Theme;
-import model.NotificationListener;
-import model.NotificationService;
-import util.Listenable;
+
+import constants.Constants;
+import model.Notification;
+import model.Theme;
+import service.NotificationListener;
+import service.NotificationService;
 import util.Utility;
 
 /**
