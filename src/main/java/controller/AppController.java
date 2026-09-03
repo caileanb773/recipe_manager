@@ -76,6 +76,24 @@ public class AppController implements ActionListener {
 	public void initialize(boolean mode) {
 		reportProgress(40, "Initializing controller...");
 		bundle = view.getBundle();
+		boolean isOnline = mode;
+		
+		reportProgress(50, "Connecting to database...");
+		String heartBeatString = "";
+		
+		try {
+			heartBeatString = client.getSpringAPIHeartbeat();			
+		} catch (InterruptedException e) {
+			logger.error("Initialize: Spring API heartbeat request failed.");
+		} catch (IOException e) {
+			logger.error("Initialize: Spring API heartbeat request failed.");
+		}
+		
+		if (heartBeatString.equals("Healthy")) {
+			isOnline = Constants.ONLINE;
+		} else {
+			isOnline = Constants.OFFLINE;
+		}
 
 		/* XXX
 		 * This whole block doesn't really make sense. We're telling the app to
@@ -83,8 +101,7 @@ public class AppController implements ActionListener {
 		 * it should try to start in online mode. If that fails, THEN it should
 		 * start in offline mode. Whatever, fix later. 
 		 */
-		if (mode == Constants.ONLINE) {
-			reportProgress(50, "Connecting to database...");
+		if (isOnline == Constants.ONLINE) {
 			List<Recipe> recipes = null;
 
 			try {
@@ -108,7 +125,7 @@ public class AppController implements ActionListener {
 
 			reportProgress(55, "Loading recipes from database...");
 			model.setRecipes(recipes);
-		} if (mode == Constants.OFFLINE) { // XXX for now, this is never called.
+		} if (isOnline == Constants.OFFLINE) { // XXX for now, this is never called.
 			reportProgress(50, "Loading recipes from file...");
 			model.initModelOffline("backup.rcp");
 		}
