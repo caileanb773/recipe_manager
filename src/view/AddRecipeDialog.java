@@ -59,7 +59,7 @@ public class AddRecipeDialog extends JDialog {
 	private JScrollPane directionsScrollPane;
 
 	// Constants
-	private static final int TXT_ROWS = 10;
+	private static final int TXT_ROWS = 5;
 	private static final int TXT_COLS = 40;
 
 	// Other
@@ -83,8 +83,8 @@ public class AddRecipeDialog extends JDialog {
 		btnCancel = new JButton(bundle.getString("btnCancel"));
 		btnHelp = new JButton(bundle.getString("btnHelp"));
 		inputTitle = new JTextField(); 
-		inputIngredients = new JTextArea(TXT_ROWS,TXT_COLS);
-		inputDirections = new JTextArea(TXT_ROWS,TXT_COLS);
+		inputIngredients = new JTextArea(TXT_ROWS, TXT_COLS);
+		inputDirections = new JTextArea(TXT_ROWS, TXT_COLS);
 		inputTags = new JTextField();
 		btnPanel = new JPanel();
 		dialogPanel = new JPanel();
