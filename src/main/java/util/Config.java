@@ -6,14 +6,19 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import definitions.Constants;
 import definitions.Theme;
 import view.AppFrame;
 import view.LoginScreen;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Configuration class for loading and storing last used configurations.
@@ -74,8 +79,10 @@ public class Config {
 		String lang = null;
 		String value;
 		Theme temp;
+		
+		String path = resolveConfigPath();
 
-		try (BufferedReader reader = new BufferedReader(new FileReader("resources/config.ini"))) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
 			String line = null;
 			reader.readLine(); // skip the "do not edit" warning comment
 
@@ -153,9 +160,11 @@ public class Config {
 	 * Saves the current configuration to the config.ini file.
 	 */
 	public void saveConfig() {
-		logger.info
-		("Saving settings: ");
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter("resources/config.ini"))) {
+		logger.info("Saving settings: ");
+		
+		String path = resolveConfigPath();
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
 			writer.write("# do not edit this unless you know what you are doing\n");
 
 			for (String cfg : configs) {
@@ -192,8 +201,12 @@ public class Config {
 
 	public void createDefaultConfig() {
 		logger.info("Creating config.ini.");
+		
+		String path = resolveConfigPath();
 
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter("resources/config.ini"))) {
+		// TODO this needs to be platform-agnostic, i.e., go in the correct place in Win/Mac/Linux
+		// For now just hardcoded 
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
 			writer.write("# do not edit this unless you know what you are doing\n");
 
 			for (String cfg : configs) {
@@ -222,6 +235,27 @@ public class Config {
 
 		// XXX this could lead to an infinite loop. There's probably a better way
 		loadConfig();
+	}
+	
+	private String resolveConfigPath() {
+		String appDataPath = System.getenv("APPDATA");
+		String configFolderName = "PrepLedger";
+		String configFileName = "config.ini";
+		
+		Path path = Paths.get(appDataPath + "/" + configFolderName);
+		
+		if (appDataPath != null) {
+			
+			
+			try {
+				Files.createDirectories(path);
+			} catch (IOException e) {
+				logger.error("CreateDefaultConfig(): Failed to create directory at " + path.toString());
+				return "./";
+			}
+		}
+		
+		return appDataPath + "/" + configFolderName + "/" + configFileName;
 	}
 
 	public boolean isAutoBackup() {
