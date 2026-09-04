@@ -1,4 +1,4 @@
-package ca.prepledger.model;
+package ca.prepledger.service;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,6 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import ca.prepledger.constants.Constants;
 import ca.prepledger.init.ProgressListener;
+import ca.prepledger.model.Fraction;
+import ca.prepledger.model.Ingredient;
+import ca.prepledger.model.Recipe;
+import ca.prepledger.model.Unit;
 
 /*
  * Author: Cailean Bernard
@@ -23,14 +27,14 @@ import ca.prepledger.init.ProgressListener;
  * removed.
  */
 
-public class Model {
+public class RecipeManager {
 
 	// Recipes
 	private List<Recipe> recipes;
 	
 	// Other (Logging, Loading Bar)
 	private ProgressListener progressListener;
-	private static final Logger logger = LoggerFactory.getLogger(Model.class);
+	private static final Logger logger = LoggerFactory.getLogger(RecipeManager.class);
 
 	// Constants
 	private static final int INGREDIENT_AMT_IDX = 0;
@@ -40,7 +44,7 @@ public class Model {
 	private static final int RECIPE_INSTRUCTIONS_IDX = 2;
 
 
-	public Model(List<Recipe> r) {
+	public RecipeManager(List<Recipe> r) {
 		if (!r.isEmpty()) {
 			recipes = r;
 		}
@@ -49,7 +53,7 @@ public class Model {
 		}
 	}
 
-	public Model() {
+	public RecipeManager() {
 		recipes = new ArrayList<Recipe>();
 	}
 	

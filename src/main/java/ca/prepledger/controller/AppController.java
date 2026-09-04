@@ -29,10 +29,10 @@ import org.slf4j.LoggerFactory;
 import ca.prepledger.config.Config;
 import ca.prepledger.constants.Constants;
 import ca.prepledger.init.ProgressListener;
-import ca.prepledger.model.Model;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.model.Theme;
 import ca.prepledger.service.RecipeApiClient;
+import ca.prepledger.service.RecipeManager;
 import ca.prepledger.view.AddRecipeDialog;
 import ca.prepledger.view.AppFrame;
 import ca.prepledger.view.ApplicationScreen;
@@ -51,7 +51,7 @@ import ca.prepledger.view.RegisterScreen;
 public class AppController implements ActionListener {
 
 	// Swing
-	private Model model;
+	private RecipeManager model;
 	private AppFrame view;
 	private AddRecipeDialog rcpDialog;
 
@@ -66,7 +66,7 @@ public class AppController implements ActionListener {
 	private static final Logger logger = LoggerFactory.getLogger(AppController.class);
 
 
-	public AppController(Model model, AppFrame view) {
+	public AppController(RecipeManager model, AppFrame view) {
 		this.model = model;
 		this.view = view;
 		//this.recipeDao = new RecipeDAO();
@@ -750,7 +750,7 @@ public class AppController implements ActionListener {
 		screen.refreshTranslatable();
 	}
 
-	public Model getModel() {
+	public RecipeManager getModel() {
 		return this.model;
 	}
 

@@ -18,7 +18,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import ca.prepledger.app.Main;
 import ca.prepledger.constants.Constants;
 import ca.prepledger.controller.AppController;
-import ca.prepledger.model.Model;
+import ca.prepledger.service.RecipeManager;
 import ca.prepledger.view.AppFrame;
 
 import org.slf4j.Logger;
@@ -48,7 +48,7 @@ public class AppLoadingBar {
 			logger.error("Exception while initializing FlatLAF: {}", e.getMessage());
 		}
 
-		Model model = controller.getModel();
+		RecipeManager model = controller.getModel();
 		AppFrame view = controller.getView();
 
 		// Create ProgressListener
