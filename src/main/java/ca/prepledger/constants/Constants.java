@@ -1,4 +1,4 @@
-package constants;
+package ca.prepledger.constants;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -9,12 +9,11 @@ import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-import model.Theme;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import app.Main;
+import ca.prepledger.app.Main;
+import ca.prepledger.model.Theme;
 
 /*
  * Author: Cailean Bernard

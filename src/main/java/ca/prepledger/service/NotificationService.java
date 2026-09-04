@@ -1,4 +1,4 @@
-package service;
+package ca.prepledger.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,11 +7,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import model.Notification;
-import model.NotificationType;
-import model.Recipe;
-import model.StaffMember;
-import util.Utility;
+import ca.prepledger.model.Notification;
+import ca.prepledger.model.NotificationType;
+import ca.prepledger.model.Recipe;
+import ca.prepledger.model.StaffMember;
+import ca.prepledger.util.Utility;
 
 /*
  * Author: Cailean Bernard

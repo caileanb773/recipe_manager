@@ -1,4 +1,4 @@
-package controller;
+package ca.prepledger.controller;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -26,20 +26,20 @@ import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import config.Config;
-import constants.Constants;
-import init.ProgressListener;
-import model.Model;
-import model.Recipe;
-import model.Theme;
-import service.RecipeApiClient;
-import view.AddRecipeDialog;
-import view.AppFrame;
-import view.ApplicationScreen;
-import view.LoginScreen;
-import view.NotificationScreen;
-import view.RecipeScreen;
-import view.RegisterScreen;
+import ca.prepledger.config.Config;
+import ca.prepledger.constants.Constants;
+import ca.prepledger.init.ProgressListener;
+import ca.prepledger.model.Model;
+import ca.prepledger.model.Recipe;
+import ca.prepledger.model.Theme;
+import ca.prepledger.service.RecipeApiClient;
+import ca.prepledger.view.AddRecipeDialog;
+import ca.prepledger.view.AppFrame;
+import ca.prepledger.view.ApplicationScreen;
+import ca.prepledger.view.LoginScreen;
+import ca.prepledger.view.NotificationScreen;
+import ca.prepledger.view.RecipeScreen;
+import ca.prepledger.view.RegisterScreen;
 
 /**
  * Contents: The controller extends ActionListener and registers itself as a listener

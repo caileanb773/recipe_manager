@@ -1,4 +1,4 @@
-package view;
+package ca.prepledger.view;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
@@ -10,8 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import constants.Constants;
-import model.Notification;
+import ca.prepledger.constants.Constants;
+import ca.prepledger.model.Notification;
 
 /*
  * Author: Cailean Bernard

@@ -1,4 +1,4 @@
-package model;
+package ca.prepledger.model;
 
 /*
  * Author: Cailean Bernard

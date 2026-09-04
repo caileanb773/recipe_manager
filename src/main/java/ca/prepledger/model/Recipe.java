@@ -1,4 +1,4 @@
-package model;
+package ca.prepledger.model;
 
 /**
  * Author: Cailean Bernard
@@ -11,7 +11,7 @@ import java.util.StringJoiner;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-import constants.Constants;
+import ca.prepledger.constants.Constants;
 
 /*
  * Author: Cailean Bernard

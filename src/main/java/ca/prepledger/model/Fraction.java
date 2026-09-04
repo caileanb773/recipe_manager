@@ -1,4 +1,4 @@
-package model;
+package ca.prepledger.model;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

@@ -1,8 +1,8 @@
-package view;
+package ca.prepledger.view;
 
 import java.util.Locale;
 
-import model.Theme;
+import ca.prepledger.model.Theme;
 
 /**
  * The collection of methods that each screen of the application must implement.

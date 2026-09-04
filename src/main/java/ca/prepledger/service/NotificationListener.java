@@ -1,4 +1,4 @@
-package service;
+package ca.prepledger.service;
 
 /**
  * Author: Cailean Bernard

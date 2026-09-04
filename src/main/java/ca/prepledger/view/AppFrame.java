@@ -1,4 +1,4 @@
-package view;
+package ca.prepledger.view;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -41,16 +41,16 @@ import org.slf4j.LoggerFactory;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
-import app.Main;
-import config.Config;
-import init.ProgressListener;
-import model.Ingredient;
-import model.Notification;
-import model.NotificationType;
-import model.Recipe;
-import model.StaffMember;
-import model.Theme;
-import service.NotificationService;
+import ca.prepledger.app.Main;
+import ca.prepledger.config.Config;
+import ca.prepledger.init.ProgressListener;
+import ca.prepledger.model.Ingredient;
+import ca.prepledger.model.Notification;
+import ca.prepledger.model.NotificationType;
+import ca.prepledger.model.Recipe;
+import ca.prepledger.model.StaffMember;
+import ca.prepledger.model.Theme;
+import ca.prepledger.service.NotificationService;
 
 /*
  * Author: Cailean Bernard

@@ -1,4 +1,4 @@
-package config;
+package ca.prepledger.config;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,10 +15,10 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import constants.Constants;
-import model.Theme;
-import view.AppFrame;
-import view.LoginScreen;
+import ca.prepledger.constants.Constants;
+import ca.prepledger.model.Theme;
+import ca.prepledger.view.AppFrame;
+import ca.prepledger.view.LoginScreen;
 
 /**
  * Configuration class for loading and storing last used configurations.

@@ -1,10 +1,10 @@
-package view;
+package ca.prepledger.view;
 
 import java.awt.Font;
 import java.util.List;
 import javax.swing.JButton;
 
-import model.Recipe;
+import ca.prepledger.model.Recipe;
 
 /*
  * Author: Cailean Bernard

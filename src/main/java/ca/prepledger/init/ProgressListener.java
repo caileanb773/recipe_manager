@@ -1,4 +1,4 @@
-package init;
+package ca.prepledger.init;
 
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;

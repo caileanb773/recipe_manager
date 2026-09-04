@@ -1,4 +1,4 @@
-package init;
+package ca.prepledger.init;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
@@ -15,11 +15,12 @@ import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatLightLaf;
 
-import app.Main;
-import constants.Constants;
-import controller.AppController;
-import model.Model;
-import view.AppFrame;
+import ca.prepledger.app.Main;
+import ca.prepledger.constants.Constants;
+import ca.prepledger.controller.AppController;
+import ca.prepledger.model.Model;
+import ca.prepledger.view.AppFrame;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

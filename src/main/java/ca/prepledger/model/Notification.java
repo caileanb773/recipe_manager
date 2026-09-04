@@ -1,4 +1,4 @@
-package model;
+package ca.prepledger.model;
 
 import java.time.LocalDateTime;
 import org.slf4j.LoggerFactory;

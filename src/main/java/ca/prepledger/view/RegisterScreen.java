@@ -1,9 +1,9 @@
-package view;
+package ca.prepledger.view;
 
-import static constants.Constants.DARK_GRADIENT_BOTTOM;
-import static constants.Constants.DARK_GRADIENT_TOP;
-import static constants.Constants.LIGHT_GRADIENT_BOTTOM;
-import static constants.Constants.LIGHT_GRADIENT_TOP;
+import static ca.prepledger.constants.Constants.DARK_GRADIENT_BOTTOM;
+import static ca.prepledger.constants.Constants.DARK_GRADIENT_TOP;
+import static ca.prepledger.constants.Constants.LIGHT_GRADIENT_BOTTOM;
+import static ca.prepledger.constants.Constants.LIGHT_GRADIENT_TOP;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -47,9 +47,9 @@ import org.slf4j.LoggerFactory;
 
 import com.sun.tools.javac.Main;
 
-import constants.Constants;
-import model.Theme;
-import util.Utility;
+import ca.prepledger.constants.Constants;
+import ca.prepledger.model.Theme;
+import ca.prepledger.util.Utility;
 
 /*
  * Author: Cailean Bernard

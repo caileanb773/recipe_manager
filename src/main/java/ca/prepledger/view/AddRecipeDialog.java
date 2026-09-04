@@ -1,4 +1,4 @@
-package view;
+package ca.prepledger.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,15 +23,14 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-import model.Fraction;
-import model.Ingredient;
-import model.Recipe;
-import model.Unit;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import constants.Constants;
+import ca.prepledger.constants.Constants;
+import ca.prepledger.model.Fraction;
+import ca.prepledger.model.Ingredient;
+import ca.prepledger.model.Recipe;
+import ca.prepledger.model.Unit;
 
 /*
  * Author: Cailean Bernard

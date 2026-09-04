@@ -1,4 +1,4 @@
-package view;
+package ca.prepledger.view;
 
 import java.awt.event.ActionListener;
 

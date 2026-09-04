@@ -1,4 +1,4 @@
-package model;
+package ca.prepledger.model;
 
 import java.util.Objects;
 

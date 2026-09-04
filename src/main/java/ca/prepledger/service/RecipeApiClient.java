@@ -1,4 +1,4 @@
-package service;
+package ca.prepledger.service;
 
 import java.io.IOException;
 import java.net.URI;
@@ -13,7 +13,7 @@ import org.postgresql.util.PSQLException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import model.Recipe;
+import ca.prepledger.model.Recipe;
 
 public class RecipeApiClient {
 
