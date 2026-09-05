@@ -1,5 +1,5 @@
 package ca.prepledger.controller;
 
-public class RecipeController {
+public class RecipeListController {
 
 }
