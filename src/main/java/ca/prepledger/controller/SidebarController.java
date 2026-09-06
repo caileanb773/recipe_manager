@@ -18,15 +18,8 @@ public class SidebarController {
 
 	@FXML
 	private Button settingsContextBtn;
-
-	@FXML
-	private StackPane contextArea;
-
-	private enum ContextArea {
-		RECIPES, SETTINGS, IMPORT_EXPORT
-	};
-
-	private ContextArea currentContextArea = ContextArea.RECIPES;
+	
+	private AppShellController appShellController;
 
 
 	/////////////////////
@@ -34,11 +27,15 @@ public class SidebarController {
 	// Methods
 	//
 	/////////////////////
+	
+	public void setAppShellController(AppShellController appShellController) {
+		this.appShellController = appShellController;
+	}
 
 	@FXML
 	public void onRecipesContextBtnClick() {
 		try {
-			showRecipes();
+			appShellController.showRecipes();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -48,7 +45,7 @@ public class SidebarController {
 	@FXML
 	public void onImpExpContextBtnClick() {
 		try {
-			showImportExport();
+			appShellController.showImportExport();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -58,53 +55,13 @@ public class SidebarController {
 	@FXML
 	public void onSettingsContextBtnClick() {
 		try {
-			showSettings();
+			appShellController.showSettings();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private void showRecipes() throws IOException {
-		if (currentContextArea == ContextArea.RECIPES) {
-			return;
-		}
 
-		currentContextArea = ContextArea.RECIPES;
-
-		Parent view = FXMLLoader.load(
-				getClass().getResource("/fxml/recipes/RecipeList.fxml")
-				);
-
-		contextArea.getChildren().setAll(view);
-	}
-
-	private void showImportExport() throws IOException {
-		if (currentContextArea == ContextArea.IMPORT_EXPORT) {
-			return;
-		}
-
-		currentContextArea = ContextArea.IMPORT_EXPORT;
-
-		Parent view = FXMLLoader.load(
-				getClass().getResource("/fxml/import-export/ImportExport.fxml")
-				);
-
-		contextArea.getChildren().setAll(view);
-	}
-
-	private void showSettings() throws IOException {
-		if (currentContextArea == ContextArea.SETTINGS) {
-			return;
-		}
-
-		currentContextArea = ContextArea.SETTINGS;
-
-		Parent view = FXMLLoader.load(
-				getClass().getResource("/fxml/settings/Settings.fxml")
-				);
-
-		contextArea.getChildren().setAll(view);
-	}
 
 }
