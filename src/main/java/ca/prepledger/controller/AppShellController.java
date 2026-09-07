@@ -68,11 +68,11 @@ public class AppShellController {
 		
 		currentContextArea = ContextArea.RECIPES;
 
-		Parent view = FXMLLoader.load(
+		Parent recipeList = FXMLLoader.load(
 				getClass().getResource("/fxml/recipes/RecipeList.fxml")
 				);
 
-		contextArea.getChildren().setAll(view);
+		appShell.setCenter(recipeList);
 	}
 
 	public void showImportExport() throws IOException {
@@ -82,11 +82,11 @@ public class AppShellController {
 		
 		currentContextArea = ContextArea.IMPORT_EXPORT;
 
-		Parent view = FXMLLoader.load(
+		Parent importExport = FXMLLoader.load(
 				getClass().getResource("/fxml/import-export/ImportExport.fxml")
 				);
 
-		contextArea.getChildren().setAll(view);
+		appShell.setCenter(importExport);
 	}
 
 	public void showSettings() throws IOException {
@@ -96,11 +96,11 @@ public class AppShellController {
 		
 		currentContextArea = ContextArea.SETTINGS;
 
-		Parent view = FXMLLoader.load(
+		Parent settings = FXMLLoader.load(
 				getClass().getResource("/fxml/settings/Settings.fxml")
 				);
 
-		contextArea.getChildren().setAll(view);
+		appShell.setCenter(settings);
 	}
 
 }
