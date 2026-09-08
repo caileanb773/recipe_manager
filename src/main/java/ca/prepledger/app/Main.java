@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -21,9 +22,18 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Regular.ttf"), 14);
+		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Medium.ttf"), 14);
+		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-SemiBold.ttf"), 14);
+		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Bold.ttf"), 14);
+		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AppShell.fxml"));
 		Parent root = loader.load();
 		Scene scene = new Scene(root, 1280, 720);
+		
+	    scene.getStylesheets().add(
+	            getClass().getResource("/css/application.css").toExternalForm()
+	        );
 		
 		primaryStage.setTitle("PrepLedger");
 		primaryStage.setScene(scene);
@@ -31,6 +41,8 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
+		
+		
 		launch(args);
 	}
 }
