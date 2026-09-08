@@ -71,7 +71,7 @@ public class AppShellController {
 		Parent recipeList = FXMLLoader.load(
 				getClass().getResource("/fxml/recipes/RecipeList.fxml")
 				);
-
+		
 		appShell.setCenter(recipeList);
 	}
 
