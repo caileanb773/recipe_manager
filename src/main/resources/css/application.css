@@ -40,3 +40,13 @@
 .nav-button.active {
     -fx-background-color: #2E9B90;
 }
+
+.online-status {
+    -fx-padding: 10px 10px 10px 10px;
+    -fx-text-fill: #F2F4F3;
+}
+
+.profile-name {
+    -fx-padding: 10px 10px 10px 10px;
+    -fx-text-fill: #F2F4F3;
+}
