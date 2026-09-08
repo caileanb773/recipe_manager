@@ -32,26 +32,26 @@
          <children>
             <Button fx:id="costingContextBtn" mnemonicParsing="false" onAction="#onCostingContextBtnClick" styleClass="nav-button" text="Costing">
                <graphic>
-                  <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Button>
             <Button fx:id="settingsContextBtn" mnemonicParsing="false" onAction="#onSettingsContextBtnClick" styleClass="nav-button" text="Settings">
                <graphic>
-                  <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/setting.png" />
+                        <Image url="@../../img/icon/scaled/setting-scaled.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
             <Button fx:id="notificationsContextBtn1" mnemonicParsing="false" onAction="#onNotificationsContextBtnClick" styleClass="nav-button" text="Notifications">
                <graphic>
-                  <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Button>
             <Button fx:id="recipesContextBtn" mnemonicParsing="false" onAction="#onRecipesContextBtnClick" styleClass="nav-button" stylesheets="@../../css/application.css" text="Recipes">
                <graphic>
-                  <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Button>
          </children>
@@ -66,9 +66,9 @@
    <top>
       <Label alignment="CENTER" styleClass="header" text="PrepLedger" textFill="WHITE">
          <graphic>
-            <ImageView fitHeight="35.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/Logo.png" />
+                  <Image url="@../../img/icon/scaled/setting-scaled.png" />
                </image>
             </ImageView>
          </graphic>
