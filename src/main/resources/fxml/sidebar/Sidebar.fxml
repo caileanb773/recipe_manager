@@ -12,27 +12,57 @@
    <bottom>
       <BorderPane prefHeight="58.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <bottom>
-            <Label text="John D." textFill="WHITE">
+            <Label styleClass="profile-name" text="John D." textFill="WHITE">
                <graphic>
-                  <ImageView fitHeight="39.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/icon/scaled/person-scaled.png" />
+                     </image>
+                  </ImageView>
                </graphic>
             </Label>
          </bottom>
          <left>
-            <Label text="Online" textFill="WHITE" BorderPane.alignment="CENTER">
+            <Label styleClass="online-status" text="Online" textFill="WHITE" BorderPane.alignment="CENTER">
                <graphic>
-                  <ImageView fitHeight="41.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/icon/scaled/cloud-scaled.png" />
+                     </image>
+                  </ImageView>
                </graphic>
             </Label>
          </left>
       </BorderPane>
    </bottom>
    <center>
-      <VBox fx:id="buttonVBox" prefHeight="200.0" prefWidth="165.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="buttonVBox" prefHeight="200.0" prefWidth="165.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="recipesContextBtn" mnemonicParsing="false" onAction="#onRecipesContextBtnClick" styleClass="nav-button" stylesheets="@../../css/application.css" text="Recipes">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/icon/scaled/open-book-scaled.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             <Button fx:id="costingContextBtn" mnemonicParsing="false" onAction="#onCostingContextBtnClick" styleClass="nav-button" text="Costing">
                <graphic>
-                  <ImageView pickOnBounds="true" preserveRatio="true" />
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/icon/scaled/dollar-currency-symbol-scaled.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="notificationsContextBtn1" mnemonicParsing="false" onAction="#onNotificationsContextBtnClick" styleClass="nav-button" text="Notifications">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/icon/scaled/notification-scaled.png" />
+                     </image>
+                  </ImageView>
                </graphic>
             </Button>
             <Button fx:id="settingsContextBtn" mnemonicParsing="false" onAction="#onSettingsContextBtnClick" styleClass="nav-button" text="Settings">
@@ -42,16 +72,6 @@
                         <Image url="@../../img/icon/scaled/setting-scaled.png" />
                      </image>
                   </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="notificationsContextBtn1" mnemonicParsing="false" onAction="#onNotificationsContextBtnClick" styleClass="nav-button" text="Notifications">
-               <graphic>
-                  <ImageView pickOnBounds="true" preserveRatio="true" />
-               </graphic>
-            </Button>
-            <Button fx:id="recipesContextBtn" mnemonicParsing="false" onAction="#onRecipesContextBtnClick" styleClass="nav-button" stylesheets="@../../css/application.css" text="Recipes">
-               <graphic>
-                  <ImageView pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Button>
          </children>
@@ -68,7 +88,7 @@
          <graphic>
             <ImageView pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/icon/scaled/setting-scaled.png" />
+                  <Image url="@../../img/icon/scaled/Logo-scaled.png" />
                </image>
             </ImageView>
          </graphic>
