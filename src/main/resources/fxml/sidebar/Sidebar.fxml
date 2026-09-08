@@ -35,26 +35,42 @@
          <children>
             <HBox>
                <children>
-                  <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="recipesContextBtn" mnemonicParsing="false" onAction="#onRecipesContextBtnClick" styleClass="nav-button" stylesheets="@../../css/application.css" text="Recipes" />
+                  <Button fx:id="recipesContextBtn" mnemonicParsing="false" onAction="#onRecipesContextBtnClick" styleClass="nav-button" stylesheets="@../../css/application.css" text="Recipes">
+                     <graphic>
+                        <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                  </Button>
                </children>
             </HBox>
             <HBox>
                <children>
-                  <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="costingContextBtn" mnemonicParsing="false" onAction="#onCostingContextBtnClick" styleClass="nav-button" text="Costing" />
+                  <Button fx:id="costingContextBtn" mnemonicParsing="false" onAction="#onCostingContextBtnClick" styleClass="nav-button" text="Costing">
+                     <graphic>
+                        <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                  </Button>
                </children>
             </HBox>
             <HBox>
                <children>
-                  <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="settingsContextBtn" mnemonicParsing="false" onAction="#onSettingsContextBtnClick" styleClass="nav-button" text="Settings" />
+                  <Button fx:id="settingsContextBtn" mnemonicParsing="false" onAction="#onSettingsContextBtnClick" styleClass="nav-button" text="Settings">
+                     <graphic>
+                        <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../img/setting.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="72.0">
                <children>
-                  <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="notificationsContextBtn1" mnemonicParsing="false" onAction="#onNotificationsContextBtnClick" styleClass="nav-button" text="Notifications" />
+                  <Button fx:id="notificationsContextBtn1" mnemonicParsing="false" onAction="#onNotificationsContextBtnClick" styleClass="nav-button" text="Notifications">
+                     <graphic>
+                        <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                  </Button>
                </children>
             </HBox>
          </children>
@@ -68,7 +84,7 @@
                   <Image url="@../../img/Logo.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" styleClass="headerr" text="PrepLedger" textFill="WHITE" />
+            <Label alignment="CENTER" styleClass="header" text="PrepLedger" textFill="WHITE" />
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
