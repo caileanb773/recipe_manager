@@ -25,9 +25,7 @@ public class SidebarController {
 	
 	@FXML
 	private VBox buttonVBox;
-	
-	private List<Button> uiButtons;
-	
+		
 	private AppShellController appShellController;
 
 
