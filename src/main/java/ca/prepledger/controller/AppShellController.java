@@ -17,7 +17,7 @@ public class AppShellController {
 	private StackPane contextArea;
 
 	private enum ContextArea {
-		RECIPES, SETTINGS, IMPORT_EXPORT
+		RECIPES, SETTINGS, IMPORT_EXPORT, NOTIFICATIONS
 	};
 
 	private ContextArea currentContextArea = ContextArea.RECIPES;
@@ -75,18 +75,18 @@ public class AppShellController {
 		appShell.setCenter(recipeList);
 	}
 
-	public void showImportExport() throws IOException {
+	public void showCosting() throws IOException {
 		if (currentContextArea == ContextArea.IMPORT_EXPORT) {
 			return;
 		}
 		
 		currentContextArea = ContextArea.IMPORT_EXPORT;
 
-		Parent importExport = FXMLLoader.load(
-				getClass().getResource("/fxml/import-export/ImportExport.fxml")
+		Parent costing = FXMLLoader.load(
+				getClass().getResource("/fxml/costing/Costing.fxml")
 				);
 
-		appShell.setCenter(importExport);
+		appShell.setCenter(costing);
 	}
 
 	public void showSettings() throws IOException {
@@ -101,6 +101,20 @@ public class AppShellController {
 				);
 
 		appShell.setCenter(settings);
+	}
+	
+	public void showNotifications() throws IOException {
+		if (currentContextArea == ContextArea.NOTIFICATIONS) {
+			return;
+		}
+		
+		currentContextArea = ContextArea.NOTIFICATIONS;
+
+		Parent notifications = FXMLLoader.load(
+				getClass().getResource("/fxml/notifications/Notifications.fxml")
+				);
+
+		appShell.setCenter(notifications);
 	}
 
 }
