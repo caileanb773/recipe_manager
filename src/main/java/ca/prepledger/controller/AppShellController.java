@@ -6,15 +6,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 
 public class AppShellController {
 
 	@FXML
 	private BorderPane appShell;
-
-	@FXML
-	private StackPane contextArea;
 
 	private enum ContextArea {
 		RECIPES, SETTINGS, IMPORT_EXPORT, NOTIFICATIONS
