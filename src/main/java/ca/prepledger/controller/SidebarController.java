@@ -84,25 +84,17 @@ public class SidebarController {
 	}
 
 	private void setActiveButtonStyling(String buttonLabel) {
-		List<Node> buttonHBoxes = buttonVBox.getChildren();
+		List<Node> buttons = buttonVBox.getChildren();
 		
-		for (Node hBoxNode : buttonHBoxes) {
-			HBox hBox = (HBox)hBoxNode;
+		for (Node buttonNode : buttons) {
+			Button b = (Button)buttonNode;
 			
-			List<Node> hBoxElements = hBox.getChildren();
-			
-			for (Node n : hBoxElements) {
-				if (n.getTypeSelector().equalsIgnoreCase("Button")) {
-					Button b = (Button)n;
-					
-					// Give it the active styling CSS class
-					if (b.getText().equalsIgnoreCase(buttonLabel)) {
-						b.getStyleClass().add("active");
-					} else {
-						// Non-matching buttons are reset
-						b.getStyleClass().remove("active");
-					}
-				}
+			// Give it the active styling CSS class
+			if (b.getText().equalsIgnoreCase(buttonLabel)) {
+				b.getStyleClass().add("active");
+			} else {
+				// Non-matching buttons are reset
+				b.getStyleClass().remove("active");
 			}
 		}
 	}
