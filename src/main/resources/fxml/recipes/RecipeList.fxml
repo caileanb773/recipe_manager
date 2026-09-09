@@ -27,7 +27,7 @@
                            </children>
                         </VBox>
                         <TextField prefWidth="175.0" promptText="Search recipes..." styleClass="recipe-search-bar" />
-                        <Button mnemonicParsing="false" styleClass="add-recipe-btn" text="Add Recipe" textAlignment="CENTER">
+                        <Button mnemonicParsing="false" onAction="#onAddRecipeButtonClicked" styleClass="add-recipe-btn" text="Add Recipe" textAlignment="CENTER">
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
                                  <image>

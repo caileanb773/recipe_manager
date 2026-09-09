@@ -13,7 +13,6 @@
     -fx-text-fill: #26343D;
 
     -fx-font-alignment: CENTER;
-    -fx-padding: 10px 10px 10px 10px;
 }
 
 .header-2 {
@@ -22,5 +21,4 @@
     -fx-text-fill: #93acbb;
 
     -fx-font-alignment: CENTER;
-    -fx-padding: 10px 10px 10px 10px;
 }
