@@ -39,7 +39,7 @@
    <center>
       <VBox fx:id="buttonVBox" prefHeight="200.0" prefWidth="165.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="recipesContextBtn" mnemonicParsing="false" onAction="#onRecipesContextBtnClick" styleClass="nav-button" stylesheets="@../../css/application.css" text="Recipes">
+            <Button fx:id="recipesContextBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onRecipesContextBtnClick" styleClass="nav-button" stylesheets="@../../css/application.css" text="Recipes">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -48,7 +48,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="prepListsContextBtn" layoutX="20.0" layoutY="176.0" mnemonicParsing="false" onAction="#onPrepListsContextBtnClick" styleClass="nav-button" text="Prep Lists">
+            <Button fx:id="prepListsContextBtn" layoutX="20.0" layoutY="176.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPrepListsContextBtnClick" styleClass="nav-button" text="Prep Lists">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -57,7 +57,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="costingContextBtn" mnemonicParsing="false" onAction="#onCostingContextBtnClick" styleClass="nav-button" text="Costing">
+            <Button fx:id="costingContextBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCostingContextBtnClick" styleClass="nav-button" text="Costing">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -66,7 +66,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="notificationsContextBtn1" mnemonicParsing="false" onAction="#onNotificationsContextBtnClick" styleClass="nav-button" text="Notifications">
+            <Button fx:id="notificationsContextBtn1" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onNotificationsContextBtnClick" styleClass="nav-button" text="Notifications">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -75,7 +75,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="settingsContextBtn" mnemonicParsing="false" onAction="#onSettingsContextBtnClick" styleClass="nav-button" text="Settings">
+            <Button fx:id="settingsContextBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSettingsContextBtnClick" styleClass="nav-button" text="Settings">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
