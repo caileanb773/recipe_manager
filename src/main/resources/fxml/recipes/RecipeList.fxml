@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -14,33 +13,37 @@
    <top>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Label text="Recipes" />
-                  <Label text="123 recipes" />
-                  <FlowPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <Button fx:id="listViewBtn" mnemonicParsing="false" onAction="#onListViewBtnClicked" text="List" />
-                        <Button fx:id="gridViewBtn" mnemonicParsing="false" onAction="#onGridViewBtnClicked" text="Grid" />
-                     </children>
-                  </FlowPane>
-               </children>
-            </VBox>
             <VBox prefHeight="100.0" prefWidth="451.0" HBox.hgrow="ALWAYS">
                <children>
-                  <FlowPane alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="200.0">
+                  <HBox alignment="TOP_RIGHT">
                      <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="SOMETIMES">
+                           <children>
+                              <Label text="Recipes" />
+                              <Label text="123 recipes" />
+                           </children>
+                        </VBox>
                         <TextField promptText="Search recipes..." />
                         <Button mnemonicParsing="false" text="Filter" />
                         <Button mnemonicParsing="false" text="+ Add Recipe" textAlignment="CENTER" />
                      </children>
-                  </FlowPane>
-                  <FlowPane alignment="TOP_RIGHT">
+                  </HBox>
+                  <HBox alignment="BOTTOM_CENTER" fillHeight="false" VBox.vgrow="SOMETIMES">
                      <children>
-                        <ComboBox prefWidth="150.0" promptText="Last Updated" />
-                        <ComboBox prefWidth="150.0" promptText="Category" />
+                        <HBox alignment="CENTER_LEFT" HBox.hgrow="SOMETIMES">
+                           <children>
+                              <Button fx:id="listViewBtn" mnemonicParsing="false" onAction="#onListViewBtnClicked" text="List" />
+                              <Button fx:id="gridViewBtn" mnemonicParsing="false" onAction="#onGridViewBtnClicked" text="Grid" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" HBox.hgrow="SOMETIMES">
+                           <children>
+                              <ComboBox prefWidth="150.0" promptText="Last Updated" />
+                              <ComboBox prefWidth="150.0" promptText="Category" />
+                           </children>
+                        </HBox>
                      </children>
-                  </FlowPane>
+                  </HBox>
                </children>
             </VBox>
          </children>
