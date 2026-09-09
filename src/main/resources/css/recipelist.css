@@ -3,4 +3,9 @@
     -fx-text-fill: #F2F4F3;
     -fx-text-family: "Inter 18pt";
     -fx-font-weight: bold;
+    -fx-padding: 10px 10px 10px 10px;
+}
+
+.header {
+
 }
