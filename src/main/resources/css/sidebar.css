@@ -14,7 +14,6 @@
 
 .nav-button {
     -fx-background-color: transparent;
-    background-radius: 6px;
     -fx-border-radius: 12px;
 
     -fx-font-size: 18px;
