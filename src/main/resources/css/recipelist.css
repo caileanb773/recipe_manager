@@ -1,3 +1,7 @@
+.root {
+    -fx-background-color: #F5F5F5;
+}
+
 .add-recipe-btn {
     -fx-background-color: #2E9B90;
     -fx-text-fill: #F2F4F3;
@@ -6,6 +10,17 @@
     -fx-padding: 10px 10px 10px 10px;
 }
 
-.header {
+.recipe-search-bar {
 
+}
+
+.dropdown {
+    -fx-background-color: #FEFEFE;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-border-color: #c3c3c3;
+}
+
+.dropdown .list-cell {
+    -fx-text-fill: #c3c3c3;
 }
