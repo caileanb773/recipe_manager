@@ -5,11 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeListController">
+<BorderPane minHeight="400.0" minWidth="600.0" stylesheets="@../../css/recipelist.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeListController">
    <top>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -25,7 +27,15 @@
                         </VBox>
                         <TextField promptText="Search recipes..." />
                         <Button mnemonicParsing="false" text="Filter" />
-                        <Button mnemonicParsing="false" text="+ Add Recipe" textAlignment="CENTER" />
+                        <Button mnemonicParsing="false" styleClass="add-recipe-btn" text="Add Recipe" textAlignment="CENTER">
+                           <graphic>
+                              <ImageView pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/icon/scaled/plus-scaled.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </HBox>
                   <HBox alignment="BOTTOM_CENTER" fillHeight="false" VBox.vgrow="SOMETIMES">

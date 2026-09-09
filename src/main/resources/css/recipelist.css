@@ -1,0 +1,6 @@
+.add-recipe-btn {
+    -fx-background-color: #2E9B90;
+    -fx-text-fill: #F2F4F3;
+    -fx-text-family: "Inter 18pt";
+    -fx-font-weight: bold;
+}
