@@ -82,6 +82,17 @@ public class SidebarController {
 			e.printStackTrace();
 		}
 	}
+	
+	@FXML
+	public void onPrepListsContextBtnClick() {
+		try {
+			appShellController.showPrepLists();
+			setActiveButtonStyling("Prep Lists");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private void setActiveButtonStyling(String buttonLabel) {
 		List<Node> buttons = buttonVBox.getChildren();

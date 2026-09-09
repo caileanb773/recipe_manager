@@ -47,6 +47,15 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Button fx:id="prepListsContextBtn" layoutX="20.0" layoutY="176.0" mnemonicParsing="false" onAction="#onPrepListsContextBtnClick" styleClass="nav-button" text="Prep Lists">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/icon/scaled/knife-scaled.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             <Button fx:id="costingContextBtn" mnemonicParsing="false" onAction="#onCostingContextBtnClick" styleClass="nav-button" text="Costing">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
