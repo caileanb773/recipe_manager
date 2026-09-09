@@ -11,9 +11,9 @@
 
 <BorderPane styleClass="sidebar" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.SidebarController">
    <bottom>
-      <BorderPane prefHeight="58.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <BorderPane BorderPane.alignment="CENTER">
          <bottom>
-            <Label styleClass="profile-name" text="John D." textFill="WHITE">
+            <Label alignment="TOP_LEFT" styleClass="profile-name" text="John D." textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -23,8 +23,8 @@
                </graphic>
             </Label>
          </bottom>
-         <left>
-            <Label styleClass="online-status" text="Online" textFill="WHITE" BorderPane.alignment="CENTER">
+         <top>
+            <Label alignment="TOP_LEFT" styleClass="online-status" text="Online" textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -33,7 +33,10 @@
                   </ImageView>
                </graphic>
             </Label>
-         </left>
+         </top>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" />
+         </BorderPane.margin>
       </BorderPane>
    </bottom>
    <center>
