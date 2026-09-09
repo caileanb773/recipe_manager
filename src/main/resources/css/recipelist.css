@@ -30,5 +30,13 @@
 }
 
 .dropdown .list-cell {
-    -fx-text-fill: #c3c3c3;
+    -fx-text-fill: #C3C3C3;
+}
+
+.recipe-card {
+    -fx-background-color: #6e2828;
+    -fx-border-color: #fb0404;
+    -fx-border-width: 10px;
+    -fx-border-radius: 10px;
+    border
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="card" styleClass="recipe-card" stylesheets="@../../css/recipecard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeCardController">
+
+    <VBox styleClass="recipe-card-content">
+
+        <ImageView fx:id="recipeImage" preserveRatio="true" styleClass="recipe-image" />
+
+        <VBox styleClass="recipe-info">
+
+            <Label fx:id="recipeName" styleClass="recipe-name" text="Chicken Tikka" />
+
+            <HBox styleClass="recipe-meta">
+                <Label fx:id="ratingLabel" styleClass="recipe-rating" text="★ 4.8" />
+
+                <Label fx:id="timeLabel" styleClass="recipe-time" text="45 min" />
+            </HBox>
+
+            <FlowPane fx:id="tagsPane" styleClass="recipe-tags" />
+
+        </VBox>
+
+    </VBox>
+
+</StackPane>

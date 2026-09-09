@@ -1,11 +1,14 @@
 package ca.prepledger.controller;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.TilePane;
 
 public class RecipeListController {
 	
@@ -16,7 +19,20 @@ public class RecipeListController {
 	private Button listViewBtn;
 	
 	@FXML
+	private Button addRecipeBtn;
+	
+	@FXML
 	private ScrollPane recipeScrollPane;
+	
+	@FXML
+	private GridPane gridView;
+	
+	@FXML
+	private TilePane listView;
+	
+	private RecipeViewMode viewingMode;
+	
+	private int recipeCount = 0;
 	
 	enum RecipeViewMode {
 		GRID,
@@ -31,49 +47,71 @@ public class RecipeListController {
 	/////////////////////
 	
 	@FXML
-	private void initialize() {		
+	private void initialize() {
+		viewingMode = RecipeViewMode.GRID;
 		showGridView();
 	}
 	
 	@FXML
 	public void onGridViewBtnClicked() {
+		if (viewingMode == RecipeViewMode.GRID) {
+			return;
+		}
+		
+		viewingMode = RecipeViewMode.GRID;
+		
 		showGridView();
 	}
 	
 	@FXML
 	public void onListViewBtnClicked() {
+		if (viewingMode == RecipeViewMode.LIST) {
+			return;
+		}
+		
+		viewingMode = RecipeViewMode.LIST;
+		
 		showListView();
 	}
 	
+	@FXML
+	public void onAddRecipeButtonClicked() {
+		addDummyRecipe();
+	}
+	
 	private void showGridView() {
-		GridPane grid = new GridPane();
-			
-		grid.setStyle(
-			    "-fx-border-color: red;" +
-			    "-fx-border-width: 3px;"
-			);
-
-		grid.setGridLinesVisible(true);
-		grid.add(new Label("Grid1"), 0, 0);
-		grid.add(new Label("Grid2"), 1, 0);
-
-		recipeScrollPane.setContent(grid);
-		recipeScrollPane.setFitToHeight(true);
-		recipeScrollPane.setFitToWidth(true);
+		gridView.setVisible(true);
+		gridView.setManaged(true);
+		listView.setVisible(false);
+		listView.setManaged(false);
 	}
 	
 	private void showListView() {
-		VBox list = new VBox();
-				
-		list.setStyle(
-			    "-fx-border-color: blue;" +
-			    "-fx-border-width: 3px;"
-			);
-		
-		list.getChildren().add(new Label("List"));
-		recipeScrollPane.setContent(list);
-		recipeScrollPane.setFitToHeight(true);
-		recipeScrollPane.setFitToWidth(true);
+		listView.setVisible(true);
+		listView.setManaged(true);
+		gridView.setVisible(false);
+		gridView.setManaged(false);
 	}
+	
+	// XXX Temporary testing method
+	private void addDummyRecipe() {
+	    try {
+	        FXMLLoader loader = new FXMLLoader(
+	            getClass().getResource("/fxml/recipes/RecipeCard.fxml")
+	        );
 
+	        Node card = loader.load();
+
+	        int column = recipeCount % 3;
+	        int row = recipeCount / 3;
+
+	        gridView.add(card, column, row);
+
+	        recipeCount++;
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
 }

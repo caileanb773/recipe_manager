@@ -24,10 +24,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Regular.ttf"), 14);
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Medium.ttf"), 14);
-		Font semibold = Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-SemiBold.ttf"), 14);
+		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-SemiBold.ttf"), 14);
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Bold.ttf"), 14);
-		
-		System.out.println(semibold.getFamily());
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AppShell.fxml"));
 		Parent root = loader.load();
