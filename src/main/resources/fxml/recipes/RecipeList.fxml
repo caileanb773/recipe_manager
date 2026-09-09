@@ -16,18 +16,17 @@
    <top>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="100.0" prefWidth="451.0" HBox.hgrow="ALWAYS">
+            <VBox HBox.hgrow="ALWAYS">
                <children>
                   <HBox alignment="TOP_RIGHT">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="SOMETIMES">
+                        <VBox alignment="CENTER_LEFT" fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
                            <children>
                               <Label styleClass="header" text="Recipes" />
                               <Label styleClass="header-2" text="123 recipes" />
                            </children>
                         </VBox>
-                        <TextField promptText="Search recipes..." styleClass="recipe-search-bar" />
-                        <Button mnemonicParsing="false" text="Filter" />
+                        <TextField prefWidth="175.0" promptText="Search recipes..." styleClass="recipe-search-bar" />
                         <Button mnemonicParsing="false" styleClass="add-recipe-btn" text="Add Recipe" textAlignment="CENTER">
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
@@ -61,7 +60,7 @@
       </HBox>
    </top>
    <center>
-      <ScrollPane fx:id="recipeScrollPane" fitToHeight="true" fitToWidth="true" prefViewportHeight="200.0" prefViewportWidth="200.0" stylesheets="@../../css/recipelist.css" BorderPane.alignment="CENTER" />
+      <ScrollPane fx:id="recipeScrollPane" fitToHeight="true" fitToWidth="true" prefViewportHeight="200.0" prefViewportWidth="200.0" styleClass="recipe-scroll-pane" stylesheets="@../../css/recipelist.css" BorderPane.alignment="CENTER" />
    </center>
    <stylesheets>
       <URL value="@../../css/recipelist.css" />

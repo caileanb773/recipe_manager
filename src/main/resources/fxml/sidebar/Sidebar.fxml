@@ -40,7 +40,7 @@
       </BorderPane>
    </bottom>
    <center>
-      <VBox fx:id="buttonVBox" prefHeight="200.0" prefWidth="165.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="buttonVBox" prefHeight="200.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="recipesContextBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onRecipesContextBtnClick" styleClass="nav-button" stylesheets="@../../css/application.css" text="Recipes">
                <graphic>

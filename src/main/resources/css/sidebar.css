@@ -1,3 +1,7 @@
+.root {
+    -fx-font-size: 18px;
+}
+
 .sidebar {
     -fx-background-color: #1C252E;
 }
@@ -16,7 +20,6 @@
     -fx-background-color: transparent;
     -fx-border-radius: 12px;
 
-    -fx-font-size: 18px;
     -fx-font-family: "Inter 18pt Medium";
     -fx-text-fill: #F2F4F3;
 
@@ -35,9 +38,11 @@
 .online-status {
     -fx-padding: 10px 10px 10px 10px;
     -fx-text-fill: #F2F4F3;
+    -fx-font-size: 15px;
 }
 
 .profile-name {
     -fx-padding: 10px 10px 10px 10px;
     -fx-text-fill: #F2F4F3;
+    -fx-font-size: 15px;
 }

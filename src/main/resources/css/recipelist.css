@@ -1,5 +1,6 @@
 .root {
     -fx-background-color: #F5F5F5;
+    -fx-font-size: 18px;
 }
 
 .add-recipe-btn {
@@ -7,10 +8,17 @@
     -fx-text-fill: #F2F4F3;
     -fx-text-family: "Inter 18pt";
     -fx-font-weight: bold;
-    -fx-padding: 10px 10px 10px 10px;
+    -fx-padding: 5 5 5 5;
 }
 
 .recipe-search-bar {
+    -fx-background-color: #FEFEFE;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-border-color: #c3c3c3;    
+}
+
+.recipe-scroll-pane {
 
 }
 
