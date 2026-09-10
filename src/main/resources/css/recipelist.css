@@ -42,3 +42,8 @@
     -fx-border-width: 10px;
     -fx-border-radius: 10px;
 }
+
+.recipe-layout-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
