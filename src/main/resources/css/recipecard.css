@@ -31,8 +31,8 @@
 }
 
 .recipe-image {
-    -fx-fit-width: 260px;
-    -fx-fit-height: 150px;
+    -fx-fit-width: 280px;
+    -fx-fit-height: 180px;
 }
 
 .recipe-info {

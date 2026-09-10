@@ -101,6 +101,9 @@ public class RecipeListController {
 	        );
 
 	        Node card = loader.load();
+	        
+	        RecipeCardController controller = loader.getController();
+	        controller.setRecipe(null);
 
 	        int column = recipeCount % 3;
 	        int row = recipeCount / 3;

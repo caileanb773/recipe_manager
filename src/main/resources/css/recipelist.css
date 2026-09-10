@@ -19,7 +19,10 @@
 }
 
 .recipe-scroll-pane {
-
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
 }
 
 .dropdown {
@@ -38,5 +41,4 @@
     -fx-border-color: #fb0404;
     -fx-border-width: 10px;
     -fx-border-radius: 10px;
-    border
 }

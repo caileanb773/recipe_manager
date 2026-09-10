@@ -11,16 +11,16 @@
 
     <VBox styleClass="recipe-card-content">
 
-        <ImageView fx:id="recipeImage" preserveRatio="true" styleClass="recipe-image" />
+        <ImageView fx:id="recipeImage" fitHeight="180.0" fitWidth="355.0" />
 
         <VBox styleClass="recipe-info">
 
-            <Label fx:id="recipeName" styleClass="recipe-name" text="Chicken Tikka" />
+            <Label fx:id="recipeName" styleClass="recipe-name" />
 
             <HBox styleClass="recipe-meta">
-                <Label fx:id="ratingLabel" styleClass="recipe-rating" text="★ 4.8" />
+                <Label fx:id="ratingLabel" styleClass="recipe-rating" />
 
-                <Label fx:id="timeLabel" styleClass="recipe-time" text="45 min" />
+                <Label fx:id="timeLabel" styleClass="recipe-time" />
             </HBox>
 
             <FlowPane fx:id="tagsPane" styleClass="recipe-tags" />
