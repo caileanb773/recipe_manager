@@ -1,8 +1,0 @@
-<a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings icons created by Magnific - Flaticon</a>
-<a href="https://www.flaticon.com/free-icons/book" title="book icons">Book icons created by Magnific - Flaticon</a>
-<a href="https://www.flaticon.com/free-icons/dollar-sign" title="dollar sign icons">Dollar sign icons created by Magnific - Flaticon</a>
-<a href="https://www.flaticon.com/free-icons/notification" title="notification icons">Notification icons created by JessHG - Flaticon</a>
-<a href="https://www.flaticon.com/free-icons/weather" title="weather icons">Weather icons created by 24studio.us - Flaticon</a>
-<a href="https://www.flaticon.com/free-icons/character" title="character icons">Character icons created by Digby Garrett - Flaticon</a>
-<a href="https://www.flaticon.com/free-icons/knife" title="knife icons">Knife icons created by Graphix's Art - Flaticon</a>
-<a href="https://www.flaticon.com/free-icons/add" title="add icons">Add icons created by Pixel perfect - Flaticon</a>
