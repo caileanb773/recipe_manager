@@ -59,7 +59,8 @@ public class RecipeListController {
 		}
 		
 		viewingMode = RecipeViewMode.GRID;
-		
+		gridViewBtn.getStyleClass().add("active");
+		listViewBtn.getStyleClass().remove("active");
 		showGridView();
 	}
 	
@@ -70,7 +71,8 @@ public class RecipeListController {
 		}
 		
 		viewingMode = RecipeViewMode.LIST;
-		
+		listViewBtn.getStyleClass().add("active");
+		gridViewBtn.getStyleClass().remove("active");
 		showListView();
 	}
 	

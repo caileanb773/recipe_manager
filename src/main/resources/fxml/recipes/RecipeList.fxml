@@ -23,7 +23,7 @@
          <children>
             <VBox HBox.hgrow="ALWAYS">
                <children>
-                  <HBox alignment="TOP_RIGHT">
+                  <HBox alignment="CENTER_RIGHT">
                      <children>
                         <VBox alignment="CENTER_LEFT" fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
                            <children>
@@ -31,8 +31,8 @@
                               <Label styleClass="header-2" text="123 recipes" />
                            </children>
                         </VBox>
-                        <TextField prefWidth="175.0" promptText="Search recipes..." styleClass="recipe-search-bar" />
-                        <Button fx:id="addRecipeBtn" mnemonicParsing="false" onAction="#onAddRecipeButtonClicked" styleClass="add-recipe-btn" text="Add Recipe" textAlignment="CENTER">
+                        <TextField prefWidth="300.0" promptText="Search recipes..." styleClass="recipe-search-bar" />
+                        <Button fx:id="addRecipeBtn" alignment="CENTER" mnemonicParsing="false" onAction="#onAddRecipeButtonClicked" styleClass="add-recipe-btn" text="Add Recipe" textAlignment="CENTER">
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
                                  <image>

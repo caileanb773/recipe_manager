@@ -47,3 +47,11 @@
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
+
+.recipe-layout-btn:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+.recipe-layout-btn.active {
+    -fx-background-color:#2E9B90;
+}
