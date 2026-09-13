@@ -3,13 +3,15 @@ package ca.prepledger.controller;
 import java.io.IOException;
 import java.util.List;
 
+import ca.prepledger.navigation.ContextArea;
+import ca.prepledger.navigation.Navigable;
+import ca.prepledger.navigation.NavigationHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class SidebarController {
+public class SidebarController implements Navigable {
 
 	@FXML
 	private Button recipesContextBtn;
@@ -26,7 +28,9 @@ public class SidebarController {
 	@FXML
 	private VBox buttonVBox;
 		
-	private AppShellController appShellController;
+	//private AppShellController appShellController;
+	
+	private NavigationHandler navigationHandler;
 
 
 	/////////////////////
@@ -35,14 +39,14 @@ public class SidebarController {
 	//
 	/////////////////////
 	
-	public void setAppShellController(AppShellController appShellController) {
-		this.appShellController = appShellController;
-	}
+//	public void setAppShellController(AppShellController appShellController) {
+//		this.appShellController = appShellController;
+//	}
 
 	@FXML
 	public void onRecipesContextBtnClick() {
 		try {
-			appShellController.showRecipes();
+			navigationHandler.navigateTo(ContextArea.RECIPES);
 			setActiveButtonStyling("Recipes");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -53,7 +57,7 @@ public class SidebarController {
 	@FXML
 	public void onCostingContextBtnClick() {
 		try {
-			appShellController.showCosting();
+			navigationHandler.navigateTo(ContextArea.COSTING);
 			setActiveButtonStyling("Costing");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -64,7 +68,7 @@ public class SidebarController {
 	@FXML
 	public void onSettingsContextBtnClick() {
 		try {
-			appShellController.showSettings();
+			navigationHandler.navigateTo(ContextArea.SETTINGS);
 			setActiveButtonStyling("Settings");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -75,7 +79,7 @@ public class SidebarController {
 	@FXML
 	public void onNotificationsContextBtnClick() {
 		try {
-			appShellController.showNotifications();
+			navigationHandler.navigateTo(ContextArea.NOTIFICATIONS);
 			setActiveButtonStyling("Notifications");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -86,7 +90,7 @@ public class SidebarController {
 	@FXML
 	public void onPrepListsContextBtnClick() {
 		try {
-			appShellController.showPrepLists();
+			navigationHandler.navigateTo(ContextArea.PREP_LISTS);
 			setActiveButtonStyling("Prep Lists");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -108,6 +112,11 @@ public class SidebarController {
 				b.getStyleClass().remove("active");
 			}
 		}
+	}
+
+	@Override
+	public void setNavigationHandler(NavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
 	}
 
 }

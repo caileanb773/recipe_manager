@@ -2,6 +2,9 @@ package ca.prepledger.controller;
 
 import java.io.IOException;
 
+import ca.prepledger.navigation.ContextArea;
+import ca.prepledger.navigation.Navigable;
+import ca.prepledger.navigation.NavigationHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,7 +13,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 
-public class RecipeListController {
+public class RecipeListController implements Navigable {
 	
 	@FXML
 	private Button gridViewBtn;
@@ -34,10 +37,12 @@ public class RecipeListController {
 	
 	private int recipeCount = 0;
 	
-	enum RecipeViewMode {
+	private enum RecipeViewMode {
 		GRID,
 		LIST
 	}
+	
+	private NavigationHandler navigationHandler;
 	
 	
 	/////////////////////
@@ -50,6 +55,8 @@ public class RecipeListController {
 	private void initialize() {
 		viewingMode = RecipeViewMode.GRID;
 		showGridView();
+		gridViewBtn.getStyleClass().add("active");
+		listViewBtn.getStyleClass().remove("active");
 	}
 	
 	@FXML
@@ -78,7 +85,13 @@ public class RecipeListController {
 	
 	@FXML
 	public void onAddRecipeButtonClicked() {
-		addDummyRecipe();
+		//addDummyRecipe();
+		try {
+			navigationHandler.navigateTo(ContextArea.ADD_RECIPE);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void showGridView() {
@@ -119,4 +132,7 @@ public class RecipeListController {
 	    }
 	}
 	
+	public void setNavigationHandler(NavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
 }

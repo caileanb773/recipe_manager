@@ -2,19 +2,17 @@ package ca.prepledger.controller;
 
 import java.io.IOException;
 
+import ca.prepledger.navigation.ContextArea;
+import ca.prepledger.navigation.NavigationHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 
-public class AppShellController {
+public class AppShellController implements NavigationHandler {
 
 	@FXML
 	private BorderPane appShell;
-
-	private enum ContextArea {
-		RECIPES, SETTINGS, IMPORT_EXPORT, NOTIFICATIONS, PREP_LISTS
-	};
 
 	private ContextArea currentContextArea = ContextArea.RECIPES;
 
@@ -33,8 +31,9 @@ public class AppShellController {
 			Parent sidebar = loader.load();
 
 			SidebarController controller = loader.getController();
-			controller.setAppShellController(this);
-
+			//controller.setAppShellController(this);
+			controller.setNavigationHandler(this);
+			
 			appShell.setLeft(sidebar);
 
 		} catch (IOException e) {
@@ -45,39 +44,66 @@ public class AppShellController {
 
 	private void loadDefaultContextArea() {
 		try {
-			Parent recipeList = FXMLLoader.load(
-					getClass().getResource("/fxml/recipes/RecipeList.fxml")
-					);
-
-			appShell.setCenter(recipeList);
-
+			showRecipes();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public void showRecipes() throws IOException {
-		if (currentContextArea == ContextArea.RECIPES) {
+	@Override
+	public void navigateTo(ContextArea contextArea) throws IOException {
+		if (currentContextArea == contextArea) {
 			return;
 		}
+		
+		currentContextArea = contextArea;
+		
+		switch (contextArea) {
+		case RECIPES:
+			showRecipes();
+			break;
+			
+		case SETTINGS:
+			showSettings();
+			break;
+			
+		case IMPORT_EXPORT:
+			//showImportExport();
+			break;
+			
+		case NOTIFICATIONS:
+			showNotifications();
+			break;
+			
+		case PREP_LISTS:
+			showPrepLists();
+			break;
+			
+		case ADD_RECIPE:
+			showAddRecipe();
+			break;
+		case COSTING:
+			showCosting();
+			break;
+		}
+	}
+	
+	private void showRecipes() throws IOException {
+	    FXMLLoader loader = new FXMLLoader(
+	        getClass().getResource("/fxml/recipes/RecipeList.fxml")
+	    );
 
-		currentContextArea = ContextArea.RECIPES;
+	    Parent recipeList = loader.load();
 
-		Parent recipeList = FXMLLoader.load(
-				getClass().getResource("/fxml/recipes/RecipeList.fxml")
-				);
+	    // Register this class as the RecipeList's navigation handler
+	    RecipeListController controller = loader.getController();
+	    controller.setNavigationHandler(this);
 
-		appShell.setCenter(recipeList);
+	    appShell.setCenter(recipeList);
 	}
 
-	public void showCosting() throws IOException {
-		if (currentContextArea == ContextArea.IMPORT_EXPORT) {
-			return;
-		}
-
-		currentContextArea = ContextArea.IMPORT_EXPORT;
-
+	private void showCosting() throws IOException {
 		Parent costing = FXMLLoader.load(
 				getClass().getResource("/fxml/costing/Costing.fxml")
 				);
@@ -85,13 +111,7 @@ public class AppShellController {
 		appShell.setCenter(costing);
 	}
 
-	public void showSettings() throws IOException {
-		if (currentContextArea == ContextArea.SETTINGS) {
-			return;
-		}
-
-		currentContextArea = ContextArea.SETTINGS;
-
+	private void showSettings() throws IOException {
 		Parent settings = FXMLLoader.load(
 				getClass().getResource("/fxml/settings/Settings.fxml")
 				);
@@ -99,13 +119,7 @@ public class AppShellController {
 		appShell.setCenter(settings);
 	}
 
-	public void showNotifications() throws IOException {
-		if (currentContextArea == ContextArea.NOTIFICATIONS) {
-			return;
-		}
-
-		currentContextArea = ContextArea.NOTIFICATIONS;
-
+	private void showNotifications() throws IOException {
 		Parent notifications = FXMLLoader.load(
 				getClass().getResource("/fxml/notifications/Notifications.fxml")
 				);
@@ -113,18 +127,19 @@ public class AppShellController {
 		appShell.setCenter(notifications);
 	}
 
-	public void showPrepLists() throws IOException {
-		if (currentContextArea == ContextArea.PREP_LISTS) {
-			return;
-		}
-
-		currentContextArea = ContextArea.PREP_LISTS;
-
+	private void showPrepLists() throws IOException {
 		Parent prepLists = FXMLLoader.load(
 				getClass().getResource("/fxml/prep-lists/PrepLists.fxml")
 				);
-		
+
 		appShell.setCenter(prepLists);
+	}
+
+	private void showAddRecipe() throws IOException {
+		Parent addRecipe = FXMLLoader.load(
+				getClass().getResource("/fxml/recipes/NewRecipe.fxml"));
+
+		appShell.setCenter(addRecipe);
 	}
 
 }
