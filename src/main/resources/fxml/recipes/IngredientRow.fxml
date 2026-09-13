@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="ca.prepledger.controller.IngredientRowController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="45.0" />
     <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
@@ -19,13 +20,17 @@
     <RowConstraints vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TextField promptText="e.g. Smoked Paprika" />
-      <ComboBox prefWidth="150.0" promptText="Select Unit" GridPane.columnIndex="1" />
-      <TextField promptText="e.g. 500" GridPane.columnIndex="2" />
-      <ImageView pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <image>
-            <Image url="@../../img/icon/scaled/dark/garbage-scaled.png" />
-         </image>
-      </ImageView>
+      <TextField fx:id="ingredientNameField" promptText="e.g. Smoked Paprika" />
+      <ComboBox fx:id="ingredientUnitComboBox" prefWidth="300.0" promptText="Select Unit" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+      <TextField fx:id="ingredientAmountField" promptText="e.g. 500" GridPane.columnIndex="2" />
+      <Button fx:id="deleteIngredientButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onDeleteIngredientButtonClicked" GridPane.columnIndex="3">
+         <graphic>
+            <ImageView pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/icon/scaled/dark/garbage-scaled.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </GridPane>
