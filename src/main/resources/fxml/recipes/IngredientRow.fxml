@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" percentWidth="45.0" />
+    <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+    <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <TextField promptText="e.g. Smoked Paprika" />
+      <ComboBox prefWidth="150.0" promptText="Select Unit" GridPane.columnIndex="1" />
+      <TextField promptText="e.g. 500" GridPane.columnIndex="2" />
+      <ImageView pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <image>
+            <Image url="@../../img/icon/scaled/dark/garbage-scaled.png" />
+         </image>
+      </ImageView>
+   </children>
+</GridPane>
