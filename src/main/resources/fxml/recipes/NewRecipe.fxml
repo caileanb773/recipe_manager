@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane stylesheets="@../../css/application.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane stylesheets="@../../css/application.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.NewRecipeController">
    <top>
       <VBox fx:id="headerVBox" BorderPane.alignment="CENTER">
          <children>
@@ -25,8 +25,8 @@
             <HBox>
                <children>
                   <Label styleClass="header" text="New Recipe" />
-                  <Button mnemonicParsing="false" text="Cancel" />
-                  <Button mnemonicParsing="false" text="Save Recipe" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" text="Cancel" />
+                  <Button fx:id="saveRecipeButton" mnemonicParsing="false" text="Save Recipe" />
                </children>
             </HBox>
             <Label styleClass="header-2" text="Add details for the new recipe below." />
