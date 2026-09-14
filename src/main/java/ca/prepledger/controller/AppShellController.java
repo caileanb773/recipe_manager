@@ -17,7 +17,8 @@ public class AppShellController implements NavigationHandler {
 	private ContextArea currentContextArea = ContextArea.RECIPES;
 
 
-	public void initialize() {
+	@FXML
+	private void initialize() {
 		loadSidebar();
 		loadDefaultContextArea();
 	}
@@ -136,9 +137,15 @@ public class AppShellController implements NavigationHandler {
 	}
 
 	private void showAddRecipe() throws IOException {
-		Parent addRecipe = FXMLLoader.load(
+		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/fxml/recipes/NewRecipe.fxml"));
-
+		
+		Parent addRecipe = loader.load();
+		
+		// XXX Factor this into new method, going to be calling it plenty
+		// Register this class as the RecipeList's navigation handler
+		NewRecipeController controller = loader.getController();
+		controller.setNavigationHandler(this);
 		appShell.setCenter(addRecipe);
 	}
 

@@ -25,8 +25,8 @@
             <HBox>
                <children>
                   <Label styleClass="header" text="New Recipe" />
-                  <Button fx:id="cancelButton" mnemonicParsing="false" text="Cancel" />
-                  <Button fx:id="saveRecipeButton" mnemonicParsing="false" text="Save Recipe" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelButtonClicked" text="Cancel" />
+                  <Button fx:id="saveRecipeButton" mnemonicParsing="false" onAction="#onSaveRecipeButtonClicked" text="Save Recipe" />
                </children>
             </HBox>
             <Label styleClass="header-2" text="Add details for the new recipe below." />
@@ -77,7 +77,7 @@
                               <Label text="Amount *" GridPane.columnIndex="2" />
                            </children>
                         </GridPane>
-                        <Button fx:id="addIngredientButton" mnemonicParsing="false" text="Add Ingredient" />
+                        <Button fx:id="addIngredientButton" defaultButton="true" mnemonicParsing="false" onAction="#onAddIngredientButtonClicked" text="Add Ingredient" />
                      </children>
                   </VBox>
                   <VBox fx:id="instructionsVBox">

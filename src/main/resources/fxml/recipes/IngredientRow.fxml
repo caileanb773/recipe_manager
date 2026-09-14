@@ -9,21 +9,21 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="ca.prepledger.controller.IngredientRowController">
+<GridPane minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="ca.prepledger.controller.IngredientRowController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="45.0" />
     <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
     <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints vgrow="SOMETIMES" />
+    <RowConstraints fillHeight="false" vgrow="NEVER" />
   </rowConstraints>
    <children>
-      <TextField fx:id="ingredientNameField" promptText="e.g. Smoked Paprika" />
-      <ComboBox fx:id="ingredientUnitComboBox" prefWidth="300.0" promptText="Select Unit" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-      <TextField fx:id="ingredientAmountField" promptText="e.g. 500" GridPane.columnIndex="2" />
-      <Button fx:id="deleteIngredientButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onDeleteIngredientButtonClicked" GridPane.columnIndex="3">
+      <TextField fx:id="ingredientNameField" promptText="e.g. Smoked Paprika" GridPane.hgrow="NEVER" />
+      <ComboBox fx:id="ingredientUnitComboBox" prefWidth="300.0" promptText="Select Unit" GridPane.columnIndex="1" GridPane.hgrow="NEVER" />
+      <TextField fx:id="ingredientAmountField" promptText="e.g. 500" GridPane.columnIndex="2" GridPane.hgrow="NEVER" />
+      <Button fx:id="deleteIngredientButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onDeleteIngredientButtonClicked" GridPane.columnIndex="3" GridPane.hgrow="NEVER">
          <graphic>
             <ImageView pickOnBounds="true" preserveRatio="true">
                <image>
