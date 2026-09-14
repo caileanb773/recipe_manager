@@ -142,7 +142,6 @@ public class AppShellController implements NavigationHandler {
 		
 		Parent addRecipe = loader.load();
 		
-		// XXX Factor this into new method, going to be calling it plenty
 		// Register this class as the RecipeList's navigation handler
 		NewRecipeController controller = loader.getController();
 		controller.setNavigationHandler(this);

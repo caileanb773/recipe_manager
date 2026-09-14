@@ -48,7 +48,6 @@ public class NewRecipeController implements Navigable {
 	
 	@FXML
 	public void onCancelButtonClicked() {
-		System.out.println("Cancelling recipe");
 		try {
 			navigationHandler.navigateTo(ContextArea.RECIPES);
 		} catch (IOException e) {
@@ -59,12 +58,10 @@ public class NewRecipeController implements Navigable {
 
 	@FXML
 	public void onSaveRecipeButtonClicked() {
-		System.out.println("Saving recipe");
 	}
 
 	@FXML
 	public void onAddIngredientButtonClicked() {
-		System.out.println("Adding ingredient");
 		try {
 			addNewIngredientRow();
 		} catch (IOException e) {
@@ -76,17 +73,24 @@ public class NewRecipeController implements Navigable {
 	private void addNewIngredientRow() throws IOException {
 			FXMLLoader loader = new FXMLLoader(
 					getClass().getResource("/fxml/recipes/IngredientRow.fxml"));
-
 			Parent ingredientRow = loader.load();
 			
-			ObservableList<Node> children = ingredientsVBox.getChildren();
+			// Wire the callback for when row's delete button is pressed
+			IngredientRowController controller = loader.getController();
+			controller.setOnDelete(this::removeIngredientRow);
 			
+			// Add at the 2nd last index so that the "Add Ingredient" button is last
+			ObservableList<Node> children = ingredientsVBox.getChildren();
 			children.add(children.size()-1, ingredientRow);
+	}
+	
+	private void removeIngredientRow(IngredientRowController controller) {
+		ingredientsVBox.getChildren().remove(controller.getRoot());
 	}
 
 	@Override
 	public void setNavigationHandler(NavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;		
 	}
-
+	
 }

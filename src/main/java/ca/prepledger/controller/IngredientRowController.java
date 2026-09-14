@@ -1,5 +1,7 @@
 package ca.prepledger.controller;
 
+import java.util.function.Consumer;
+
 import ca.prepledger.model.Fraction;
 import ca.prepledger.model.Ingredient;
 import ca.prepledger.model.Unit;
@@ -7,13 +9,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 
 public class IngredientRowController {
-	
-	private Runnable runnable;
+		
+	@FXML
+	private GridPane rootNode;
 	
 	@FXML
-	private Button addIngredientButton;
+	private Button deleteIngredientButton;
 	
 	@FXML
 	private TextField ingredientNameField;
@@ -24,16 +28,29 @@ public class IngredientRowController {
 	@FXML
 	private TextField ingredientAmountField;
 	
+	private Consumer<IngredientRowController> onDelete;
+	
 	
 	@FXML
 	public void onDeleteIngredientButtonClicked() {
-		System.out.println("Deleting ingredient...");
-		runnable.run();
+		if (onDelete != null) {
+			onDelete.accept(this);
+		} else {
+			// TODO replace with actual logging
+			System.err.println("IngredientRowController: onDelete == NULL.");
+		}
 	}
 	
-	public void setRunnable() {
-		
+	public void setOnDelete(Consumer<IngredientRowController> onDelete) {
+		this.onDelete = onDelete;
 	}
+	
+	public GridPane getRoot() {
+		return rootNode;
+	}
+	
+	
+	// Getters & Setters
 	
 	public Ingredient getIngredient() {
 		Fraction frac = getIngredientAmount();

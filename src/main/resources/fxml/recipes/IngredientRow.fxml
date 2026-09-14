@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="ca.prepledger.controller.IngredientRowController">
+<GridPane fx:id="rootNode" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="ca.prepledger.controller.IngredientRowController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="45.0" />
     <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
