@@ -4,7 +4,7 @@
 }
 
 .toggle-button:hover {
-    -fx-background-color: #bbbbbb;
+    -fx-background-color: #BBBBBB;
 }
 
 .toggle-button.active {
@@ -20,7 +20,12 @@
 }
 
 .icon-button {
+    -fx-background-color: transparent;
+}
 
+/* This is also defined as toggle-button hover. */
+.icon-button:hover {
+    -fx-background-color: #BBBBBB;
 }
 
 .page-navigation-button {
