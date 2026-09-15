@@ -29,10 +29,20 @@
 }
 
 .page-navigation-button {
-
+    -fx-background-color: transparent;
+    -fx-text-fill: #93ACBB;
 }
 
-.button {
+.page-navigation-button:hover {
+    -fx-background-color: #BBBBBB;
+}
+
+.default-button {
+    -fx-background-color: transparent;
+    -fx-border-width: 2px;
+}
+
+.secondary-button {
 
 }
 

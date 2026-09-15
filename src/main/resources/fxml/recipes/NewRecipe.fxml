@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -12,56 +16,90 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane stylesheets="@../../css/application.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.NewRecipeController">
+<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.NewRecipeController">
    <top>
       <VBox fx:id="headerVBox" BorderPane.alignment="CENTER">
          <children>
-            <HBox>
+            <HBox alignment="CENTER_LEFT">
                <children>
-                  <Button mnemonicParsing="false" text="&lt;" />
-                  <Label styleClass="header-2" text="Back to Recipes" />
+                  <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="page-navigation-button" text="&lt;">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../img/icon/scaled/other/nav-back-gray-scaled.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Label alignment="TOP_LEFT" styleClass="sub-header" text="Back to Recipes" />
+               </children>
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" fillHeight="false">
+               <children>
+                  <HBox fx:id="headerHBox" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="header-2" text="New Recipe" HBox.hgrow="NEVER">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="headerBtnsHBox">
+                     <children>
+                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelButtonClicked" styleClass="default-button" text="Cancel" />
+                        <Button fx:id="saveRecipeButton" mnemonicParsing="false" onAction="#onSaveRecipeButtonClicked" styleClass="primary-button" text="Save Recipe" />
+                     </children>
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </HBox>
                </children>
             </HBox>
-            <HBox>
-               <children>
-                  <Label styleClass="header" text="New Recipe" />
-                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelButtonClicked" text="Cancel" />
-                  <Button fx:id="saveRecipeButton" mnemonicParsing="false" onAction="#onSaveRecipeButtonClicked" text="Save Recipe" />
-               </children>
-            </HBox>
-            <Label styleClass="header-2" text="Add details for the new recipe below." />
+            <Label styleClass="sub-header" text="Add details for the new recipe below.">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="15.0" />
+               </VBox.margin></Label>
          </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </VBox>
    </top>
    <center>
       <ScrollPane fx:id="newRecipeScrollPane" fitToWidth="true" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
          <content>
-            <VBox fx:id="scrollPaneVBox">
+            <VBox fx:id="scrollPaneVBox" spacing="10.0">
                <children>
-                  <VBox fx:id="detailsVBox">
+                  <VBox fx:id="detailsVBox" styleClass="new-recipe-section">
                      <children>
-                        <Label text="Recipe Details" />
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <Label styleClass="header-3" text="Recipe Details" />
+                        <HBox>
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
+                              <VBox>
                                  <children>
-                                    <Label text="Label" />
-                                    <TextField fx:id="recipeNameField" promptText="e.g. Massaman Curry" />
+                                    <Label styleClass="header-4" text="Label" />
+                                    <TextField fx:id="recipeNameField" prefColumnCount="10" promptText="e.g. Massaman Curry" styleClass="base-form-component" />
                                  </children>
                               </VBox>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
+                              <VBox>
                                  <children>
-                                    <Label text="Tags" />
-                                    <TextField fx:id="recipeTagsField" promptText="e.g. Sauce, Pastry, Seafood" />
+                                    <Label styleClass="header-4" text="Tags" />
+                                    <TextField fx:id="recipeTagsField" prefColumnCount="10" promptText="e.g. Sauce, Pastry, Seafood" styleClass="base-form-component" />
                                  </children>
                               </VBox>
                            </children>
                         </HBox>
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
                   </VBox>
-                  <VBox fx:id="ingredientsVBox">
+                  <VBox fx:id="ingredientsVBox" styleClass="new-recipe-section">
                      <children>
-                        <Label text="Ingredients" />
+                        <Label styleClass="header-3" text="Ingredients" />
                         <GridPane fx:id="ingredientsHeaderGrid">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" percentWidth="45.0" />
@@ -72,22 +110,35 @@
                             <RowConstraints vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="Ingredient Name *" />
-                              <Label text="Unit *" GridPane.columnIndex="1" />
-                              <Label text="Amount *" GridPane.columnIndex="2" />
+                              <Label styleClass="header-4" text="Ingredient Name *" />
+                              <Label styleClass="header-4" text="Unit *" GridPane.columnIndex="1" />
+                              <Label styleClass="header-4" text="Amount *" GridPane.columnIndex="2" />
                            </children>
                         </GridPane>
-                        <Button fx:id="addIngredientButton" defaultButton="true" mnemonicParsing="false" onAction="#onAddIngredientButtonClicked" text="Add Ingredient" />
+                        <Button fx:id="addIngredientButton" defaultButton="true" mnemonicParsing="false" onAction="#onAddIngredientButtonClicked" styleClass="secondary-button" text="Add Ingredient" />
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                     </VBox.margin>
                   </VBox>
-                  <VBox fx:id="instructionsVBox">
+                  <VBox fx:id="instructionsVBox" styleClass="new-recipe-section">
                      <children>
-                        <Label text="Instructions" />
+                        <Label styleClass="header-3" text="Instructions" />
                         <TextArea fx:id="instructionsTextArea" prefHeight="200.0" prefWidth="400.0" promptText="Add step-by-step instructions..." />
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="5.0" />
+                     </VBox.margin>
                   </VBox>
                </children></VBox>
          </content>
       </ScrollPane>
    </center>
+   <stylesheets>
+      <URL value="@../../css/application.css" />
+      <URL value="@../../css/components/typography.css" />
+      <URL value="@../../css/components/buttons.css" />
+      <URL value="@../../css/components/forms.css" />
+      <URL value="@../../css/pages/new-recipe.css" />
+   </stylesheets>
 </BorderPane>

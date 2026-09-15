@@ -8,3 +8,8 @@
     -fx-font-family: "Inter 18pt";
     -fx-font-size: 18px;
 }
+
+/* Get rid of default thin border on scrollpane */
+.scroll-pane {
+    -fx-background-color: transparent;
+}

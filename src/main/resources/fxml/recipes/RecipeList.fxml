@@ -105,10 +105,10 @@
          </BorderPane.margin></ScrollPane>
    </center>
    <stylesheets>
-      <URL value="@../../css/application.css" />
-      <URL value="@../../css/pages/recipe-list.css" />
-      <URL value="@../../css/components/typography.css" />
       <URL value="@../../css/components/buttons.css" />
+      <URL value="@../../css/application.css" />
+      <URL value="@../../css/components/typography.css" />
       <URL value="@../../css/components/forms.css" />
+      <URL value="@../../css/pages/recipe-list.css" />
    </stylesheets>
 </BorderPane>
