@@ -1,25 +1,10 @@
+/* Makes text not look so aliased */
 .text {
     -fx-font-smoothing-type: gray;
 }
 
+/* Base font and size for all text */
 .root {
     -fx-font-family: "Inter 18pt";
     -fx-font-size: 18px;
-}
-
-.header {
-    -fx-font-family: "Inter 18pt";
-    -fx-font-weight: bold;
-    -fx-font-size: 40px;
-    -fx-text-fill: #26343D;
-
-    -fx-font-alignment: CENTER;
-}
-
-.header-2 {
-    -fx-font-family: "Inter 18pt";
-    -fx-font-size: 15px;
-    -fx-text-fill: #93acbb;
-
-    -fx-font-alignment: CENTER;
 }

@@ -1,0 +1,4 @@
+/* Get rid of default thin border on scrollpane */
+.scroll-pane {
+    -fx-background-color: transparent;
+}

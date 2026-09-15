@@ -1,0 +1,34 @@
+.header {
+    -fx-font-family: "Inter 18pt";
+    -fx-font-weight: bold;
+    -fx-font-size: 40px;
+    -fx-text-fill: #26343D;
+
+    -fx-font-alignment: CENTER;
+}
+
+.header-2 {
+    -fx-font-family: "Inter 18pt";
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-text-fill: #26343D;
+
+    -fx-font-alignment: CENTER;
+}
+
+.header-3 {
+    -fx-font-family: "Inter 18pt";
+    -fx-font-weight: normal;
+    -fx-font-size: 20px;
+    -fx-text-fill: #26343D;
+
+    -fx-font-alignment: CENTER;
+}
+
+.sub-header {
+    -fx-font-family: "Inter 18pt";
+    -fx-font-size: 15px;
+    -fx-text-fill: #93ACBB;
+    -fx-font-weight: normal;
+    -fx-font-alignment: CENTER;
+}

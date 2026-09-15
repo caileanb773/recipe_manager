@@ -109,6 +109,6 @@
    </top>
    <stylesheets>
       <URL value="@../../css/application.css" />
-      <URL value="@../../css/sidebar.css" />
+      <URL value="@../../css/navigation/sidebar.css" />
    </stylesheets>
 </BorderPane>

@@ -1,0 +1,13 @@
+/* ComboBox, TextField, etc. */
+.base-form-component {
+    -fx-background-color: #FEFEFE;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-border-color: #C3C3C3;
+    -fx-text-fill: #C3C3C3;
+}
+
+/* Specifically for ComboBox default text */
+.base-form-component .list-cell {
+    -fx-text-fill: #C3C3C3; 
+}

@@ -1,0 +1,36 @@
+.toggle-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.toggle-button:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+.toggle-button.active {
+    -fx-background-color:#2E9B90;
+}
+
+.primary-button {
+    -fx-background-color: #2E9B90;
+    -fx-text-fill: #F2F4F3;
+    -fx-text-family: "Inter 18pt";
+    -fx-font-weight: bold;
+    -fx-padding: 5 5 5 5;
+}
+
+.icon-button {
+
+}
+
+.page-navigation-button {
+
+}
+
+.button {
+
+}
+
+.danger-button {
+
+}

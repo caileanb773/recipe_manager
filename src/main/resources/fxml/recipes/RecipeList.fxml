@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeListController">
+<BorderPane minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeListController">
    <top>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -28,11 +28,11 @@
                         <VBox alignment="CENTER_LEFT" fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
                            <children>
                               <Label styleClass="header" text="Recipes" />
-                              <Label styleClass="header-2" text="123 recipes" />
+                              <Label styleClass="sub-header" text="123 recipes" />
                            </children>
                         </VBox>
-                        <TextField prefWidth="300.0" promptText="Search recipes..." styleClass="recipe-search-bar" />
-                        <Button fx:id="addRecipeBtn" alignment="CENTER" mnemonicParsing="false" onAction="#onAddRecipeButtonClicked" styleClass="add-recipe-btn" text="Add Recipe" textAlignment="CENTER">
+                        <TextField prefWidth="300.0" promptText="Search recipes..." styleClass="base-form-component" />
+                        <Button fx:id="addRecipeBtn" alignment="CENTER" mnemonicParsing="false" onAction="#onAddRecipeButtonClicked" styleClass="primary-button" text="Add Recipe" textAlignment="CENTER">
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -47,7 +47,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" HBox.hgrow="SOMETIMES">
                            <children>
-                              <Button fx:id="gridViewBtn" mnemonicParsing="false" onAction="#onGridViewBtnClicked" styleClass="recipe-layout-btn">
+                              <Button fx:id="gridViewBtn" mnemonicParsing="false" onAction="#onGridViewBtnClicked" styleClass="toggle-button">
                                  <graphic>
                                     <ImageView pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -55,7 +55,7 @@
                                        </image>
                                     </ImageView>
                                  </graphic></Button>
-                              <Button fx:id="listViewBtn" mnemonicParsing="false" onAction="#onListViewBtnClicked" styleClass="recipe-layout-btn">
+                              <Button fx:id="listViewBtn" mnemonicParsing="false" onAction="#onListViewBtnClicked" styleClass="toggle-button">
                                  <graphic>
                                     <ImageView pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -67,8 +67,8 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" HBox.hgrow="SOMETIMES">
                            <children>
-                              <ComboBox prefWidth="150.0" promptText="Last Updated" styleClass="dropdown" />
-                              <ComboBox prefWidth="150.0" promptText="Category" styleClass="dropdown" />
+                              <ComboBox prefWidth="150.0" promptText="Last Updated" styleClass="base-form-component" />
+                              <ComboBox prefWidth="150.0" promptText="Category" styleClass="base-form-component" />
                            </children>
                         </HBox>
                      </children>
@@ -96,7 +96,7 @@
                         <Insets />
                      </StackPane.margin>
                   </GridPane>
-                  <TilePane fx:id="listView" maxHeight="1.7976931348623157E308" minHeight="-Infinity" />
+                  <TilePane fx:id="listView" maxHeight="1.7976931348623157E308" minHeight="-Infinity" styleClass="scroll-pane" />
                </children>
             </StackPane>
          </content>
@@ -105,7 +105,10 @@
          </BorderPane.margin></ScrollPane>
    </center>
    <stylesheets>
-      <URL value="@../../css/recipelist.css" />
       <URL value="@../../css/application.css" />
+      <URL value="@../../css/pages/recipe-list.css" />
+      <URL value="@../../css/components/typography.css" />
+      <URL value="@../../css/components/buttons.css" />
+      <URL value="@../../css/components/forms.css" />
    </stylesheets>
 </BorderPane>
