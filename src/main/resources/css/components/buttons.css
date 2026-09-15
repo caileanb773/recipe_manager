@@ -38,12 +38,19 @@
 }
 
 .default-button {
-    -fx-background-color: transparent;
+    -fx-background-color: #BBBBBB;
+    -fx-border-color: #93ACBB;
     -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-font-size: 16px;
 }
 
 .secondary-button {
-
+    -fx-background-color: transparent;
+    -fx-border-color: #2E9B90;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-font-size: 16px;
 }
 
 .danger-button {

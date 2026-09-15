@@ -1,9 +1,9 @@
 .background {
-
+    -fx-background-color: #F5F5F5;
 }
 
 .background-offset {
-
+    -fx-background-color: #FEFEFE;
 }
 
 .highlight {
@@ -11,7 +11,7 @@
 }
 
 .text-color {
-
+    -fx-text-fill: #000000;
 }
 
 .text-muted {
