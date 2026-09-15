@@ -37,6 +37,9 @@ public class NewRecipeController implements Navigable {
 
 	@FXML
 	private VBox ingredientsVBox;
+	
+	@FXML
+	private Button navBackButton;
 
 	private NavigationHandler navigationHandler;
 
@@ -47,6 +50,16 @@ public class NewRecipeController implements Navigable {
 			addNewIngredientRow();
 		} catch (IOException e) {
 			// TODO: handle exception
+		}
+	}
+	
+	@FXML
+	public void onNavBackButtonClicked() {
+		try {
+			navigationHandler.navigateTo(ContextArea.RECIPES);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

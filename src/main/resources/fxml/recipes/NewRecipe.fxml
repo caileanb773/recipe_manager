@@ -23,7 +23,7 @@
          <children>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="11.0" styleClass="page-navigation-button">
+                  <Button fx:id="navBackButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onNavBackButtonClicked" prefHeight="36.0" prefWidth="11.0" styleClass="page-navigation-button">
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
