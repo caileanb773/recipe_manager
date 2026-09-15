@@ -5,7 +5,7 @@
 
 /* Base font and size for all text */
 .root {
-    -fx-font-family: "Inter 18pt";
+    -fx-font-family: "Inter";
     -fx-font-size: 18px;
 }
 

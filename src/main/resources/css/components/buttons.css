@@ -1,3 +1,33 @@
+.button {
+
+}
+
+.default-button {
+    -fx-background-color: #FEFEFE;
+    -fx-border-color: #93ACBB;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.primary-button {
+    -fx-background-color: #2E9B90;
+    -fx-text-fill: #F2F4F3;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 5px 5px 5px;
+    -fx-background-radius: 5px;
+}
+
+.secondary-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #2E9B90;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
 .toggle-button {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
@@ -9,14 +39,6 @@
 
 .toggle-button.active {
     -fx-background-color:#2E9B90;
-}
-
-.primary-button {
-    -fx-background-color: #2E9B90;
-    -fx-text-fill: #F2F4F3;
-    -fx-text-family: "Inter 18pt";
-    -fx-font-weight: bold;
-    -fx-padding: 5 5 5 5;
 }
 
 .icon-button {
@@ -35,22 +57,6 @@
 
 .page-navigation-button:hover {
     -fx-background-color: #BBBBBB;
-}
-
-.default-button {
-    -fx-background-color: #BBBBBB;
-    -fx-border-color: #93ACBB;
-    -fx-border-width: 2px;
-    -fx-border-radius: 5px;
-    -fx-font-size: 16px;
-}
-
-.secondary-button {
-    -fx-background-color: transparent;
-    -fx-border-color: #2E9B90;
-    -fx-border-width: 2px;
-    -fx-border-radius: 5px;
-    -fx-font-size: 16px;
 }
 
 .danger-button {
