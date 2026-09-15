@@ -43,7 +43,11 @@ public class NewRecipeController implements Navigable {
 
 	@FXML
 	private void initialize() {
-		
+		try {
+			addNewIngredientRow();
+		} catch (IOException e) {
+			// TODO: handle exception
+		}
 	}
 	
 	@FXML
@@ -58,6 +62,7 @@ public class NewRecipeController implements Navigable {
 
 	@FXML
 	public void onSaveRecipeButtonClicked() {
+		
 	}
 
 	@FXML
