@@ -57,7 +57,10 @@
                                           <Image url="@../../img/icon/scaled/dark/grid-scaled.png" />
                                        </image>
                                     </ImageView>
-                                 </graphic></Button>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin></Button>
                               <Button fx:id="listViewBtn" mnemonicParsing="false" onAction="#onListViewBtnClicked" styleClass="toggle-button">
                                  <graphic>
                                     <ImageView pickOnBounds="true" preserveRatio="true">

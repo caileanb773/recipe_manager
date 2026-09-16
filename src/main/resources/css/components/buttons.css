@@ -30,7 +30,8 @@
 
 .toggle-button {
     -fx-background-color: transparent;
-    -fx-border-color: transparent;
+    -fx-border-color: #C3C3C3;
+    -fx-border-radius: 3px;
 }
 
 .toggle-button:hover {
