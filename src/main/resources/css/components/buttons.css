@@ -11,12 +11,20 @@
     -fx-font-weight: bold;
 }
 
+.default-button:hover {
+    -fx-background-color: #BBBBBB;
+}
+
 .primary-button {
     -fx-background-color: #2E9B90;
     -fx-text-fill: #F2F4F3;
     -fx-font-weight: bold;
     -fx-padding: 5px 5px 5px 5px;
     -fx-background-radius: 5px;
+}
+
+.primary-button:hover {
+    -fx-background-color: #24786F;
 }
 
 .secondary-button {
@@ -26,6 +34,10 @@
     -fx-border-radius: 5px;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #BBBBBB;
 }
 
 .toggle-button {
@@ -40,10 +52,13 @@
 
 .toggle-button.active {
     -fx-background-color:#2E9B90;
+    -fx-border-color: transparent;
 }
 
 .icon-button {
     -fx-background-color: transparent;
+    -fx-border-color: #C3C3C3;
+    -fx-border-radius: 3px;
 }
 
 /* This is also defined as toggle-button hover. */
