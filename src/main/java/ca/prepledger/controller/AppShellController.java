@@ -32,10 +32,12 @@ public class AppShellController implements NavigationHandler {
 			Parent sidebar = loader.load();
 
 			SidebarController controller = loader.getController();
-			//controller.setAppShellController(this);
 			controller.setNavigationHandler(this);
 			
 			appShell.setLeft(sidebar);
+			
+			// Highlight the "Recipes" Sidebar nav button
+			controller.setInitialScreenNavButtonSelected();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

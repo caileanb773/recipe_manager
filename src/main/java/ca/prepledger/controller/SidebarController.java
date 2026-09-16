@@ -27,9 +27,7 @@ public class SidebarController implements Navigable {
 	
 	@FXML
 	private VBox buttonVBox;
-		
-	//private AppShellController appShellController;
-	
+			
 	private NavigationHandler navigationHandler;
 
 
@@ -38,10 +36,6 @@ public class SidebarController implements Navigable {
 	// Methods
 	//
 	/////////////////////
-	
-//	public void setAppShellController(AppShellController appShellController) {
-//		this.appShellController = appShellController;
-//	}
 
 	@FXML
 	public void onRecipesContextBtnClick() {
@@ -96,6 +90,10 @@ public class SidebarController implements Navigable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void setInitialScreenNavButtonSelected() {
+		setActiveButtonStyling("Recipes");
 	}
 
 	private void setActiveButtonStyling(String buttonLabel) {
