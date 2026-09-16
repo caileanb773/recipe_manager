@@ -14,13 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Ingredient {
 	
 	private Fraction amount;
-	private Unit unit;
+	private String unit;
 	private String name;
 
 	
 	public Ingredient() {}
 	
-	public Ingredient(Fraction amount, Unit u, String n) {
+	public Ingredient(Fraction amount, String u, String n) {
 		this.amount = amount;
 		name = n;
 		unit = u;
@@ -30,7 +30,7 @@ public class Ingredient {
 		return name;
 	}
 	
-	public Unit getUnit() {
+	public String getUnit() {
 		return unit;
 	}
 	
