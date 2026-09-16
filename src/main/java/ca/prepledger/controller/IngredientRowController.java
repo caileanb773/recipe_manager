@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 
 import ca.prepledger.model.Fraction;
 import ca.prepledger.model.Ingredient;
-import ca.prepledger.model.Unit;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -12,25 +11,28 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 public class IngredientRowController {
-		
+
 	@FXML
 	private GridPane rootNode;
-	
+
 	@FXML
 	private Button deleteIngredientButton;
-	
+
 	@FXML
 	private TextField ingredientNameField;
-	
+
 	@FXML
 	private ComboBox<String> ingredientUnitComboBox;
-	
+
 	@FXML
 	private TextField ingredientAmountField;
+
+	@FXML
+	private TextField ingredientNotesField;
 	
 	private Consumer<IngredientRowController> onDelete;
-	
-	
+
+
 	@FXML
 	public void onDeleteIngredientButtonClicked() {
 		if (onDelete != null) {
@@ -40,56 +42,64 @@ public class IngredientRowController {
 			System.err.println("IngredientRowController: onDelete == NULL.");
 		}
 	}
-	
+
 	public void setOnDelete(Consumer<IngredientRowController> onDelete) {
 		this.onDelete = onDelete;
 	}
+
+	// Getters & Setters
 	
 	public GridPane getRoot() {
 		return rootNode;
 	}
-	
-	
-	// Getters & Setters
-	
+
 	public Ingredient getIngredient() {
 		Fraction frac = getIngredientAmount();
-		Unit unit = getIngredientUnit();
+		String unit = getIngredientUnit();
 		String name = getIngredientName();
-		
-		return new Ingredient(frac, unit, name);
+		String notes = getIngredientNotes();
+
+		return new Ingredient(frac, unit, name, notes);
 	}
-	
+
 	public String getIngredientName() {
 		return ingredientAmountField.getText();
 	}
-	
+
 	public Fraction getIngredientAmount() {
 		String amountStr = ingredientAmountField.getText();
 		return new Fraction(amountStr);
 	}
 
-	public Unit getIngredientUnit() {
-		String unitStr = ingredientUnitComboBox.getValue();
-		return Unit.valueOf(unitStr);
+	public String getIngredientUnit() {
+		return ingredientUnitComboBox.getValue();
 	}
-	
+
+	public String getIngredientNotes() {
+		return ingredientNotesField.getText();
+	}
+
 	public void setIngredient(Ingredient ingredient) {
 		ingredientNameField.setText(ingredient.getName());
 		ingredientUnitComboBox.setValue(ingredient.getUnit().toString());
 		ingredientAmountField.setText(ingredient.getAmount().toString());
+		ingredientNotesField.setText(ingredient.getNotes());
 	}
-	
+
 	public void setIngredientName(String name) {
-		// TODO
+		ingredientNameField.setText(name);
 	}
-	
+
 	public void setIngredientAmount(Fraction amount) {
-		// TODO
+		ingredientAmountField.setText(amount.toString());
 	}
-	
-	public void setIngredientUnit(Unit unit) {
-		// TODO
+
+	public void setIngredientUnit(String unit) {
+		ingredientUnitComboBox.setValue(unit);
 	}
-	
+
+	public void setIngredientNotes(String notes) {
+		ingredientNotesField.setText(notes);
+	}
+
 }
