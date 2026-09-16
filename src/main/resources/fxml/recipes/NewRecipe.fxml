@@ -52,11 +52,11 @@
                      <children>
                         <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelButtonClicked" styleClass="default-button" text="Cancel" HBox.hgrow="NEVER">
                            <HBox.margin>
-                              <Insets right="10.0" />
+                              <Insets right="15.0" />
                            </HBox.margin></Button>
                         <Button fx:id="saveRecipeButton" mnemonicParsing="false" onAction="#onSaveRecipeButtonClicked" styleClass="primary-button" text="Save Recipe" HBox.hgrow="NEVER">
                            <HBox.margin>
-                              <Insets left="10.0" />
+                              <Insets />
                            </HBox.margin></Button>
                      </children>
                      <HBox.margin>
@@ -96,7 +96,7 @@
                                        </padding></Label>
                                     <TextField fx:id="recipeNameField" prefColumnCount="10" promptText="e.g. Massaman Curry" styleClass="base-form-component">
                                        <VBox.margin>
-                                          <Insets right="5.0" />
+                                          <Insets right="15.0" />
                                        </VBox.margin></TextField>
                                  </children>
                               </VBox>
@@ -108,7 +108,7 @@
                                        </padding></Label>
                                     <TextField fx:id="recipeTagsField" prefColumnCount="10" promptText="e.g. Sauce, Pastry, Seafood" styleClass="base-form-component">
                                        <VBox.margin>
-                                          <Insets left="5.0" />
+                                          <Insets />
                                        </VBox.margin></TextField>
                                  </children>
                               </VBox>
