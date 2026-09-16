@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane styleClass="background" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.NewRecipeController">
+<BorderPane styleClass="background" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.NewRecipeController">
    <top>
       <VBox fx:id="headerVBox" BorderPane.alignment="CENTER">
          <children>
@@ -123,12 +123,9 @@
                         <String fx:value="background-offset" />
                      </styleClass>
                   </VBox>
-                  <VBox fx:id="ingredientsVBox">
+                  <VBox fx:id="ingredientsVBox" spacing="10.0">
                      <children>
-                        <Label styleClass="header-3" text="Ingredients">
-                           <padding>
-                              <Insets bottom="10.0" />
-                           </padding></Label>
+                        <Label styleClass="header-3" text="Ingredients" />
                         <GridPane fx:id="ingredientsHeaderGrid">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" percentWidth="45.0" />
@@ -144,17 +141,20 @@
                               <Label styleClass="header-4" text="Amount *" GridPane.columnIndex="2" />
                            </children>
                            <VBox.margin>
-                              <Insets bottom="10.0" />
+                              <Insets />
                            </VBox.margin>
                         </GridPane>
                         <Button fx:id="addIngredientButton" defaultButton="true" mnemonicParsing="false" onAction="#onAddIngredientButtonClicked" styleClass="primary-button" text="Add Ingredient">
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../img/icon/scaled/dark/plus-scaled.png" />
+                                    <Image url="@../../img/icon/scaled/light/plus-light-scaled.png" />
                                  </image>
                               </ImageView>
-                           </graphic></Button>
+                           </graphic>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin></Button>
                      </children>
                      <VBox.margin>
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
