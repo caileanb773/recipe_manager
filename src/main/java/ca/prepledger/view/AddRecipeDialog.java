@@ -240,7 +240,7 @@ public class AddRecipeDialog extends JDialog {
 					fracAmt = new Fraction(intAmt, 0, 1);
 				}	
 
-				Unit unit = Unit.valueOf(lineParts[Constants.UNIT_IDX].toUpperCase().trim());
+				String unit = lineParts[Constants.UNIT_IDX].trim();
 				String name = null;
 
 				// If the ingredient name is longer than one word, concatenate it
@@ -254,7 +254,7 @@ public class AddRecipeDialog extends JDialog {
 					name = sj.toString();
 				}
 
-				ingredientsList.add(new Ingredient(fracAmt, unit, name));
+				ingredientsList.add(new Ingredient(fracAmt, unit, name, ""));
 			}
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(this,

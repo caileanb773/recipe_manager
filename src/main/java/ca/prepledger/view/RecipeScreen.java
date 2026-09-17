@@ -375,7 +375,8 @@ public class RecipeScreen extends JPanel implements ApplicationScreen, Listenabl
 			scaledIngredients.add(new Ingredient(
 					baseIngredient.getAmountFraction().multiply(amt),
 					baseIngredient.getUnit(),
-					baseIngredient.getName()));
+					baseIngredient.getName(),
+					baseIngredient.getNotes()));
 		}
 
 		return scaledIngredients;
