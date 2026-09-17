@@ -26,7 +26,7 @@
       <ComboBox fx:id="ingredientUnitComboBox" editable="true" prefWidth="300.0" promptText="Select Unit" styleClass="base-form-component" GridPane.columnIndex="1" GridPane.hgrow="NEVER" />
       <TextField fx:id="ingredientAmountField" promptText="e.g. 500" GridPane.columnIndex="2" GridPane.hgrow="NEVER" />
       <TextField fx:id="ingredientNotesField" promptText="e.g. crushed" GridPane.columnIndex="3" />
-      <Button fx:id="deleteIngredientButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onDeleteIngredientButtonClicked" styleClass="icon-button" GridPane.columnIndex="4" GridPane.hgrow="NEVER">
+      <Button fx:id="deleteIngredientButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" focusTraversable="false" mnemonicParsing="false" onAction="#onDeleteIngredientButtonClicked" styleClass="icon-button" GridPane.columnIndex="4" GridPane.hgrow="NEVER">
          <graphic>
             <ImageView pickOnBounds="true" preserveRatio="true">
                <image>
