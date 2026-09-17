@@ -40,6 +40,7 @@ public class RecipeManager {
 	private static final int INGREDIENT_AMT_IDX = 0;
 	private static final int INGREDIENT_UNIT_IDX = 1;
 	private static final int INGREDIENT_NAME_IDX = 2;
+	private static final int INGREDIENT_NOTES_IDX = 3;
 	private static final int RECIPE_NAME_IDX = 0;
 	private static final int RECIPE_INSTRUCTIONS_IDX = 2;
 
@@ -102,8 +103,9 @@ public class RecipeManager {
 
 	private Ingredient parseIngredientFromStrArr(String[] strArr) throws NumberFormatException {
 		String amount = strArr[INGREDIENT_AMT_IDX];
-		Unit unit = Unit.valueOf(strArr[INGREDIENT_UNIT_IDX].toUpperCase());
+		String unit = strArr[INGREDIENT_UNIT_IDX];
 		String name = strArr[INGREDIENT_NAME_IDX].replace("_", " ");
+		String notes = strArr[INGREDIENT_NOTES_IDX];
 		Fraction fracAmt = null;
 		BigDecimal decAmt;
 		int intAmt;
@@ -131,7 +133,7 @@ public class RecipeManager {
 		}		
 
 		try {
-			if (malformed || unit == null || name.isEmpty()) {
+			if (malformed || unit.isEmpty() || name.isEmpty()) {
 				logger.warn("Malformed ingredient encountered during parsing.");
 				return null;
 			}
@@ -140,7 +142,7 @@ public class RecipeManager {
 			return null;
 		}
 
-		return new Ingredient(fracAmt, unit, name);
+		return new Ingredient(fracAmt, unit, name, notes);
 	}
 
 	public void exportRecipeList(String exportPath) throws IOException, SecurityException {
