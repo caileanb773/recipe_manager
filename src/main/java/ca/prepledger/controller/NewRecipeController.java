@@ -112,6 +112,9 @@ public class NewRecipeController implements Navigable {
 		
 		// Request focus in the "name" field
 		controller.requestFocusInNameTextField();
+		
+		System.out.println("Controllers: " + ingredientRowControllers.size());
+
 	}
 
 	private void removeIngredientRow(IngredientRowController controller) {
@@ -124,6 +127,8 @@ public class NewRecipeController implements Navigable {
 			ingredientRowControllers.remove(controller);
 			ingredientsVBox.getChildren().remove(controller.getRoot());
 		}
+		
+		System.out.println("Controllers: " + ingredientRowControllers.size());
 	}
 
 	@Override
