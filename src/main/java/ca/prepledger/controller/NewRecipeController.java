@@ -1,6 +1,8 @@
 package ca.prepledger.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
@@ -37,11 +39,13 @@ public class NewRecipeController implements Navigable {
 
 	@FXML
 	private VBox ingredientsVBox;
-	
+
 	@FXML
 	private Button navBackButton;
 
 	private NavigationHandler navigationHandler;
+
+	private List<IngredientRowController> ingredientRowControllers = new ArrayList<>();;
 
 
 	@FXML
@@ -52,7 +56,7 @@ public class NewRecipeController implements Navigable {
 			// TODO: handle exception
 		}
 	}
-	
+
 	@FXML
 	public void onNavBackButtonClicked() {
 		try {
@@ -62,7 +66,7 @@ public class NewRecipeController implements Navigable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@FXML
 	public void onCancelButtonClicked() {
 		try {
@@ -75,7 +79,9 @@ public class NewRecipeController implements Navigable {
 
 	@FXML
 	public void onSaveRecipeButtonClicked() {
-		
+		for (IngredientRowController c : ingredientRowControllers) {
+			System.out.println(c.getIngredient().toString());
+		}
 	}
 
 	@FXML
@@ -89,26 +95,30 @@ public class NewRecipeController implements Navigable {
 	}
 
 	private void addNewIngredientRow() throws IOException {
-			FXMLLoader loader = new FXMLLoader(
-					getClass().getResource("/fxml/recipes/IngredientRow.fxml"));
-			Parent ingredientRow = loader.load();
-			
-			// Wire the callback for when row's delete button is pressed
-			IngredientRowController controller = loader.getController();
-			controller.setOnDelete(this::removeIngredientRow);
-			
-			// Add at the 2nd last index so that the "Add Ingredient" button is last
-			ObservableList<Node> children = ingredientsVBox.getChildren();
-			children.add(children.size()-1, ingredientRow);
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/fxml/recipes/IngredientRow.fxml"));
+		Parent ingredientRow = loader.load();
+		IngredientRowController controller = loader.getController();
+
+		// Keep track of the row's controller
+		ingredientRowControllers.add(controller);
+
+		// Wire the callback for when row's delete button is pressed
+		controller.setOnDelete(this::removeIngredientRow);
+
+		// Add at 2nd last index so "Add Ingredient" button is last
+		ObservableList<Node> children = ingredientsVBox.getChildren();
+		children.add(children.size() - 1, ingredientRow);
 	}
-	
+
 	private void removeIngredientRow(IngredientRowController controller) {
 		int vboxElementsPlusOneIngredientMinimum = 4;
 		ObservableList<Node> children = ingredientsVBox.getChildren();
-		
+
 		/* Every recipe should have at least one ingredient. This ensures users
 		 * can't delete the only ingredient row in the screen. */
 		if (children.size() > vboxElementsPlusOneIngredientMinimum) {
+			ingredientRowControllers.remove(controller);
 			ingredientsVBox.getChildren().remove(controller.getRoot());
 		}
 	}
@@ -117,5 +127,5 @@ public class NewRecipeController implements Navigable {
 	public void setNavigationHandler(NavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;		
 	}
-	
+
 }
