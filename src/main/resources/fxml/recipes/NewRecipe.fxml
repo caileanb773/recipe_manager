@@ -90,11 +90,11 @@
                            <children>
                               <VBox>
                                  <children>
-                                    <Label styleClass="header-4" text="Label *">
+                                    <Label styleClass="header-4" text="Title *">
                                        <padding>
                                           <Insets bottom="10.0" />
                                        </padding></Label>
-                                    <TextField fx:id="recipeNameField" prefColumnCount="13" promptText="e.g. Massaman Curry" styleClass="base-form-component">
+                                    <TextField fx:id="recipeTitleField" prefColumnCount="13" promptText="e.g. Massaman Curry" styleClass="base-form-component">
                                        <VBox.margin>
                                           <Insets right="15.0" />
                                        </VBox.margin></TextField>
