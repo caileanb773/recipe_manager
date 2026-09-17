@@ -65,7 +65,7 @@
                   </HBox>
                </children>
             </HBox>
-            <Label styleClass="sub-header" text="Add details for the new recipe below.">
+            <Label styleClass="sub-header" text="Add details for the new recipe below. * Denotes required fields.">
                <VBox.margin>
                   <Insets bottom="10.0" left="15.0" />
                </VBox.margin></Label>
@@ -90,7 +90,7 @@
                            <children>
                               <VBox>
                                  <children>
-                                    <Label styleClass="header-4" text="Label">
+                                    <Label styleClass="header-4" text="Label *">
                                        <padding>
                                           <Insets bottom="10.0" />
                                        </padding></Label>
@@ -128,17 +128,20 @@
                         <Label styleClass="header-3" text="Ingredients" />
                         <GridPane fx:id="ingredientsHeaderGrid">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="45.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="37.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0" />
                               <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="8.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label styleClass="header-4" text="Ingredient Name *" textFill="RED" />
-                              <Label styleClass="header-4" text="Unit *" GridPane.columnIndex="1" />
-                              <Label styleClass="header-4" text="Amount *" GridPane.columnIndex="2" />
+                              <Label styleClass="header-4" text="Name *" textFill="RED" />
+                              <Label styleClass="header-4" text="Unit" GridPane.columnIndex="1" />
+                              <Label styleClass="header-4" text="Amount" GridPane.columnIndex="2" />
+                              <Label styleClass="header-4" text="Notes" GridPane.columnIndex="3" />
                            </children>
                            <VBox.margin>
                               <Insets />
