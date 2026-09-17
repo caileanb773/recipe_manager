@@ -58,17 +58,26 @@ public class NewRecipeController implements Navigable {
 
 	@FXML
 	private void initialize() {
-		goBackToRecipesList();
+		try {
+			addNewIngredientRow();
+		} catch (IOException e) {
+			// TODO: handle exception
+		}
 	}
 
 	@FXML
 	public void onNavBackButtonClicked() {
-		goBackToRecipesList();
+		try {
+			navigationHandler.navigateTo(ContextArea.RECIPES);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
 	public void onCancelButtonClicked() {
-
+		goBackToRecipesList();
 	}
 
 	@FXML
@@ -107,6 +116,8 @@ public class NewRecipeController implements Navigable {
 		
 		// Construct Recipe object
 		Recipe newRecipe = constructRecipeFromRemainingFields(ingredients);
+		
+		System.out.println(newRecipe.toString());
 
 		// send recipe to recipeservice
 		goBackToRecipesList();
