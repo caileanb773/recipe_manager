@@ -103,7 +103,14 @@ public class NewRecipeController implements Navigable {
 	}
 	
 	private void removeIngredientRow(IngredientRowController controller) {
-		ingredientsVBox.getChildren().remove(controller.getRoot());
+		int vboxElementsPlusOneIngredientMinimum = 4;
+		ObservableList<Node> children = ingredientsVBox.getChildren();
+		
+		/* Every recipe should have at least one ingredient. This ensures users
+		 * can't delete the only ingredient row in the screen. */
+		if (children.size() > vboxElementsPlusOneIngredientMinimum) {
+			ingredientsVBox.getChildren().remove(controller.getRoot());
+		}
 	}
 
 	@Override
