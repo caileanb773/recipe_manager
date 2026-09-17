@@ -43,14 +43,18 @@ public class IngredientRowController {
 		}
 	}
 
-	public void setOnDelete(Consumer<IngredientRowController> onDelete) {
-		this.onDelete = onDelete;
+	public void requestFocusInNameTextField() {
+		ingredientNameField.requestFocus(); 
 	}
 
 	// Getters & Setters
 	
 	public GridPane getRoot() {
 		return rootNode;
+	}
+	
+	public void setOnDelete(Consumer<IngredientRowController> onDelete) {
+		this.onDelete = onDelete;
 	}
 
 	public Ingredient getIngredient() {

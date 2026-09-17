@@ -109,6 +109,9 @@ public class NewRecipeController implements Navigable {
 		// Add at 2nd last index so "Add Ingredient" button is last
 		ObservableList<Node> children = ingredientsVBox.getChildren();
 		children.add(children.size() - 1, ingredientRow);
+		
+		// Request focus in the "name" field
+		controller.requestFocusInNameTextField();
 	}
 
 	private void removeIngredientRow(IngredientRowController controller) {
