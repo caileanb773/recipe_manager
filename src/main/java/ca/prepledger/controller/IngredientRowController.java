@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import ca.prepledger.model.Fraction;
 import ca.prepledger.model.Ingredient;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -31,8 +32,27 @@ public class IngredientRowController {
 	private TextField ingredientNotesField;
 	
 	private Consumer<IngredientRowController> onDelete;
+	
 
-
+	@FXML
+	private void initialize() {
+		setUnitComboBoxItems();
+	}
+	
+	// XXX eventually replace this with some feature that allows users to define pref. units
+	public void setUnitComboBoxItems() {		
+		ingredientUnitComboBox.getItems().add("g");
+		ingredientUnitComboBox.getItems().add("kg");
+		ingredientUnitComboBox.getItems().add("mg");
+		ingredientUnitComboBox.getItems().add("oz");
+		ingredientUnitComboBox.getItems().add("lbs");
+		ingredientUnitComboBox.getItems().add("cup");
+		ingredientUnitComboBox.getItems().add("ml");
+		ingredientUnitComboBox.getItems().add("liter");
+		ingredientUnitComboBox.getItems().add("fl. oz");
+		ingredientUnitComboBox.getItems().add("%");
+	}
+	
 	@FXML
 	public void onDeleteIngredientButtonClicked() {
 		if (onDelete != null) {
@@ -69,7 +89,7 @@ public class IngredientRowController {
 	public String getIngredientName() {
 		String val = ingredientNameField.getText();
 		
-		if (val.isEmpty()) {
+		if (val == null || val.isEmpty()) {
 			return null;
 		}		
 		
@@ -79,7 +99,7 @@ public class IngredientRowController {
 	public Fraction getIngredientAmount() {
 		String amountStr = ingredientAmountField.getText();
 		
-		if (amountStr.isEmpty()) {
+		if (amountStr == null || amountStr.isEmpty()) {
 			return null;
 		}
 		
@@ -89,7 +109,7 @@ public class IngredientRowController {
 	public String getIngredientUnit() {
 		String val = ingredientUnitComboBox.getValue();
 		
-		if (val != null && val.isEmpty()) {
+		if (val == null || val.isEmpty()) {
 			return null;
 		}
 		
@@ -99,7 +119,7 @@ public class IngredientRowController {
 	public String getIngredientNotes() {
 		String val = ingredientNotesField.getText(); 
 		
-		if (val.isEmpty()) {
+		if (val == null || val.isEmpty()) {
 			return null;
 		}
 		
