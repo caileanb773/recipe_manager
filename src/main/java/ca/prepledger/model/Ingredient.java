@@ -68,7 +68,8 @@ public class Ingredient {
 
 	@Override
 	public String toString() {
-		return amount.toString() + " " + unit.toString().toLowerCase() + " " + name + " " + notes;
+		String amt = (amount == null) ? null : amount.toString();
+		return amt + " " + unit + " of  " + name + ": " + notes;
 	}
 
 	@Override

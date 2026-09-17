@@ -62,25 +62,48 @@ public class IngredientRowController {
 		String unit = getIngredientUnit();
 		String name = getIngredientName();
 		String notes = getIngredientNotes();
-
+		
 		return new Ingredient(frac, unit, name, notes);
 	}
 
 	public String getIngredientName() {
-		return ingredientAmountField.getText();
+		String val = ingredientNameField.getText();
+		
+		if (val.isEmpty()) {
+			return null;
+		}		
+		
+		return val;
 	}
 
 	public Fraction getIngredientAmount() {
 		String amountStr = ingredientAmountField.getText();
+		
+		if (amountStr.isEmpty()) {
+			return null;
+		}
+		
 		return new Fraction(amountStr);
 	}
 
 	public String getIngredientUnit() {
-		return ingredientUnitComboBox.getValue();
+		String val = ingredientUnitComboBox.getValue();
+		
+		if (val != null && val.isEmpty()) {
+			return null;
+		}
+		
+		return val;
 	}
 
 	public String getIngredientNotes() {
-		return ingredientNotesField.getText();
+		String val = ingredientNotesField.getText(); 
+		
+		if (val.isEmpty()) {
+			return null;
+		}
+		
+		return val;
 	}
 
 	public void setIngredient(Ingredient ingredient) {
