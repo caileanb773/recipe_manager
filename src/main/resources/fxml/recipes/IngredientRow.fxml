@@ -12,18 +12,18 @@
 
 <GridPane fx:id="rootNode" hgap="5.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.IngredientRowController">
   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" percentWidth="40.0" />
+      <ColumnConstraints hgrow="SOMETIMES" percentWidth="37.0" />
     <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
     <ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints fillHeight="false" vgrow="NEVER" />
   </rowConstraints>
    <children>
       <TextField fx:id="ingredientNameField" promptText="e.g. Smoked Paprika" GridPane.hgrow="NEVER" />
-      <ComboBox fx:id="ingredientUnitComboBox" prefWidth="300.0" promptText="Select Unit" styleClass="base-form-component" GridPane.columnIndex="1" GridPane.hgrow="NEVER" />
+      <ComboBox fx:id="ingredientUnitComboBox" editable="true" prefWidth="300.0" promptText="Select Unit" styleClass="base-form-component" GridPane.columnIndex="1" GridPane.hgrow="NEVER" />
       <TextField fx:id="ingredientAmountField" promptText="e.g. 500" GridPane.columnIndex="2" GridPane.hgrow="NEVER" />
       <TextField fx:id="ingredientNotesField" promptText="e.g. crushed" GridPane.columnIndex="3" />
       <Button fx:id="deleteIngredientButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onDeleteIngredientButtonClicked" styleClass="icon-button" GridPane.columnIndex="4" GridPane.hgrow="NEVER">
