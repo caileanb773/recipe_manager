@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.prepledger.model.Ingredient;
+import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
@@ -29,7 +31,7 @@ public class NewRecipeController implements Navigable {
 	private Button addIngredientButton;
 
 	@FXML
-	private TextField recipeNameField;
+	private TextField recipeTitleField;
 
 	@FXML
 	private TextField recipeTagsField;
@@ -48,46 +50,88 @@ public class NewRecipeController implements Navigable {
 	private List<IngredientRowController> ingredientRowControllers = new ArrayList<>();;
 
 
+	//////////////////////////////
+	/// 
+	/// FXML Methods
+	/// 
+	//////////////////////////////
+
 	@FXML
 	private void initialize() {
-		try {
-			addNewIngredientRow();
-		} catch (IOException e) {
-			// TODO: handle exception
-		}
+		goBackToRecipesList();
 	}
 
 	@FXML
 	public void onNavBackButtonClicked() {
-		try {
-			navigationHandler.navigateTo(ContextArea.RECIPES);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		goBackToRecipesList();
 	}
 
 	@FXML
 	public void onCancelButtonClicked() {
-		try {
-			navigationHandler.navigateTo(ContextArea.RECIPES);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 	}
 
 	@FXML
 	public void onSaveRecipeButtonClicked() {
+		List<Ingredient> ingredients = new ArrayList<>();
+		boolean isRecipeValid = false;
+		boolean areRecipeFieldsValid = false;
+		boolean areIngredientFieldsValid = false;
+
+		// Check validity of required fields (recipe title, ingredient title)		
+		areRecipeFieldsValid = areRequiredRecipeFieldsPopulated();
+
+		// Fetch ingredients
 		for (IngredientRowController c : ingredientRowControllers) {
-			System.out.println(c.getIngredient().toString());
+			ingredients.add(c.getIngredient());
 		}
+
+		// Validate ingredients
+		areIngredientFieldsValid = areRequiredIngredientFieldsPopulated(ingredients);
+
+		// At this point, determine if the recipe is valid. if not, show error
+		isRecipeValid = (areRecipeFieldsValid && areIngredientFieldsValid);
+		
+		// XXX show error if not valid, finish this later
+		if (!isRecipeValid) {
+			// show an error
+			System.err.print("RECIPE INVALID: ");
+			if (!areRecipeFieldsValid) {
+				System.err.println("Recipe Fields Invalid");
+			} else {
+				System.err.println("Ingredient Fields Invalid.");
+			}
+		} else {
+			System.out.println("Recipe is valid");
+		}
+		
+		// Construct Recipe object
+		Recipe newRecipe = constructRecipeFromRemainingFields(ingredients);
+
+		// send recipe to recipeservice
+		goBackToRecipesList();
 	}
 
 	@FXML
 	public void onAddIngredientButtonClicked() {
 		try {
 			addNewIngredientRow();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+	//////////////////////////////
+	/// 
+	/// Other Methods
+	/// 
+	//////////////////////////////	
+	
+	private void goBackToRecipesList() {
+		try {
+			navigationHandler.navigateTo(ContextArea.RECIPES);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -109,12 +153,9 @@ public class NewRecipeController implements Navigable {
 		// Add at 2nd last index so "Add Ingredient" button is last
 		ObservableList<Node> children = ingredientsVBox.getChildren();
 		children.add(children.size() - 1, ingredientRow);
-		
+
 		// Request focus in the "name" field
 		controller.requestFocusInNameTextField();
-		
-		System.out.println("Controllers: " + ingredientRowControllers.size());
-
 	}
 
 	private void removeIngredientRow(IngredientRowController controller) {
@@ -127,8 +168,42 @@ public class NewRecipeController implements Navigable {
 			ingredientRowControllers.remove(controller);
 			ingredientsVBox.getChildren().remove(controller.getRoot());
 		}
+	}
+
+	/**
+	 * Check that the user has filled in all required fields
+	 */
+	private boolean areRequiredRecipeFieldsPopulated() {
+		String rcpTitle = recipeTitleField.getText().trim();
+
+		if (rcpTitle != null && !rcpTitle.isEmpty()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean areRequiredIngredientFieldsPopulated(List<Ingredient> ingredients) {
+		for (Ingredient ingredient : ingredients) {
+			String ingredientTitle = ingredient.getName();
+
+			if (ingredientTitle == null) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+	
+	private Recipe constructRecipeFromRemainingFields(List<Ingredient> ingredients) {
+		Recipe newRecipe = null;
+		String title = recipeTitleField.getText().trim();
+		String[] tags = recipeTagsField.getText().split("\\s*,\\s*");
+		String instructions = instructionsTextArea.getText().trim();
 		
-		System.out.println("Controllers: " + ingredientRowControllers.size());
+		newRecipe = new Recipe(title, ingredients, instructions, tags);
+		
+		return newRecipe;
 	}
 
 	@Override
