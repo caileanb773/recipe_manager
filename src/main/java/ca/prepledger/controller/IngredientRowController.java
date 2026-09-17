@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 
 import ca.prepledger.model.Fraction;
 import ca.prepledger.model.Ingredient;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -87,7 +86,7 @@ public class IngredientRowController {
 	}
 
 	public String getIngredientName() {
-		String val = ingredientNameField.getText();
+		String val = ingredientNameField.getText().trim();
 		
 		if (val == null || val.isEmpty()) {
 			return null;
@@ -97,7 +96,7 @@ public class IngredientRowController {
 	}
 
 	public Fraction getIngredientAmount() {
-		String amountStr = ingredientAmountField.getText();
+		String amountStr = ingredientAmountField.getText().trim();
 		
 		if (amountStr == null || amountStr.isEmpty()) {
 			return null;
@@ -117,7 +116,7 @@ public class IngredientRowController {
 	}
 
 	public String getIngredientNotes() {
-		String val = ingredientNotesField.getText(); 
+		String val = ingredientNotesField.getText().trim(); 
 		
 		if (val == null || val.isEmpty()) {
 			return null;
