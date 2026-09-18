@@ -8,19 +8,23 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="card" maxHeight="276.0" styleClass="recipe-card" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeCardController">
+<StackPane fx:id="card" maxWidth="350.0" prefHeight="250.0" prefWidth="350.0" styleClass="recipe-card" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeCardController">
 
     <VBox styleClass="recipe-card-content">
 
-        <ImageView fx:id="recipeImage" fitHeight="180.0" fitWidth="355.0" />
+        <ImageView fx:id="recipeImage" fitHeight="180.0" fitWidth="350.0" />
 
-        <VBox styleClass="recipe-info">
+        <VBox styleClass="recipe-info" VBox.vgrow="NEVER">
 
             <Label fx:id="recipeName" styleClass="recipe-name" />
 
-            <HBox styleClass="recipe-meta" />
+            <HBox styleClass="recipe-meta" VBox.vgrow="NEVER">
+                <Label fx:id="ratingLabel" styleClass="recipe-rating" />
 
-            <FlowPane fx:id="tagsPane" styleClass="recipe-tags" />
+                <Label fx:id="timeLabel" styleClass="recipe-time" />
+            </HBox>
+
+            <FlowPane fx:id="tagsPane" prefWidth="350.0" styleClass="recipe-tags" VBox.vgrow="NEVER" />
 
         </VBox>
 
