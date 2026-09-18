@@ -1,10 +1,13 @@
 package ca.prepledger.controller;
 
 import java.io.IOException;
+import java.util.List;
 
+import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
+import ca.prepledger.service.RecipeService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -43,6 +46,9 @@ public class RecipeListController implements Navigable {
 	}
 	
 	private NavigationHandler navigationHandler;
+	
+	// This class never instantiates this, it is only passed a ref. from AppShellCtrlr
+	private RecipeService recipeService;
 	
 	
 	/////////////////////
@@ -109,7 +115,7 @@ public class RecipeListController implements Navigable {
 	}
 	
 	// XXX Temporary testing method
-	private void addDummyRecipe() {
+	private void addDummyRecipe(Recipe recipe) {
 	    try {
 	        FXMLLoader loader = new FXMLLoader(
 	            getClass().getResource("/fxml/recipes/RecipeCard.fxml")
@@ -118,7 +124,7 @@ public class RecipeListController implements Navigable {
 	        Node card = loader.load();
 	        
 	        RecipeCardController controller = loader.getController();
-	        controller.setRecipe(null);
+	        controller.setRecipe(recipe);
 
 	        int column = recipeCount % 3;
 	        int row = recipeCount / 3;
@@ -130,6 +136,20 @@ public class RecipeListController implements Navigable {
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
+	}
+	
+	// XXX
+	public void fetchRecipesFromRecipeService() {
+		// XXX fetch all recipes depending on online status, presumably
+		List<Recipe> recipes = recipeService.getAllRecipes();
+		
+		for (Recipe recipe : recipes) {
+			addDummyRecipe(recipe);
+		}
+	}
+	
+	public void setRecipeService(RecipeService recipeService) {
+		this.recipeService = recipeService;
 	}
 	
 	public void setNavigationHandler(NavigationHandler navigationHandler) {

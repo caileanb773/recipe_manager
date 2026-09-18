@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
+import ca.prepledger.service.RecipeService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,12 +16,19 @@ public class AppShellController implements NavigationHandler {
 	private BorderPane appShell;
 
 	private ContextArea currentContextArea = ContextArea.RECIPES;
+	
+	private RecipeService recipeService = new RecipeService();
+	
+	private RecipeListController recipeListController;
 
 
 	@FXML
 	private void initialize() {
 		loadSidebar();
 		loadDefaultContextArea();
+
+		// XXX testing area
+		recipeListController.setRecipeService(recipeService);
 	}
 
 	private void loadSidebar() {
@@ -100,8 +108,8 @@ public class AppShellController implements NavigationHandler {
 	    Parent recipeList = loader.load();
 
 	    // Register this class as the RecipeList's navigation handler
-	    RecipeListController controller = loader.getController();
-	    controller.setNavigationHandler(this);
+	    recipeListController = loader.getController();
+	    recipeListController.setNavigationHandler(this);
 
 	    appShell.setCenter(recipeList);
 	}
