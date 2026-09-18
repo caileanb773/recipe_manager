@@ -58,7 +58,6 @@ public class IngredientRowController {
 			onDelete.accept(this);
 		} else {
 			// TODO replace with actual logging
-			System.err.println("IngredientRowController: onDelete == NULL.");
 		}
 	}
 

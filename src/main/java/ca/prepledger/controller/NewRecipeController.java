@@ -104,19 +104,16 @@ public class NewRecipeController implements Navigable {
 		// At this point, determine if the recipe is valid. if not, show error
 		isRecipeValid = (areRecipeFieldsValid && areIngredientFieldsValid);
 		
-		// XXX show error if not valid, finish this later
+		// TODO show error if not valid, finish this later
 		if (!isRecipeValid) {
 			// show an error
-			System.err.print("RECIPE INVALID: ");
 			if (!areRecipeFieldsValid) {
-				System.err.println("Recipe Fields Invalid");
+				// TODO do something
 			} else {
-				System.err.println("Ingredient Fields Invalid.");
+				// TODO do something
 			}
 			
 			return;
-		} else {
-			System.out.println("Recipe is valid");
 		}
 		
 		// Construct Recipe object

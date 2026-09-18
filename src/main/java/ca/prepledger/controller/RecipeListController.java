@@ -116,7 +116,6 @@ public class RecipeListController implements Navigable {
 	
 	// XXX Temporary testing method
 	private void addDummyRecipe(Recipe recipe) {
-		System.out.println("adding recipe");
 	    try {
 	        FXMLLoader loader = new FXMLLoader(
 	            getClass().getResource("/fxml/recipes/RecipeCard.fxml")
@@ -145,12 +144,11 @@ public class RecipeListController implements Navigable {
 		List<Recipe> recipes = recipeService.getAllRecipes();
 		
 		if (recipes != null && recipes.size() >= 1) {
-			System.out.println("recipe list not null");
 			for (Recipe recipe : recipes) {
 				addDummyRecipe(recipe);
 			}
 		} else {
-			System.out.println("recipes null");
+			System.out.println("recipe list null/empty");
 		}
 	}
 	
