@@ -28,7 +28,7 @@ public class RecipeCardController {
 		ratingLabel.setText("★ " + 5);
 		timeLabel.setText(100 + " min");
 
-		URL url = getClass().getResource("/img/temp/chicken-tikka.png");
+		URL url = getClass().getResource("/img/temp/missing-image.png");
 		Image image = new Image(url.toExternalForm());
 		recipeImage.setImage(image);
 	}
