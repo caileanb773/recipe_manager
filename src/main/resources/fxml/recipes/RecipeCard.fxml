@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="card" styleClass="recipe-card" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeCardController">
+<StackPane fx:id="card" maxHeight="276.0" styleClass="recipe-card" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeCardController">
 
     <VBox styleClass="recipe-card-content">
 
@@ -18,11 +18,7 @@
 
             <Label fx:id="recipeName" styleClass="recipe-name" />
 
-            <HBox styleClass="recipe-meta">
-                <Label fx:id="ratingLabel" styleClass="recipe-rating" />
-
-                <Label fx:id="timeLabel" styleClass="recipe-time" />
-            </HBox>
+            <HBox styleClass="recipe-meta" />
 
             <FlowPane fx:id="tagsPane" styleClass="recipe-tags" />
 
