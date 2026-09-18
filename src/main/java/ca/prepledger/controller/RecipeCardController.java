@@ -24,7 +24,7 @@ public class RecipeCardController {
 
 	// XXX Placeholder method
 	public void setRecipe(Recipe recipe) {
-		recipeName.setText("Chicken Tikka");
+		recipeName.setText(recipe.getTitle());
 		ratingLabel.setText("★ " + 5);
 		timeLabel.setText(100 + " min");
 

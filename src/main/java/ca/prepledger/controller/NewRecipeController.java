@@ -9,6 +9,7 @@ import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
+import ca.prepledger.service.RecipeService;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,6 +49,8 @@ public class NewRecipeController implements Navigable {
 	private NavigationHandler navigationHandler;
 
 	private List<IngredientRowController> ingredientRowControllers = new ArrayList<>();;
+	
+	private RecipeService recipeService;
 
 
 	//////////////////////////////
@@ -119,7 +122,8 @@ public class NewRecipeController implements Navigable {
 		// Construct Recipe object
 		Recipe newRecipe = constructRecipeFromRemainingFields(ingredients);
 		
-		System.out.println(newRecipe.toString());
+		// propogate recipe to recipeservice
+		recipeService.addRecipe(newRecipe);
 
 		// send recipe to recipeservice
 		goBackToRecipesList();
@@ -222,6 +226,10 @@ public class NewRecipeController implements Navigable {
 	@Override
 	public void setNavigationHandler(NavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;		
+	}
+	
+	public void setRecipeService(RecipeService recipeService) {
+		this.recipeService = recipeService;
 	}
 
 }

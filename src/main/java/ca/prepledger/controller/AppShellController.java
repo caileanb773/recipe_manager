@@ -26,9 +26,6 @@ public class AppShellController implements NavigationHandler {
 	private void initialize() {
 		loadSidebar();
 		loadDefaultContextArea();
-
-		// XXX testing area
-		recipeListController.setRecipeService(recipeService);
 	}
 
 	private void loadSidebar() {
@@ -111,7 +108,21 @@ public class AppShellController implements NavigationHandler {
 	    recipeListController = loader.getController();
 	    recipeListController.setNavigationHandler(this);
 
+		// XXX testing area
+	    /*
+	     * could do some pattern like 
+	     * 
+	     * boolean isRecipeServiceSet = false;
+	     * 
+	     * if (!isRecipeServiceSet)
+	     * 		setRecipeService
+	     * 
+	     * */
+		recipeListController.setRecipeService(recipeService);
+		
 	    appShell.setCenter(recipeList);
+	    
+	    recipeListController.fetchRecipesFromRecipeService();
 	}
 
 	private void showCosting() throws IOException {
@@ -155,6 +166,10 @@ public class AppShellController implements NavigationHandler {
 		// Register this class as the RecipeList's navigation handler
 		NewRecipeController controller = loader.getController();
 		controller.setNavigationHandler(this);
+		
+		// XXX testing; inject recipeservice into newrecipecontroller
+		controller.setRecipeService(recipeService);
+		
 		appShell.setCenter(addRecipe);
 	}
 
