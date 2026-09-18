@@ -2,6 +2,7 @@ package ca.prepledger.controller;
 
 import java.io.IOException;
 
+import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeService;
@@ -97,6 +98,12 @@ public class AppShellController implements NavigationHandler {
 		}
 	}
 	
+	@Override
+	public void navigateToEditRecipe(Recipe recipe) throws IOException {
+		showEditRecipe(recipe);	
+	}
+
+	
 	private void showRecipes() throws IOException {
 	    FXMLLoader loader = new FXMLLoader(
 	        getClass().getResource("/fxml/recipes/RecipeList.fxml")
@@ -166,6 +173,25 @@ public class AppShellController implements NavigationHandler {
 		// Register this class as the RecipeList's navigation handler
 		NewRecipeController controller = loader.getController();
 		controller.setNavigationHandler(this);
+		
+		// XXX testing; inject recipeservice into newrecipecontroller
+		controller.setRecipeService(recipeService);
+		
+		controller.addNewIngredientRow(true);
+		
+		appShell.setCenter(addRecipe);
+	}
+	
+	private void showEditRecipe(Recipe recipe) throws IOException {
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/fxml/recipes/NewRecipe.fxml"));
+		
+		Parent addRecipe = loader.load();
+		
+		// Register this class as the RecipeList's navigation handler
+		NewRecipeController controller = loader.getController();
+		controller.setNavigationHandler(this);
+		controller.setRecipeToEdit(recipe);
 		
 		// XXX testing; inject recipeservice into newrecipecontroller
 		controller.setRecipeService(recipeService);

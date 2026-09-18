@@ -1,8 +1,11 @@
 package ca.prepledger.controller;
 
+import java.io.IOException;
 import java.net.URL;
 
 import ca.prepledger.model.Recipe;
+import ca.prepledger.navigation.Navigable;
+import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeService;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,7 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 
-public class RecipeCardController {
+public class RecipeCardController implements Navigable {
 
 	@FXML
 	private ImageView recipeImage;
@@ -37,6 +40,9 @@ public class RecipeCardController {
 	private RecipeService recipeService;
 
 	private Runnable onRecipeDeleted;
+	
+	private NavigationHandler navigationHandler;
+	
 	
 	// XXX Placeholder method
 	public void setRecipe(Recipe recipe) {
@@ -75,6 +81,11 @@ public class RecipeCardController {
 		openContextMenu();
 	}
 	
+	@FXML
+	private void onRecipeCardClicked() {
+		System.out.println("Recipe " + recipe.getTitle() + " clicked.");
+	}
+	
 	private void openContextMenu() {
 		ContextMenu menu = new ContextMenu();
 
@@ -94,7 +105,12 @@ public class RecipeCardController {
 	}
 	
 	public void attemptEditRecipe() {
-		
+		try {
+			navigationHandler.navigateToEditRecipe(recipe);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void attemptDeleteRecipe() {
@@ -124,6 +140,11 @@ public class RecipeCardController {
 	
 	public void setOnRecipeDeleted(Runnable onRecipeDeleted) {
 		this.onRecipeDeleted = onRecipeDeleted;
+	}
+
+	@Override
+	public void setNavigationHandler(NavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
 	}
 	
 }

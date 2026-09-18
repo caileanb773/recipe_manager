@@ -8,7 +8,6 @@ import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeService;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -130,7 +129,8 @@ public class RecipeListController implements Navigable {
 			// Dependency injection for Recipe Service
 			controller.setRecipeService(recipeService);
 			controller.setOnRecipeDeleted(this::refreshDisplayedRecipes);
-
+			controller.setNavigationHandler(navigationHandler);
+			
 			int column = recipeCount % 3;
 			int row = recipeCount / 3;
 

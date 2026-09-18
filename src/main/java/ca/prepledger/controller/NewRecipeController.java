@@ -47,10 +47,19 @@ public class NewRecipeController implements Navigable {
 	private Button navBackButton;
 	
 	private NavigationHandler navigationHandler;
-	private List<IngredientRowController> ingredientRowControllers = new ArrayList<>();;
+	
+	private List<IngredientRowController> ingredientRowControllers = new ArrayList<>();
+	
 	private RecipeService recipeService;
+	
 	private static final boolean WITH_PROMPT_TXT = true;
+	
 	private static final boolean WITHOUT_PROMPT_TXT = false;
+	
+	// Edit Mode
+	private boolean editMode = false;
+	
+	private Recipe recipe;
 
 
 	//////////////////////////////
@@ -61,11 +70,7 @@ public class NewRecipeController implements Navigable {
 
 	@FXML
 	private void initialize() {
-		try {
-			addNewIngredientRow(WITH_PROMPT_TXT);
-		} catch (IOException e) {
-			// TODO: handle exception
-		}
+
 	}
 
 	@FXML
@@ -143,6 +148,48 @@ public class NewRecipeController implements Navigable {
 	/// 
 	//////////////////////////////	
 	
+	public void setRecipeToEdit(Recipe recipe) {
+		this.recipe = recipe;
+		editMode = true;
+		
+		populateFields(recipe);
+	}
+	
+	private void populateFields(Recipe recipe) {
+		recipeTitleField.setText(recipe.getTitle());
+		instructionsTextArea.setText(recipe.getDirections());
+		
+		// Manage tags
+		String tagsStr = null;
+		List<String> tags = recipe.getTags();
+		
+		if (!tags.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			
+			for (String tag : tags) {
+				if (sb.length() > 0) {
+					sb.append(", ");
+				}
+				
+				sb.append(tag);
+			}
+			
+			tagsStr = sb.toString();
+		}
+		
+		recipeTagsField.setText(tagsStr);
+		
+		// Add new ingredientrow.fxml for each ingredient
+		for (Ingredient ing : recipe.getIngredients()) {
+			try {
+				addNewIngredientRow(ing);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	private void goBackToRecipesList() {
 		try {
 			navigationHandler.navigateTo(ContextArea.RECIPES);
@@ -152,7 +199,7 @@ public class NewRecipeController implements Navigable {
 		}
 	}
 
-	private void addNewIngredientRow(boolean withPromptText) throws IOException {
+	void addNewIngredientRow(boolean withPromptText) throws IOException {
 		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/fxml/recipes/IngredientRow.fxml"));
 		Parent ingredientRow = loader.load();
@@ -171,6 +218,29 @@ public class NewRecipeController implements Navigable {
 		if (withPromptText) {
 			controller.setDefaultPromptText();
 		}
+
+		// Request focus in the "name" field
+		controller.requestFocusInNameTextField();
+	}
+	
+	private void addNewIngredientRow(Ingredient ingredient) throws IOException {
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/fxml/recipes/IngredientRow.fxml"));
+		Parent ingredientRow = loader.load();
+		IngredientRowController controller = loader.getController();
+
+		// Keep track of the row's controller
+		ingredientRowControllers.add(controller);
+
+		// Wire the callback for when row's delete button is pressed
+		controller.setOnDelete(this::removeIngredientRow);
+		
+		// Set the ingredient fields to the data from passed ingredient
+		controller.setIngredient(ingredient);
+
+		// Add at 2nd last index so "Add Ingredient" button is last
+		ObservableList<Node> children = ingredientsVBox.getChildren();
+		children.add(children.size() - 1, ingredientRow);
 
 		// Request focus in the "name" field
 		controller.requestFocusInNameTextField();
