@@ -63,6 +63,10 @@ public class Ingredient {
 
 	@JsonProperty("amount")
 	public String getAmount() {
+		if (amount == null) {
+			return null;
+		}
+		
 		return amount.toString();
 	}
 

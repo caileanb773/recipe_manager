@@ -180,7 +180,11 @@ public class Recipe {
 		sb.append("Recipe: " + title + "\n" + "Ingredients:\n");
 
 		for (Ingredient ingredient : ingredients) {
-			sb.append(ingredient.getAmount().toString() + " ");
+			if (ingredient.getAmount() != null) {
+				sb.append(ingredient.getAmount().toString() + " ");
+			} else {
+				sb.append("");
+			}
 			sb.append(ingredient.getUnit() + " ");
 			sb.append(ingredient.getName() + "\n");
 		}
