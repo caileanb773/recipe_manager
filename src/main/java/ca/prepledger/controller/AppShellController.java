@@ -122,7 +122,7 @@ public class AppShellController implements NavigationHandler {
 		
 	    appShell.setCenter(recipeList);
 	    
-	    recipeListController.fetchRecipesFromRecipeService();
+	    recipeListController.refreshDisplayedRecipes();
 	}
 
 	private void showCosting() throws IOException {

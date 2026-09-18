@@ -3,6 +3,7 @@ package ca.prepledger.controller;
 import java.net.URL;
 
 import ca.prepledger.model.Recipe;
+import ca.prepledger.service.RecipeService;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
@@ -32,7 +33,11 @@ public class RecipeCardController {
 	private Button recipeOptionsButton;
 	
 	private Recipe recipe;
+	
+	private RecipeService recipeService;
 
+	private Runnable onRecipeDeleted;
+	
 	// XXX Placeholder method
 	public void setRecipe(Recipe recipe) {
 		this.recipe = recipe;
@@ -89,11 +94,17 @@ public class RecipeCardController {
 	}
 	
 	public void attemptEditRecipe() {
-		System.out.println("editing");
+		
 	}
 	
 	public void attemptDeleteRecipe() {
-		System.out.println("deleting");
+		// TODO dialog asking the user to confirm choice
+		
+		// Delete the recipe contained in this class from RecipeService's memory
+		recipeService.removeRecipe(recipe);
+		
+		// Tell RecipeListController to refresh
+		onRecipeDeleted.run();
 	}
 	
 	// XXX need defensive programming for people who delete the image by mistake
@@ -106,4 +117,13 @@ public class RecipeCardController {
 	public Recipe getRecipe() {
 		return this.recipe;
 	}
+	
+	public void setRecipeService(RecipeService recipeService) {
+		this.recipeService = recipeService;
+	}
+	
+	public void setOnRecipeDeleted(Runnable onRecipeDeleted) {
+		this.onRecipeDeleted = onRecipeDeleted;
+	}
+	
 }
