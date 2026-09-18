@@ -12,12 +12,34 @@ public class RecipeService {
 	private ArrayList<Recipe> dummyRecipeList;
 	
 	
-	// Methods
+	// XXX Methods
 	
-	// XXX
-	public ArrayList<Recipe> getAllRecipes() {
-		System.out.println("getAllRecipes() here");
-		return dummyRecipeList;
+	public RecipeService() {
+		dummyRecipeList = new ArrayList<>();
 	}
+
+	public void addRecipe(Recipe recipe) {
+		dummyRecipeList.add(recipe);
+	}
+	
+	public void updateRecipe(int id, Recipe recipe) {
+		dummyRecipeList.set(id, recipe);
+	}
+	
+	public void removeRecipe(Recipe recipe) {
+		dummyRecipeList.remove(recipe);
+	}
+	
+	public Recipe getRecipe(int id) {
+		return dummyRecipeList.get(id);
+	}
+	
+	public void removeRecipe(int id) {
+		dummyRecipeList.remove(id);
+	}
+	
+	public ArrayList<Recipe> getAllRecipes() {
+		return dummyRecipeList;
+	} 
 
 }
