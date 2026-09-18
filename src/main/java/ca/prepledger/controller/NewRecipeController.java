@@ -39,18 +39,18 @@ public class NewRecipeController implements Navigable {
 
 	@FXML
 	private TextArea instructionsTextArea;
-
+	
 	@FXML
 	private VBox ingredientsVBox;
-
+	
 	@FXML
 	private Button navBackButton;
-
-	private NavigationHandler navigationHandler;
-
-	private List<IngredientRowController> ingredientRowControllers = new ArrayList<>();;
 	
+	private NavigationHandler navigationHandler;
+	private List<IngredientRowController> ingredientRowControllers = new ArrayList<>();;
 	private RecipeService recipeService;
+	private static final boolean WITH_PROMPT_TXT = true;
+	private static final boolean WITHOUT_PROMPT_TXT = false;
 
 
 	//////////////////////////////
@@ -62,7 +62,7 @@ public class NewRecipeController implements Navigable {
 	@FXML
 	private void initialize() {
 		try {
-			addNewIngredientRow();
+			addNewIngredientRow(WITH_PROMPT_TXT);
 		} catch (IOException e) {
 			// TODO: handle exception
 		}
@@ -129,7 +129,7 @@ public class NewRecipeController implements Navigable {
 	@FXML
 	public void onAddIngredientButtonClicked() {
 		try {
-			addNewIngredientRow();
+			addNewIngredientRow(WITHOUT_PROMPT_TXT);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -152,7 +152,7 @@ public class NewRecipeController implements Navigable {
 		}
 	}
 
-	private void addNewIngredientRow() throws IOException {
+	private void addNewIngredientRow(boolean withPromptText) throws IOException {
 		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/fxml/recipes/IngredientRow.fxml"));
 		Parent ingredientRow = loader.load();
@@ -167,6 +167,10 @@ public class NewRecipeController implements Navigable {
 		// Add at 2nd last index so "Add Ingredient" button is last
 		ObservableList<Node> children = ingredientsVBox.getChildren();
 		children.add(children.size() - 1, ingredientRow);
+		
+		if (withPromptText) {
+			controller.setDefaultPromptText();
+		}
 
 		// Request focus in the "name" field
 		controller.requestFocusInNameTextField();

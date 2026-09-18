@@ -22,10 +22,10 @@
     <RowConstraints fillHeight="false" />
   </rowConstraints>
    <children>
-      <TextField fx:id="ingredientNameField" promptText="e.g. Smoked Paprika" styleClass="base-form-component" />
-      <ComboBox fx:id="ingredientUnitComboBox" editable="true" prefWidth="300.0" promptText="Select Unit" styleClass="base-form-component" GridPane.columnIndex="1" GridPane.hgrow="NEVER" />
-      <TextField fx:id="ingredientAmountField" promptText="e.g. 50" styleClass="base-form-component" GridPane.columnIndex="2" GridPane.hgrow="NEVER" />
-      <TextField fx:id="ingredientNotesField" promptText="e.g. crushed" styleClass="base-form-component" GridPane.columnIndex="3" />
+      <TextField fx:id="ingredientNameField" styleClass="base-form-component" />
+      <ComboBox fx:id="ingredientUnitComboBox" editable="true" prefWidth="300.0" styleClass="base-form-component" GridPane.columnIndex="1" GridPane.hgrow="NEVER" />
+      <TextField fx:id="ingredientAmountField" styleClass="base-form-component" GridPane.columnIndex="2" GridPane.hgrow="NEVER" />
+      <TextField fx:id="ingredientNotesField" styleClass="base-form-component" GridPane.columnIndex="3" />
       <Button fx:id="deleteIngredientButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" focusTraversable="false" mnemonicParsing="false" onAction="#onDeleteIngredientButtonClicked" styleClass="icon-button" GridPane.columnIndex="4" GridPane.hgrow="NEVER">
          <graphic>
             <ImageView pickOnBounds="true" preserveRatio="true">

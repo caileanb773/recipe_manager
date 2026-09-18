@@ -74,6 +74,13 @@ public class IngredientRowController {
 	public void setOnDelete(Consumer<IngredientRowController> onDelete) {
 		this.onDelete = onDelete;
 	}
+	
+	public void setDefaultPromptText() {
+		ingredientNameField.setPromptText("e.g. Smoked Paprika");
+		ingredientUnitComboBox.setPromptText("Select Unit");
+		ingredientAmountField.setPromptText("e.g. 50");
+		ingredientNotesField.setPromptText("e.g. crushed");
+	}
 
 	public Ingredient getIngredient() {
 		Fraction frac = getIngredientAmount();
