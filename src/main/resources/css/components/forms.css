@@ -11,3 +11,7 @@
 .base-form-component .list-cell {
     -fx-text-fill: #C3C3C3; 
 }
+
+.base-form-component .arrow-button {
+    -fx-background-color: transparent;
+}
