@@ -110,6 +110,8 @@ public class NewRecipeController implements Navigable {
 			} else {
 				System.err.println("Ingredient Fields Invalid.");
 			}
+			
+			return;
 		} else {
 			System.out.println("Recipe is valid");
 		}
