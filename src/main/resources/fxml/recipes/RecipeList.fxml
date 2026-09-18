@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeListController">
+<BorderPane minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeListController">
    <top>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -91,7 +91,7 @@
       </HBox>
    </top>
    <center>
-      <ScrollPane fx:id="recipeScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="recipe-scroll-pane" stylesheets="@../../css/recipelist.css" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="recipeScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="recipe-scroll-pane" stylesheets="@../../css/pages/recipe-list.css" BorderPane.alignment="CENTER">
          <content>
             <StackPane>
                <children>

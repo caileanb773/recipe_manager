@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="rootNode" hgap="5.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.IngredientRowController">
+<GridPane fx:id="rootNode" hgap="5.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.IngredientRowController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="37.0" />
     <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />

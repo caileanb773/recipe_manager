@@ -2,4 +2,4 @@
 
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="appShell" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.AppShellController" />
+<BorderPane fx:id="appShell" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.AppShellController" />
