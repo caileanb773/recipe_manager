@@ -5,7 +5,7 @@
 .default-button {
     -fx-background-color: #FEFEFE;
     -fx-border-color: #93ACBB;
-    -fx-border-width: 2px;
+    -fx-border-width: 1px;
     -fx-border-radius: 5px;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
@@ -69,6 +69,7 @@
 .page-navigation-button {
     -fx-background-color: transparent;
     -fx-text-fill: #93ACBB;
+    -fx-padding: 4px 6px 4px 6px;
 }
 
 .page-navigation-button:hover {

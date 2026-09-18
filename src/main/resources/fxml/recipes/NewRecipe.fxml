@@ -34,7 +34,7 @@
                   <Label alignment="TOP_LEFT" styleClass="sub-header" text="Back to Recipes" />
                </children>
                <VBox.margin>
-                  <Insets left="15.0" />
+                  <Insets left="15.0" right="15.0" top="15.0" />
                </VBox.margin>
             </HBox>
             <HBox alignment="CENTER" fillHeight="false">
@@ -128,10 +128,10 @@
                         <Label styleClass="header-3" text="Ingredients" />
                         <GridPane fx:id="ingredientsHeaderGrid">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="37.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="32.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="14.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="21.0" />
                               <ColumnConstraints hgrow="SOMETIMES" percentWidth="8.0" />
                           </columnConstraints>
                           <rowConstraints>
