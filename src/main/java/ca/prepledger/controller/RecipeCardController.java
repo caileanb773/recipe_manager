@@ -5,8 +5,12 @@ import java.net.URL;
 import ca.prepledger.model.Recipe;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Side;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -23,6 +27,9 @@ public class RecipeCardController {
 
 	@FXML
 	private FlowPane tagsPane;
+	
+	@FXML
+	private Button recipeOptionsButton;
 	
 	private Recipe recipe;
 
@@ -56,6 +63,37 @@ public class RecipeCardController {
 		 * 
 		 * recipeImage.setImage(image)
 		 */
+	}
+	
+	@FXML
+	private void onRecipeOptionsButtonClicked() {
+		openContextMenu();
+	}
+	
+	private void openContextMenu() {
+		ContextMenu menu = new ContextMenu();
+
+		MenuItem editItem = new MenuItem("Edit");
+		MenuItem deleteItem = new MenuItem("Delete");
+
+		editItem.setOnAction(e -> {
+			attemptEditRecipe();
+		});
+		
+		deleteItem.setOnAction(e -> {
+			attemptDeleteRecipe();
+		});
+		
+		menu.getItems().addAll(editItem, deleteItem);
+		menu.show(recipeOptionsButton, Side.BOTTOM, 0, 0);
+	}
+	
+	public void attemptEditRecipe() {
+		System.out.println("editing");
+	}
+	
+	public void attemptDeleteRecipe() {
+		System.out.println("deleting");
 	}
 	
 	// XXX need defensive programming for people who delete the image by mistake
