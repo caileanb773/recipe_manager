@@ -114,7 +114,7 @@ public class RecipeListController implements Navigable {
 		gridView.setManaged(false);
 	}
 	
-	// XXX Temporary testing method
+	// XXX Temporary testing method, to be replaced with method that fetches recipes from repo
 	private void addDummyRecipe(Recipe recipe) {
 	    try {
 	        FXMLLoader loader = new FXMLLoader(

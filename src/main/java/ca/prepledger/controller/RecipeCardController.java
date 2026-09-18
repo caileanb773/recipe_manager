@@ -23,27 +23,30 @@ public class RecipeCardController {
 
 	@FXML
 	private FlowPane tagsPane;
+	
+	private Recipe recipe;
 
 	// XXX Placeholder method
 	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
+		
+		// Set the fields of the card
 		recipeName.setText(recipe.getTitle());
-		
 		ObservableList<Node> tagsList = tagsPane.getChildren();
-		
 		recipe.getTags().stream()
 	      .limit(3)
 	      .forEach(tag -> {
 	    	  Label tagLabel = new Label(tag);
-
 	    	  tagLabel.setMaxWidth(80);
 	    	  tagLabel.setTextOverrun(OverrunStyle.ELLIPSIS);
 	    	  tagLabel.setTooltip(new Tooltip(tag));
 	    	  tagsList.add(tagLabel);
 	      });
-
-		// Get/set image
 		
-		/*
+		// Get/set image
+		recipeImage.setImage(getDefaultImage());
+		
+		/* Eventually:
 		 * Image image;
 		 * 
 		 * if (recipe.hasImage())
@@ -52,9 +55,7 @@ public class RecipeCardController {
 		 * 		image = getDefaultImage()
 		 * 
 		 * recipeImage.setImage(image)
-		 * */
-		
-		recipeImage.setImage(getDefaultImage());
+		 */
 	}
 	
 	// XXX need defensive programming for people who delete the image by mistake
@@ -62,5 +63,9 @@ public class RecipeCardController {
 		URL url = getClass().getResource("/img/temp/missing-image.png");
 		Image image = new Image(url.toExternalForm());
 		return image;
+	}
+	
+	public Recipe getRecipe() {
+		return this.recipe;
 	}
 }
