@@ -101,7 +101,7 @@
          <graphic>
             <ImageView pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/icon/Logo-scaled.png" />
+                  <Image url="@../../img/icon/icon.png" />
                </image>
             </ImageView>
          </graphic>
