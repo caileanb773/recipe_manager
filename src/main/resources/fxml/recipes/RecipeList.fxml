@@ -73,11 +73,10 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" HBox.hgrow="SOMETIMES">
                            <children>
-                              <ComboBox prefWidth="150.0" promptText="Last Updated" styleClass="base-form-component">
+                              <ComboBox prefWidth="150.0" promptText="Sort by..." styleClass="base-form-component" visibleRowCount="12">
                                  <HBox.margin>
-                                    <Insets right="15.0" />
+                                    <Insets />
                                  </HBox.margin></ComboBox>
-                              <ComboBox prefWidth="150.0" promptText="Category" styleClass="base-form-component" />
                            </children>
                         </HBox>
                      </children>

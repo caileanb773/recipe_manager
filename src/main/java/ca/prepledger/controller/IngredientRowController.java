@@ -108,6 +108,8 @@ public class IngredientRowController {
 			return null;
 		}
 		
+		//if (Integer.)
+		
 		return new Fraction(amountStr);
 	}
 
