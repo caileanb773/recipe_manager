@@ -92,9 +92,9 @@ public class IngredientRowController {
 	}
 
 	public String getIngredientName() {
-		String val = ingredientNameField.getText().trim();
+		String val = ingredientNameField.getText();
 		
-		if (val == null || val.isEmpty()) {
+		if (val == null || val.trim().isEmpty()) {
 			return null;
 		}		
 		
@@ -102,9 +102,9 @@ public class IngredientRowController {
 	}
 
 	public Fraction getIngredientAmount() {
-		String amountStr = ingredientAmountField.getText().trim();
+		String amountStr = ingredientAmountField.getText();
 		
-		if (amountStr == null || amountStr.isEmpty()) {
+		if (amountStr == null || amountStr.trim().isEmpty()) {
 			return null;
 		}
 		
@@ -114,7 +114,7 @@ public class IngredientRowController {
 	public String getIngredientUnit() {
 		String val = ingredientUnitComboBox.getValue();
 		
-		if (val == null || val.isEmpty()) {
+		if (val == null || val.trim().isEmpty()) {
 			return null;
 		}
 		
@@ -122,9 +122,9 @@ public class IngredientRowController {
 	}
 
 	public String getIngredientNotes() {
-		String val = ingredientNotesField.getText().trim(); 
+		String val = ingredientNotesField.getText(); 
 		
-		if (val == null || val.isEmpty()) {
+		if (val == null || val.trim().isEmpty()) {
 			return null;
 		}
 		
@@ -132,10 +132,14 @@ public class IngredientRowController {
 	}
 
 	public void setIngredient(Ingredient ingredient) {
-		ingredientNameField.setText(ingredient.getName());
-		ingredientUnitComboBox.setValue(ingredient.getUnit().toString());
-		ingredientAmountField.setText(ingredient.getAmount().toString());
-		ingredientNotesField.setText(ingredient.getNotes());
+		String name = ingredient.getName();
+		String unit = ingredient.getUnit();
+		String amt = ingredient.getAmount();
+		String note = ingredient.getNotes();
+		ingredientNameField.setText((name == null) ? null : name);
+		ingredientUnitComboBox.setValue((unit == null) ? null : unit);
+		ingredientAmountField.setText((amt == null) ? null : amt);
+		ingredientNotesField.setText((note == null) ? null : note);
 	}
 
 	public void setIngredientName(String name) {
