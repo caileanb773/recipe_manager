@@ -6,7 +6,6 @@ package ca.prepledger.model;
  */
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.StringJoiner;
 
 import com.fasterxml.jackson.annotation.JsonSetter;

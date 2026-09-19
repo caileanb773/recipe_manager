@@ -92,6 +92,17 @@ public class SidebarController implements Navigable {
 		}
 	}
 	
+	@FXML
+	public void onImportExportContextBtnClick() {
+		try {
+			navigationHandler.navigateTo(ContextArea.IMPORT_EXPORT);
+			setActiveButtonStyling("Prep Lists");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void setInitialScreenNavButtonSelected() {
 		setActiveButtonStyling("Recipes");
 	}

@@ -78,7 +78,7 @@ public class AppShellController implements NavigationHandler {
 			break;
 			
 		case IMPORT_EXPORT:
-			//showImportExport();
+			showImportExport();
 			break;
 			
 		case NOTIFICATIONS:
@@ -143,6 +143,14 @@ public class AppShellController implements NavigationHandler {
 	private void showSettings() throws IOException {
 		Parent settings = FXMLLoader.load(
 				getClass().getResource("/fxml/settings/Settings.fxml")
+				);
+
+		appShell.setCenter(settings);
+	}
+	
+	private void showImportExport() throws IOException {
+		Parent settings = FXMLLoader.load(
+				getClass().getResource("/fxml/import-export/ImportExport.fxml")
 				);
 
 		appShell.setCenter(settings);
