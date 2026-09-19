@@ -149,11 +149,17 @@ public class AppShellController implements NavigationHandler {
 	}
 	
 	private void showImportExport() throws IOException {
-		Parent settings = FXMLLoader.load(
-				getClass().getResource("/fxml/import-export/ImportExport.fxml")
-				);
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/fxml/import-export/ImportExport.fxml"));
+		
+		Parent importExport = loader.load();
+		
+		ImportExportController controller = loader.getController();
+		
+		// Inject dependency to recipeservice
+		controller.setRecipeService(recipeService);
 
-		appShell.setCenter(settings);
+		appShell.setCenter(importExport);
 	}
 
 	private void showNotifications() throws IOException {
