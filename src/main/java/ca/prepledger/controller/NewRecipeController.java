@@ -10,6 +10,7 @@ import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeService;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,7 +71,7 @@ public class NewRecipeController implements Navigable {
 
 	@FXML
 	private void initialize() {
-
+		Platform.runLater(() -> recipeTitleField.requestFocus());
 	}
 
 	@FXML
