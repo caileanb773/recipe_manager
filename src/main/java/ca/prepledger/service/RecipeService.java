@@ -34,6 +34,10 @@ public class RecipeService {
 		return dummyRecipeList.get(id);
 	}
 	
+	public int getRecipeIndex(Recipe recipe) {
+		return dummyRecipeList.indexOf(recipe);
+	}
+	
 	public void removeRecipe(int id) {
 		dummyRecipeList.remove(id);
 	}

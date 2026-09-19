@@ -93,14 +93,14 @@ public class AppShellController implements NavigationHandler {
 			showAddRecipe();
 			break;
 		case COSTING:
-			showCosting();
-			break;
+			showCosting();			
 		}
 	}
 	
 	@Override
 	public void navigateToEditRecipe(Recipe recipe) throws IOException {
-		showEditRecipe(recipe);	
+		currentContextArea = ContextArea.EDIT_RECIPE;
+		showEditRecipe(recipe);
 	}
 
 	

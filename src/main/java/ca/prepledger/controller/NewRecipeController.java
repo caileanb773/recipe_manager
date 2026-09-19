@@ -59,7 +59,7 @@ public class NewRecipeController implements Navigable {
 	// Edit Mode
 	private boolean editMode = false;
 	
-	private Recipe recipe;
+	private Recipe currentRecipe;
 
 
 	//////////////////////////////
@@ -90,6 +90,7 @@ public class NewRecipeController implements Navigable {
 
 	@FXML
 	public void onSaveRecipeButtonClicked() {
+		System.out.println("aaaa");
 		List<Ingredient> ingredients = new ArrayList<>();
 		boolean isRecipeValid = false;
 		boolean areRecipeFieldsValid = false;
@@ -117,7 +118,7 @@ public class NewRecipeController implements Navigable {
 			} else {
 				// TODO do something
 			}
-			
+			System.out.println("invalid!");
 			return;
 		}
 		
@@ -125,9 +126,17 @@ public class NewRecipeController implements Navigable {
 		Recipe newRecipe = constructRecipeFromRemainingFields(ingredients);
 		
 		// propogate recipe to recipeservice
-		recipeService.addRecipe(newRecipe);
+		if (editMode) {
+			System.out.println("edit mode");
+			// get the index of the recipe in service
+			int rcpIdx = recipeService.getRecipeIndex(currentRecipe);
+			recipeService.updateRecipe(rcpIdx, newRecipe);
+		} else {
+			recipeService.addRecipe(newRecipe);
+		}
 
 		// send recipe to recipeservice
+		System.out.println("boutta go back");
 		goBackToRecipesList();
 	}
 
@@ -149,7 +158,7 @@ public class NewRecipeController implements Navigable {
 	//////////////////////////////	
 	
 	public void setRecipeToEdit(Recipe recipe) {
-		this.recipe = recipe;
+		this.currentRecipe = recipe;
 		editMode = true;
 		
 		populateFields(recipe);
