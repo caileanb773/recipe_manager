@@ -218,18 +218,19 @@ public class Recipe {
 		this.tags = tags;
 	}
 	
-	@Override
-	public boolean equals(Object o) {
-	    if (this == o) return true;
-	    if (!(o instanceof Recipe)) return false;
-	    Recipe other = (Recipe) o;
-	    return this.id == other.id;
-	}
-
-	@Override
-	public int hashCode() {
-	    return Objects.hash(id);
-	}
+//	@Override
+//	public boolean equals(Object o) {
+//	    if (this == o) return true;
+//	    if (!(o instanceof Recipe)) return false;
+//
+//	    Recipe other = (Recipe) o;
+//	    return Objects.equals(this.id, other.id);
+//	}
+//
+//	@Override
+//	public int hashCode() {
+//	    return Objects.hash(id);
+//	}
 
 
 }
