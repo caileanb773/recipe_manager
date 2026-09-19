@@ -66,6 +66,17 @@
     -fx-background-color: #BBBBBB;
 }
 
+.icon-only-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 4px 6px 4px 6px;
+}
+
+/* This is also defined as toggle-button hover. */
+.icon-only-button:hover {
+    -fx-background-color: #BBBBBB;
+}
+
 .page-navigation-button {
     -fx-background-color: transparent;
     -fx-text-fill: #93ACBB;

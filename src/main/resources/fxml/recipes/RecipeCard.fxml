@@ -23,7 +23,7 @@
             <HBox styleClass="recipe-meta" VBox.vgrow="NEVER">
    
                <FlowPane fx:id="tagsPane" prefWidth="350.0" styleClass="recipe-tags" />
-            <Button fx:id="recipeOptionsButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onRecipeOptionsButtonClicked" styleClass="icon-button" text="Button">
+            <Button fx:id="recipeOptionsButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onRecipeOptionsButtonClicked" styleClass="icon-only-button" text="Button">
                <graphic>
                   <ImageView pickOnBounds="true">
                      <image>
