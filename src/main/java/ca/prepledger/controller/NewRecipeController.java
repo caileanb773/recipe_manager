@@ -112,7 +112,7 @@ public class NewRecipeController implements Navigable {
 		}
 
 		// Validate ingredients
-		areIngredientFieldsValid = areRequiredIngredientFieldsPopulated(ingredients);
+		areIngredientFieldsValid = areIngredientsValid(ingredients);
 
 		// At this point, determine if the recipe is valid. if not, show error
 		isRecipeValid = (areRecipeFieldsValid && areIngredientFieldsValid);
@@ -287,16 +287,18 @@ public class NewRecipeController implements Navigable {
 		return false;
 	}
 
-	private boolean areRequiredIngredientFieldsPopulated(List<Ingredient> ingredients) {
-		for (Ingredient ingredient : ingredients) {
-			String ingredientTitle = ingredient.getName();
+	private boolean areIngredientsValid(List<Ingredient> ingredients) {
+	    for (Ingredient ingredient : ingredients) {
+	        if (ingredient.getName() == null) {
+	            return false;
+	        }
 
-			if (ingredientTitle == null) {
-				return false;
-			}
-		}
+	        if (ingredient.getAmount() == null && ingredient.getUnit() != null) {
+	            return false;
+	        }
+	    }
 
-		return true;
+	    return true;
 	}
 	
 	private Recipe constructRecipeFromRemainingFields(List<Ingredient> ingredients) {
