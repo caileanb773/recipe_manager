@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -47,14 +48,15 @@ public class NewRecipeController implements Navigable {
 	@FXML
 	private Button navBackButton;
 	
+	@FXML
+	private Label recipeCardHeader;
+	
 	private NavigationHandler navigationHandler;
 	
 	private List<IngredientRowController> ingredientRowControllers = new ArrayList<>();
 	
 	private RecipeService recipeService;
-	
-	private static final boolean WITH_PROMPT_TXT = true;
-	
+		
 	private static final boolean WITHOUT_PROMPT_TXT = false;
 	
 	// Edit Mode
@@ -91,7 +93,6 @@ public class NewRecipeController implements Navigable {
 
 	@FXML
 	public void onSaveRecipeButtonClicked() {
-		System.out.println("aaaa");
 		List<Ingredient> ingredients = new ArrayList<>();
 		boolean isRecipeValid = false;
 		boolean areRecipeFieldsValid = false;
@@ -125,7 +126,7 @@ public class NewRecipeController implements Navigable {
 			} else {
 				// TODO do something
 			}
-			System.out.println("invalid!");
+			System.out.println("Invalid recipe, cannot save!");
 			return;
 		}
 		
@@ -134,7 +135,6 @@ public class NewRecipeController implements Navigable {
 		
 		// propogate recipe to recipeservice
 		if (editMode) {
-			System.out.println("edit mode");
 			// get the index of the recipe in service
 			int rcpIdx = recipeService.getRecipeIndex(currentRecipe);
 			recipeService.updateRecipe(rcpIdx, newRecipe);
@@ -169,6 +169,7 @@ public class NewRecipeController implements Navigable {
 		editMode = true;
 		
 		populateFields(recipe);
+		recipeCardHeader.setText("Edit Recipe");
 	}
 	
 	private void populateFields(Recipe recipe) {

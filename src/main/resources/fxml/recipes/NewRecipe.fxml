@@ -41,7 +41,7 @@
                <children>
                   <HBox fx:id="headerHBox" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="header-2" text="New Recipe" HBox.hgrow="NEVER">
+                        <Label fx:id="recipeCardHeader" styleClass="header-2" text="New Recipe" HBox.hgrow="NEVER">
                            <HBox.margin>
                               <Insets left="15.0" />
                            </HBox.margin>
@@ -65,7 +65,7 @@
                   </HBox>
                </children>
             </HBox>
-            <Label styleClass="sub-header" text="Add details for the new recipe below. * Denotes required fields.">
+            <Label styleClass="sub-header" text="Add details for the recipe below. Asterisks (*) denote required fields.">
                <VBox.margin>
                   <Insets bottom="10.0" left="15.0" />
                </VBox.margin></Label>
