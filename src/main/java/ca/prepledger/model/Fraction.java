@@ -55,9 +55,10 @@ public class Fraction {
 		}
 	}
 	
-	public Fraction(int num, int den) {
+	public Fraction(int num, int den) throws ArithmeticException {
 		if (den == 0) {
 			logger.warn("Denominator set to 0 in new fraction: Fraction().");
+			throw new ArithmeticException("Denominator cannot be 0.");
 		}
 		numerator = num;
 		denominator = den;
@@ -179,25 +180,30 @@ public class Fraction {
 		String trimmed = fracStr.trim();
 
 		// Mixed fraction like 2 1/2
-		if (trimmed.matches("\\d+\\s+\\d+/\\d+")) {
-			String[] parts = trimmed.split("\\s+");
-			int wholeNum = Integer.parseInt(parts[0]);
-			String[] fractional = parts[1].split("/");
-			int numerator = Integer.parseInt(fractional[0]);
-			int denominator = Integer.parseInt(fractional[1]);
-			return new Fraction(wholeNum, numerator, denominator);
-			// Simple fraction like 3/4
-		} else if (trimmed.matches("\\d+/\\d+")) {
-			String[] fractional = trimmed.split("/");
-			int numerator = Integer.parseInt(fractional[0]);
-			int denominator = Integer.parseInt(fractional[1]);
-			return new Fraction(numerator, denominator);
-		} else if (trimmed.matches("\\d+")) {
-			int wholeNum = Integer.parseInt(trimmed);
-			return new Fraction(wholeNum, 1);
-		} else {
-			logger.error("Invalid fractional format: parseFraction().");
-			throw new NumberFormatException("Invalid fractional format.");
+		try {
+			if (trimmed.matches("\\d+\\s+\\d+/\\d+")) {
+				String[] parts = trimmed.split("\\s+");
+				int wholeNum = Integer.parseInt(parts[0]);
+				String[] fractional = parts[1].split("/");
+				int numerator = Integer.parseInt(fractional[0]);
+				int denominator = Integer.parseInt(fractional[1]);
+				return new Fraction(wholeNum, numerator, denominator);
+				// Simple fraction like 3/4
+			} else if (trimmed.matches("\\d+/\\d+")) {
+				String[] fractional = trimmed.split("/");
+				int numerator = Integer.parseInt(fractional[0]);
+				int denominator = Integer.parseInt(fractional[1]);
+				return new Fraction(numerator, denominator);
+			} else if (trimmed.matches("\\d+")) {
+				int wholeNum = Integer.parseInt(trimmed);
+				return new Fraction(wholeNum, 1);
+			} else {
+				logger.error("Invalid fractional format: parseFraction().");
+				throw new NumberFormatException("Invalid fractional format.");
+			}
+		} catch (ArithmeticException e) {
+			logger.warn("Denominator cannot be 0.");
+			throw new NumberFormatException("Denominator cannot be 0.");
 		}
 	}
 

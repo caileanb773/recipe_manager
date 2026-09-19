@@ -108,7 +108,7 @@ public class IngredientRowController {
 			return null;
 		}
 		
-		return new Fraction(amountStr);
+		return Fraction.parseFraction(amountStr);
 	}
 
 	public String getIngredientUnit() {
