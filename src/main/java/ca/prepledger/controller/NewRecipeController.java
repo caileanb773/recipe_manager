@@ -101,8 +101,14 @@ public class NewRecipeController implements Navigable {
 		areRecipeFieldsValid = areRequiredRecipeFieldsPopulated();
 
 		// Fetch ingredients
-		for (IngredientRowController c : ingredientRowControllers) {
-			ingredients.add(c.getIngredient());
+		try {
+		    for (IngredientRowController c : ingredientRowControllers) {
+		        ingredients.add(c.getIngredient());
+		    }
+		} catch (NumberFormatException e) {
+		    // Invalid ingredient amount
+		    System.out.println("Invalid ingredient amount");
+		    return;
 		}
 
 		// Validate ingredients
