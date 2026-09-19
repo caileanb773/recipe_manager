@@ -160,6 +160,7 @@ public class RecipeListController implements Navigable {
 	}
 
 	private void removeAllDisplayedRecipes() {
+		recipeCount = 0;
 		gridView.getChildren().clear();
 		listView.getChildren().clear();
 	}
