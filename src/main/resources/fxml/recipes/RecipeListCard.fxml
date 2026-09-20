@@ -17,7 +17,7 @@
          </HBox.margin>
       </Label>
       <HBox fx:id="tagsPane" fillHeight="false" />
-      <Button fx:id="recipeOptionsButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onRecipeOptionsButtonClicked" styleClass="icon-only-button">
+      <Button fx:id="recipeOptionsButton" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onRecipeOptionsButtonClicked" styleClass="icon-only-button">
          <graphic>
             <ImageView pickOnBounds="true" preserveRatio="true">
                <image>
