@@ -22,10 +22,6 @@ public class ImportExportService {
 				json,
 				new TypeReference<List<Recipe>>() {}
 				);
-		
-		for (Recipe recipe : recipes) {
-			System.out.println(recipe.toString());
-		}
 
 		return recipes;
 	}
