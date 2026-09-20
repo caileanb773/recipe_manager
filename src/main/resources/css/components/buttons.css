@@ -42,8 +42,8 @@
 
 .toggle-button {
     -fx-background-color: transparent;
-    -fx-border-color: #C3C3C3;
-    -fx-border-radius: 3px;
+    -fx-border-color: transparent;
+    -fx-padding: 4px 6px 4px 6px; 
 }
 
 .toggle-button:hover {
@@ -80,7 +80,7 @@
 .page-navigation-button {
     -fx-background-color: transparent;
     -fx-text-fill: #93ACBB;
-    -fx-padding: 4px 6px 4px 6px;
+    -fx-padding: 0px 0px 0px 0px;
 }
 
 .page-navigation-button:hover {

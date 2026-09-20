@@ -23,7 +23,7 @@
          <children>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Button fx:id="navBackButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onNavBackButtonClicked" prefHeight="36.0" prefWidth="11.0" styleClass="page-navigation-button">
+                  <Button fx:id="navBackButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onNavBackButtonClicked" styleClass="page-navigation-button">
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -31,7 +31,10 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Label alignment="TOP_LEFT" styleClass="sub-header" text="Back to Recipes" />
+                  <Label alignment="TOP_LEFT" styleClass="sub-header" text="Back to Recipes">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin></Label>
                </children>
                <VBox.margin>
                   <Insets left="15.0" right="15.0" top="15.0" />
