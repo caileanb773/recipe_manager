@@ -8,7 +8,10 @@
    <center>
       <Label text="Import/Export" BorderPane.alignment="CENTER" />
    </center>
-   <bottom>
+   <right>
+      <Button fx:id="importBtn" mnemonicParsing="false" onAction="#onImportBtnClicked" text="Import" BorderPane.alignment="CENTER" />
+   </right>
+   <left>
       <Button fx:id="exportBtn" mnemonicParsing="false" onAction="#onExportBtnClicked" text="Export" BorderPane.alignment="CENTER" />
-   </bottom>
+   </left>
 </BorderPane>

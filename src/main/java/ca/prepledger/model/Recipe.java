@@ -189,6 +189,13 @@ public class Recipe {
 		}
 
 		sb.append("Directions:\n" + directions);
+		sb.append("\n");
+		sb.append("Tags: ");
+		
+		for (String tag : tags) {
+			sb.append("\n");
+			sb.append(tag);
+		}
 		return sb.toString();
 	}
 
