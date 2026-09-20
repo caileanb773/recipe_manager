@@ -1,7 +1,6 @@
 package ca.prepledger.controller;
 
 import java.io.IOException;
-import java.net.URL;
 
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.Navigable;
@@ -17,9 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 
 public class RecipeListCardController implements Navigable {
 
@@ -27,7 +24,7 @@ public class RecipeListCardController implements Navigable {
 	private Label recipeName;
 
 	@FXML
-	private FlowPane tagsPane;
+	private HBox tagsPane;
 	
 	@FXML
 	private Button recipeOptionsButton;
@@ -51,7 +48,7 @@ public class RecipeListCardController implements Navigable {
 		recipe.getTags().stream()
 	      .limit(3)
 	      .forEach(tag -> {
-	    	  Label tagLabel = new Label(tag);
+	    	  Label tagLabel = new Label(tag + ", ");
 	    	  tagLabel.setMaxWidth(80);
 	    	  tagLabel.setTextOverrun(OverrunStyle.ELLIPSIS);
 	    	  tagLabel.setTooltip(new Tooltip(tag));
