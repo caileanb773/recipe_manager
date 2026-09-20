@@ -119,7 +119,7 @@ public class RecipeListController implements Navigable {
 	}
 
 	// XXX Temporary testing method, to be replaced with method that fetches recipes from repo
-	private void addDummyRecipe(Recipe recipe) {
+	private void addRecipeCardToGridDisplay(Recipe recipe) {
 		try {
 			FXMLLoader loader = new FXMLLoader(
 					getClass().getResource("/fxml/recipes/RecipeCard.fxml")
@@ -141,7 +141,30 @@ public class RecipeListController implements Navigable {
 			// XXX specifically adding only to gridview here
 			gridView.add(card, column, row);
 
-			recipeCount++;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void addRecipeListCardToListDisplay(Recipe recipe) {
+		try {
+			FXMLLoader loader = new FXMLLoader(
+					getClass().getResource("/fxml/recipes/RecipeListCard.fxml")
+					);
+
+			Node card = loader.load();
+
+			RecipeListCardController controller = loader.getController();
+			controller.setRecipe(recipe);
+
+			// Dependency injection for Recipe Service
+			controller.setRecipeService(recipeService);
+			controller.setOnRecipeDeleted(this::refreshDisplayedRecipes);
+			controller.setNavigationHandler(navigationHandler);
+
+			// XXX specifically adding only to gridview here
+			listView.getChildren().add(card);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -156,7 +179,9 @@ public class RecipeListController implements Navigable {
 
 		if (recipes != null && recipes.size() >= 1) {
 			for (Recipe recipe : recipes) {
-				addDummyRecipe(recipe);
+				addRecipeCardToGridDisplay(recipe);
+				addRecipeListCardToListDisplay(recipe);
+				recipeCount++;
 			}
 		} else {
 			System.out.println("recipe list null/empty");
