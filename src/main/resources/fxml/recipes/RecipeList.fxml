@@ -28,7 +28,10 @@
                         <VBox alignment="CENTER_LEFT" fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
                            <children>
                               <Label styleClass="header" text="Recipes" />
-                              <Label styleClass="sub-header" text="123 recipes" />
+                              <Label fx:id="recipeCountLabel" styleClass="sub-header" text="123 recipes">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin></Label>
                            </children>
                         </VBox>
                         <TextField prefWidth="280.0" promptText="Search recipes..." styleClass="base-form-component">

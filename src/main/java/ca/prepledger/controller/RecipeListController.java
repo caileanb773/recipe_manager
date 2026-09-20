@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
@@ -35,10 +36,13 @@ public class RecipeListController implements Navigable {
 
 	@FXML
 	private TilePane listView;
+	
+	@FXML
+	private Label recipeCountLabel;
+	
+	private int recipeCount = 0;
 
 	private RecipeViewMode viewingMode;
-
-	private int recipeCount = 0;
 
 	private enum RecipeViewMode {
 		GRID,
@@ -157,6 +161,8 @@ public class RecipeListController implements Navigable {
 		} else {
 			System.out.println("recipe list null/empty");
 		}
+		
+		recipeCountLabel.setText(recipeCount + " recipes");
 	}
 
 	private void removeAllDisplayedRecipes() {
