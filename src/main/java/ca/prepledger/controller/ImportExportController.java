@@ -75,7 +75,7 @@ public class ImportExportController {
 		}
 	}
 
-	private List<Recipe> attemptImportRecipes(Path path) 
+	private void attemptImportRecipes(Path path) 
 			throws FileNotFoundException, JsonMappingException,
 			JsonProcessingException, IOException {
 		List<Recipe> importedRecipes = new ArrayList<>();
@@ -84,7 +84,9 @@ public class ImportExportController {
 
 		importedRecipes = impExpService.importRecipes(json);
 
-		return importedRecipes;
+		for (Recipe recipe : importedRecipes) {
+			recipeService.addRecipe(recipe);
+		}
 	}
 
 	public void setRecipeService(RecipeService recipeService) {
