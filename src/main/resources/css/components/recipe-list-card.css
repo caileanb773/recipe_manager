@@ -1,12 +1,31 @@
 .recipe-list-card {
-    -fx-background-color: #FEFEFE;
-    -fx-border-color: #C3C3C3;
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-border-color: #E2E5E8;
     -fx-border-width: 1px;
-    -fx-border-radius: 4px;
-    -fx-background-radius: 4px;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0, 0, 0, 0.08),
+        8,
+        0.2,
+        0,
+        2
+    );
+
+    -fx-cursor: hand;
 }
 
 .recipe-list-card:hover {
-    -fx-background-color: #F8F8F8;
-    -fx-border-color: #4A90E2;
+    -fx-border-color: #C9CEd4;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0, 0, 0, 0.14),
+        12,
+        0.25,
+        0,
+        3
+    );
 }

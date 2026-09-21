@@ -8,16 +8,19 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 
+<HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="60.0" maxWidth="800.0" minWidth="800.0" prefHeight="60.0" prefWidth="800.0" spacing="10" styleClass="recipe-list-card" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeListCardController">
 
-<HBox fillHeight="false" minWidth="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeListCardController">
    <children>
+
       <Label fx:id="recipeName" styleClass="header-3">
          <HBox.margin>
             <Insets right="15.0" />
          </HBox.margin>
       </Label>
-      <HBox fx:id="tagsPane" fillHeight="false" />
-      <Button fx:id="recipeOptionsButton" alignment="CENTER_RIGHT" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onRecipeOptionsButtonClicked" styleClass="icon-only-button">
+
+      <HBox fx:id="tagsPane" alignment="CENTER_LEFT" fillHeight="false" spacing="6" HBox.hgrow="ALWAYS" />
+
+      <Button fx:id="recipeOptionsButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onRecipeOptionsButtonClicked" styleClass="icon-only-button">
          <graphic>
             <ImageView pickOnBounds="true" preserveRatio="true">
                <image>
@@ -26,11 +29,19 @@
             </ImageView>
          </graphic>
       </Button>
+
    </children>
+
+   <padding>
+      <Insets bottom="8" left="16" right="12" top="8" />
+   </padding>
+
    <stylesheets>
       <URL value="@../../css/application.css" />
       <URL value="@../../css/theme.css" />
       <URL value="@../../css/components/buttons.css" />
       <URL value="@../../css/components/typography.css" />
+      <URL value="@../../css/components/recipe-list-card.css" />
    </stylesheets>
+
 </HBox>
