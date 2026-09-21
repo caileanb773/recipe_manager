@@ -106,7 +106,10 @@
                         <Insets />
                      </StackPane.margin>
                   </GridPane>
-                  <VBox fx:id="listView" spacing="10.0" />
+                  <VBox fx:id="listView" spacing="10.0">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding></VBox>
                </children>
             </StackPane>
          </content>
