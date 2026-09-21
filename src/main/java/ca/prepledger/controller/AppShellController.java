@@ -17,9 +17,9 @@ public class AppShellController implements NavigationHandler {
 	private BorderPane appShell;
 
 	private ContextArea currentContextArea = ContextArea.RECIPES;
-	
+
 	private RecipeService recipeService = new RecipeService();
-	
+
 	private RecipeListController recipeListController;
 
 
@@ -39,9 +39,9 @@ public class AppShellController implements NavigationHandler {
 
 			SidebarController controller = loader.getController();
 			controller.setNavigationHandler(this);
-			
+
 			appShell.setLeft(sidebar);
-			
+
 			// Highlight the "Recipes" Sidebar nav button
 			controller.setInitialScreenNavButtonSelected();
 
@@ -65,30 +65,30 @@ public class AppShellController implements NavigationHandler {
 		if (currentContextArea == contextArea) {
 			return;
 		}
-		
+
 		currentContextArea = contextArea;
-		
+
 		switch (contextArea) {
 		case RECIPES:
 			showRecipes();
 			break;
-			
+
 		case SETTINGS:
 			showSettings();
 			break;
-			
+
 		case IMPORT_EXPORT:
 			showImportExport();
 			break;
-			
+
 		case NOTIFICATIONS:
 			showNotifications();
 			break;
-			
+
 		case PREP_LISTS:
 			showPrepLists();
 			break;
-			
+
 		case ADD_RECIPE:
 			showAddRecipe();
 			break;
@@ -96,40 +96,51 @@ public class AppShellController implements NavigationHandler {
 			showCosting();			
 		}
 	}
-	
+
 	@Override
-	public void navigateToEditRecipe(Recipe recipe) throws IOException {
-		currentContextArea = ContextArea.EDIT_RECIPE;
-		showEditRecipe(recipe);
+	public void navigateTo(ContextArea contextArea, Recipe recipe) throws IOException {
+		if (currentContextArea == contextArea) {
+			return;
+		}
+
+		currentContextArea = contextArea;
+
+		switch (contextArea) {
+		case EDIT_RECIPE:
+			showEditRecipe(recipe);
+			break;
+		case VIEW_RECIPE:
+			showViewRecipe(recipe);
+			break;
+		}
 	}
 
-	
 	private void showRecipes() throws IOException {
-	    FXMLLoader loader = new FXMLLoader(
-	        getClass().getResource("/fxml/recipes/RecipeList.fxml")
-	    );
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/fxml/recipes/RecipeList.fxml")
+				);
 
-	    Parent recipeList = loader.load();
+		Parent recipeList = loader.load();
 
-	    // Register this class as the RecipeList's navigation handler
-	    recipeListController = loader.getController();
-	    recipeListController.setNavigationHandler(this);
+		// Register this class as the RecipeList's navigation handler
+		recipeListController = loader.getController();
+		recipeListController.setNavigationHandler(this);
 
 		// XXX testing area
-	    /*
-	     * could do some pattern like 
-	     * 
-	     * boolean isRecipeServiceSet = false;
-	     * 
-	     * if (!isRecipeServiceSet)
-	     * 		setRecipeService
-	     * 
-	     * */
+		/*
+		 * could do some pattern like 
+		 * 
+		 * boolean isRecipeServiceSet = false;
+		 * 
+		 * if (!isRecipeServiceSet)
+		 * 		setRecipeService
+		 * 
+		 * */
 		recipeListController.setRecipeService(recipeService);
-		
-	    appShell.setCenter(recipeList);
-	    
-	    recipeListController.refreshDisplayedRecipes();
+
+		appShell.setCenter(recipeList);
+
+		recipeListController.refreshDisplayedRecipes();
 	}
 
 	private void showCosting() throws IOException {
@@ -147,15 +158,15 @@ public class AppShellController implements NavigationHandler {
 
 		appShell.setCenter(settings);
 	}
-	
+
 	private void showImportExport() throws IOException {
 		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/fxml/import-export/ImportExport.fxml"));
-		
+
 		Parent importExport = loader.load();
-		
+
 		ImportExportController controller = loader.getController();
-		
+
 		// Inject dependency to recipeservice
 		controller.setRecipeService(recipeService);
 
@@ -181,36 +192,40 @@ public class AppShellController implements NavigationHandler {
 	private void showAddRecipe() throws IOException {
 		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/fxml/recipes/NewRecipe.fxml"));
-		
+
 		Parent addRecipe = loader.load();
-		
+
 		// Register this class as the RecipeList's navigation handler
 		NewRecipeController controller = loader.getController();
 		controller.setNavigationHandler(this);
-		
+
 		// XXX testing; inject recipeservice into newrecipecontroller
 		controller.setRecipeService(recipeService);
-		
+
 		controller.addNewIngredientRow(true);
-		
+
 		appShell.setCenter(addRecipe);
 	}
-	
+
 	private void showEditRecipe(Recipe recipe) throws IOException {
 		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/fxml/recipes/NewRecipe.fxml"));
-		
+
 		Parent addRecipe = loader.load();
-		
+
 		// Register this class as the RecipeList's navigation handler
 		NewRecipeController controller = loader.getController();
 		controller.setNavigationHandler(this);
 		controller.setRecipeToEdit(recipe);
-		
+
 		// XXX testing; inject recipeservice into newrecipecontroller
 		controller.setRecipeService(recipeService);
-		
+
 		appShell.setCenter(addRecipe);
+	}
+	
+	private void showViewRecipe(Recipe recipe) throws IOException {
+		
 	}
 
 }

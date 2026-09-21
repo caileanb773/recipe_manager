@@ -3,6 +3,7 @@ package ca.prepledger.controller;
 import java.io.IOException;
 
 import ca.prepledger.model.Recipe;
+import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeService;
@@ -86,7 +87,7 @@ public class RecipeListCardController implements Navigable {
 	
 	public void attemptEditRecipe() {
 		try {
-			navigationHandler.navigateToEditRecipe(recipe);
+			navigationHandler.navigateTo(ContextArea.EDIT_RECIPE, recipe);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

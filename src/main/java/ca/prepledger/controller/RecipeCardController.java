@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import ca.prepledger.model.Recipe;
+import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeService;
@@ -106,7 +107,7 @@ public class RecipeCardController implements Navigable {
 	
 	public void attemptEditRecipe() {
 		try {
-			navigationHandler.navigateToEditRecipe(recipe);
+			navigationHandler.navigateTo(ContextArea.EDIT_RECIPE, recipe);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
