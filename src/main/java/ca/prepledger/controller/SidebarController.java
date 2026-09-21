@@ -26,6 +26,9 @@ public class SidebarController implements Navigable {
 	private Button notificationsContextBtn;
 	
 	@FXML
+	private Button impExpContextBtn;
+	
+	@FXML
 	private VBox buttonVBox;
 			
 	private NavigationHandler navigationHandler;
@@ -96,7 +99,7 @@ public class SidebarController implements Navigable {
 	public void onImportExportContextBtnClick() {
 		try {
 			navigationHandler.navigateTo(ContextArea.IMPORT_EXPORT);
-			setActiveButtonStyling("Prep Lists");
+			setActiveButtonStyling("Import/Export");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
