@@ -9,6 +9,7 @@ import ca.prepledger.navigation.NavigationHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.HBox;
 
 public class RecipeViewController {
@@ -28,10 +29,19 @@ public class RecipeViewController {
 	@FXML
 	private HBox tagsHBox;
 	
+	@FXML
+	private Tab overviewTab;
+	
+	@FXML
+	private Tab ingredientsTab;
+	
+	@FXML
+	private Tab directionsTab;
+	
 	private Recipe recipe;
 	
 	private NavigationHandler navigationHandler;
-	
+
 	
 	public void setNavigationHandler(AppShellController appShellController) {
 		navigationHandler = appShellController;
@@ -61,7 +71,6 @@ public class RecipeViewController {
 				tagsHBox.getChildren().add(tagLabel);
 			}
 		}
-		
 
 	}
 	
@@ -88,6 +97,27 @@ public class RecipeViewController {
 	@FXML
 	private void onRemoveRecipeButtonClicked() {
 		
+	}
+	
+	@FXML
+	private void onIngredientsSelectionChanged() {
+		if (!ingredientsTab.isSelected()) {
+			return;
+		}	
+	}
+	
+	@FXML
+	private void onOverviewSelectionChanged() {
+		if (!overviewTab.isSelected()) {
+			return;
+		}
+	}
+	
+	@FXML
+	private void onDirectionsSelectionChanged() {
+		if (!directionsTab.isSelected()) {
+			return;
+		}
 	}
 
 }

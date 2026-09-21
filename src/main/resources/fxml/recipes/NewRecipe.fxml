@@ -21,7 +21,7 @@
    <top>
       <VBox fx:id="headerVBox" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER_LEFT">
+            <HBox fx:id="navigationHeader" alignment="CENTER_LEFT">
                <children>
                   <Button fx:id="navBackButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onNavBackButtonClicked" styleClass="page-navigation-button">
                      <graphic>
