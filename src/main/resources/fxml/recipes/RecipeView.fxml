@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -17,12 +18,17 @@
    <center>
       <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab fx:id="ingredientsTab" text="Untitled Tab 1" />
-          <Tab fx:id="directionsTab" text="Untitled Tab 2" />
+            <Tab id="overviewTab" fx:id="overviewTab" text="Overview" />
+          <Tab id="ingredientsTab" fx:id="ingredientsTab" text="Ingredients" />
+          <Tab id="directionsTab" fx:id="directionsTab" text="Directions" />
         </tabs>
          <BorderPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </BorderPane.margin>
+         <styleClass>
+            <String fx:value="background-offset" />
+            <String fx:value="header-4" />
+         </styleClass>
       </TabPane>
    </center>
    <stylesheets>
@@ -30,6 +36,7 @@
       <URL value="@../../css/theme.css" />
       <URL value="@../../css/components/typography.css" />
       <URL value="@../../css/components/buttons.css" />
+      <URL value="@../../css/pages/view-recipe.css" />
    </stylesheets>
    <top>
       <VBox fx:id="headerVBox" BorderPane.alignment="CENTER">
