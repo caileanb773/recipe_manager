@@ -15,7 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 
 public class RecipeListController implements Navigable {
 
@@ -35,7 +35,7 @@ public class RecipeListController implements Navigable {
 	private GridPane gridView;
 
 	@FXML
-	private TilePane listView;
+	private VBox listView;
 	
 	@FXML
 	private Label recipeCountLabel;
@@ -162,7 +162,7 @@ public class RecipeListController implements Navigable {
 			controller.setOnRecipeDeleted(this::refreshDisplayedRecipes);
 			controller.setNavigationHandler(navigationHandler);
 
-			// XXX specifically adding only to gridview here
+			// XXX specifically adding only to listview here
 			listView.getChildren().add(card);
 
 		} catch (IOException e) {
