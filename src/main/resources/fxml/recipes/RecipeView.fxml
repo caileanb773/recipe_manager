@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -10,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeViewController">
    <top>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="headerVBox" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <HBox fx:id="navigationHeader" alignment="CENTER_LEFT">
                <children>
@@ -32,8 +34,31 @@
                   </Label>
                </children>
             </HBox>
-            <HBox fx:id="titleHeader" prefHeight="100.0" prefWidth="200.0" />
+            <HBox fx:id="titleHeader" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="recipeTitleHeader" />
+                  <Button fx:id="editButton" mnemonicParsing="false" text="Edit" />
+                  <Button fx:id="removeButton" mnemonicParsing="false" text="Remove Recipe">
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../img/icon/scaled/light/garbage-light-scaled.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox fx:id="tagsHBox" prefHeight="100.0" prefWidth="200.0" />
          </children>
       </VBox>
    </top>
+   <center>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab fx:id="ingredientsTab" text="Untitled Tab 1" />
+          <Tab fx:id="directionsTab" text="Untitled Tab 2" />
+        </tabs>
+      </TabPane>
+   </center>
 </BorderPane>
