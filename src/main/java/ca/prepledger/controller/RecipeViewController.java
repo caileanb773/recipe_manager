@@ -1,6 +1,10 @@
 package ca.prepledger.controller;
 
+import java.io.IOException;
+import java.util.List;
+
 import ca.prepledger.model.Recipe;
+import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -40,21 +44,45 @@ public class RecipeViewController {
 		recipeTitleHeader.setText(recipe.getTitle());
 		
 		// Add tags
-		for (String tag : recipe.getTags()) {
-			Label tagLabel = new Label(tag);
-			tagLabel.getStyleClass().add("header-3");
-			tagsHBox.getChildren().add(tagLabel);			
+		List<String> tags = recipe.getTags();
+		int numTags = tags.size();
+		
+		if (numTags > 0) {
+			for (int i = 0; i < numTags; i++) {
+				Label tagLabel;
+
+				if (i < numTags - 1) {
+					tagLabel = new Label(tags.get(i) + ", ");
+				} else {
+					tagLabel = new Label(tags.get(i));
+				}
+				
+				tagLabel.getStyleClass().add("header-4");
+				tagsHBox.getChildren().add(tagLabel);
+			}
 		}
+		
+
 	}
 	
 	@FXML
 	private void onNavBackButtonClicked() {
-		
+		try {
+			navigationHandler.navigateTo(ContextArea.RECIPES);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
 	private void onEditButtonClicked() {
-		
+		try {
+			navigationHandler.navigateTo(ContextArea.EDIT_RECIPE, recipe);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML

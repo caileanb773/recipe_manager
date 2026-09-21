@@ -20,6 +20,9 @@
           <Tab fx:id="ingredientsTab" text="Untitled Tab 1" />
           <Tab fx:id="directionsTab" text="Untitled Tab 2" />
         </tabs>
+         <BorderPane.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </BorderPane.margin>
       </TabPane>
    </center>
    <stylesheets>
@@ -56,7 +59,7 @@
                <children>
                   <HBox fx:id="titleHeader" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="recipeTitleHeader" styleClass="header-2" HBox.hgrow="NEVER">
+                        <Label fx:id="recipeTitleHeader" styleClass="header" HBox.hgrow="NEVER">
                            <HBox.margin>
                               <Insets left="15.0" />
                            </HBox.margin>
@@ -70,7 +73,7 @@
                               <Insets right="15.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="removeButton" mnemonicParsing="false" onAction="#onRemoveRecipeButtonClicked" styleClass="primary-button" text="Remove Recipe" HBox.hgrow="NEVER">
+                        <Button fx:id="removeButton" mnemonicParsing="false" onAction="#onRemoveRecipeButtonClicked" styleClass="danger-button" text="Remove Recipe" HBox.hgrow="NEVER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -89,7 +92,11 @@
                   </HBox>
                </children>
             </HBox>
-            <HBox fx:id="tagsHBox" />
+            <HBox fx:id="tagsHBox" maxWidth="300.0">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </HBox>
          </children>
       </VBox>
    </top>
