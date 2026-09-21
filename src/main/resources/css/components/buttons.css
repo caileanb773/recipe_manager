@@ -88,5 +88,13 @@
 }
 
 .danger-button {
+    -fx-background-color: #E03B29;
+    -fx-text-fill: #F2F4F3;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 8px 5px 8px;
+    -fx-background-radius: 5px;
+}
 
+.danger-button:hover {
+    -fx-background-color: #AE2F21;
 }
