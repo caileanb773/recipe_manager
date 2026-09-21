@@ -18,7 +18,6 @@ import ca.prepledger.init.ProgressListener;
 import ca.prepledger.model.Fraction;
 import ca.prepledger.model.Ingredient;
 import ca.prepledger.model.Recipe;
-import ca.prepledger.model.Unit;
 
 /*
  * Author: Cailean Bernard

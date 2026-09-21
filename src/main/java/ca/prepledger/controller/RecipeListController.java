@@ -119,15 +119,15 @@ public class RecipeListController implements Navigable {
 	}
 
 	// XXX Temporary testing method, to be replaced with method that fetches recipes from repo
-	private void addRecipeCardToGridDisplay(Recipe recipe) {
+	private void addRecipeGridCardToGridDisplay(Recipe recipe) {
 		try {
 			FXMLLoader loader = new FXMLLoader(
-					getClass().getResource("/fxml/recipes/RecipeCard.fxml")
+					getClass().getResource("/fxml/recipes/RecipeGridCard.fxml")
 					);
 
 			Node card = loader.load();
 
-			RecipeCardController controller = loader.getController();
+			RecipeGridCardController controller = loader.getController();
 			controller.setRecipe(recipe);
 
 			// Dependency injection for Recipe Service
@@ -179,7 +179,7 @@ public class RecipeListController implements Navigable {
 
 		if (recipes != null && recipes.size() >= 1) {
 			for (Recipe recipe : recipes) {
-				addRecipeCardToGridDisplay(recipe);
+				addRecipeGridCardToGridDisplay(recipe);
 				addRecipeListCardToListDisplay(recipe);
 				recipeCount++;
 			}

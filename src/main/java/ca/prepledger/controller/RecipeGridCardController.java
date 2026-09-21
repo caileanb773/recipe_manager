@@ -22,7 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 
-public class RecipeCardController implements Navigable {
+public class RecipeGridCardController implements Navigable {
 
 	@FXML
 	private ImageView recipeImage;
