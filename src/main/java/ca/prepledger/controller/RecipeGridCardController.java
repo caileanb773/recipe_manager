@@ -83,8 +83,13 @@ public class RecipeGridCardController implements Navigable {
 	}
 	
 	@FXML
-	private void onRecipeCardClicked() {
-		System.out.println("Recipe " + recipe.getTitle() + " clicked.");
+	private void onRecipeCardClicked() {		
+		try {
+			navigationHandler.navigateTo(ContextArea.VIEW_RECIPE, recipe);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void openContextMenu() {

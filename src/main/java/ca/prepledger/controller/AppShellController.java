@@ -225,7 +225,18 @@ public class AppShellController implements NavigationHandler {
 	}
 	
 	private void showViewRecipe(Recipe recipe) throws IOException {
-		
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/fxml/recipes/RecipeView.fxml"));
+
+		Parent viewRecipe = loader.load();
+
+		// Register this class as the RecipeList's navigation handler
+		RecipeViewController controller = loader.getController();
+		controller.setNavigationHandler(this);
+		controller.setRecipeToView(recipe);
+		//controller.setRecipeService(recipeService);
+
+		appShell.setCenter(viewRecipe);
 	}
 
 }
