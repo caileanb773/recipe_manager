@@ -1,0 +1,12 @@
+.recipe-list-card {
+    -fx-background-color: #FEFEFE;
+    -fx-border-color: #C3C3C3;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.recipe-list-card:hover {
+    -fx-background-color: #F8F8F8;
+    -fx-border-color: #4A90E2;
+}
