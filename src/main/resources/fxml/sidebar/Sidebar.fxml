@@ -87,7 +87,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="importExportBtn" layoutX="20.0" layoutY="228.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onImportExportContextBtnClick" styleClass="nav-button" text="Import/Export">
+            <Button fx:id="impExpContextBtn" layoutX="20.0" layoutY="228.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onImportExportContextBtnClick" styleClass="nav-button" text="Import/Export">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
