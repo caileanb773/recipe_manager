@@ -28,8 +28,17 @@ public class CollapsibleIngredientRowController {
 	
 	public void setIngredient(Ingredient ingredient) {
 		ingredientName.setText(ingredient.getName());
-		ingredientAmtUnit.setText(ingredient.getAmount() + " " + ingredient.getUnit());
+		ingredientAmtUnit.setText(ingredient.getAmount() 
+				+ " " + ingredient.getUnit());
 		ingredientNotes.setText(ingredient.getNotes());
+		
+		// Ingredients should not show their notes by default
+		setDefaultCollapsedState();
+	}
+	
+	public void setDefaultCollapsedState() {
+		ingredientNotes.setVisible(false);
+		ingredientNotes.setManaged(false);
 	}
 	
 	@FXML
@@ -37,10 +46,12 @@ public class CollapsibleIngredientRowController {
 		if (!isNotesVisible) {
 			isNotesVisible = true;
 			ingredientNotes.setVisible(isNotesVisible);
+			ingredientNotes.setManaged(isNotesVisible);
 			expandIngredientNotes.setRotate(POINT_DOWN);
 		} else {
 			isNotesVisible = false;
 			ingredientNotes.setVisible(isNotesVisible);
+			ingredientNotes.setManaged(isNotesVisible);
 			expandIngredientNotes.setRotate(POINT_RIGHT);
 		}
 	}

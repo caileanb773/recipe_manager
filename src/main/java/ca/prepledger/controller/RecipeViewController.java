@@ -97,7 +97,7 @@ public class RecipeViewController {
 					tagLabel = new Label(tags.get(i));
 				}
 
-				tagLabel.getStyleClass().add("header-4");
+				tagLabel.getStyleClass().add("sub-header");
 				tagsHBox.getChildren().add(tagLabel);
 			}
 		}
