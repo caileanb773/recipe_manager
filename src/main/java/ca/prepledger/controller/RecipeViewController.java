@@ -70,7 +70,7 @@ public class RecipeViewController {
 	
 	private boolean hasDirectionsTabBeenClicked = false;
 
-	private ArrayList<IngredientRowController> ingredientRowControllers = new ArrayList<>();
+	private ArrayList<CollapsibleIngredientRowController> ingredientRowControllers = new ArrayList<>();
 
 	
 	public void setNavigationHandler(AppShellController appShellController) {
@@ -108,22 +108,17 @@ public class RecipeViewController {
 			Ingredient ingredient,  ObservableList<Node> children)
 					throws IOException {
 		FXMLLoader loader = new FXMLLoader(
-				getClass().getResource("/fxml/recipes/IngredientRow.fxml"));
+				getClass().getResource("/fxml/recipes/CollapsibleIngredientRow.fxml"));
 		Parent ingredientRow = loader.load();
-		IngredientRowController controller = loader.getController();
+		CollapsibleIngredientRowController controller = loader.getController();
 
 		// Keep track of the row's controller
 		ingredientRowControllers.add(controller);
 
 		// Wire the callback for when row's delete button is pressed
-		controller.setOnDelete(this::removeIngredientRow);
 		controller.setIngredient(ingredient);
 
 		children.add(ingredientRow);
-	}
-
-	private void removeIngredientRow(IngredientRowController ingredientRowController) {
-		System.out.println("Removing ingredient");
 	}
 
 	@FXML
