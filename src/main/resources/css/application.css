@@ -13,3 +13,31 @@
 .scroll-pane {
     -fx-background-color: transparent;
 }
+
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .track-background {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #247c74;
+    -fx-background-radius: 5px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #1a5d57;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-padding: 0;
+}
