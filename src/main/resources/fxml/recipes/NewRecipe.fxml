@@ -79,7 +79,7 @@
       </VBox>
    </top>
    <center>
-      <ScrollPane fx:id="newRecipeScrollPane" fitToWidth="true" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="newRecipeScrollPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-bar" BorderPane.alignment="CENTER">
          <content>
             <VBox fx:id="scrollPaneVBox" spacing="10.0" styleClass="background">
                <children>

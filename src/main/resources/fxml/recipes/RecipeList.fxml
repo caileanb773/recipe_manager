@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -92,7 +93,7 @@
       </HBox>
    </top>
    <center>
-      <ScrollPane fx:id="recipeScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="recipe-scroll-pane" stylesheets="@../../css/pages/recipe-list.css" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="recipeScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" stylesheets="@../../css/pages/recipe-list.css" BorderPane.alignment="CENTER">
          <content>
             <StackPane>
                <children>
@@ -115,7 +116,11 @@
          </content>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </BorderPane.margin></ScrollPane>
+         </BorderPane.margin>
+         <styleClass>
+            <String fx:value="recipe-scroll-pane" />
+            <String fx:value="scroll-bar" />
+         </styleClass></ScrollPane>
    </center>
    <stylesheets>
       <URL value="@../../css/components/buttons.css" />

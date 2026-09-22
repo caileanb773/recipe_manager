@@ -133,7 +133,7 @@
                         </GridPane>
                      </top>
                      <center>
-                        <ScrollPane fx:id="ingredientsScrollpane" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <ScrollPane fx:id="ingredientsScrollpane" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="scroll-bar" BorderPane.alignment="CENTER">
                            <content>
                               <VBox fx:id="ingredientsVBox" alignment="CENTER" />
                            </content>
@@ -148,7 +148,7 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
+                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-bar" BorderPane.alignment="CENTER">
                            <content>
                               <TextArea fx:id="directionsTextArea" styleClass="simple-text" wrapText="true" />
                            </content>
