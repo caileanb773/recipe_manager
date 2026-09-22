@@ -29,3 +29,12 @@
 .ingredient-table-header {
     -fx-font-weight: normal;
 }
+
+.simple-text {
+    -fx-font-size: 18px;
+    -fx-font-weight: normal;
+}
+
+.text-area .content {
+    -fx-background-color: #FEFEFE;
+}
