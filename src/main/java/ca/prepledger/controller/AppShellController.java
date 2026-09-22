@@ -234,6 +234,7 @@ public class AppShellController implements NavigationHandler {
 		RecipeViewController controller = loader.getController();
 		controller.setNavigationHandler(this);
 		controller.setRecipeToView(recipe);
+		controller.populateOverview();
 		//controller.setRecipeService(recipeService);
 
 		appShell.setCenter(viewRecipe);

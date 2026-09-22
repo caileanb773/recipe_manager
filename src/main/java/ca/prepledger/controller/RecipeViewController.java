@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -47,16 +48,31 @@ public class RecipeViewController {
 
 	@FXML
 	private VBox ingredientsVBox;
+	
+	@FXML
+	private TextArea directionsTextArea;
+	
+	// Specific to the "Overview" tabpane
+	@FXML
+	private VBox recipeOverviewIngredientsVBox;
 
+	// Specific to the "Overview" tabpane
+	@FXML
+	private TextArea recipeOverviewDirectionsTextArea;
+	
 	private Recipe recipe;
 
 	private NavigationHandler navigationHandler;
 
-	private boolean haveIngredientsBeenLoaded = false;
+	private boolean hasOverviewTabBeenClicked = false;
+	
+	private boolean hasIngredientsTabBeenClicked = false;
+	
+	private boolean hasDirectionsTabBeenClicked = false;
 
 	private ArrayList<IngredientRowController> ingredientRowControllers = new ArrayList<>();
 
-
+	
 	public void setNavigationHandler(AppShellController appShellController) {
 		navigationHandler = appShellController;
 	}
@@ -137,14 +153,23 @@ public class RecipeViewController {
 
 	@FXML
 	private void onIngredientsSelectionChanged() {
+		populateIngredients();
+	}
+	
+	private void populateIngredients() {
+		if (recipe == null) {
+			return;
+		}
+		
 		if (!ingredientsTab.isSelected()) {
 			return;
 		}
 		
 		ObservableList<Node> children = ingredientsVBox.getChildren();
 
-		if (!haveIngredientsBeenLoaded) {
-			haveIngredientsBeenLoaded = true;
+		// Only load elements once
+		if (!hasIngredientsTabBeenClicked) {
+			hasIngredientsTabBeenClicked = true;
 
 			// Add new ingredientrow.fxml for each ingredient
 			for (Ingredient ing : recipe.getIngredients()) {
@@ -160,15 +185,57 @@ public class RecipeViewController {
 
 	@FXML
 	private void onOverviewSelectionChanged() {
+		populateOverview();
+	}
+	
+	public void populateOverview() {
+		if (recipe == null) {
+			return;
+		}
+		
 		if (!overviewTab.isSelected()) {
 			return;
+		}
+		
+		// Only load elements once
+		if (!hasOverviewTabBeenClicked) {
+			hasOverviewTabBeenClicked = true;
+			
+			recipeOverviewDirectionsTextArea.setText(recipe.getDirections());
+			
+			// Add new ingredientrow.fxml for each ingredient
+			
+			ObservableList<Node> children = recipeOverviewIngredientsVBox.getChildren();
+			for (Ingredient ing : recipe.getIngredients()) {
+				try {
+					addNewIngredientRow(ing, children);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
 	@FXML
 	private void onDirectionsSelectionChanged() {
+		populateDirections();
+	}
+	
+	private void populateDirections() {
+		if (recipe == null) {
+			return;
+		}
+		
 		if (!directionsTab.isSelected()) {
 			return;
+		}
+		
+		// Only load elements once
+		if (!hasDirectionsTabBeenClicked) {
+			hasDirectionsTabBeenClicked = true;
+			
+			directionsTextArea.setText(recipe.getDirections());
 		}
 	}
 
