@@ -44,7 +44,7 @@
                               </VBox.margin>
                            </ImageView>
       
-                                  <Label styleClass="header-3" text="Drag and drop a JSON file here">
+                                  <Label styleClass="header-4" text="Drag and drop a JSON file here">
                               <VBox.margin>
                                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                               </VBox.margin>
@@ -57,11 +57,11 @@
 
                             <VBox alignment="CENTER" spacing="10.0">
 
-                                <Label styleClass="header-4" text="Or import from file" />
-
                                 <Button fx:id="importBtn" styleClass="primary-button" text="Choose File" />
 
                             </VBox>
+
+                             <Label styleClass="sub-header" text="Or import from file" />
 
                             <VBox alignment="CENTER" styleClass="import-info-box">
 
