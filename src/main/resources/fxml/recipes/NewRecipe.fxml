@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
@@ -85,10 +86,18 @@
                <children>
                   <VBox fx:id="detailsVBox">
                      <children>
-                        <Label styleClass="header-3" text="Recipe Details">
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Label styleClass="header-3" text="Recipe Details">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
                            <padding>
                               <Insets bottom="10.0" />
-                           </padding></Label>
+                           </padding>
+                        </HBox>
                         <HBox>
                            <children>
                               <VBox>
@@ -128,7 +137,16 @@
                   </VBox>
                   <VBox fx:id="ingredientsVBox" spacing="10.0">
                      <children>
-                        <Label styleClass="header-3" text="Ingredients" />
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Label styleClass="header-3" text="Ingredients" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Label styleClass="sub-header" text="Press enter or click 'Add Ingredient' to add another." HBox.hgrow="NEVER" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </HBox>
                         <GridPane fx:id="ingredientsHeaderGrid">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" percentWidth="32.0" />
