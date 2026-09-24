@@ -26,6 +26,10 @@
     -fx-text-fill: #2E9B90;
 }
 
+.label-color {
+    -fx-text-fill: #2E9B90;
+}
+
 .ingredient-table-header {
     -fx-font-weight: normal;
 }

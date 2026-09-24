@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.CollapsibleIngredientRowController">
+<VBox alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.CollapsibleIngredientRowController">
    <children>
       <HBox alignment="CENTER">
          <children>
@@ -25,7 +25,7 @@
             </Button>
             <Label fx:id="ingredientName" styleClass="simple-text" />
             <Region HBox.hgrow="ALWAYS" />
-            <Label fx:id="ingredientAmtUnit" styleClass="simple-text" />
+            <Label fx:id="ingredientAmtUnit" styleClass="sub-header" />
          </children>
          <stylesheets>
             <URL value="@../../css/theme.css" />
