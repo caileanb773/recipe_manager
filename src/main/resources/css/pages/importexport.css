@@ -1,0 +1,17 @@
+.import-border {
+    -fx-border-style: dashed;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #C3C3C3;
+}
+
+.import-tip {
+    -fx-border-style: dashed;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-background-color: #E6F4FB;
+}
+
+.import-zone-drag-over {
+    -fx-background-color: #bcbcbc;
+}

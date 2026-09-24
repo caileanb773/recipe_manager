@@ -1,17 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.ImportExportController">
-   <center>
-      <Label text="Import/Export" BorderPane.alignment="CENTER" />
-   </center>
-   <right>
-      <Button fx:id="importBtn" mnemonicParsing="false" onAction="#onImportBtnClicked" text="Import" BorderPane.alignment="CENTER" />
-   </right>
-   <left>
-      <Button fx:id="exportBtn" mnemonicParsing="false" onAction="#onExportBtnClicked" text="Export" BorderPane.alignment="CENTER" />
-   </left>
+<BorderPane styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.ImportExportController">
+
+    <top>
+        <Label styleClass="header" text="Import / Export">
+            <BorderPane.margin>
+                <Insets left="15.0" top="15.0" />
+            </BorderPane.margin>
+        </Label>
+    </top>
+
+    <center>
+        <TabPane styleClass="background-offset" tabClosingPolicy="UNAVAILABLE">
+
+            <BorderPane.margin>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </BorderPane.margin>
+
+            <tabs>
+
+                <Tab text="Import">
+                    <content>
+                        <VBox alignment="TOP_CENTER" spacing="20.0" styleClass="import-tab">
+                     <VBox fx:id="importDropzone" alignment="CENTER" onDragDropped="#onImportZoneDragDropped" onDragEntered="#onImportZoneDragEntered" onDragExited="#onImportZoneDragExited" onDragOver="#onImportZoneDragOver" spacing="20.0" styleClass="import-border">
+                        <children>
+                           <ImageView pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../../img/icon/original/other/import-scaled.png" />
+                              </image>
+                              <VBox.margin>
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                              </VBox.margin>
+                           </ImageView>
+      
+                                  <Label styleClass="header-3" text="Drag and drop a JSON file here">
+                              <VBox.margin>
+                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                              </VBox.margin>
+                           </Label>
+                        </children>
+                        <VBox.margin>
+                           <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                        </VBox.margin>
+                     </VBox>
+
+                            <VBox alignment="CENTER" spacing="10.0">
+
+                                <Label styleClass="header-4" text="Or import from file" />
+
+                                <Button fx:id="importBtn" styleClass="primary-button" text="Choose File" />
+
+                            </VBox>
+
+                            <VBox alignment="CENTER" styleClass="import-info-box">
+
+                                <Label styleClass="import-tip" text="ⓘ  This will add the recipes from the selected file to your existing collection." wrapText="true">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding></Label>
+                        <VBox.margin>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </VBox.margin>
+
+                            </VBox>
+
+                        </VBox>
+                    </content>
+                </Tab>
+
+                <Tab text="Export">
+                    <content>
+                        <VBox alignment="CENTER" styleClass="export-tab">
+
+                            <Label styleClass="header-3" text="Export your recipes" />
+
+                        </VBox>
+                    </content>
+                </Tab>
+
+            </tabs>
+         <stylesheets>
+            <URL value="@../../css/theme.css" />
+            <URL value="@../../css/application.css" />
+            <URL value="@../../css/components/buttons.css" />
+            <URL value="@../../css/components/typography.css" />
+         </stylesheets>
+        </TabPane>
+    </center>
+
+    <stylesheets>
+        <URL value="@../../css/application.css" />
+        <URL value="@../../css/theme.css" />
+        <URL value="@../../css/components/typography.css" />
+        <URL value="@../../css/components/buttons.css" />
+        <URL value="@../../css/components/tabpane.css" />
+      <URL value="@../../css/pages/importexport.css" />
+    </stylesheets>
+
 </BorderPane>

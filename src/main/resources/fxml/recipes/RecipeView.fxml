@@ -173,6 +173,7 @@
       <URL value="@../../css/components/typography.css" />
       <URL value="@../../css/components/buttons.css" />
       <URL value="@../../css/pages/view-recipe.css" />
+      <URL value="@../../css/components/tabpane.css" />
    </stylesheets>
    <top>
       <VBox fx:id="headerVBox" BorderPane.alignment="CENTER">
