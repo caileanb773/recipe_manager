@@ -57,7 +57,7 @@
 
                             <VBox alignment="CENTER" spacing="10.0">
 
-                                <Button fx:id="importBtn" styleClass="primary-button" text="Choose File" />
+                                <Button fx:id="importBtn" onAction="#onImportBtnClicked" styleClass="primary-button" text="Choose File" />
 
                             </VBox>
 

@@ -14,12 +14,17 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.service.ImportExportService;
 import ca.prepledger.service.RecipeService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Window;
 
 public class ImportExportController {
 
@@ -48,18 +53,22 @@ public class ImportExportController {
 	}
 
 	@FXML
-	public void onImportBtnClicked() {
+	public void onImportBtnClicked(ActionEvent event)  {
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Open .json File");
+		chooser.getExtensionFilters().add(
+				new ExtensionFilter("Recipe Collections", "*.json"));
+		Window window = ((Node)event.getSource()).getScene().getWindow();
+		File selectedFile = chooser.showOpenDialog(window);
+		
+		if (selectedFile == null) {
+			// TODO error handling
+			System.err.println("Selected File is null");
+			return;
+		}
+		
 		try {
-			attemptImportRecipes(Path.of("recipes.json"));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			attemptImportRecipes(Path.of(selectedFile.getAbsolutePath()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -94,6 +103,7 @@ public class ImportExportController {
 				}
 	        } else {
 	        	// TODO show user error that they didn't put a json file in the zone
+	        	System.err.println("The file dropped was not a .json file.");
 	        }
 	        event.setDropCompleted(true);
 	    } else {
@@ -141,7 +151,16 @@ public class ImportExportController {
 
 		String json = Files.readString(path);
 
-		importedRecipes = impExpService.importRecipes(json);
+		try {
+			importedRecipes = impExpService.importRecipes(json);
+		} catch (JsonMappingException e) {
+			// TODO logging
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			// TODO logging
+			e.printStackTrace();
+		}
+		
 
 		for (Recipe recipe : importedRecipes) {
 			recipeService.addRecipe(recipe);
