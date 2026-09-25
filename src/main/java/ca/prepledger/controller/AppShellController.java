@@ -2,6 +2,8 @@ package ca.prepledger.controller;
 
 import java.io.IOException;
 
+import ca.prepledger.config.AppConfig;
+import ca.prepledger.config.Configurable;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
@@ -11,7 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 
-public class AppShellController implements NavigationHandler {
+public class AppShellController implements NavigationHandler, Configurable {
 
 	@FXML
 	private BorderPane appShell;
@@ -21,10 +23,16 @@ public class AppShellController implements NavigationHandler {
 	private RecipeService recipeService = new RecipeService();
 
 	private RecipeListController recipeListController;
+	
+	private AppConfig appConfig;
 
 
 	@FXML
 	private void initialize() {
+
+	}
+	
+	public void populateInitialWindow() {
 		loadSidebar();
 		loadDefaultContextArea();
 	}
@@ -125,6 +133,8 @@ public class AppShellController implements NavigationHandler {
 		// Register this class as the RecipeList's navigation handler
 		recipeListController = loader.getController();
 		recipeListController.setNavigationHandler(this);
+		recipeListController.setAppConfig(appConfig);
+		recipeListController.initializeViewingMode();
 
 		// XXX testing area
 		/*
@@ -238,6 +248,11 @@ public class AppShellController implements NavigationHandler {
 		//controller.setRecipeService(recipeService);
 
 		appShell.setCenter(viewRecipe);
+	}
+
+	@Override
+	public void setAppConfig(AppConfig appConfig) {
+		this.appConfig = appConfig;
 	}
 
 }

@@ -3,6 +3,9 @@ package ca.prepledger.app;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.prepledger.config.AppConfig;
+import ca.prepledger.config.ConfigManager;
+import ca.prepledger.controller.AppShellController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,10 +30,18 @@ public class Main extends Application {
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-SemiBold.ttf"), 14);
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Bold.ttf"), 14);
 		
-		// Load config here
+		// Get config manager to load the config
+		ConfigManager cfgManager = new ConfigManager();
+		AppConfig appCfg = cfgManager.load();
 		
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AppShell.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AppShell.fxml"));	
 		Parent root = loader.load();
+		
+		// Set the AppConfig in the main controller for dependency injection later
+		AppShellController controller = loader.getController();
+		controller.setAppConfig(appCfg);
+		controller.populateInitialWindow();
+		
 		Scene scene = new Scene(root, 1000, 800);
 		
 	    scene.getStylesheets().add(
