@@ -1,4 +1,4 @@
-package ca.prepledger.model;
+package ca.prepledger.config;
 
 /**
  * Author: Cailean Bernard

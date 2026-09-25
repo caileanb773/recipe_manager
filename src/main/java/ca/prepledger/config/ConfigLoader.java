@@ -6,5 +6,14 @@ package ca.prepledger.config;
  */
 
 public class ConfigLoader {
+	
+	
+	public AppConfig load() {
+		return null;
+	}
+	
+	public void save(AppConfig config) {
+		
+	}
 
 }

@@ -5,7 +5,8 @@ package ca.prepledger.config;
  * Contents: 
  */
 
-public class AppConfig {
+public enum AppLanguage {
 
+	ENGLISH, FRENCH
 	
 }

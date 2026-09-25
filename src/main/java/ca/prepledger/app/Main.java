@@ -27,6 +27,8 @@ public class Main extends Application {
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-SemiBold.ttf"), 14);
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Bold.ttf"), 14);
 		
+		// Load config here
+		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AppShell.fxml"));
 		Parent root = loader.load();
 		Scene scene = new Scene(root, 1000, 800);
