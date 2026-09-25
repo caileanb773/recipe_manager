@@ -59,11 +59,11 @@ public class AppConfig {
 		this.theme = theme;
 	}
 
-	public boolean isAreTooltipsOn() {
+	public boolean areTooltipsOn() {
 		return areTooltipsOn;
 	}
 
-	public void setAreTooltipsOn(boolean areTooltipsOn) {
+	public void setTooltipsOn(boolean areTooltipsOn) {
 		this.areTooltipsOn = areTooltipsOn;
 	}
 
