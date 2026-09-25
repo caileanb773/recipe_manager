@@ -16,7 +16,7 @@ public class ConfigManager {
 	// TODO this is Windows only, will need to be factored into a helper method
 	// for proper cross-platform support
 	private final String APP_DATA = System.getenv("LOCALAPPDATA");
-	private final String PREPLEDGER = "/PrepLedger/";
+	private final String PREPLEDGER = "\\PrepLedger\\";
 	private final String FILE_NAME = "settings.cfg";
 	private final String CONFIG_PATH = APP_DATA + PREPLEDGER + FILE_NAME;
 
@@ -80,6 +80,10 @@ public class ConfigManager {
 
 	public void save(AppConfig config) {
 
+	}
+	
+	public String getConfigPath() {
+		return CONFIG_PATH;
 	}
 
 }
