@@ -17,9 +17,12 @@ public class AppConfig {
 
 	private boolean areTooltipsOn;
 
-
+	
 	public AppConfig() {
-
+		this.language = AppLanguage.ENGLISH;
+		this.recipeDisplayType = RecipeDisplayType.GRID;
+		this.theme = Theme.LIGHT;
+		this.areTooltipsOn = true;
 	}
 
 	public AppConfig(
