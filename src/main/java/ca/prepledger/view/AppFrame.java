@@ -43,13 +43,13 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import ca.prepledger.app.Main;
 import ca.prepledger.config.Config;
+import ca.prepledger.config.Theme;
 import ca.prepledger.init.ProgressListener;
 import ca.prepledger.model.Ingredient;
 import ca.prepledger.model.Notification;
 import ca.prepledger.model.NotificationType;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.model.StaffMember;
-import ca.prepledger.model.Theme;
 import ca.prepledger.service.NotificationService;
 
 /*

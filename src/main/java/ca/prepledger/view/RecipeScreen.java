@@ -52,10 +52,10 @@ import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.prepledger.config.Theme;
 import ca.prepledger.constants.Constants;
 import ca.prepledger.model.Ingredient;
 import ca.prepledger.model.Recipe;
-import ca.prepledger.model.Theme;
 import ca.prepledger.service.NotificationListener;
 import ca.prepledger.service.NotificationService;
 import ca.prepledger.util.Utility;

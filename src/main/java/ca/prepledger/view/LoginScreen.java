@@ -54,8 +54,8 @@ import org.slf4j.LoggerFactory;
 
 import com.sun.tools.javac.Main;
 
+import ca.prepledger.config.Theme;
 import ca.prepledger.constants.Constants;
-import ca.prepledger.model.Theme;
 import ca.prepledger.util.Utility;
 
 /*

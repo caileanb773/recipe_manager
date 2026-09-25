@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.prepledger.app.Main;
-import ca.prepledger.model.Theme;
+import ca.prepledger.config.Theme;
 
 /*
  * Author: Cailean Bernard

@@ -27,10 +27,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.prepledger.config.Config;
+import ca.prepledger.config.Theme;
 import ca.prepledger.constants.Constants;
 import ca.prepledger.init.ProgressListener;
 import ca.prepledger.model.Recipe;
-import ca.prepledger.model.Theme;
 import ca.prepledger.service.RecipeApiClient;
 import ca.prepledger.service.RecipeManager;
 import ca.prepledger.view.AddRecipeDialog;
