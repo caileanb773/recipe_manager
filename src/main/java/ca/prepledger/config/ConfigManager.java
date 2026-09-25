@@ -1,9 +1,13 @@
 package ca.prepledger.config;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /*
  * Author: Cailean Bernard
@@ -18,7 +22,8 @@ public class ConfigManager {
 	private final String APP_DATA = System.getenv("LOCALAPPDATA");
 	private final String PREPLEDGER = "\\PrepLedger\\";
 	private final String FILE_NAME = "settings.cfg";
-	private final String CONFIG_PATH = APP_DATA + PREPLEDGER + FILE_NAME;
+	private final String CONFIG_PATH = APP_DATA + PREPLEDGER;
+	private final String WARNING = "// do not modify this file unless you know what you are doing";
 
 
 	public AppConfig load() throws IOException, FileNotFoundException {
@@ -30,7 +35,7 @@ public class ConfigManager {
 
 		// Read the file
 		try (BufferedReader reader = new BufferedReader(
-				new FileReader(CONFIG_PATH))) {
+				new FileReader(CONFIG_PATH + FILE_NAME))) {
 
 			String line;
 
@@ -78,8 +83,39 @@ public class ConfigManager {
 		return new AppConfig(language, recipeDisplayType, theme, areToolTipsOn);
 	}
 
-	public void save(AppConfig config) {
-
+	public void save(AppConfig config) throws IOException {
+		if (config == null) {
+			// TODO log null config in save()
+			return;
+		}
+		
+		// Create config directory if not exists
+		Path configFilePath = Path.of(CONFIG_PATH);
+		
+		if (!Files.exists(configFilePath)) {
+			Files.createDirectories(configFilePath);
+		}
+		
+		// Write config to file
+		try (BufferedWriter writer = new BufferedWriter(
+				new FileWriter(CONFIG_PATH + FILE_NAME))) {
+			
+			// Write comment warning users not to fiddle with the config
+			writer.write(WARNING);
+			writer.newLine();
+			
+			// Write settings
+			writer.write("language=" + config.getLanguage().toString());
+			writer.newLine();
+			writer.write("recipedisplaytype=" + config.getRecipeDisplayType().toString());
+			writer.newLine();
+			writer.write("theme=" + config.getTheme().toString());
+			writer.newLine();
+			writer.write("aretooltipson=" + String.valueOf(config.areTooltipsOn()));
+			
+		} catch (IOException e) {
+			throw new IOException("IOException during ConfigManager.save().");
+		}
 	}
 	
 	public String getConfigPath() {
