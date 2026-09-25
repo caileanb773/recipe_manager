@@ -121,5 +121,9 @@ public class ConfigManager {
 	public String getConfigPath() {
 		return CONFIG_PATH;
 	}
+	
+	public String getConfigAndFilePath() {
+		return CONFIG_PATH + FILE_NAME;
+	}
 
 }
