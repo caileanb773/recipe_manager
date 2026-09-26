@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import ca.prepledger.model.Fraction;
 import ca.prepledger.model.Ingredient;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -39,17 +40,18 @@ public class IngredientRowController {
 	}
 	
 	// XXX eventually replace this with some feature that allows users to define pref. units
-	public void setUnitComboBoxItems() {		
-		ingredientUnitComboBox.getItems().add("g");
-		ingredientUnitComboBox.getItems().add("kg");
-		ingredientUnitComboBox.getItems().add("mg");
-		ingredientUnitComboBox.getItems().add("oz");
-		ingredientUnitComboBox.getItems().add("lbs");
-		ingredientUnitComboBox.getItems().add("cup");
-		ingredientUnitComboBox.getItems().add("ml");
-		ingredientUnitComboBox.getItems().add("liter");
-		ingredientUnitComboBox.getItems().add("fl. oz");
-		ingredientUnitComboBox.getItems().add("%");
+	public void setUnitComboBoxItems() {	
+		ObservableList<String> items = ingredientUnitComboBox.getItems();
+		items.add("g");
+		items.add("kg");
+		items.add("mg");
+		items.add("oz");
+		items.add("lbs");
+		items.add("cup");
+		items.add("ml");
+		items.add("liter");
+		items.add("fl. oz");
+		items.add("%");
 	}
 	
 	@FXML
