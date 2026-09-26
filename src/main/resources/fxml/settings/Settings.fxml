@@ -3,6 +3,7 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -33,7 +34,7 @@
          </BorderPane.margin></Label>
    </top>
    <center>
-      <VBox spacing="20.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" spacing="20.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </BorderPane.margin>
@@ -49,8 +50,8 @@
                      <children>
                         <GridPane hgap="30.0" vgap="30.0">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="60.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -59,8 +60,8 @@
                            <children>
                               <Label text="Language" GridPane.hgrow="ALWAYS" />
                               <Label text="Default Recipe View" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                              <ComboBox prefWidth="150.0" styleClass="base-form-component" visibleRowCount="15" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                              <ComboBox prefWidth="150.0" styleClass="base-form-component" visibleRowCount="15" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="languageComboBox" onAction="#onLanguageSelected" prefWidth="150.0" styleClass="base-form-component" visibleRowCount="15" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+                              <ComboBox fx:id="recipeViewComboBox" onAction="#onRecipeViewStyleSelected" prefWidth="150.0" styleClass="base-form-component" visibleRowCount="15" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -84,8 +85,8 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <RadioButton mnemonicParsing="false" text="Light" />
-                        <RadioButton mnemonicParsing="false" text="Dark" GridPane.columnIndex="1" />
+                        <RadioButton fx:id="themeLightRadioButton" mnemonicParsing="false" onAction="#onLightRadioButtonClicked" text="Light" />
+                        <RadioButton fx:id="themeDarkRadioButton" mnemonicParsing="false" onAction="#onDarkRadioButtonClicked" text="Dark" GridPane.columnIndex="1" />
                      </children>
                   </GridPane>
                </children>
@@ -100,11 +101,12 @@
                   </Label>
                   <HBox>
                      <children>
-                        <CheckBox mnemonicParsing="false" text="Show tooltips" />
+                        <CheckBox fx:id="toolTipsCheckbox" mnemonicParsing="false" onAction="#onTooltipsCheckboxClicked" text="Show tooltips" />
                      </children>
                   </HBox>
                </children>
             </VBox>
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveButtonClicked" styleClass="primary-button" text="Save" />
          </children>
          <styleClass>
             <String fx:value="background-offset" />
