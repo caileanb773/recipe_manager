@@ -1,7 +1,9 @@
 package ca.prepledger.controller;
 
 import ca.prepledger.config.AppConfig;
+import ca.prepledger.config.AppLanguage;
 import ca.prepledger.config.Configurable;
+import ca.prepledger.config.RecipeDisplayType;
 import ca.prepledger.config.Theme;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -70,6 +72,17 @@ public class SettingsController implements Configurable {
 	private void selectDarkThemeRadioButton() {
 		themeDarkRadioButton.setSelected(true);
 	}
+	
+	public Theme getSelectedTheme() {
+		if (themeDarkRadioButton.isSelected()) {
+			return Theme.DARK;
+		} else if (themeLightRadioButton.isSelected()) {
+			return Theme.LIGHT;
+		}
+		
+		// TODO log warning
+		return Theme.LIGHT;
+	}
 
 	@FXML
 	private void initialize() {
@@ -120,7 +133,21 @@ public class SettingsController implements Configurable {
 
 	@FXML
 	private void onSaveButtonClicked() {
-		System.out.println("Savin");
+		saveSettings();
+	}
+	
+	public void saveSettings() {
+		AppLanguage language = AppLanguage.valueOf(languageComboBox.getValue());
+		RecipeDisplayType recipeDisplayType = RecipeDisplayType.valueOf(recipeViewComboBox.getValue());
+		Theme theme = getSelectedTheme();
+		boolean areToolTipsEnabled = toolTipsCheckbox.isSelected();
+		
+		appConfig.setLanguage(language);
+		appConfig.setRecipeDisplayType(recipeDisplayType);
+		appConfig.setTheme(theme);
+		appConfig.setTooltipsOn(areToolTipsEnabled);
+		
+		// callback to parent controller (appshell)
 	}
 
 	@Override
