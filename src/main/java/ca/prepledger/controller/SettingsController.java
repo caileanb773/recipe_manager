@@ -137,8 +137,10 @@ public class SettingsController implements Configurable {
 	}
 	
 	public void saveSettings() {
-		AppLanguage language = AppLanguage.valueOf(languageComboBox.getValue());
-		RecipeDisplayType recipeDisplayType = RecipeDisplayType.valueOf(recipeViewComboBox.getValue());
+		AppLanguage language = AppLanguage.valueOf(
+				languageComboBox.getValue().toUpperCase());
+		RecipeDisplayType recipeDisplayType = RecipeDisplayType.valueOf(
+				recipeViewComboBox.getValue().toUpperCase());
 		Theme theme = getSelectedTheme();
 		boolean areToolTipsEnabled = toolTipsCheckbox.isSelected();
 		
@@ -146,8 +148,6 @@ public class SettingsController implements Configurable {
 		appConfig.setRecipeDisplayType(recipeDisplayType);
 		appConfig.setTheme(theme);
 		appConfig.setTooltipsOn(areToolTipsEnabled);
-		
-		// callback to parent controller (appshell)
 	}
 
 	@Override

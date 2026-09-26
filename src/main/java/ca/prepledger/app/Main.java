@@ -1,5 +1,7 @@
 package ca.prepledger.app;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +24,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
+	private ConfigManager cfgManager;
+	private AppConfig appCfg;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -31,8 +35,8 @@ public class Main extends Application {
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Bold.ttf"), 14);
 		
 		// Get config manager to load the config
-		ConfigManager cfgManager = new ConfigManager();
-		AppConfig appCfg = cfgManager.load();
+		cfgManager = new ConfigManager();
+		appCfg = cfgManager.load();
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AppShell.fxml"));	
 		Parent root = loader.load();
@@ -51,6 +55,16 @@ public class Main extends Application {
 		primaryStage.setTitle("PrepLedger");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+	}
+	
+	@Override
+	public void stop() {
+		try {
+			cfgManager.save(appCfg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] args) {
