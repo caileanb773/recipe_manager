@@ -32,7 +32,23 @@ public class ConfigManager {
 		RecipeDisplayType recipeDisplayType = RecipeDisplayType.GRID;
 		Theme theme = Theme.LIGHT;
 		boolean areToolTipsOn = true;
+				
+		// Check if 'settings.cfg' exists
+		Path configPath = Path.of(CONFIG_PATH + FILE_NAME);
+		
+		if (!configDirExists(configPath)) {
+						
+			// If 'settings.cfg' doesn't exist, the folder in %APPDATA% might not either
+			Path dirPath = Path.of(CONFIG_PATH);
 
+			if (!Files.exists(dirPath)) {
+				createDefaultDirectory(configPath);
+			}
+			
+			// In either case, early return a default Config
+			return new AppConfig();
+		}
+		
 		// Read the file
 		try (BufferedReader reader = new BufferedReader(
 				new FileReader(CONFIG_PATH + FILE_NAME))) {
@@ -55,17 +71,32 @@ public class ConfigManager {
 				String key = lineInfo[0].trim().toLowerCase();
 				String value = lineInfo[1].trim().toUpperCase();
 
-				// TODO still need to check here that the values are valid (later)
+				// Unknown keys will just cause this method to fallback to defaults above
 				
 				switch (key) {
 				case "language":
-					language = AppLanguage.valueOf(value);
+					try {
+						language = AppLanguage.valueOf(value);
+					} catch (IllegalArgumentException e) {
+						// TODO log warning
+						language = AppLanguage.ENGLISH;
+					}
 					break;
 				case "recipedisplaytype":
-					recipeDisplayType = RecipeDisplayType.valueOf(value);
+					try {
+						recipeDisplayType = RecipeDisplayType.valueOf(value);
+					} catch (IllegalArgumentException e) {
+						// TODO log warning
+						recipeDisplayType = RecipeDisplayType.GRID;
+					}
 					break;
 				case "theme":
-					theme = Theme.valueOf(value);
+					try {
+						theme = Theme.valueOf(value);
+					} catch (IllegalArgumentException e) {
+						// TODO log warning
+						theme = Theme.LIGHT;
+					}
 					break;
 				case "aretooltipson":
 					areToolTipsOn = Boolean.parseBoolean(value);
@@ -90,10 +121,10 @@ public class ConfigManager {
 		}
 		
 		// Create config directory if not exists
-		Path configFilePath = Path.of(CONFIG_PATH);
+		Path configPath = Path.of(CONFIG_PATH);
 		
-		if (!Files.exists(configFilePath)) {
-			Files.createDirectories(configFilePath);
+		if (!configDirExists(configPath)) {
+			createDefaultDirectory(configPath);
 		}
 		
 		// Write config to file
@@ -116,6 +147,14 @@ public class ConfigManager {
 		} catch (IOException e) {
 			throw new IOException("IOException during ConfigManager.save().");
 		}
+	}
+	
+	private boolean configDirExists(Path path) {		
+		return Files.exists(path);
+	}
+	
+	private void createDefaultDirectory(Path path) throws IOException {
+		Files.createDirectories(path);
 	}
 	
 	public String getConfigPath() {
