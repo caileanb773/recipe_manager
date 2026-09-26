@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.prepledger.config.AppConfig;
+import ca.prepledger.config.Configurable;
 import ca.prepledger.model.Ingredient;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
@@ -22,7 +24,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-public class NewRecipeController implements Navigable {
+public class NewRecipeController implements Navigable, Configurable {
 
 	@FXML
 	private Button cancelButton;
@@ -56,13 +58,13 @@ public class NewRecipeController implements Navigable {
 	private List<IngredientRowController> ingredientRowControllers = new ArrayList<>();
 	
 	private RecipeService recipeService;
-		
-	private static final boolean WITHOUT_PROMPT_TXT = false;
-	
+			
 	// Edit Mode
 	private boolean editMode = false;
 	
 	private Recipe currentRecipe;
+	
+	private AppConfig appConfig;
 
 
 	//////////////////////////////
@@ -150,7 +152,7 @@ public class NewRecipeController implements Navigable {
 	@FXML
 	public void onAddIngredientButtonClicked() {
 		try {
-			addNewIngredientRow(WITHOUT_PROMPT_TXT);
+			addNewIngredientRow(appConfig.areTooltipsOn() ? true : false);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -312,6 +314,12 @@ public class NewRecipeController implements Navigable {
 		
 		return newRecipe;
 	}
+	
+	public void setRecipeTooltips() {
+		recipeTitleField.setPromptText("e.g. Massaman Curry");
+		recipeTagsField.setPromptText("e.g. Sauce, Pastry, Seafood");
+		instructionsTextArea.setPromptText("Add step-by-step instructions...");
+	}
 
 	@Override
 	public void setNavigationHandler(NavigationHandler navigationHandler) {
@@ -320,6 +328,11 @@ public class NewRecipeController implements Navigable {
 	
 	public void setRecipeService(RecipeService recipeService) {
 		this.recipeService = recipeService;
+	}
+
+	@Override
+	public void setAppConfig(AppConfig appConfig) {
+		this.appConfig = appConfig;
 	}
 
 }

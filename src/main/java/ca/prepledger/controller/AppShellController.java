@@ -213,12 +213,19 @@ public class AppShellController implements NavigationHandler, Configurable {
 
 		// Register this class as the RecipeList's navigation handler
 		NewRecipeController controller = loader.getController();
+
+		// inject dependencies
 		controller.setNavigationHandler(this);
-
-		// XXX testing; inject recipeservice into newrecipecontroller
 		controller.setRecipeService(recipeService);
+		controller.setAppConfig(appConfig);
 
-		controller.addNewIngredientRow(true);
+		// start with a blank ingredientrow
+		if (appConfig.areTooltipsOn()) {
+			controller.setRecipeTooltips();
+			controller.addNewIngredientRow(true);
+		} else {
+			controller.addNewIngredientRow(false);
+		}
 
 		appShell.setCenter(addRecipe);
 	}
