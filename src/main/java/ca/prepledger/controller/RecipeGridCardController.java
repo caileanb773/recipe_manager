@@ -3,6 +3,9 @@ package ca.prepledger.controller;
 import java.io.IOException;
 import java.net.URL;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
@@ -43,6 +46,8 @@ public class RecipeGridCardController implements Navigable {
 	private Runnable onRecipeDeleted;
 	
 	private NavigationHandler navigationHandler;
+	
+	private static final Logger logger = LoggerFactory.getLogger(RecipeGridCardController.class);
 	
 	
 	// XXX Placeholder method
@@ -87,8 +92,7 @@ public class RecipeGridCardController implements Navigable {
 		try {
 			navigationHandler.navigateTo(ContextArea.VIEW_RECIPE, recipe);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onRecipeCardClicked(): IOException encountered: {}", e);
 		}
 	}
 	
@@ -114,8 +118,7 @@ public class RecipeGridCardController implements Navigable {
 		try {
 			navigationHandler.navigateTo(ContextArea.EDIT_RECIPE, recipe);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("attemptEditRecipe(): IOException encountered: {}", e);
 		}
 	}
 	

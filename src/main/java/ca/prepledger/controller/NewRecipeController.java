@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.Configurable;
 import ca.prepledger.model.Ingredient;
@@ -65,6 +68,8 @@ public class NewRecipeController implements Navigable, Configurable {
 	private Recipe currentRecipe;
 	
 	private AppConfig appConfig;
+	
+	private static final Logger logger = LoggerFactory.getLogger(NewRecipeController.class);
 
 
 	//////////////////////////////
@@ -83,8 +88,7 @@ public class NewRecipeController implements Navigable, Configurable {
 		try {
 			navigationHandler.navigateTo(ContextArea.RECIPES);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onNavBackButtonClicked(): IOException encountered: {}", e);
 		}
 	}
 
@@ -109,9 +113,9 @@ public class NewRecipeController implements Navigable, Configurable {
 		        ingredients.add(c.getIngredient());
 		    }
 		} catch (NumberFormatException e) {
-		    // Invalid ingredient amount
-		    System.out.println("Invalid ingredient amount");
-		    return;
+			// TODO user dialog
+			logger.warn("onSaveRecipeButtonClicked(): Invalid amount (NumberFormatException): {}", e);
+			return;
 		}
 
 		// Validate ingredients
@@ -120,7 +124,7 @@ public class NewRecipeController implements Navigable, Configurable {
 		// At this point, determine if the recipe is valid. if not, show error
 		isRecipeValid = (areRecipeFieldsValid && areIngredientFieldsValid);
 		
-		// TODO show error if not valid, finish this later
+		// TODO user dialogs here for errors n stuff
 		if (!isRecipeValid) {
 			// show an error
 			if (!areRecipeFieldsValid) {
@@ -128,7 +132,7 @@ public class NewRecipeController implements Navigable, Configurable {
 			} else {
 				// TODO do something
 			}
-			System.out.println("Invalid recipe, cannot save!");
+			logger.info("onSaveRecipeButtonClicked(): Cannot save invalid recipe.");
 			return;
 		}
 		
@@ -145,7 +149,6 @@ public class NewRecipeController implements Navigable, Configurable {
 		}
 
 		// send recipe to recipeservice
-		System.out.println("boutta go back");
 		goBackToRecipesList();
 	}
 
@@ -154,8 +157,7 @@ public class NewRecipeController implements Navigable, Configurable {
 		try {
 			addNewIngredientRow(appConfig.areTooltipsOn() ? true : false);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onAddIngredientButtonClicked(): IOException encountered: {}", e);
 		}
 	}
 
@@ -203,8 +205,7 @@ public class NewRecipeController implements Navigable, Configurable {
 			try {
 				addNewIngredientRow(ing);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("populateFields(): IOException encountered: {}", e);
 			}
 		}
 	}
@@ -213,8 +214,7 @@ public class NewRecipeController implements Navigable, Configurable {
 		try {
 			navigationHandler.navigateTo(ContextArea.RECIPES);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("goBackToRecipesList(): IOException encountered: {}", e);
 		}
 	}
 

@@ -2,6 +2,9 @@ package ca.prepledger.controller;
 
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ca.prepledger.model.Fraction;
 import ca.prepledger.model.Ingredient;
 import javafx.collections.ObservableList;
@@ -33,6 +36,8 @@ public class IngredientRowController {
 	
 	private Consumer<IngredientRowController> onDelete;
 	
+	private static final Logger logger = LoggerFactory.getLogger(IngredientRowController.class);
+	
 
 	@FXML
 	private void initialize() {
@@ -59,7 +64,7 @@ public class IngredientRowController {
 		if (onDelete != null) {
 			onDelete.accept(this);
 		} else {
-			// TODO replace with actual logging
+			logger.error("onDeleteIngredientButtonClicked(): onDelete consumer is null.");
 		}
 	}
 

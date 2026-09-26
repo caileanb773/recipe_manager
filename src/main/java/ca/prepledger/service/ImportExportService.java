@@ -11,6 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.prepledger.model.Recipe;
 
+/**
+ * Contents: The service which handles the mapping of JSON into a list of recipe
+ * objects and vice-versa.
+ */
 public class ImportExportService {
 
 	private ObjectMapper objectMapper = new ObjectMapper();

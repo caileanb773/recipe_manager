@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ca.prepledger.model.Ingredient;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
@@ -71,6 +74,8 @@ public class RecipeViewController {
 	private boolean hasDirectionsTabBeenClicked = false;
 
 	private ArrayList<CollapsibleIngredientRowController> ingredientRowControllers = new ArrayList<>();
+	
+	private static final Logger logger = LoggerFactory.getLogger(RecipeViewController.class);
 
 	
 	public void setNavigationHandler(AppShellController appShellController) {
@@ -126,8 +131,7 @@ public class RecipeViewController {
 		try {
 			navigationHandler.navigateTo(ContextArea.RECIPES);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onNavBackButtonClicked(): IOException encountered: {}", e);
 		}
 	}
 
@@ -136,8 +140,7 @@ public class RecipeViewController {
 		try {
 			navigationHandler.navigateTo(ContextArea.EDIT_RECIPE, recipe);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onEditButtonClicked(): IOException encountered: {}", e);
 		}
 	}
 
@@ -171,8 +174,7 @@ public class RecipeViewController {
 				try {
 					addNewIngredientRow(ing, children);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error("populateIngredients(): IOException encountered: {}", e);
 				}
 			}
 		}
@@ -205,8 +207,7 @@ public class RecipeViewController {
 				try {
 					addNewIngredientRow(ing, children);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error("populateOverview(): IOException encountered: {}", e);
 				}
 			}
 		}

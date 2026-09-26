@@ -8,6 +8,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -40,6 +43,8 @@ public class ImportExportController {
 	private RecipeService recipeService;
 
 	private ImportExportService impExpService = new ImportExportService();
+	
+	private static final Logger logger = LoggerFactory.getLogger(ImportExportController.class);
 
 
 	@FXML
@@ -47,8 +52,7 @@ public class ImportExportController {
 		try {
 			attemptExportRecipes();
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onExportBtnClicked(): JsonProcessingException encountered: {}", e);
 		}
 	}
 
@@ -62,16 +66,15 @@ public class ImportExportController {
 		File selectedFile = chooser.showOpenDialog(window);
 		
 		if (selectedFile == null) {
-			// TODO error handling
-			System.err.println("Selected File is null");
+			// TODO error dialog
+			logger.warn("onImportBtnClicked(): Selected file is null, aborting.");
 			return;
 		}
 		
 		try {
 			attemptImportRecipes(Path.of(selectedFile.getAbsolutePath()));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onImportBtnClicked(): IOException encountered: {}", e);
 		}
 	}
 	
@@ -98,12 +101,11 @@ public class ImportExportController {
 	        	try {
 					attemptImportRecipes(Path.of(file.getAbsolutePath()));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error("onImportZoneDragDropped(): IOException encountered: {}", e);
 				}
 	        } else {
-	        	// TODO show user error that they didn't put a json file in the zone
-	        	System.err.println("The file dropped was not a .json file.");
+	        	// TODO user dialog
+				logger.error("onImportBtnClicked(): File dropped into import zone was not a .json file.");
 	        }
 	        event.setDropCompleted(true);
 	    } else {
@@ -139,8 +141,7 @@ public class ImportExportController {
 		try {
 			impExpService.exportRecipes(recipesToExport);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("attemptExportRecipes(): IOException encountered: {}", e);
 		}
 	}
 
@@ -154,11 +155,9 @@ public class ImportExportController {
 		try {
 			importedRecipes = impExpService.importRecipes(json);
 		} catch (JsonMappingException e) {
-			// TODO logging
-			e.printStackTrace();
+			logger.error("attemptImportRecipes(): JsonMappingException encountered: {}", e);
 		} catch (JsonProcessingException e) {
-			// TODO logging
-			e.printStackTrace();
+			logger.error("attemptImportRecipes(): JsonProcessingException encountered: {}", e);
 		}
 		
 

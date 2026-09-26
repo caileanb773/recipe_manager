@@ -3,6 +3,9 @@ package ca.prepledger.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.Configurable;
 import ca.prepledger.config.RecipeDisplayType;
@@ -54,6 +57,8 @@ public class RecipeListController implements Navigable, Configurable {
 	
 	private AppConfig appConfig;
 
+	private static final Logger logger = LoggerFactory.getLogger(RecipeListController.class);
+
 
 	/////////////////////
 	//
@@ -70,8 +75,7 @@ public class RecipeListController implements Navigable, Configurable {
 		viewingMode = appConfig.getRecipeDisplayType();
 		
 		if (viewingMode == null) {
-			// TODO log error
-			System.out.println("Viewing mode null on initializeViewingMode()");
+			logger.error("initializeViewingMode(): ViewingMode is null, defaulting to GRID.");
 			viewingMode = RecipeDisplayType.GRID;
 		}
 		
@@ -137,8 +141,7 @@ public class RecipeListController implements Navigable, Configurable {
 		try {
 			navigationHandler.navigateTo(ContextArea.ADD_RECIPE);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onRecipeCardClicked(): IOException encountered: {}", e);
 		}
 	}
 
@@ -180,7 +183,7 @@ public class RecipeListController implements Navigable, Configurable {
 			gridView.add(card, column, row);
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("onRecipeCardClicked(): IOException encountered: {}", e);
 		}
 	}
 	
@@ -204,7 +207,7 @@ public class RecipeListController implements Navigable, Configurable {
 			listView.getChildren().add(card);
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("onRecipeCardClicked(): IOException encountered: {}", e);
 		}
 	}
 
@@ -215,16 +218,20 @@ public class RecipeListController implements Navigable, Configurable {
 		// XXX fetch all recipes depending on online status, presumably
 		List<Recipe> recipes = recipeService.getAllRecipes();
 
-		if (recipes != null && recipes.size() >= 1) {
-			for (Recipe recipe : recipes) {
-				addRecipeGridCardToGridDisplay(recipe);
-				addRecipeListCardToListDisplay(recipe);
-				recipeCount++;
+		if (recipes != null) {
+			if (recipes.size() >= 1) {
+				for (Recipe recipe : recipes) {
+					addRecipeGridCardToGridDisplay(recipe);
+					addRecipeListCardToListDisplay(recipe);
+					recipeCount++;
+				}
+			} else {
+				logger.info("refreshDisplayedRecipes(): Recipe list is empty.");
 			}
 		} else {
-			System.out.println("recipe list null/empty");
+			logger.info("refreshDisplayedRecipes(): Recipe list is null.");
 		}
-		
+
 		recipeCountLabel.setText(recipeCount + " recipes");
 	}
 

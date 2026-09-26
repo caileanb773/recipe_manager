@@ -2,6 +2,9 @@ package ca.prepledger.controller;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.Configurable;
 import ca.prepledger.model.Recipe;
@@ -13,6 +16,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 
+/**
+ * Contents: Main controller which controls fxml loading application-wide. Also
+ * handles dependency injection for controllers of those fxml pages.
+ */
 public class AppShellController implements NavigationHandler, Configurable {
 
 	@FXML
@@ -25,6 +32,8 @@ public class AppShellController implements NavigationHandler, Configurable {
 	private RecipeListController recipeListController;
 	
 	private AppConfig appConfig;
+	
+	private static final Logger logger = LoggerFactory.getLogger(AppShellController.class);
 
 
 	@FXML
@@ -54,8 +63,7 @@ public class AppShellController implements NavigationHandler, Configurable {
 			controller.setInitialScreenNavButtonSelected();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("loadSidebar(): IOException caught while loading Sidebar.fxml: {}", e);
 		}
 	}
 
@@ -63,8 +71,7 @@ public class AppShellController implements NavigationHandler, Configurable {
 		try {
 			showRecipes();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("loadDefaultContextArea(): IOException caught during showRecipes(): {}", e);
 		}
 	}
 
@@ -100,8 +107,21 @@ public class AppShellController implements NavigationHandler, Configurable {
 		case ADD_RECIPE:
 			showAddRecipe();
 			break;
+			
 		case COSTING:
-			showCosting();			
+			showCosting();
+			break;
+			
+		case EDIT_RECIPE:
+			logger.error("navigateTo(): Tried to navigate to EDIT_RECIPE without an associated Recipe object.");
+			break;
+			
+		case VIEW_RECIPE:
+			logger.error("navigateTo(): Tried to navigate to VIEW_RECIPE without an associated Recipe object.");
+			break;
+			
+		default:
+			break;			
 		}
 	}
 
@@ -119,6 +139,9 @@ public class AppShellController implements NavigationHandler, Configurable {
 			break;
 		case VIEW_RECIPE:
 			showViewRecipe(recipe);
+			break;
+		default:
+			logger.error("navigateTo(Recipe recipe): Tried to navigate to a page with a recipe that doesn't require a recipe object.");
 			break;
 		}
 	}
@@ -241,7 +264,7 @@ public class AppShellController implements NavigationHandler, Configurable {
 		controller.setNavigationHandler(this);
 		controller.setRecipeToEdit(recipe);
 
-		// XXX testing; inject recipeservice into newrecipecontroller
+		// Inject dependencies
 		controller.setRecipeService(recipeService);
 
 		appShell.setCenter(addRecipe);

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import ca.prepledger.model.Recipe;
 
+/**
+ * Contents: The recipe service is the interface for the application and how it 
+ * should fetch recipes.
+ */
 public class RecipeService {
 	
 	// private RecipeRepository repository;

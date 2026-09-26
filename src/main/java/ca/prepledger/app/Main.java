@@ -24,7 +24,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
+	
 	private ConfigManager cfgManager;
+	
 	private AppConfig appCfg;
 
 	@Override

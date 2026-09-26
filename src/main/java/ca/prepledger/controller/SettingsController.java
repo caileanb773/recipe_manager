@@ -32,10 +32,6 @@ public class SettingsController implements Configurable {
 
 
 	public void setSettingsFieldsFromConfig() {
-		String capitalized = capitalize(appConfig.getLanguage().toString());
-		
-		System.out.println(capitalized);
-		
 		languageComboBox.setValue(capitalize(appConfig.getLanguage().toString()));
 		recipeViewComboBox.setValue(capitalize(appConfig.getRecipeDisplayType().toString()));
 		if (appConfig.getTheme().equals(Theme.LIGHT)) {
@@ -92,29 +88,27 @@ public class SettingsController implements Configurable {
 
 	@FXML
 	private void onLanguageSelected() {
-		System.out.println("Selected lang " + languageComboBox.getValue());
+
 	}
 
 	@FXML
 	private void onRecipeViewStyleSelected() {
-		System.out.println("Selected view type " + recipeViewComboBox.getValue());
+
 	}
 
 	@FXML
 	private void onDarkRadioButtonClicked() {
-		System.out.println("Clicked dark radio btn");
 		deselectLightThemeRadioButton();
 	}
 
 	@FXML
 	private void onLightRadioButtonClicked() {
-		System.out.println("Clicked light radio btn");
 		deselectDarkThemeRadioButton();
 	}
 
 	@FXML
 	private void onTooltipsCheckboxClicked() {
-		System.out.println("checkbox selected: " + toolTipsCheckbox.isSelected());
+
 	}
 
 	@FXML

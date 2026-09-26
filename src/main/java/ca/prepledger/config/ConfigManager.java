@@ -9,12 +9,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
  * Author: Cailean Bernard
  * Contents: Manages loading and saving of Application Configuration. By default,
  * config files will be saved in %APPDATA%/PrepLedger/settings.cfg.
  */
-
 public class ConfigManager {
 
 	// TODO this is Windows only, will need to be factored into a helper method
@@ -24,6 +26,8 @@ public class ConfigManager {
 	private final String FILE_NAME = "settings.cfg";
 	private final String CONFIG_PATH = APP_DATA + PREPLEDGER;
 	private final String WARNING = "// do not modify this file unless you know what you are doing";
+	
+	private static final Logger logger = LoggerFactory.getLogger(ConfigManager.class);
 
 
 	public AppConfig load() throws IOException, FileNotFoundException {
@@ -64,7 +68,7 @@ public class ConfigManager {
 				String[] lineInfo = line.split("=", 2);
 
 				if (lineInfo.length != 2) {
-					// TODO logger warn of malformed config line.
+					logger.warn("load(): encountered config line of invalid length.");
 					continue;
 				}
 
@@ -78,7 +82,7 @@ public class ConfigManager {
 					try {
 						language = AppLanguage.valueOf(value);
 					} catch (IllegalArgumentException e) {
-						// TODO log warning
+						logger.warn("load(): Invalid value for language encountered in settings.cfg");
 						language = AppLanguage.ENGLISH;
 					}
 					break;
@@ -86,7 +90,7 @@ public class ConfigManager {
 					try {
 						recipeDisplayType = RecipeDisplayType.valueOf(value);
 					} catch (IllegalArgumentException e) {
-						// TODO log warning
+						logger.warn("load(): Invalid value for recipe display type encountered in settings.cfg");
 						recipeDisplayType = RecipeDisplayType.GRID;
 					}
 					break;
@@ -94,7 +98,7 @@ public class ConfigManager {
 					try {
 						theme = Theme.valueOf(value);
 					} catch (IllegalArgumentException e) {
-						// TODO log warning
+						logger.warn("load(): Invalid value for theme encountered in settings.cfg");
 						theme = Theme.LIGHT;
 					}
 					break;
@@ -102,22 +106,24 @@ public class ConfigManager {
 					areToolTipsOn = Boolean.parseBoolean(value);
 					break;
 				default:
-					// TODO log unknown config key
+					logger.warn("load(): Invalid key encountered in settings.cfg");
 				}
 			}
 		} catch (FileNotFoundException e) {
+			logger.error("load(): ConfigManager could not find settings.cfg");
 			throw new FileNotFoundException("Could not find settings.cfg.");
 		} catch (IOException e) {
+			logger.error("load(): ConfigManager IOException encountered.");
 			throw new IOException("IOException encountered while reading settings.cfg");
 		}
 
 		return new AppConfig(language, recipeDisplayType, theme, areToolTipsOn);
 	}
 
-	public void save(AppConfig config) throws IOException {
+	public void save(AppConfig config) throws IOException {		
 		if (config == null) {
-			// TODO log null config in save()
-			return;
+			logger.error("save(): Null configuration passed to saving method, saving default configuration instead.");
+			config = new AppConfig();
 		}
 		
 		// Create config directory if not exists

@@ -3,6 +3,9 @@ package ca.prepledger.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
@@ -32,6 +35,8 @@ public class SidebarController implements Navigable {
 	private VBox buttonVBox;
 			
 	private NavigationHandler navigationHandler;
+	
+	private static final Logger logger = LoggerFactory.getLogger(SidebarController.class);
 
 
 	/////////////////////
@@ -46,8 +51,7 @@ public class SidebarController implements Navigable {
 			navigationHandler.navigateTo(ContextArea.RECIPES);
 			setActiveButtonStyling("Recipes");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onRecipesContextBtnClick(): IOException encountered: {}", e);
 		}
 	}
 
@@ -57,8 +61,7 @@ public class SidebarController implements Navigable {
 			navigationHandler.navigateTo(ContextArea.COSTING);
 			setActiveButtonStyling("Costing");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onCostingContextBtnClick(): IOException encountered: {}", e);
 		}
 	}
 
@@ -68,8 +71,7 @@ public class SidebarController implements Navigable {
 			navigationHandler.navigateTo(ContextArea.SETTINGS);
 			setActiveButtonStyling("Settings");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onSettingsContextBtnClick(): IOException encountered: {}", e);
 		}
 	}
 	
@@ -79,8 +81,7 @@ public class SidebarController implements Navigable {
 			navigationHandler.navigateTo(ContextArea.NOTIFICATIONS);
 			setActiveButtonStyling("Notifications");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onNotificationsContextBtnClick(): IOException encountered: {}", e);
 		}
 	}
 	
@@ -90,8 +91,7 @@ public class SidebarController implements Navigable {
 			navigationHandler.navigateTo(ContextArea.PREP_LISTS);
 			setActiveButtonStyling("Prep Lists");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onPrepListsContextBtnClick(): IOException encountered: {}", e);
 		}
 	}
 	
@@ -101,8 +101,7 @@ public class SidebarController implements Navigable {
 			navigationHandler.navigateTo(ContextArea.IMPORT_EXPORT);
 			setActiveButtonStyling("Import/Export");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("onImportExportContextBtnClick(): IOException encountered: {}", e);
 		}
 	}
 	
