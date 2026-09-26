@@ -62,7 +62,7 @@ public class Main extends Application {
 		try {
 			cfgManager.save(appCfg);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			logger.warn("IOException caught during ConfigManager.save() during Main.stop().");
 			e.printStackTrace();
 		}
 	}
