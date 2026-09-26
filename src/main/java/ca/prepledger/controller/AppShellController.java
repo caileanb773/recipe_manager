@@ -162,10 +162,16 @@ public class AppShellController implements NavigationHandler, Configurable {
 	}
 
 	private void showSettings() throws IOException {
-		Parent settings = FXMLLoader.load(
-				getClass().getResource("/fxml/settings/Settings.fxml")
-				);
-
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/fxml/settings/Settings.fxml"));
+		
+		Parent settings = loader.load();
+		SettingsController controller = loader.getController();
+		
+		// Inject dependency to appconfig
+		controller.setAppConfig(appConfig);
+		controller.setSettingsFieldsFromConfig();
+		
 		appShell.setCenter(settings);
 	}
 
