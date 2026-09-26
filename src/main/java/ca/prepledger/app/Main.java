@@ -12,6 +12,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -56,6 +57,8 @@ public class Main extends Application {
 		
 		primaryStage.setTitle("PrepLedger");
 		primaryStage.setScene(scene);
+        Image icon = new Image(getClass().getResourceAsStream("/img//icon/app-icon.png"));
+        primaryStage.getIcons().add(icon);
 		primaryStage.show();
 	}
 	
