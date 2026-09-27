@@ -48,6 +48,10 @@ public class RecipeService {
 	
 	public ArrayList<Recipe> getAllRecipes() {
 		return dummyRecipeList;
-	} 
+	}
+	
+	public int getTotalRecipes() {
+		return dummyRecipeList.size();
+	}
 
 }

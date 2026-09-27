@@ -20,6 +20,7 @@ import ca.prepledger.service.RecipeService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -66,8 +67,7 @@ public class ImportExportController {
 		File selectedFile = chooser.showOpenDialog(window);
 		
 		if (selectedFile == null) {
-			// TODO error dialog
-			logger.warn("onImportBtnClicked(): Selected file is null, aborting.");
+			logger.info("onImportBtnClicked(): Import cancelled.");
 			return;
 		}
 		
@@ -104,7 +104,7 @@ public class ImportExportController {
 					logger.error("onImportZoneDragDropped(): IOException encountered: {}", e);
 				}
 	        } else {
-	        	// TODO user dialog
+	        	showImportOperationError("The provided file was not a valid JSON file.");
 				logger.error("onImportBtnClicked(): File dropped into import zone was not a .json file.");
 	        }
 	        event.setDropCompleted(true);
@@ -164,6 +164,31 @@ public class ImportExportController {
 		for (Recipe recipe : importedRecipes) {
 			recipeService.addRecipe(recipe);
 		}
+		
+		displayPostImportDialog(importedRecipes.size());
+	}
+	
+	private void displayPostImportDialog(int numImported) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Import Complete");
+		alert.setHeaderText("Recipes imported successfully");
+		alert.setContentText(numImported + " recipes were imported.");
+		alert.getDialogPane().getStylesheets().add(
+			    getClass().getResource("/css/components/alert.css").toExternalForm()
+			);
+		
+		alert.showAndWait();
+	}
+	
+	private void showImportOperationError(String contentString) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Import Error");
+		alert.setHeaderText("Could not complete import operation.");
+		alert.setContentText(contentString);
+		alert.getDialogPane().getStylesheets().add(
+				getClass().getResource("/css/components/alert.css").toExternalForm());
+		
+		alert.showAndWait();
 	}
 
 	public void setRecipeService(RecipeService recipeService) {
