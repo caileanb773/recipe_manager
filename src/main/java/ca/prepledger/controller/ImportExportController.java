@@ -23,8 +23,12 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -63,22 +67,20 @@ public class ImportExportController {
 	
 	@FXML
 	public void onExportBtnClicked(ActionEvent event) {
-	    List<Recipe> recipesToExport;
-	    Path defaultPath = Path.of(System.getProperty("user.home"), "Documents");
-
-	    // Check if we're exporting all or a selection of recipes
-	    if (selectedRecipesRadioBtn.isSelected()) {
-	        // TODO show dialog here where user selects recipes
-	        recipesToExport = new ArrayList<>();
-	    } else {
-	        recipesToExport = recipeService.getAllRecipes();
-	    }
+	    List<Recipe> recipesToExport = recipeService.getAllRecipes();
 
 	    // Check if we have any recipes
 	    if (recipesToExport.isEmpty()) {
 	        logger.info("onExportBtnClicked(): No recipes to export.");
 	        showExportOperationError();
 	        return;
+	    }
+	    
+	    Path defaultPath = Path.of(System.getProperty("user.home"), "Documents");
+	    
+	    // Check if we're exporting all or a subset of the recipes
+	    if (selectedRecipesRadioBtn.isSelected()) {
+	    	recipesToExport = showRecipeSelectionDialog(recipesToExport);
 	    }
 
 	    // Get a path from the user
@@ -130,10 +132,66 @@ public class ImportExportController {
 	        attemptExportRecipes(recipesToExport, path.toString());
 	        logger.info("onExportBtnClicked(): Recipes exported successfully to {}", path);
 	    } catch (JsonProcessingException e) {
-	        logger.error(
-	                "onExportBtnClicked(): JsonProcessingException encountered: {}", e);
+	        logger.error("onExportBtnClicked(): JsonProcessingException encountered: {}", e);
 	        showExportOperationError();
 	    }
+	}
+	
+	private List<Recipe> showRecipeSelectionDialog(List<Recipe> recipes) {
+	    Dialog<List<Recipe>> dialog = new Dialog<>();
+	    dialog.setTitle("Select Recipes");
+	    dialog.setHeaderText("Select the recipes you want to export.");
+
+	    ButtonType exportButton = new ButtonType(
+	            "Export",
+	            ButtonBar.ButtonData.OK_DONE
+	    );
+	    ButtonType cancelButton = new ButtonType(
+	            "Cancel",
+	            ButtonBar.ButtonData.CANCEL_CLOSE
+	    );
+
+	    dialog.getDialogPane().getButtonTypes().addAll(
+	            exportButton,
+	            cancelButton
+	    );
+
+	    VBox recipeList = new VBox(8);
+
+	    List<CheckBox> checkBoxes = new ArrayList<>();
+
+	    for (Recipe recipe : recipes) {
+	        CheckBox checkBox = new CheckBox(recipe.getTitle());
+	        checkBoxes.add(checkBox);
+	        recipeList.getChildren().add(checkBox);
+	    }
+
+	    ScrollPane scrollPane = new ScrollPane(recipeList);
+	    scrollPane.setFitToWidth(true);
+	    scrollPane.setPrefHeight(400);
+	    scrollPane.setPrefWidth(350);
+
+	    dialog.getDialogPane().setContent(scrollPane);
+
+	    dialog.setResultConverter(button -> {
+	        if (button == exportButton) {
+	            List<Recipe> selectedRecipes = new ArrayList<>();
+
+	            for (int i = 0; i < checkBoxes.size(); i++) {
+	                if (checkBoxes.get(i).isSelected()) {
+	                    selectedRecipes.add(recipes.get(i));
+	                }
+	            }
+
+	            return selectedRecipes;
+	        }
+
+	        return null;
+	    });
+
+	    Optional<List<Recipe>> result = dialog.showAndWait();
+
+	    return result.orElse(null);
 	}
 
 	@FXML
