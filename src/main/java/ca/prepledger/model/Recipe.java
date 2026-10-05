@@ -1,16 +1,10 @@
 package ca.prepledger.model;
 
-/**
- * Author: Cailean Bernard
- * Contents: Recipe definition and helper methods.
- */
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
-
-import ca.prepledger.constants.Constants;
 
 /*
  * Author: Cailean Bernard
@@ -65,19 +59,6 @@ public class Recipe {
 		tags = tagsList;
 	}
 	
-//	public Recipe(int id, String title, List<Ingredient> ingredients, String directions, String tagsList) {
-//		this.id = id;
-//		this.title = title;
-//		this.ingredients = ingredients;
-//		this.directions = directions;
-//		List<String> tags = new ArrayList<>();
-//		
-//		for (String t : tagsList.split(",")) {
-//			//t.trim();
-//			tags.add(t);
-//		}
-//	}	
-
 	public List<String> getTags() {
 		return tags;
 	}
@@ -87,72 +68,7 @@ public class Recipe {
 			tags.remove(tag);
 		}
 	}
-
-	public String formatRecipeForExport() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(title.replace(" ", "_")).append(Constants.RECIPE_SECT_DELIM);
-		StringJoiner sj = new StringJoiner(Constants.ING_TAG_DELIM);
-
-		for (Ingredient ing : ingredients) {
-			sj.add(ing.getAmount().toString() + Constants.INGREDIENT_SECT_DELIM +
-					ing.getUnit().toString().toLowerCase() + Constants.INGREDIENT_SECT_DELIM +
-					ing.getName().replace(" ", "_"));
-		}
-
-		sb.append(sj);
-		String safeDirections = directions.replace("\r\n", "\\n")
-				.replace("\n", "\\n");
-		sb.append(Constants.RECIPE_SECT_DELIM).append(safeDirections);
-		sj = new StringJoiner(Constants.ING_TAG_DELIM);
-		
-		if (!tags.isEmpty()) {
-			for (String tag : tags) {
-				sj.add(tag);
-			}
-			sb.append(Constants.RECIPE_SECT_DELIM).append(sj);
-		}
-
-		return sb.toString();
-	}
-
-	public String formatRecipeForTextDisplay() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(title + "\n\n");
-
-		for (Ingredient ing : ingredients) {
-			sb.append(ing.getAmount().toString() + " ");
-			sb.append(ing.getUnit().toString().toLowerCase() + " ");
-			sb.append(ing.getName() + "\n");
-		}
-
-		sb.append("\n" + directions + "\n\n");
-
-		if (tags != null && !tags.isEmpty()) {
-			sb.append("Tags: " + stringifyTags());
-		}
-
-		return sb.toString();
-	}
 	
-	public String formatScaledRecipeForTextDisplay(List<Ingredient> scaledIngredients) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(title + "\n\n");
-
-		for (Ingredient ing : scaledIngredients) {
-			sb.append(ing.getAmount().toString() + " ");
-			sb.append(ing.getUnit().toString().toLowerCase() + " ");
-			sb.append(ing.getName() + "\n");
-		}
-
-		sb.append("\n" + directions + "\n\n");
-
-		if (!tags.isEmpty()) {
-			sb.append("Tags: " + stringifyTags());
-		}
-
-		return sb.toString();
-	}
-
 	public String stringifyIngredients() {
 		StringJoiner sj = new StringJoiner("\n");
 
@@ -224,19 +140,4 @@ public class Recipe {
 		this.tags = tags;
 	}
 	
-//	@Override
-//	public boolean equals(Object o) {
-//	    if (this == o) return true;
-//	    if (!(o instanceof Recipe)) return false;
-//
-//	    Recipe other = (Recipe) o;
-//	    return Objects.equals(this.id, other.id);
-//	}
-//
-//	@Override
-//	public int hashCode() {
-//	    return Objects.hash(id);
-//	}
-
-
 }
