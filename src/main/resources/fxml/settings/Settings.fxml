@@ -106,6 +106,8 @@
                   </HBox>
                </children>
             </VBox>
+            <Separator />
+            <Label fx:id="versionLabel" styleClass="sub-header" />
             <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveButtonClicked" styleClass="primary-button" text="Save" />
          </children>
          <styleClass>

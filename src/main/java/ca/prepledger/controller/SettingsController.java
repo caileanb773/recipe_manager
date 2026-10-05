@@ -1,5 +1,9 @@
 package ca.prepledger.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ca.prepledger.app.AppInfo;
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.AppLanguage;
 import ca.prepledger.config.Configurable;
@@ -9,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 
 public class SettingsController implements Configurable {
@@ -28,7 +33,12 @@ public class SettingsController implements Configurable {
 	@FXML
 	private CheckBox toolTipsCheckbox;
 
+	@FXML
+	private Label versionLabel;
+	
 	private AppConfig appConfig;
+	
+	private static final Logger logger = LoggerFactory.getLogger(SettingsController.class);
 
 
 	public void setSettingsFieldsFromConfig() {
@@ -76,7 +86,7 @@ public class SettingsController implements Configurable {
 			return Theme.LIGHT;
 		}
 		
-		// TODO log warning
+		logger.warn("getSelectedTheme(): Returned an unexpected theme.");
 		return Theme.LIGHT;
 	}
 
@@ -142,6 +152,10 @@ public class SettingsController implements Configurable {
 		appConfig.setRecipeDisplayType(recipeDisplayType);
 		appConfig.setTheme(theme);
 		appConfig.setTooltipsOn(areToolTipsEnabled);
+	}
+	
+	public void setVersionLabel() {
+		versionLabel.setText("PrepLedger version " + AppInfo.VERSION);
 	}
 
 	@Override

@@ -193,7 +193,10 @@ public class AppShellController implements NavigationHandler, Configurable {
 		
 		// Inject dependency to appconfig
 		controller.setAppConfig(appConfig);
+		
+		// Initialize
 		controller.setSettingsFieldsFromConfig();
+		controller.setVersionLabel();
 		
 		appShell.setCenter(settings);
 	}
