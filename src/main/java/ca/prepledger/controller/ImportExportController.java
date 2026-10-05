@@ -76,7 +76,6 @@ public class ImportExportController {
 	        return;
 	    }
 	    
-	    Path defaultPath = Path.of(System.getProperty("user.home"), "Documents");
 	    
 	    // Check if we're exporting all or a subset of the recipes
 	    if (selectedRecipesRadioBtn.isSelected()) {
@@ -88,6 +87,8 @@ public class ImportExportController {
 	    chooser.setTitle("Save .json File");
 	    chooser.getExtensionFilters().add(
 	            new ExtensionFilter("Recipe Collections", "*.json"));
+	    
+	    Path defaultPath = Path.of(System.getProperty("user.home"), "Documents");
 
 	    // Set default directory if it exists
 	    if (Files.isDirectory(defaultPath)) {
@@ -201,8 +202,16 @@ public class ImportExportController {
 		chooser.getExtensionFilters().add(
 				new ExtensionFilter("Recipe Collections", "*.json"));
 		Window window = ((Node)event.getSource()).getScene().getWindow();
-		File selectedFile = chooser.showOpenDialog(window);
 		
+	    Path defaultPath = Path.of(System.getProperty("user.home"), "Documents");
+
+	    // Set default directory if it exists
+	    if (Files.isDirectory(defaultPath)) {
+	        chooser.setInitialDirectory(defaultPath.toFile());
+	    }
+		
+		File selectedFile = chooser.showOpenDialog(window);
+				
 		if (selectedFile == null) {
 			logger.info("onImportBtnClicked(): Import cancelled.");
 			return;
