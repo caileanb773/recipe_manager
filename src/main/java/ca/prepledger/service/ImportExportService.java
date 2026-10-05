@@ -30,9 +30,9 @@ public class ImportExportService {
 		return recipes;
 	}
 
-	public void exportRecipes(List<Recipe> recipes) throws IOException {
+	public void exportRecipes(List<Recipe> recipes, String path) throws IOException {
 		objectMapper.writerWithDefaultPrettyPrinter()
-	      .writeValue(new File("recipes.json"), recipes);
+	      .writeValue(new File(path), recipes);
 	}
 
 }

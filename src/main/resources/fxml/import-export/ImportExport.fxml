@@ -7,6 +7,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -87,19 +88,49 @@
                     <content>
                         <VBox alignment="CENTER" spacing="20.0" styleClass="export-tab">
                      <children>
-                        <VBox VBox.vgrow="ALWAYS">
+                        <VBox spacing="15.0">
                            <children>
-                              <Label styleClass="header-4" text="What to export" />
-                              <RadioButton mnemonicParsing="false" text="All recipes" />
-                              <Label styleClass="sub-header" text="Exports your entire recipe collection." />
-                              <RadioButton mnemonicParsing="false" text="Selected recipes" />
-                              <Label styleClass="sub-header" text="Only exports the recipes you have selected." />
+                              <Label styleClass="header-4" text="What to export">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <VBox>
+                                 <children>
+                                    <RadioButton fx:id="allRecipesRadioBtn" mnemonicParsing="false" selected="true" text="All recipes">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="exportToggleGroup" />
+                                       </toggleGroup>
+                                    </RadioButton>
+                                    <Label styleClass="sub-header" text="Exports your entire recipe collection.">
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                              </VBox>
+                              <VBox>
+                                 <children>
+                                    <RadioButton fx:id="selectedRecipesRadioBtn" mnemonicParsing="false" text="Selected recipes" toggleGroup="$exportToggleGroup" />
+                                    <Label styleClass="sub-header" text="Only exports the recipes you have selected.">
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="15.0" />
+                                 </VBox.margin>
+                              </VBox>
                            </children>
                            <VBox.margin>
-                              <Insets left="15.0" right="15.0" />
+                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                            </VBox.margin>
                         </VBox>
-                        <Button mnemonicParsing="false" styleClass="primary-button" text="Export Recipes">
+                        <Button fx:id="exportBtn" mnemonicParsing="false" onAction="#onExportBtnClicked" styleClass="primary-button" text="Export Recipes">
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
                                  <image>

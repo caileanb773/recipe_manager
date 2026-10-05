@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -46,15 +50,90 @@ public class ImportExportController {
 	private ImportExportService impExpService = new ImportExportService();
 	
 	private static final Logger logger = LoggerFactory.getLogger(ImportExportController.class);
-
-
+	
 	@FXML
-	public void onExportBtnClicked() {
-		try {
-			attemptExportRecipes();
-		} catch (JsonProcessingException e) {
-			logger.error("onExportBtnClicked(): JsonProcessingException encountered: {}", e);
-		}
+	private ToggleGroup exportToggleGroup;
+	
+	@FXML
+	private RadioButton allRecipesRadioBtn;
+	
+	@FXML
+	private RadioButton selectedRecipesRadioBtn;
+
+	
+	@FXML
+	public void onExportBtnClicked(ActionEvent event) {
+	    List<Recipe> recipesToExport;
+	    Path defaultPath = Path.of(System.getProperty("user.home"), "Documents");
+
+	    // Check if we're exporting all or a selection of recipes
+	    if (selectedRecipesRadioBtn.isSelected()) {
+	        // TODO show dialog here where user selects recipes
+	        recipesToExport = new ArrayList<>();
+	    } else {
+	        recipesToExport = recipeService.getAllRecipes();
+	    }
+
+	    // Check if we have any recipes
+	    if (recipesToExport.isEmpty()) {
+	        logger.info("onExportBtnClicked(): No recipes to export.");
+	        showExportOperationError();
+	        return;
+	    }
+
+	    // Get a path from the user
+	    FileChooser chooser = new FileChooser();
+	    chooser.setTitle("Save .json File");
+	    chooser.getExtensionFilters().add(
+	            new ExtensionFilter("Recipe Collections", "*.json"));
+
+	    // Set default directory if it exists
+	    if (Files.isDirectory(defaultPath)) {
+	        chooser.setInitialDirectory(defaultPath.toFile());
+	    }
+
+	    Window window = ((Node) event.getSource()).getScene().getWindow();
+	    File selectedFile = chooser.showSaveDialog(window);
+
+	    // User cancelled
+	    if (selectedFile == null) {
+	        logger.info("onExportBtnClicked(): Export cancelled.");
+	        return;
+	    }
+
+	    Path path = selectedFile.toPath();
+
+	    // Confirm before overwriting an existing file
+	    if (Files.exists(path)) {
+	        Alert confirm = new Alert(
+	                Alert.AlertType.CONFIRMATION,
+	                "The selected file already exists. Do you want to overwrite it?",
+	                ButtonType.YES,
+	                ButtonType.NO
+
+	        );
+
+	        confirm.setTitle("Confirm Export");
+	        confirm.setHeaderText("File already exists");
+    		confirm.getDialogPane().getStylesheets().add(
+    				getClass().getResource("/css/components/alert.css").toExternalForm());
+
+	        Optional<ButtonType> result = confirm.showAndWait();
+
+	        if (result.isEmpty() || result.get() != ButtonType.YES) {
+	            logger.info("onExportBtnClicked(): Export cancelled by user.");
+	            return;
+	        }
+	    }
+
+	    try {
+	        attemptExportRecipes(recipesToExport, path.toString());
+	        logger.info("onExportBtnClicked(): Recipes exported successfully to {}", path);
+	    } catch (JsonProcessingException e) {
+	        logger.error(
+	                "onExportBtnClicked(): JsonProcessingException encountered: {}", e);
+	        showExportOperationError();
+	    }
 	}
 
 	@FXML
@@ -89,8 +168,6 @@ public class ImportExportController {
 	
 	@FXML
 	private void onImportZoneDragDropped(DragEvent event) {
-	    System.out.println("drag dropped");
-
 	    Dragboard db = event.getDragboard();
 
 	    if (db.hasFiles()) {
@@ -129,17 +206,10 @@ public class ImportExportController {
 	    }
 	}
 
-	private void attemptExportRecipes() throws JsonProcessingException {
-		List<Recipe> recipesToExport = recipeService.getAllRecipes();
-
-		// check if we have any recipes
-		if (recipesToExport.size() == 0) {
-			System.out.println("No recipes to export!");
-			return;
-		}
-
+	private void attemptExportRecipes(List<Recipe> recipes, String path)
+			throws JsonProcessingException {
 		try {
-			impExpService.exportRecipes(recipesToExport);
+			impExpService.exportRecipes(recipes, path);
 		} catch (IOException e) {
 			logger.error("attemptExportRecipes(): IOException encountered: {}", e);
 		}
@@ -185,6 +255,17 @@ public class ImportExportController {
 		alert.setTitle("Import Error");
 		alert.setHeaderText("Could not complete import operation.");
 		alert.setContentText(contentString);
+		alert.getDialogPane().getStylesheets().add(
+				getClass().getResource("/css/components/alert.css").toExternalForm());
+		
+		alert.showAndWait();
+	}
+	
+	private void showExportOperationError() {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Export Error");
+		alert.setHeaderText("Could not complete export operation.");
+		alert.setContentText("No recipes to export!");
 		alert.getDialogPane().getStylesheets().add(
 				getClass().getResource("/css/components/alert.css").toExternalForm());
 		
