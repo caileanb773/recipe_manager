@@ -10,7 +10,7 @@
     <!-- Project information -->
     <groupId>ca.prepledger</groupId>
     <artifactId>prep-ledger</artifactId>
-    <version>1.0.0</version>
+    <version>0.1.0</version>
     <name>PrepLedger</name>
     <description>Professional recipe management application</description>
 
@@ -163,7 +163,27 @@
 			    <configuration>
 			        <mainClass>ca.prepledger.app.Main</mainClass>
 			    </configuration>
-			</plugin>            
+			</plugin>
+			
+			<!-- Maven Dependency Plugin -->
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-dependency-plugin</artifactId>
+			    <version>3.8.1</version>
+			    <executions>
+			        <execution>
+			            <id>copy-dependencies</id>
+			            <phase>package</phase>
+			            <goals>
+			                <goal>copy-dependencies</goal>
+			            </goals>
+			            <configuration>
+			                <outputDirectory>${project.build.directory}/lib</outputDirectory>
+			                <includeScope>runtime</includeScope>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>       
 
         </plugins>
     </build>
