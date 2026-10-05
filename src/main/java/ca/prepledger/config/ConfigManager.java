@@ -22,9 +22,9 @@ public class ConfigManager {
 	// TODO this is Windows only, will need to be factored into a helper method
 	// for proper cross-platform support
 	private final String APP_DATA = System.getenv("LOCALAPPDATA");
-	private final String PREPLEDGER = "\\PrepLedger\\";
-	private final String FILE_NAME = "settings.cfg";
-	private final String CONFIG_PATH = APP_DATA + PREPLEDGER;
+	private final String PREPLEDGER_DIR = "\\PrepLedger\\";
+	private final String CONFIG_FILE_NAME = "settings.cfg";
+	private final String CONFIG_DIR = APP_DATA + PREPLEDGER_DIR;
 	private final String WARNING = "// do not modify this file unless you know what you are doing";
 	
 	private static final Logger logger = LoggerFactory.getLogger(ConfigManager.class);
@@ -36,26 +36,34 @@ public class ConfigManager {
 		RecipeDisplayType recipeDisplayType = RecipeDisplayType.GRID;
 		Theme theme = Theme.LIGHT;
 		boolean areToolTipsOn = true;
+		
+		// edge case for if a dir named "settings.cfg" exists in the config folder
+		if (!isValidSettingsPath()) {
+	        logger.warn("save(): Settings path exists but is a directory.");
+			return new AppConfig(language, recipeDisplayType, theme, areToolTipsOn);
+		}
 				
 		// Check if 'settings.cfg' exists
-		Path configPath = Path.of(CONFIG_PATH + FILE_NAME);
-		
-		if (!configDirExists(configPath)) {
+		Path configFilePath = Path.of(CONFIG_DIR + CONFIG_FILE_NAME);
+					
+		// this will return true if "settings.cfg" is a dir instead of a file somehow
+		if (!Files.exists(configFilePath)) {
 						
 			// If 'settings.cfg' doesn't exist, the folder in %APPDATA% might not either
-			Path dirPath = Path.of(CONFIG_PATH);
+			Path dirPath = Path.of(CONFIG_DIR);
 
 			if (!Files.exists(dirPath)) {
-				createDefaultDirectory(configPath);
+				createDefaultDirectory(dirPath);
 			}
 			
 			// In either case, early return a default Config
+			logger.info("load() failed to find 'settings.cfg', loading default config.");
 			return new AppConfig();
 		}
 		
 		// Read the file
 		try (BufferedReader reader = new BufferedReader(
-				new FileReader(CONFIG_PATH + FILE_NAME))) {
+				new FileReader(CONFIG_DIR + CONFIG_FILE_NAME))) {
 
 			String line;
 
@@ -110,7 +118,7 @@ public class ConfigManager {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			logger.error("load(): ConfigManager could not find settings.cfg");
+			logger.error("load(): ConfigManager could not find settings.cfg during read.");
 			throw new FileNotFoundException("Could not find settings.cfg.");
 		} catch (IOException e) {
 			logger.error("load(): ConfigManager IOException encountered.");
@@ -127,15 +135,21 @@ public class ConfigManager {
 		}
 		
 		// Create config directory if not exists
-		Path configPath = Path.of(CONFIG_PATH);
+		Path configPath = Path.of(CONFIG_DIR);
 		
-		if (!configDirExists(configPath)) {
+		// edge case for if a dir named "settings.cfg" exists in the config folder
+		if (!isValidSettingsPath()) {
+	        logger.warn("save(): Settings path exists but is a directory.");
+			return;
+		}
+		
+		if (!Files.exists(configPath)) {
 			createDefaultDirectory(configPath);
 		}
 		
 		// Write config to file
 		try (BufferedWriter writer = new BufferedWriter(
-				new FileWriter(CONFIG_PATH + FILE_NAME))) {
+				new FileWriter(CONFIG_DIR + CONFIG_FILE_NAME))) {
 			
 			// Write comment warning users not to fiddle with the config
 			writer.write(WARNING);
@@ -151,24 +165,30 @@ public class ConfigManager {
 			writer.write("aretooltipson=" + String.valueOf(config.areTooltipsOn()));
 			
 		} catch (IOException e) {
-			throw new IOException("IOException during ConfigManager.save().");
+			throw new IOException("IOException during ConfigManager.save(): {}", e);
 		}
 	}
 	
-	private boolean configDirExists(Path path) {		
-		return Files.exists(path);
+	private boolean isValidSettingsPath() {
+		Path path = Path.of(CONFIG_DIR + CONFIG_FILE_NAME);
+		
+	    if (Files.exists(path) && Files.isDirectory(path)) {
+	        return false;
+	    }
+
+	    return true;
 	}
-	
+		
 	private void createDefaultDirectory(Path path) throws IOException {
 		Files.createDirectories(path);
 	}
 	
 	public String getConfigPath() {
-		return CONFIG_PATH;
+		return CONFIG_DIR;
 	}
 	
 	public String getConfigAndFilePath() {
-		return CONFIG_PATH + FILE_NAME;
+		return CONFIG_DIR + CONFIG_FILE_NAME;
 	}
 
 }
