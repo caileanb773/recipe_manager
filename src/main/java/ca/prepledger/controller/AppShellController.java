@@ -266,6 +266,7 @@ public class AppShellController implements NavigationHandler, Configurable {
 		NewRecipeController controller = loader.getController();
 		controller.setNavigationHandler(this);
 		controller.setRecipeToEdit(recipe);
+		controller.setAppConfig(appConfig);
 
 		// Inject dependencies
 		controller.setRecipeService(recipeService);
