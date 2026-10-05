@@ -98,11 +98,23 @@
             <StackPane>
                <children>
                   <GridPane fx:id="gridView" hgap="10.0" maxHeight="1.7976931348623157E308" vgap="10.0">
-                    <columnConstraints>
-					    <ColumnConstraints percentWidth="33.3333" />
-					    <ColumnConstraints percentWidth="33.3333" />
-					    <ColumnConstraints percentWidth="33.3333" />
-                    </columnConstraints>
+					<columnConstraints>
+					    <ColumnConstraints percentWidth="33.3333"
+					                       hgrow="ALWAYS"
+					                       halignment="CENTER"
+					                       minWidth="250.0"
+					                       maxWidth="350.0" />
+					    <ColumnConstraints percentWidth="33.3333"
+					                       hgrow="ALWAYS"
+					                       halignment="CENTER"
+					                       minWidth="250.0"
+					                       maxWidth="350.0" />
+					    <ColumnConstraints percentWidth="33.3333"
+					                       hgrow="ALWAYS"
+					                       halignment="CENTER"
+					                       minWidth="250.0"
+					                       maxWidth="350.0" />
+					</columnConstraints>
                      <StackPane.margin>
                         <Insets />
                      </StackPane.margin>

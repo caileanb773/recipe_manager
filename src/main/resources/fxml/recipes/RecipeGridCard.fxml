@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="card" maxWidth="350.0" onMouseClicked="#onRecipeCardClicked" prefHeight="250.0" prefWidth="350.0" styleClass="recipe-card" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeGridCardController">
+<StackPane fx:id="card" maxWidth="350.0" minWidth="250.0" onMouseClicked="#onRecipeCardClicked" styleClass="recipe-card" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeGridCardController">
 
     <VBox styleClass="recipe-card-content">
 
-        <ImageView fx:id="recipeImage" fitHeight="180.0" fitWidth="350.0" />
+        <ImageView fx:id="recipeImage" fitHeight="180.0" preserveRatio="true" />
 
         <VBox styleClass="recipe-info" VBox.vgrow="NEVER">
 
@@ -22,7 +22,7 @@
 
             <HBox styleClass="recipe-meta" VBox.vgrow="NEVER">
    
-               <FlowPane fx:id="tagsPane" prefWidth="350.0" styleClass="recipe-tags" />
+               <FlowPane fx:id="tagsPane" styleClass="recipe-tags" />
             <Button fx:id="recipeOptionsButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onRecipeOptionsButtonClicked" styleClass="icon-only-button" text="Button">
                <graphic>
                   <ImageView pickOnBounds="true">
