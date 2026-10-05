@@ -27,10 +27,26 @@ public class CollapsibleIngredientRowController {
 	
 	
 	public void setIngredient(Ingredient ingredient) {
-		ingredientName.setText(ingredient.getName());
-		ingredientAmtUnit.setText(ingredient.getAmount() 
-				+ " " + ingredient.getUnit());
-		ingredientNotes.setText(ingredient.getNotes());
+		String name = ingredient.getName();
+		String amount = ingredient.getAmount();
+		String unit = ingredient.getUnit();
+		String notes = ingredient.getNotes();
+		
+		if (name != null) {
+			ingredientName.setText(name);
+		}
+
+		if (amount != null) {
+			if (unit != null) {
+				ingredientAmtUnit.setText(amount + " " + unit);
+			} else {
+				ingredientAmtUnit.setText(amount);
+			}
+		}
+
+		if (notes != null) {
+			ingredientNotes.setText(notes);
+		}
 		
 		// Ingredients should not show their notes by default
 		setDefaultCollapsedState();
