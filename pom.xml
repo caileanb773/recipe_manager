@@ -65,7 +65,7 @@
 
 
         <!-- ==================== -->
-        <!-- Databases             -->
+        <!-- Databases            -->
         <!-- ==================== -->
 
         <!-- PostgreSQL - online database -->
@@ -84,7 +84,7 @@
 
 
         <!-- ==================== -->
-        <!-- Logging               -->
+        <!-- Logging              -->
         <!-- ==================== -->
 
         <dependency>
@@ -99,20 +99,9 @@
             <version>2.0.17</version>
         </dependency>
 
-
-        <!-- ==================== -->
-        <!-- Swing UI (temporary)  -->
-        <!-- ==================== -->
-
-        <!-- Remove this once the Swing UI is replaced with JavaFX -->
-        <dependency>
-            <groupId>com.formdev</groupId>
-            <artifactId>flatlaf</artifactId>
-            <version>3.6.2</version>
-        </dependency>
         
         <!-- ==================== -->
-        <!-- JavaFX			  	   -->
+        <!-- JavaFX			  	  -->
         <!-- ==================== -->        
         
         <dependency>
@@ -128,7 +117,7 @@
 		</dependency>
 		
         <!-- ==================== -->
-        <!-- JUnit 5		  	   -->
+        <!-- JUnit 5		  	  -->
         <!-- ==================== --> 		
 		
 		<dependency>
