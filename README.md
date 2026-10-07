@@ -1,6 +1,6 @@
 # PrepLedger Recipe manager
 
-![Adding a New Recipe](src/main/resources/img/prepledger-newrecipe.png)
+![Adding a New Recipe](src/main/resources/img/temp/recipe-view.png)
 
 - Adding a new recipe
 
