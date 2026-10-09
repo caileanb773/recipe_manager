@@ -263,7 +263,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <TextField fx:id="scaleField" alignment="CENTER" onAction="#onScaleFieldChange" prefColumnCount="5" prefWidth="50.0" styleClass="text-area" />
+                        <TextField fx:id="scaleAdjustmentField" alignment="CENTER" onAction="#onScaleAdjustmentFieldChange" prefColumnCount="5" prefWidth="50.0" styleClass="text-area" />
                         <Button fx:id="scalePlusBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onScalePlusBtnClicked" styleClass="icon-only-button" text="Button">
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
