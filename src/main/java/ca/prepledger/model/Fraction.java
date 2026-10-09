@@ -207,9 +207,9 @@ public class Fraction {
 		}
 	}
 	
-	public BigDecimal toBigDecimal() {
-	    return BigDecimal.valueOf(numerator)
-	            .divide(BigDecimal.valueOf(denominator), 3, RoundingMode.HALF_UP);
+	public static BigDecimal toBigDecimal(Fraction frac) {
+	    return BigDecimal.valueOf(frac.numerator)
+	            .divide(BigDecimal.valueOf(frac.denominator), 3, RoundingMode.HALF_UP);
 	}
 
 	public static boolean isFraction(String amt) {
