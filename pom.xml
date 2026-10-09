@@ -151,6 +151,9 @@
 			    <version>0.0.8</version>
 			    <configuration>
 			        <mainClass>ca.prepledger.app.Main</mainClass>
+<!--			        <options>
+					    <option>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=localhost:5005</option>
+					</options>-->
 			    </configuration>
 			</plugin>
 			
