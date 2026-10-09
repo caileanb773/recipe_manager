@@ -206,6 +206,11 @@ public class Fraction {
 			throw new NumberFormatException("Denominator cannot be 0.");
 		}
 	}
+	
+	public BigDecimal toBigDecimal() {
+	    return BigDecimal.valueOf(numerator)
+	            .divide(BigDecimal.valueOf(denominator), 3, RoundingMode.HALF_UP);
+	}
 
 	public static boolean isFraction(String amt) {
 		return (amt.indexOf('/') != -1);
