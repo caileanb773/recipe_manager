@@ -1,12 +1,14 @@
 package ca.prepledger.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.prepledger.model.Fraction;
 import ca.prepledger.model.Ingredient;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
@@ -26,77 +28,63 @@ import javafx.scene.layout.VBox;
 
 public class RecipeViewController {
 
-	@FXML
-	private Button navBackButton;
+	@FXML private Button navBackButton;
 
-	@FXML
-	private Label recipeTitleHeader;
+	@FXML private Label recipeTitleHeader;
 
-	@FXML
-	private Button editButton;
+	@FXML private Button editButton;
 
-	@FXML
-	private Button removeButton;
+	@FXML private Button removeButton;
 
-	@FXML
-	private HBox tagsHBox;
-	
-	@FXML
-	private HBox scalingHBox;
-	
-	@FXML
-	private Label batchScaleLabel;
-	
-	@FXML
-	private Button scaleMinusButton;
-	
-	@FXML
-	private TextField scaleField;
-	
-	@FXML
-	private Button scalePlusBtn;
-	
-	@FXML
-	private Button helpBtn;
+	@FXML private HBox tagsHBox;
 
-	@FXML
-	private Tab overviewTab;
+	@FXML private HBox scalingHBox;
 
-	@FXML
-	private Tab ingredientsTab;
+	@FXML private Label batchScaleLabel;
 
-	@FXML
-	private Tab directionsTab;
+	@FXML private Button scaleMinusButton;
 
-	@FXML
-	private VBox ingredientsVBox;
-	
-	@FXML
-	private TextArea directionsTextArea;
-	
-	// Specific to the "Overview" tabpane
-	@FXML
-	private VBox recipeOverviewIngredientsVBox;
+	@FXML private TextField scaleAdjustmentField;
+
+	@FXML private Button scalePlusBtn;
+
+	@FXML private Button helpBtn;
+
+	@FXML private Tab overviewTab;
+
+	@FXML private Tab ingredientsTab;
+
+	@FXML private Tab directionsTab;
+
+	@FXML private VBox ingredientsVBox;
+
+	@FXML private TextArea directionsTextArea;
 
 	// Specific to the "Overview" tabpane
-	@FXML
-	private TextArea recipeOverviewDirectionsTextArea;
-	
+	@FXML private VBox recipeOverviewIngredientsVBox;
+
+	// Specific to the "Overview" tabpane
+	@FXML private TextArea recipeOverviewDirectionsTextArea;
+
 	private Recipe recipe;
+
+	private BigDecimal currentScale = BigDecimal.ONE;
+
+	private BigDecimal adjustmentFactor = new BigDecimal("0.5");
 
 	private NavigationHandler navigationHandler;
 
 	private boolean hasOverviewTabBeenClicked = false;
-	
+
 	private boolean hasIngredientsTabBeenClicked = false;
-	
+
 	private boolean hasDirectionsTabBeenClicked = false;
 
 	private ArrayList<CollapsibleIngredientRowController> ingredientRowControllers = new ArrayList<>();
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(RecipeViewController.class);
 
-	
+
 	public void setNavigationHandler(AppShellController appShellController) {
 		navigationHandler = appShellController;
 	}
@@ -125,9 +113,17 @@ public class RecipeViewController {
 				tagsHBox.getChildren().add(tagLabel);
 			}
 		}
-		
-		scaleField.setText("0.5");
+	}
 
+	public void setScaleProperties() {
+		scaleAdjustmentField.setText(currentScale.toString());
+		batchScaleLabel.setText(adjustmentFactor.toString());
+
+		scaleAdjustmentField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue) {
+				onScaleAdjustmentFieldChange();
+			}
+		});
 	}
 
 	public void addNewIngredientRow(
@@ -174,16 +170,16 @@ public class RecipeViewController {
 	private void onIngredientsSelectionChanged() {
 		populateIngredients();
 	}
-	
+
 	private void populateIngredients() {
 		if (recipe == null) {
 			return;
 		}
-		
+
 		if (!ingredientsTab.isSelected()) {
 			return;
 		}
-		
+
 		ObservableList<Node> children = ingredientsVBox.getChildren();
 
 		// Only load elements once
@@ -205,24 +201,24 @@ public class RecipeViewController {
 	private void onOverviewSelectionChanged() {
 		populateOverview();
 	}
-	
+
 	public void populateOverview() {
 		if (recipe == null) {
 			return;
 		}
-		
+
 		if (!overviewTab.isSelected()) {
 			return;
 		}
-		
+
 		// Only load elements once
 		if (!hasOverviewTabBeenClicked) {
 			hasOverviewTabBeenClicked = true;
-			
+
 			recipeOverviewDirectionsTextArea.setText(recipe.getDirections());
-			
+
 			// Add new ingredientrow.fxml for each ingredient
-			
+
 			ObservableList<Node> children = recipeOverviewIngredientsVBox.getChildren();
 			for (Ingredient ing : recipe.getIngredients()) {
 				try {
@@ -238,42 +234,103 @@ public class RecipeViewController {
 	private void onDirectionsSelectionChanged() {
 		populateDirections();
 	}
-	
+
 	@FXML
 	private void onScaleMinusBtnClicked() {
 		System.out.println("Minus");
 	}
-	
+
 	@FXML
-	private void onScaleFieldChange() {
-		System.out.println("Scale changed");
+	private void onScaleAdjustmentFieldChange() {
+		parseAdjustmentFieldInput();
 	}
-	
+
+	private void parseAdjustmentFieldInput() {
+		String input = scaleAdjustmentField.getText().trim();
+		Fraction parsed = null;
+		BigDecimal bigDecimalTemp = null;
+		boolean isValidInput = false;
+		boolean isInRange = false;
+		
+		// parse the text in the field
+		try {
+			parsed = Fraction.parseFraction(input);
+			isValidInput = true;
+		} catch (NumberFormatException e) {
+			logger.warn("onScaleAdjustmentFieldChange", e);
+		}
+
+		// check that bigdecimal is within range 0.1 and 100
+		if (isValidInput && parsed != null) {
+			bigDecimalTemp = Fraction.toBigDecimal(parsed);
+
+			if (bigDecimalTemp.compareTo(new BigDecimal("0.1")) >= 0
+					&& bigDecimalTemp.compareTo(new BigDecimal("100")) <= 0) {
+				isInRange = true;
+			}
+		}
+
+		// if the new scale is a fraction and its in the acceptable range, set it
+		if (isValidInput && isInRange) {
+			adjustmentFactor = bigDecimalTemp;
+		} else {
+			logger.warn("parseAdjustmentFieldInput(): Invalid adjustment scale.");
+			// TODO maybe make the input field have a red border/background?
+			
+			// reset the value
+			scaleAdjustmentField.setText(adjustmentFactor.stripTrailingZeros().toPlainString());
+		}
+	}
+
 	@FXML
 	private void onScalePlusBtnClicked() {
-		System.out.println("Plus");
+		// multiply the current scale by the new scale
+		
+		// check that the number isn't < 0 or > 100
+		
+		// call method that sets ingredient amounts based on new scale
 	}
-	
+
 	@FXML
 	private void onHelpBtnClicked() {
 		System.out.println("Help");
 	}
-	
+
 	private void populateDirections() {
 		if (recipe == null) {
 			return;
 		}
-		
+
 		if (!directionsTab.isSelected()) {
 			return;
 		}
-		
+
 		// Only load elements once
 		if (!hasDirectionsTabBeenClicked) {
 			hasDirectionsTabBeenClicked = true;
-			
+
 			directionsTextArea.setText(recipe.getDirections());
 		}
+	}
+	
+	private void adjustIngredientDisplayScale() {
+		
+	}
+
+	public BigDecimal getCurrentScale() {
+		return currentScale;
+	}
+
+	public void setCurrentScale(BigDecimal currentScale) {
+		this.currentScale = currentScale;
+	}
+
+	public BigDecimal getAdjustmentFactor() {
+		return adjustmentFactor;
+	}
+
+	public void setAdjustmentFactor(BigDecimal adjustmentFactor) {
+		this.adjustmentFactor = adjustmentFactor;
 	}
 
 }
