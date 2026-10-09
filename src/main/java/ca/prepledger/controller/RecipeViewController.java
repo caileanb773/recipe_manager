@@ -68,9 +68,9 @@ public class RecipeViewController {
 
 	private Recipe recipe;
 
-	private BigDecimal currentScale = BigDecimal.ONE;
+	private BigDecimal currentScale;
 
-	private BigDecimal adjustmentFactor = new BigDecimal("0.5");
+	private BigDecimal adjustmentFactor;
 
 	private static final BigDecimal MINIMUM_SCALE = new BigDecimal("0.1");
 
@@ -120,14 +120,24 @@ public class RecipeViewController {
 	}
 
 	public void setScaleProperties() {
-		batchScaleLabel.setText(currentScale.toString());
-		scaleAdjustmentField.setText(adjustmentFactor.toString());
+		resetScaleAndAdjustmentFactor();
+		applyScaleAndAdjustment();
 
 		scaleAdjustmentField.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue) {
 				onScaleAdjustmentFieldChange();
 			}
 		});
+	}
+	
+	private void resetScaleAndAdjustmentFactor() {
+		currentScale = BigDecimal.ONE;
+		adjustmentFactor = new BigDecimal("0.5");
+	}
+	
+	private void applyScaleAndAdjustment() {
+		batchScaleLabel.setText(currentScale.toString());
+		scaleAdjustmentField.setText(adjustmentFactor.toString());
 	}
 
 	public void addNewIngredientRow(
@@ -306,6 +316,12 @@ public class RecipeViewController {
 		// call method that sets ingredient amounts based on new scale
 		currentScale = newScale;
 		adjustIngredientDisplayScale();
+	}
+	
+	@FXML
+	private void onScaleResetBtnClicked() {
+		resetScaleAndAdjustmentFactor();
+		applyScaleAndAdjustment();		
 	}
 
 	private void adjustIngredientDisplayScale() {

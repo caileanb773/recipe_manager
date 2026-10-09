@@ -273,6 +273,15 @@
                               </ImageView>
                            </graphic>
                         </Button>
+                        <Button fx:id="scaleResetBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onScaleResetBtnClicked" styleClass="icon-only-button" text="Button">
+                           <graphic>
+                              <ImageView pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/icon/scaled/dark/reset-scaled.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                         <Button fx:id="helpBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onHelpBtnClicked" styleClass="icon-only-button" text="Button">
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
