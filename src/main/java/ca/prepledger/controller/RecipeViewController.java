@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -39,6 +40,24 @@ public class RecipeViewController {
 
 	@FXML
 	private HBox tagsHBox;
+	
+	@FXML
+	private HBox scalingHBox;
+	
+	@FXML
+	private Label batchScaleLabel;
+	
+	@FXML
+	private Button scaleMinusButton;
+	
+	@FXML
+	private TextField scaleField;
+	
+	@FXML
+	private Button scalePlusBtn;
+	
+	@FXML
+	private Button helpBtn;
 
 	@FXML
 	private Tab overviewTab;
@@ -106,6 +125,8 @@ public class RecipeViewController {
 				tagsHBox.getChildren().add(tagLabel);
 			}
 		}
+		
+		scaleField.setText("0.5");
 
 	}
 
@@ -216,6 +237,26 @@ public class RecipeViewController {
 	@FXML
 	private void onDirectionsSelectionChanged() {
 		populateDirections();
+	}
+	
+	@FXML
+	private void onScaleMinusBtnClicked() {
+		System.out.println("Minus");
+	}
+	
+	@FXML
+	private void onScaleFieldChange() {
+		System.out.println("Scale changed");
+	}
+	
+	@FXML
+	private void onScalePlusBtnClicked() {
+		System.out.println("Plus");
+	}
+	
+	@FXML
+	private void onHelpBtnClicked() {
+		System.out.println("Help");
 	}
 	
 	private void populateDirections() {

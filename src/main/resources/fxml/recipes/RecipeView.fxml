@@ -237,7 +237,7 @@
                   </HBox>
                </children>
             </HBox>
-            <HBox>
+            <HBox alignment="CENTER">
                <VBox.margin>
                   <Insets left="15.0" />
                </VBox.margin>
@@ -245,8 +245,15 @@
                   <HBox fx:id="tagsHBox" alignment="CENTER_LEFT" maxWidth="300.0" />
                   <HBox fx:id="scalingHBox" alignment="CENTER_RIGHT" spacing="5.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="sub-header" text="Batch size: " />
-                        <Label text="1x" />
+                        <HBox alignment="CENTER">
+                           <children>
+                              <Label styleClass="header-4" text="Batch size: " />
+                              <Label fx:id="batchScaleLabel" styleClass="header-4" text="1x" />
+                           </children>
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                        </HBox>
                         <Button fx:id="scaleMinusBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onScaleMinusBtnClicked" styleClass="icon-only-button" text="Button">
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
@@ -256,7 +263,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <TextField prefColumnCount="5" prefWidth="50.0" styleClass="text-area" />
+                        <TextField fx:id="scaleField" alignment="CENTER" onAction="#onScaleFieldChange" prefColumnCount="5" prefWidth="50.0" styleClass="text-area" />
                         <Button fx:id="scalePlusBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onScalePlusBtnClicked" styleClass="icon-only-button" text="Button">
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
