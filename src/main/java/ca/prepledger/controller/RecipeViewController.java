@@ -136,7 +136,7 @@ public class RecipeViewController {
 	}
 	
 	private void applyScaleAndAdjustment() {
-		batchScaleLabel.setText(currentScale.toString());
+		batchScaleLabel.setText(currentScale.stripTrailingZeros().toPlainString() + "×");
 		scaleAdjustmentField.setText(adjustmentFactor.toString());
 	}
 
@@ -153,6 +153,7 @@ public class RecipeViewController {
 
 		// Wire the callback for when row's delete button is pressed
 		controller.setIngredient(ingredient);
+		controller.initializeIngredientFields();
 
 		children.add(ingredientRow);
 	}
@@ -321,11 +322,19 @@ public class RecipeViewController {
 	@FXML
 	private void onScaleResetBtnClicked() {
 		resetScaleAndAdjustmentFactor();
-		applyScaleAndAdjustment();		
+		applyScaleAndAdjustment();
+		
+		for (CollapsibleIngredientRowController c : ingredientRowControllers) {
+			c.initializeIngredientFields();
+		}
 	}
 
 	private void adjustIngredientDisplayScale() {
-		batchScaleLabel.setText(currentScale.toString());
+	    batchScaleLabel.setText(currentScale.stripTrailingZeros().toPlainString() + "×");
+
+	    for (CollapsibleIngredientRowController c : ingredientRowControllers) {
+	        c.setScale(currentScale);
+	    }
 	}
 
 	@FXML
