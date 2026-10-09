@@ -72,6 +72,10 @@ public class RecipeViewController {
 
 	private BigDecimal adjustmentFactor = new BigDecimal("0.5");
 
+	private static final BigDecimal MINIMUM_SCALE = new BigDecimal("0.1");
+
+	private static final BigDecimal MAXIMUM_SCALE = new BigDecimal("100");
+
 	private NavigationHandler navigationHandler;
 
 	private boolean hasOverviewTabBeenClicked = false;
@@ -116,8 +120,8 @@ public class RecipeViewController {
 	}
 
 	public void setScaleProperties() {
-		scaleAdjustmentField.setText(currentScale.toString());
-		batchScaleLabel.setText(adjustmentFactor.toString());
+		batchScaleLabel.setText(currentScale.toString());
+		scaleAdjustmentField.setText(adjustmentFactor.toString());
 
 		scaleAdjustmentField.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue) {
@@ -246,49 +250,59 @@ public class RecipeViewController {
 	}
 
 	private void parseAdjustmentFieldInput() {
-		String input = scaleAdjustmentField.getText().trim();
-		Fraction parsed = null;
-		BigDecimal bigDecimalTemp = null;
-		boolean isValidInput = false;
-		boolean isInRange = false;
-		
-		// parse the text in the field
-		try {
-			parsed = Fraction.parseFraction(input);
-			isValidInput = true;
-		} catch (NumberFormatException e) {
-			logger.warn("onScaleAdjustmentFieldChange", e);
-		}
+	    String input = scaleAdjustmentField.getText().trim();
+	    BigDecimal parsedValue;
 
-		// check that bigdecimal is within range 0.1 and 100
-		if (isValidInput && parsed != null) {
-			bigDecimalTemp = Fraction.toBigDecimal(parsed);
+	    try {
+	        if (Fraction.isFraction(input)) {
+	            Fraction parsedFraction = Fraction.parseFraction(input);
+	            parsedValue = Fraction.toBigDecimal(parsedFraction);
+	        } else {
+	            parsedValue = new BigDecimal(input);
+	        }
+	    } catch (NumberFormatException e) {
+	        logger.warn("parseAdjustmentFieldInput(): Invalid input.");
+	        resetAdjustmentField();
+	        return;
+	    }
 
-			if (bigDecimalTemp.compareTo(new BigDecimal("0.1")) >= 0
-					&& bigDecimalTemp.compareTo(new BigDecimal("100")) <= 0) {
-				isInRange = true;
-			}
-		}
+	    if (parsedValue.compareTo(MINIMUM_SCALE) < 0
+	            || parsedValue.compareTo(MAXIMUM_SCALE) > 0) {
+	        logger.warn("parseAdjustmentFieldInput(): Adjustment out of range.");
+	        resetAdjustmentField();
+	        return;
+	    }
 
-		// if the new scale is a fraction and its in the acceptable range, set it
-		if (isValidInput && isInRange) {
-			adjustmentFactor = bigDecimalTemp;
-		} else {
-			logger.warn("parseAdjustmentFieldInput(): Invalid adjustment scale.");
-			// TODO maybe make the input field have a red border/background?
-			
-			// reset the value
-			scaleAdjustmentField.setText(adjustmentFactor.stripTrailingZeros().toPlainString());
-		}
+	    adjustmentFactor = parsedValue;
+	    resetAdjustmentField();
+	}
+
+	private void resetAdjustmentField() {
+	    scaleAdjustmentField.setText(
+	            adjustmentFactor.stripTrailingZeros().toPlainString());
 	}
 
 	@FXML
 	private void onScalePlusBtnClicked() {
+		boolean isValid = false;
+
 		// multiply the current scale by the new scale
-		
+		BigDecimal newScale = currentScale.add(adjustmentFactor);
+
 		// check that the number isn't < 0 or > 100
-		
+		if (newScale.compareTo(MINIMUM_SCALE) >= 0 
+				&& newScale.compareTo(MAXIMUM_SCALE) <= 0) {
+			isValid = true;
+		}
+
 		// call method that sets ingredient amounts based on new scale
+		if (isValid) {
+			adjustIngredientDisplayScale();
+		}
+	}
+
+	private void adjustIngredientDisplayScale() {
+
 	}
 
 	@FXML
@@ -311,10 +325,6 @@ public class RecipeViewController {
 
 			directionsTextArea.setText(recipe.getDirections());
 		}
-	}
-	
-	private void adjustIngredientDisplayScale() {
-		
 	}
 
 	public BigDecimal getCurrentScale() {
