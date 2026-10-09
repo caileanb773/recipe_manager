@@ -240,11 +240,6 @@ public class RecipeViewController {
 	}
 
 	@FXML
-	private void onScaleMinusBtnClicked() {
-		System.out.println("Minus");
-	}
-
-	@FXML
 	private void onScaleAdjustmentFieldChange() {
 		parseAdjustmentFieldInput();
 	}
@@ -281,28 +276,40 @@ public class RecipeViewController {
 	    scaleAdjustmentField.setText(
 	            adjustmentFactor.stripTrailingZeros().toPlainString());
 	}
-
+	
 	@FXML
-	private void onScalePlusBtnClicked() {
-		boolean isValid = false;
-
-		// multiply the current scale by the new scale
-		BigDecimal newScale = currentScale.add(adjustmentFactor);
-
-		// check that the number isn't < 0 or > 100
-		if (newScale.compareTo(MINIMUM_SCALE) >= 0 
-				&& newScale.compareTo(MAXIMUM_SCALE) <= 0) {
-			isValid = true;
+	private void onScaleMinusBtnClicked() {
+		// subtract the current scale by the new scale
+		BigDecimal newScale = currentScale.subtract(adjustmentFactor);
+		
+		// check that the number isn't below minimum (0.1)
+		if (newScale.compareTo(MINIMUM_SCALE) < 0) {
+			newScale = MINIMUM_SCALE;
 		}
 
 		// call method that sets ingredient amounts based on new scale
-		if (isValid) {
-			adjustIngredientDisplayScale();
+		currentScale = newScale;
+		adjustIngredientDisplayScale();
+	}
+
+
+	@FXML
+	private void onScalePlusBtnClicked() {
+		// add the current scale by the new scale
+		BigDecimal newScale = currentScale.add(adjustmentFactor);
+		
+		// check that the number isn't above maximum (100)
+		if (newScale.compareTo(MAXIMUM_SCALE) > 0) {
+			newScale = MAXIMUM_SCALE;
 		}
+
+		// call method that sets ingredient amounts based on new scale
+		currentScale = newScale;
+		adjustIngredientDisplayScale();
 	}
 
 	private void adjustIngredientDisplayScale() {
-
+		batchScaleLabel.setText(currentScale.toString());
 	}
 
 	@FXML
