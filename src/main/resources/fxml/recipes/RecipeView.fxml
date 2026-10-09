@@ -10,6 +10,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -236,10 +237,63 @@
                   </HBox>
                </children>
             </HBox>
-            <HBox fx:id="tagsHBox" maxWidth="300.0">
+            <HBox alignment="CENTER">
                <VBox.margin>
                   <Insets left="15.0" />
                </VBox.margin>
+               <children>
+                  <HBox fx:id="tagsHBox" alignment="CENTER_LEFT" maxWidth="300.0" />
+                  <HBox fx:id="scalingHBox" alignment="CENTER_RIGHT" spacing="5.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="CENTER">
+                           <children>
+                              <Label styleClass="header-4" text="Batch size: " />
+                              <Label fx:id="batchScaleLabel" styleClass="header-4" text="1x" />
+                           </children>
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                        </HBox>
+                        <Button fx:id="scaleMinusBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onScaleMinusBtnClicked" styleClass="icon-only-button" text="Button">
+                           <graphic>
+                              <ImageView pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/icon/scaled/dark/minus-scaled.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <TextField fx:id="scaleAdjustmentField" alignment="CENTER" onAction="#onScaleAdjustmentFieldChange" prefColumnCount="5" prefWidth="50.0" styleClass="text-area" />
+                        <Button fx:id="scalePlusBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onScalePlusBtnClicked" styleClass="icon-only-button" text="Button">
+                           <graphic>
+                              <ImageView pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/icon/scaled/dark/plus-scaled.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="scaleResetBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onScaleResetBtnClicked" styleClass="icon-only-button" text="Button">
+                           <graphic>
+                              <ImageView pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/icon/scaled/dark/reset-scaled.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="helpBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onHelpBtnClicked" styleClass="icon-only-button" text="Button">
+                           <graphic>
+                              <ImageView pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/icon/original/other/help-scaled.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
             </HBox>
          </children>
       </VBox>

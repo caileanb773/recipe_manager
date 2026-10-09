@@ -285,6 +285,7 @@ public class AppShellController implements NavigationHandler, Configurable {
 		controller.setNavigationHandler(this);
 		controller.setRecipeToView(recipe);
 		controller.populateOverview();
+		controller.setScaleProperties();
 		//controller.setRecipeService(recipeService);
 
 		appShell.setCenter(viewRecipe);
