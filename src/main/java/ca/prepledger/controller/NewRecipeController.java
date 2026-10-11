@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -100,38 +101,58 @@ public class NewRecipeController implements Navigable, Configurable {
 	@FXML
 	public void onSaveRecipeButtonClicked() {
 		List<Ingredient> ingredients = new ArrayList<>();
+		List<String> errors = new ArrayList<>();
 		boolean isRecipeValid = false;
-		boolean areRecipeFieldsValid = false;
+		boolean doesRecipeHaveTitle = false;
 		boolean areIngredientFieldsValid = false;
 
-		// Check validity of required fields (recipe title, ingredient title)		
-		areRecipeFieldsValid = areRequiredRecipeFieldsPopulated();
+		// Check that user entered a recipe title	
+		doesRecipeHaveTitle = hasUserEnteredRecipeTitle();
 
 		// Fetch ingredients
-		try {
-		    for (IngredientRowController c : ingredientRowControllers) {
-		        ingredients.add(c.getIngredient());
-		    }
-		} catch (NumberFormatException e) {
-			// TODO user dialog
-			logger.warn("onSaveRecipeButtonClicked(): Invalid amount (NumberFormatException): {}", e);
-			return;
-		}
+//		try {
+		
+	    for (IngredientRowController c : ingredientRowControllers) {
+	        ingredients.add(c.getIngredient());
+	    }
+	    
+//		} catch (NumberFormatException e) {
+//			// TODO user dialog
+//			logger.warn("onSaveRecipeButtonClicked(): Invalid amount (NumberFormatException): {}", e);
+//			return;
+//		}
 
 		// Validate ingredients
-		areIngredientFieldsValid = areIngredientsValid(ingredients);
+		errors = areIngredientsValid(ingredients);
+		
+		// If no errors from ingredient field validation, then all ingredients are good
+		areIngredientFieldsValid = errors.isEmpty();
 
 		// At this point, determine if the recipe is valid. if not, show error
-		isRecipeValid = (areRecipeFieldsValid && areIngredientFieldsValid);
+		isRecipeValid = (doesRecipeHaveTitle && areIngredientFieldsValid);
 		
-		// TODO user dialogs here for errors n stuff
+		// The recipe is invalid for some reason. Could be no title, malformed ingredients, or both.
 		if (!isRecipeValid) {
-			// show an error
-			if (!areRecipeFieldsValid) {
-				// TODO do something
-			} else {
-				// TODO do something
+			StringBuilder message = new StringBuilder();
+			
+			if (!doesRecipeHaveTitle) {
+				message.append("• ").append("Please enter a recipe title.\n");
 			}
+				
+			if (!areIngredientFieldsValid) {
+				for (String e : errors) {
+					message.append("• ").append(e).append("\n");
+				}
+			}			
+			
+		    Alert alert = new Alert(Alert.AlertType.WARNING);
+		    alert.setTitle("Cannot Save Recipe");
+		    alert.setHeaderText("Please correct the following issues:");
+		    alert.getDialogPane().getStylesheets().add(
+    				getClass().getResource("/css/components/alert.css").toExternalForm());
+		    alert.setContentText(message.toString());
+		    alert.showAndWait();
+		    
 			logger.info("onSaveRecipeButtonClicked(): Cannot save invalid recipe.");
 			return;
 		}
@@ -280,7 +301,7 @@ public class NewRecipeController implements Navigable, Configurable {
 	/**
 	 * Check that the user has filled in all required fields
 	 */
-	private boolean areRequiredRecipeFieldsPopulated() {
+	private boolean hasUserEnteredRecipeTitle() {
 		String rcpTitle = recipeTitleField.getText().trim();
 
 		if (rcpTitle != null && !rcpTitle.isEmpty()) {
@@ -290,18 +311,31 @@ public class NewRecipeController implements Navigable, Configurable {
 		return false;
 	}
 
-	private boolean areIngredientsValid(List<Ingredient> ingredients) {
+	private List<String> areIngredientsValid(List<Ingredient> ingredients) {
+		List<String> errors = new ArrayList<>();
+		
 	    for (Ingredient ingredient : ingredients) {
 	        if (ingredient.getName() == null) {
-	            return false;
+	            errors.add("An ingredient is missing its name.");
 	        }
+	        
+	        String name = ingredient.getName();
 
-	        if (ingredient.getAmount() == null && ingredient.getUnit() != null) {
-	            return false;
-	        }
+	        try {
+				String amount = ingredient.getAmount();
+				
+				if (amount == null && ingredient.getUnit() != null) {
+				    errors.add("Ingredient '" + name
+				    + "': a unit cannot be specified without an associated amount.");
+				}
+				
+			} catch (ArithmeticException e) {
+				errors.add("Ingredient " + name + ": the amount is malformed or invalid.");
+				logger.warn("areIngredientsValid(): Invalid amount for ingredient ", name);
+			}
 	    }
 
-	    return true;
+	    return errors;
 	}
 	
 	private Recipe constructRecipeFromRemainingFields(List<Ingredient> ingredients) {

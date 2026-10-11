@@ -198,7 +198,7 @@ public class Fraction {
 				int wholeNum = Integer.parseInt(trimmed);
 				return new Fraction(wholeNum, 1);
 			} else {
-				logger.error("Invalid fractional format: parseFraction().");
+				logger.error("parseFraction(): Invalid fractional format.");
 				throw new NumberFormatException("Invalid fractional format.");
 			}
 		} catch (ArithmeticException e) {

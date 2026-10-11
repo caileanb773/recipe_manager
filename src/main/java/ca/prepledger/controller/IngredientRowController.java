@@ -1,5 +1,6 @@
 package ca.prepledger.controller;
 
+import java.math.BigDecimal;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -115,7 +116,11 @@ public class IngredientRowController {
 			return null;
 		}
 		
-		return Fraction.parseFraction(amountStr);
+		if (Fraction.isFraction(amountStr)) {
+			return Fraction.parseFraction(amountStr);
+		}
+
+		return new Fraction(new BigDecimal(amountStr));
 	}
 
 	public String getIngredientUnit() {
