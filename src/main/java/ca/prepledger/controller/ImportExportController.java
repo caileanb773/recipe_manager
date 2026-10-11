@@ -297,10 +297,7 @@ public class ImportExportController {
 			logger.error("attemptImportRecipes(): JsonProcessingException encountered: {}", e);
 		}
 		
-
-		for (Recipe recipe : importedRecipes) {
-			recipeService.addRecipe(recipe);
-		}
+		recipeService.addRecipes(importedRecipes);
 		
 		displayPostImportDialog(importedRecipes.size());
 	}
