@@ -1,6 +1,7 @@
 package ca.prepledger.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -25,50 +26,30 @@ import javafx.scene.layout.VBox;
 
 public class RecipeListController implements Navigable, Configurable {
 
-	@FXML
-	private Button gridViewBtn;
-
-	@FXML
-	private Button listViewBtn;
-
-	@FXML
-	private Button addRecipeBtn;
-
-	@FXML
-	private ScrollPane recipeScrollPane;
-
-	@FXML
-	private GridPane gridView;
-
-	@FXML
-	private VBox listView;
+	// FXML Elements
+	@FXML private Button gridViewBtn;
+	@FXML private Button listViewBtn;
+	@FXML private Button addRecipeBtn;
+	@FXML private ScrollPane recipeScrollPane;
+	@FXML private GridPane gridView;
+	@FXML private VBox listView;
+	@FXML private Label recipeCountLabel;
 	
-	@FXML
-	private Label recipeCountLabel;
-	
-	private int recipeCount = 0;
-
-	private RecipeDisplayType viewingMode;
-
+	// Injectables
 	private NavigationHandler navigationHandler;
-
-	// This class never instantiates this, it is only passed a ref. from AppShellCtrlr
 	private RecipeService recipeService;
-	
 	private AppConfig appConfig;
-
+		
+	// Misc
+	private List<Recipe> cachedRecipes;
+	private RecipeDisplayType viewingMode;
+	private int recipeCount = 0;
 	private static final Logger logger = LoggerFactory.getLogger(RecipeListController.class);
 
 
-	/////////////////////
-	//
-	// Methods
-	//
-	/////////////////////
-
 	@FXML
 	private void initialize() {
-	
+		cachedRecipes = new ArrayList<>();
 	}
 	
 	public void initializeViewingMode() {
@@ -84,7 +65,6 @@ public class RecipeListController implements Navigable, Configurable {
 		} else {
 			toggleListViewMode();
 		}
-
 	}
 
 	@FXML
@@ -126,6 +106,7 @@ public class RecipeListController implements Navigable, Configurable {
 		setGridViewBtnActive();
 		setListViewBtnInactive();
 		showGridView();
+		renderCachedRecipes();
 	}
 	
 	private void toggleListViewMode() {
@@ -133,11 +114,11 @@ public class RecipeListController implements Navigable, Configurable {
 		setListViewBtnActive();
 		setGridViewBtnInactive();
 		showListView();
+		renderCachedRecipes();
 	}
 
 	@FXML
 	public void onAddRecipeButtonClicked() {
-		//addDummyRecipe();
 		try {
 			navigationHandler.navigateTo(ContextArea.ADD_RECIPE);
 		} catch (IOException e) {
@@ -159,7 +140,6 @@ public class RecipeListController implements Navigable, Configurable {
 		gridView.setManaged(false);
 	}
 
-	// XXX Temporary testing method, to be replaced with method that fetches recipes from repo
 	private void addRecipeGridCardToGridDisplay(Recipe recipe) {
 		try {
 			FXMLLoader loader = new FXMLLoader(
@@ -179,7 +159,6 @@ public class RecipeListController implements Navigable, Configurable {
 			int column = recipeCount % 3;
 			int row = recipeCount / 3;
 
-			// XXX specifically adding only to gridview here
 			gridView.add(card, column, row);
 
 		} catch (IOException e) {
@@ -203,7 +182,6 @@ public class RecipeListController implements Navigable, Configurable {
 			controller.setOnRecipeDeleted(this::refreshDisplayedRecipes);
 			controller.setNavigationHandler(navigationHandler);
 
-			// XXX specifically adding only to listview here
 			listView.getChildren().add(card);
 
 		} catch (IOException e) {
@@ -211,23 +189,26 @@ public class RecipeListController implements Navigable, Configurable {
 		}
 	}
 
-	// XXX this can be optimized to only remove/refresh recipes for the displayed view mode
-	public void refreshDisplayedRecipes() {
+	public void refreshDisplayedRecipes() {		
+		// XXX fetch all recipes depending on online status, presumably
+		cachedRecipes = recipeService.getAllRecipes();
+		renderCachedRecipes();
+	}
+	
+	private void renderCachedRecipes() {
 		removeAllDisplayedRecipes();
 		
-		// XXX fetch all recipes depending on online status, presumably
-		List<Recipe> recipes = recipeService.getAllRecipes();
-
-		if (recipes != null) {
-			if (recipes.size() >= 1) {
-				for (Recipe recipe : recipes) {
-					addRecipeGridCardToGridDisplay(recipe);
-					addRecipeListCardToListDisplay(recipe);
-					recipeCount++;
+		if (cachedRecipes != null) {
+			for (Recipe recipe : cachedRecipes) {
+				
+				if (viewingMode == RecipeDisplayType.GRID) {
+					addRecipeGridCardToGridDisplay(recipe);						
+				} else {
+					addRecipeListCardToListDisplay(recipe);						
 				}
-			} else {
-				logger.info("refreshDisplayedRecipes(): Recipe list is empty.");
-			}
+				
+				recipeCount++;
+			}		
 		} else {
 			logger.info("refreshDisplayedRecipes(): Recipe list is null.");
 		}

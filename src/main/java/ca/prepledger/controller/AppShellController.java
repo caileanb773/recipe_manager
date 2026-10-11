@@ -24,21 +24,14 @@ import javafx.scene.layout.BorderPane;
 public class AppShellController implements NavigationHandler, Configurable, RecipeChangeListener {
 
 	@FXML private BorderPane appShell;
-
+	
 	private ContextArea currentContextArea;
-
 	private RecipeService recipeService;
-
 	private RecipeListController recipeListController;
-	
 	private Parent recipeList;
-	
-	private boolean isRecipeListCached;
-	
-	private boolean shouldRefreshRecipes;
-	
 	private AppConfig appConfig;
-	
+	private boolean isRecipeListCached;
+	private boolean shouldRefreshRecipes;
 	private static final Logger logger = LoggerFactory.getLogger(AppShellController.class);
 
 
