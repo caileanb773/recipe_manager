@@ -1,6 +1,7 @@
 package ca.prepledger.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.prepledger.model.Recipe;
 
@@ -15,8 +16,8 @@ public class RecipeService {
 	// XXX to be removed
 	private ArrayList<Recipe> dummyRecipeList;
 	
+	private List<RecipeChangeListener> listeners = new ArrayList<>();
 	
-	// XXX Methods
 	
 	public RecipeService() {
 		dummyRecipeList = new ArrayList<>();
@@ -24,14 +25,22 @@ public class RecipeService {
 
 	public void addRecipe(Recipe recipe) {
 		dummyRecipeList.add(recipe);
+		notifyRecipesChanged();
+	}
+	
+	public void addRecipes(List<Recipe> recipes) {
+		dummyRecipeList.addAll(recipes);
+		notifyRecipesChanged();
 	}
 	
 	public void updateRecipe(int id, Recipe recipe) {
 		dummyRecipeList.set(id, recipe);
+		notifyRecipesChanged();
 	}
 	
 	public void removeRecipe(Recipe recipe) {
 		dummyRecipeList.remove(recipe);
+		notifyRecipesChanged();
 	}
 	
 	public Recipe getRecipe(int id) {
@@ -44,6 +53,7 @@ public class RecipeService {
 	
 	public void removeRecipe(int id) {
 		dummyRecipeList.remove(id);
+		notifyRecipesChanged();
 	}
 	
 	public ArrayList<Recipe> getAllRecipes() {
@@ -52,6 +62,16 @@ public class RecipeService {
 	
 	public int getTotalRecipes() {
 		return dummyRecipeList.size();
+	}
+	
+	public void registerRecipeChangeListener(RecipeChangeListener listener) {
+		listeners.add(listener);
+	}
+	
+	public void notifyRecipesChanged() {
+		for (RecipeChangeListener listener : listeners) {
+			listener.onRecipesChanged();
+		}
 	}
 
 }
