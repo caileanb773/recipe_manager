@@ -10,6 +10,7 @@ import ca.prepledger.config.Configurable;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
+import ca.prepledger.service.RecipeChangeListener;
 import ca.prepledger.service.RecipeService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,16 +21,21 @@ import javafx.scene.layout.BorderPane;
  * Contents: Main controller which controls fxml loading application-wide. Also
  * handles dependency injection for controllers of those fxml pages.
  */
-public class AppShellController implements NavigationHandler, Configurable {
+public class AppShellController implements NavigationHandler, Configurable, RecipeChangeListener {
 
-	@FXML
-	private BorderPane appShell;
+	@FXML private BorderPane appShell;
 
-	private ContextArea currentContextArea = ContextArea.RECIPES;
+	private ContextArea currentContextArea;
 
-	private RecipeService recipeService = new RecipeService();
+	private RecipeService recipeService;
 
 	private RecipeListController recipeListController;
+	
+	private Parent recipeList;
+	
+	private boolean isRecipeListCached;
+	
+	private boolean shouldRefreshRecipes;
 	
 	private AppConfig appConfig;
 	
@@ -38,7 +44,11 @@ public class AppShellController implements NavigationHandler, Configurable {
 
 	@FXML
 	private void initialize() {
-
+		isRecipeListCached = false;
+		shouldRefreshRecipes = true;
+		currentContextArea = ContextArea.RECIPES;
+		recipeService = new RecipeService();
+		recipeService.registerRecipeChangeListener(this);
 	}
 	
 	public void populateInitialWindow() {
@@ -147,33 +157,30 @@ public class AppShellController implements NavigationHandler, Configurable {
 	}
 
 	private void showRecipes() throws IOException {
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getResource("/fxml/recipes/RecipeList.fxml")
-				);
-
-		Parent recipeList = loader.load();
-
-		// Register this class as the RecipeList's navigation handler
-		recipeListController = loader.getController();
-		recipeListController.setNavigationHandler(this);
-		recipeListController.setAppConfig(appConfig);
-		recipeListController.initializeViewingMode();
-
-		// XXX testing area
-		/*
-		 * could do some pattern like 
-		 * 
-		 * boolean isRecipeServiceSet = false;
-		 * 
-		 * if (!isRecipeServiceSet)
-		 * 		setRecipeService
-		 * 
-		 * */
-		recipeListController.setRecipeService(recipeService);
-
+/* Only initialize the recipelist controller once. This way we can keep
+		 * the reference and don't have to re-create all the recipe FXML cards,
+		 * which is slow and costly. */
+		if (!isRecipeListCached) {
+			FXMLLoader loader = new FXMLLoader(
+					getClass().getResource("/fxml/recipes/RecipeList.fxml")
+					);
+			
+			recipeList = loader.load();
+			recipeListController = loader.getController();
+			recipeListController.setNavigationHandler(this);
+			recipeListController.setAppConfig(appConfig);
+			recipeListController.initializeViewingMode();
+			recipeListController.setRecipeService(recipeService);
+			
+			isRecipeListCached = true;
+		}
+		
 		appShell.setCenter(recipeList);
 
-		recipeListController.refreshDisplayedRecipes();
+		if (shouldRefreshRecipes) {
+			recipeListController.refreshDisplayedRecipes();	
+			shouldRefreshRecipes = false;
+		}
 	}
 
 	private void showCosting() throws IOException {
@@ -294,6 +301,11 @@ public class AppShellController implements NavigationHandler, Configurable {
 	@Override
 	public void setAppConfig(AppConfig appConfig) {
 		this.appConfig = appConfig;
+	}
+
+	@Override
+	public void onRecipesChanged() {
+		shouldRefreshRecipes = true;
 	}
 
 }
