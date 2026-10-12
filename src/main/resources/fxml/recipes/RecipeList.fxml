@@ -34,7 +34,7 @@
                                  </VBox.margin></Label>
                            </children>
                         </VBox>
-                        <TextField prefWidth="280.0" promptText="Search recipes..." styleClass="base-form-component">
+                        <TextField fx:id="recipeSearchField" prefWidth="280.0" promptText="Search recipes..." styleClass="base-form-component">
                            <HBox.margin>
                               <Insets right="15.0" />
                            </HBox.margin></TextField>
@@ -99,21 +99,9 @@
                <children>
                   <GridPane fx:id="gridView" hgap="10.0" maxHeight="1.7976931348623157E308" vgap="10.0">
 					<columnConstraints>
-					    <ColumnConstraints percentWidth="33.3333"
-					                       hgrow="ALWAYS"
-					                       halignment="CENTER"
-					                       minWidth="250.0"
-					                       maxWidth="350.0" />
-					    <ColumnConstraints percentWidth="33.3333"
-					                       hgrow="ALWAYS"
-					                       halignment="CENTER"
-					                       minWidth="250.0"
-					                       maxWidth="350.0" />
-					    <ColumnConstraints percentWidth="33.3333"
-					                       hgrow="ALWAYS"
-					                       halignment="CENTER"
-					                       minWidth="250.0"
-					                       maxWidth="350.0" />
+					    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="350.0" minWidth="250.0" percentWidth="33.3333" />
+					    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="350.0" minWidth="250.0" percentWidth="33.3333" />
+					    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="350.0" minWidth="250.0" percentWidth="33.3333" />
 					</columnConstraints>
                      <StackPane.margin>
                         <Insets />
