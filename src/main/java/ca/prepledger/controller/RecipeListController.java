@@ -2,7 +2,9 @@ package ca.prepledger.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
@@ -34,14 +37,21 @@ public class RecipeListController implements Navigable, Configurable {
 	@FXML private GridPane gridView;
 	@FXML private VBox listView;
 	@FXML private Label recipeCountLabel;
-	
+	@FXML private TextField recipeSearchField;
+
 	// Injectables
 	private NavigationHandler navigationHandler;
 	private RecipeService recipeService;
 	private AppConfig appConfig;
-		
+
+	// Flags
+	private boolean gridCardsInitialized = false;
+	private boolean listCardsInitialized = false;
+
 	// Misc
 	private List<Recipe> cachedRecipes;
+	private Map<Recipe, Node> cachedGridCards;
+	private Map<Recipe, Node> cachedListCards;
 	private RecipeDisplayType viewingMode;
 	private int recipeCount = 0;
 	private static final Logger logger = LoggerFactory.getLogger(RecipeListController.class);
@@ -50,16 +60,18 @@ public class RecipeListController implements Navigable, Configurable {
 	@FXML
 	private void initialize() {
 		cachedRecipes = new ArrayList<>();
+		cachedGridCards = new HashMap<>();
+		cachedListCards = new HashMap<>();
 	}
-	
+
 	public void initializeViewingMode() {
 		viewingMode = appConfig.getRecipeDisplayType();
-		
+
 		if (viewingMode == null) {
 			logger.error("initializeViewingMode(): ViewingMode is null, defaulting to GRID.");
 			viewingMode = RecipeDisplayType.GRID;
 		}
-		
+
 		if (viewingMode == RecipeDisplayType.GRID) {
 			toggleGridViewMode();
 		} else {
@@ -75,7 +87,7 @@ public class RecipeListController implements Navigable, Configurable {
 
 		toggleGridViewMode();
 	}
-	
+
 	@FXML
 	public void onListViewBtnClicked() {
 		if (viewingMode == RecipeDisplayType.LIST) {
@@ -84,23 +96,23 @@ public class RecipeListController implements Navigable, Configurable {
 
 		toggleListViewMode();
 	}
-	
+
 	private void setGridViewBtnActive() {
 		gridViewBtn.getStyleClass().add("active");
 	}
-	
+
 	private void setGridViewBtnInactive() {
 		gridViewBtn.getStyleClass().remove("active");
 	}
-	
+
 	private void setListViewBtnActive() {
 		listViewBtn.getStyleClass().add("active");
 	}
-	
+
 	private void setListViewBtnInactive() {
 		listViewBtn.getStyleClass().remove("active");
 	}
-	
+
 	private void toggleGridViewMode() {
 		viewingMode = RecipeDisplayType.GRID;
 		setGridViewBtnActive();
@@ -108,7 +120,7 @@ public class RecipeListController implements Navigable, Configurable {
 		showGridView();
 		renderCachedRecipes();
 	}
-	
+
 	private void toggleListViewMode() {
 		viewingMode = RecipeDisplayType.LIST;
 		setListViewBtnActive();
@@ -155,17 +167,20 @@ public class RecipeListController implements Navigable, Configurable {
 			controller.setRecipeService(recipeService);
 			controller.setOnRecipeDeleted(this::refreshDisplayedRecipes);
 			controller.setNavigationHandler(navigationHandler);
-			
-			int column = recipeCount % 3;
-			int row = recipeCount / 3;
 
+			int index = cachedGridCards.size();
+
+			int column = index % 3;
+			int row = index / 3;
+
+			cachedGridCards.put(recipe, card);
 			gridView.add(card, column, row);
 
 		} catch (IOException e) {
 			logger.error("onRecipeCardClicked(): IOException encountered: {}", e);
 		}
 	}
-	
+
 	private void addRecipeListCardToListDisplay(Recipe recipe) {
 		try {
 			FXMLLoader loader = new FXMLLoader(
@@ -182,6 +197,7 @@ public class RecipeListController implements Navigable, Configurable {
 			controller.setOnRecipeDeleted(this::refreshDisplayedRecipes);
 			controller.setNavigationHandler(navigationHandler);
 
+			cachedListCards.put(recipe, card);
 			listView.getChildren().add(card);
 
 		} catch (IOException e) {
@@ -190,30 +206,48 @@ public class RecipeListController implements Navigable, Configurable {
 	}
 
 	public void refreshDisplayedRecipes() {		
-		// XXX fetch all recipes depending on online status, presumably
+		// XXX fetch latest recipe data (dependent on online status)
 		cachedRecipes = recipeService.getAllRecipes();
+
+		// invalidate the card caches and reset flags
+		cachedListCards.clear();
+		cachedGridCards.clear();
+		gridCardsInitialized = false;
+		listCardsInitialized = false;
+
+		// clear existing nodes from list and grid containers
+		removeAllDisplayedRecipes();
+
+		// re-render recipe cards from cached list of recipes
 		renderCachedRecipes();
 	}
-	
+
 	private void renderCachedRecipes() {
-		removeAllDisplayedRecipes();
-		
 		if (cachedRecipes != null) {
-			for (Recipe recipe : cachedRecipes) {
-				
-				if (viewingMode == RecipeDisplayType.GRID) {
-					addRecipeGridCardToGridDisplay(recipe);						
-				} else {
-					addRecipeListCardToListDisplay(recipe);						
+			recipeCount = cachedRecipes.size();
+
+			if (viewingMode == RecipeDisplayType.GRID) {
+				if (!gridCardsInitialized) {
+					for (Recipe recipe : cachedRecipes) {
+						addRecipeGridCardToGridDisplay(recipe);												
+					}
+
+					gridCardsInitialized = true;
+				}				
+			} else {
+				if (!listCardsInitialized) {
+					for (Recipe recipe : cachedRecipes) {			
+						addRecipeListCardToListDisplay(recipe);							
+					}		
+
+					listCardsInitialized = true;					
 				}
-				
-				recipeCount++;
-			}		
+			}
+
+			recipeCountLabel.setText(recipeCount + " recipes");
 		} else {
 			logger.info("refreshDisplayedRecipes(): Recipe list is null.");
 		}
-
-		recipeCountLabel.setText(recipeCount + " recipes");
 	}
 
 	private void removeAllDisplayedRecipes() {
@@ -233,5 +267,57 @@ public class RecipeListController implements Navigable, Configurable {
 	@Override
 	public void setAppConfig(AppConfig appConfig) {
 		this.appConfig = appConfig;
+	}
+
+	public void initializeSearchField() {
+		recipeSearchField.textProperty().addListener(
+				(observable, pref, last) -> filterRecipes(recipeSearchField.getText())
+				);
+	}
+
+	private void filterRecipes(String text) {
+		String query = text.toLowerCase().trim();
+		
+		if (!query.isEmpty()) {
+			for (Recipe recipe : cachedRecipes) {
+				boolean matches = recipe.getTitle().toLowerCase().contains(query)
+						|| recipe.getTags().stream().anyMatch(
+								tag -> tag.toLowerCase().contains(query)
+								);
+				
+				Node gridCard = cachedGridCards.get(recipe);
+				Node listCard = cachedListCards.get(recipe);
+				
+				if (gridCard != null) {
+					gridCard.setVisible(matches);
+					gridCard.setManaged(matches);
+				}
+				
+				if (listCard != null) {
+					listCard.setVisible(matches);
+					listCard.setManaged(matches);
+				}			
+			}
+			
+			rearrangeGridCards();
+		}
+	}
+	
+	private void rearrangeGridCards() {
+		int idx = 0;
+		
+		for (Recipe recipe : cachedRecipes) {
+			Node card = cachedGridCards.get(recipe);
+			
+			if (card != null && card.isVisible()) {
+				int col = idx % 3;
+				int row = idx / 3;
+				
+				GridPane.setColumnIndex(card, col);
+				GridPane.setRowIndex(card, row);
+				
+				idx++;
+			}
+		}
 	}
 }
