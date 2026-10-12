@@ -38,6 +38,7 @@ public class RecipeListController implements Navigable, Configurable {
 	@FXML private VBox listView;
 	@FXML private Label recipeCountLabel;
 	@FXML private TextField recipeSearchField;
+	@FXML private Button filterResetBtn;
 
 	// Injectables
 	private NavigationHandler navigationHandler;
@@ -319,5 +320,11 @@ public class RecipeListController implements Navigable, Configurable {
 				idx++;
 			}
 		}
+	}
+	
+	@FXML
+	private void onFilterResetBtnClicked() {
+		recipeSearchField.clear();
+		refreshDisplayedRecipes();
 	}
 }

@@ -28,16 +28,32 @@
                         <VBox alignment="CENTER_LEFT" fillWidth="false" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
                            <children>
                               <Label styleClass="header" text="Recipes" />
-                              <Label fx:id="recipeCountLabel" styleClass="sub-header" text="123 recipes">
+                              <Label fx:id="recipeCountLabel" styleClass="sub-header" text="0 recipes">
                                  <VBox.margin>
                                     <Insets bottom="5.0" />
                                  </VBox.margin></Label>
                            </children>
                         </VBox>
-                        <TextField fx:id="recipeSearchField" prefWidth="280.0" promptText="Search recipes..." styleClass="base-form-component">
+                        <HBox alignment="CENTER">
                            <HBox.margin>
                               <Insets right="15.0" />
-                           </HBox.margin></TextField>
+                           </HBox.margin>
+                           <children>
+                              <TextField fx:id="recipeSearchField" prefWidth="280.0" promptText="Search recipes..." styleClass="base-form-component" />
+                              <Button fx:id="filterResetBtn" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onFilterResetBtnClicked" styleClass="icon-only-button" text="Button">
+                                 <graphic>
+                                    <ImageView pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../img/icon/scaled/dark/reset-scaled.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
                         <Button fx:id="addRecipeBtn" alignment="CENTER" mnemonicParsing="false" onAction="#onAddRecipeButtonClicked" styleClass="primary-button" text="Add Recipe" textAlignment="CENTER">
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
