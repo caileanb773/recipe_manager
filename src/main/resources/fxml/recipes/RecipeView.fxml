@@ -107,7 +107,7 @@
                   </GridPane>
                </content>
                <content>
-                  <BorderPane>
+                  <BorderPane styleClass="background-offset">
                      <top>
                         <GridPane hgap="5.0" styleClass="ingredient-table-header" BorderPane.alignment="CENTER">
                           <columnConstraints>
@@ -135,10 +135,14 @@
                         </GridPane>
                      </top>
                      <center>
-                        <ScrollPane fx:id="ingredientsScrollpane" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="scroll-bar" BorderPane.alignment="CENTER">
+                        <ScrollPane fx:id="ingredientsScrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <content>
-                              <VBox fx:id="ingredientsVBox" alignment="CENTER" />
+                              <VBox fx:id="ingredientsVBox" alignment="CENTER" styleClass="background-offset" />
                            </content>
+                           <styleClass>
+                              <String fx:value="scroll-bar" />
+                              <String fx:value="background-offset" />
+                           </styleClass>
                         </ScrollPane>
                      </center>
                      <padding>
