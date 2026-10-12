@@ -150,7 +150,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	}
 
 	private void showRecipes() throws IOException {
-/* Only initialize the recipelist controller once. This way we can keep
+		/* Only initialize the recipelist controller once. This way we can keep
 		 * the reference and don't have to re-create all the recipe FXML cards,
 		 * which is slow and costly. */
 		if (!isRecipeListCached) {
@@ -163,6 +163,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			recipeListController.setNavigationHandler(this);
 			recipeListController.setAppConfig(appConfig);
 			recipeListController.initializeViewingMode();
+			recipeListController.initializeSearchField();
 			recipeListController.setRecipeService(recipeService);
 			
 			isRecipeListCached = true;
