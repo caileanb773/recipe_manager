@@ -2,8 +2,8 @@
     -fx-background-color: #1C252E;
 }
 
-.dialog-pane .header-panel {
-    -fx-background-color: #1C252E;
+.dialog-pane .text {
+    -fx-fill: #F2F4F5;
 }
 
 .dialog-pane .button {
@@ -22,17 +22,15 @@
     -fx-background-color: #25877E;
 }
 
-.dialog-pane {
-    -fx-background-color: #1C252E;
-}
-
 .dialog-pane .header-panel {
     -fx-background-color: #1C252E;
     -fx-padding: 20px 20px 10px 20px;
+    -fx-text-fill: #F2F4F5;
 }
 
 .dialog-pane .content {
     -fx-background-color: #1C252E;
+    -fx-text-fill: #F2F4F5;
 }
 
 .dialog-pane .header-panel .label {
