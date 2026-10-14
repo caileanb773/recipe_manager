@@ -5,6 +5,7 @@ import java.util.Optional;
 import ca.prepledger.model.Recipe;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 
 public class RecipeDialog {
@@ -20,13 +21,24 @@ public class RecipeDialog {
 				ButtonType.YES,
 				ButtonType.CANCEL
 				);
-		
-		confirmDelete.getDialogPane().getStylesheets().add(
+
+		confirmDelete.getDialogPane().getStylesheets().addAll(
 				getClass().getResource("/css/components/alert.css").toExternalForm()
 				);
+		
+		Button yesBtn = (Button)confirmDelete.getDialogPane()
+				.lookupButton(ButtonType.YES);
+		yesBtn.getStyleClass().remove("default");
+		yesBtn.getStyleClass().add("danger-button");
+		
+		Button cancelBtn = (Button)confirmDelete.getDialogPane()
+				.lookupButton(ButtonType.CANCEL);
+		cancelBtn.getStyleClass().remove("default");
+		cancelBtn.getStyleClass().add("default-button");
+		
 		confirmDelete.setTitle("Confirm Delete");
 		Optional<ButtonType> response = confirmDelete.showAndWait();
-		
+
 		if (response.isPresent() && response.get() == ButtonType.YES) {
 			return Choice.CONFIRM;
 		} else {
