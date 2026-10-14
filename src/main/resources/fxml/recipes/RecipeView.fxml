@@ -29,7 +29,7 @@
                            <content>
                               <BorderPane styleClass="background-offset">
                                  <center>
-                                    <VBox fx:id="recipeOverviewIngredientsVBox" styleClass="background-offset" BorderPane.alignment="CENTER">
+                                    <VBox fx:id="recipeOverviewIngredientsVBox" spacing="10.0" styleClass="background-offset" BorderPane.alignment="CENTER">
                                        <BorderPane.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </BorderPane.margin>
@@ -100,7 +100,7 @@
                            <content>
                               <BorderPane styleClass="background-offset">
                                  <center>
-                                    <VBox fx:id="ingredientsVBox" styleClass="background-offset" BorderPane.alignment="CENTER" />
+                                    <VBox fx:id="ingredientsVBox" spacing="10.0" styleClass="background-offset" BorderPane.alignment="CENTER" />
                                  </center>
                               </BorderPane>
                            </content>
