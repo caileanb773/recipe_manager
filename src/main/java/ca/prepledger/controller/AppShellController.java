@@ -294,6 +294,16 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		appShell.setCenter(viewRecipe);
 	}
 	
+	/** 
+	 * This method is called from within the RecipeView.fxml context, when the
+	 * user clicks "Remove Recipe" and confirms their choice. The recipe is
+	 * removed from the repository, and the user must be navigated back to
+	 * RecipeList.fxml, as the recipe they were viewing is no longer valid.
+	 * 
+	 * Fetches the currently viewed recipe from the 
+	 * 
+	 * @since 0.1.2
+	 */
 	public void removeRecipeFromRecipeViewContext(Recipe recipe) throws IOException {
 		// Delete recipe from the repository
 		recipeService.removeRecipe(recipe);
@@ -312,18 +322,4 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		shouldRefreshRecipes = true;
 	}
 	
-	/** 
-	 * This method is called from within the RecipeView.fxml context, when the
-	 * user clicks "Remove Recipe" and confirms their choice. The recipe is
-	 * removed from the repository, and the user must be navigated back to
-	 * RecipeList.fxml, as the recipe they were viewing is no longer valid.
-	 * 
-	 * Fetches the currently viewed recipe from the 
-	 * 
-	 * @since 0.1.2
-	 */
-	public void onRecipeRemovedFromRecipeViewContext() {
-		
-	}
-
 }
