@@ -11,6 +11,7 @@ import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeService;
+import ca.prepledger.util.RecipeDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
@@ -27,50 +28,40 @@ import javafx.scene.layout.FlowPane;
 
 public class RecipeGridCardController implements Navigable {
 
-	@FXML
-	private ImageView recipeImage;
+	@FXML private ImageView recipeImage;
+	@FXML private Label recipeName;
+	@FXML private FlowPane tagsPane;
+	@FXML private Button recipeOptionsButton;
 
-	@FXML
-	private Label recipeName;
-
-	@FXML
-	private FlowPane tagsPane;
-	
-	@FXML
-	private Button recipeOptionsButton;
-	
 	private Recipe recipe;
-	
 	private RecipeService recipeService;
-
 	private Runnable onRecipeDeleted;
-	
 	private NavigationHandler navigationHandler;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(RecipeGridCardController.class);
-	
-	
+
+
 	// XXX Placeholder method
 	public void setRecipe(Recipe recipe) {
 		this.recipe = recipe;
-		
+
 		// Set the fields of the card
 		recipeName.setText(recipe.getTitle());
 		ObservableList<Node> tagsList = tagsPane.getChildren();
 		recipe.getTags().stream()
-	      .limit(3)
-	      .forEach(tag -> {
-	    	  Label tagLabel = new Label(tag);
-	    	  tagLabel.setMaxWidth(80);
-	    	  tagLabel.setTextOverrun(OverrunStyle.ELLIPSIS);
-	    	  tagLabel.setTooltip(new Tooltip(tag));
-	    	  tagsList.add(tagLabel);
-	      });
-		
+		.limit(3)
+		.forEach(tag -> {
+			Label tagLabel = new Label(tag);
+			tagLabel.setMaxWidth(80);
+			tagLabel.setTextOverrun(OverrunStyle.ELLIPSIS);
+			tagLabel.setTooltip(new Tooltip(tag));
+			tagsList.add(tagLabel);
+		});
+
 		// Get/set image
 		recipeImage.setImage(getDefaultImage());
-		
-		/* Eventually:
+
+		/* XXX Eventually:
 		 * Image image;
 		 * 
 		 * if (recipe.hasImage())
@@ -81,12 +72,12 @@ public class RecipeGridCardController implements Navigable {
 		 * recipeImage.setImage(image)
 		 */
 	}
-	
+
 	@FXML
 	private void onRecipeOptionsButtonClicked() {
 		openContextMenu();
 	}
-	
+
 	@FXML
 	private void onRecipeCardClicked() {		
 		try {
@@ -95,7 +86,7 @@ public class RecipeGridCardController implements Navigable {
 			logger.error("onRecipeCardClicked(): IOException encountered: {}", e);
 		}
 	}
-	
+
 	private void openContextMenu() {
 		ContextMenu menu = new ContextMenu();
 
@@ -105,15 +96,15 @@ public class RecipeGridCardController implements Navigable {
 		editItem.setOnAction(e -> {
 			attemptEditRecipe();
 		});
-		
+
 		deleteItem.setOnAction(e -> {
 			attemptDeleteRecipe();
 		});
-		
+
 		menu.getItems().addAll(editItem, deleteItem);
 		menu.show(recipeOptionsButton, Side.BOTTOM, 0, 0);
 	}
-	
+
 	public void attemptEditRecipe() {
 		try {
 			navigationHandler.navigateTo(ContextArea.EDIT_RECIPE, recipe);
@@ -121,32 +112,39 @@ public class RecipeGridCardController implements Navigable {
 			logger.error("attemptEditRecipe(): IOException encountered: {}", e);
 		}
 	}
-	
+
 	public void attemptDeleteRecipe() {
-		// TODO dialog asking the user to confirm choice
-		
+		RecipeDialog dialog = new RecipeDialog();
+		RecipeDialog.Choice choice = dialog.confirmDeletion(recipe);
+
+		if (choice == RecipeDialog.Choice.CANCEL) {
+			logger.info("attemptDeleteRecipe(): Cancelling delete of recipe: "
+					+ recipe.getTitle());
+			return;
+		}
+
 		// Delete the recipe contained in this class from RecipeService's memory
 		recipeService.removeRecipe(recipe);
-		
+
 		// Tell RecipeListController to refresh
 		onRecipeDeleted.run();
 	}
-	
+
 	// XXX need defensive programming for people who delete the image by mistake
 	private Image getDefaultImage() {
 		URL url = getClass().getResource("/img/temp/missing-image.png");
 		Image image = new Image(url.toExternalForm());
 		return image;
 	}
-	
+
 	public Recipe getRecipe() {
 		return this.recipe;
 	}
-	
+
 	public void setRecipeService(RecipeService recipeService) {
 		this.recipeService = recipeService;
 	}
-	
+
 	public void setOnRecipeDeleted(Runnable onRecipeDeleted) {
 		this.onRecipeDeleted = onRecipeDeleted;
 	}
@@ -155,5 +153,5 @@ public class RecipeGridCardController implements Navigable {
 	public void setNavigationHandler(NavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-	
+
 }

@@ -9,7 +9,7 @@ import javafx.scene.control.ButtonType;
 
 public class RecipeDialog {
 
-	enum Choice {
+	public static enum Choice {
 		CONFIRM, CANCEL
 	}
 
