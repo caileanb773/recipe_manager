@@ -143,6 +143,9 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		case VIEW_RECIPE:
 			showViewRecipe(recipe);
 			break;
+		case RECIPES:
+			removeRecipeFromRecipeViewContext(recipe);
+			break;
 		default:
 			logger.error("navigateTo(Recipe recipe): Tried to navigate to a page with a recipe that doesn't require a recipe object.");
 			break;
@@ -287,9 +290,16 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		controller.setRecipeToView(recipe);
 		controller.populateOverview();
 		controller.setScaleProperties();
-		//controller.setRecipeService(recipeService);
 
 		appShell.setCenter(viewRecipe);
+	}
+	
+	public void removeRecipeFromRecipeViewContext(Recipe recipe) throws IOException {
+		// Delete recipe from the repository
+		recipeService.removeRecipe(recipe);
+		
+		// Boot the user back to RecipeList.fxml
+		showRecipes();
 	}
 
 	@Override
@@ -300,6 +310,20 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	@Override
 	public void onRecipesChanged() {
 		shouldRefreshRecipes = true;
+	}
+	
+	/** 
+	 * This method is called from within the RecipeView.fxml context, when the
+	 * user clicks "Remove Recipe" and confirms their choice. The recipe is
+	 * removed from the repository, and the user must be navigated back to
+	 * RecipeList.fxml, as the recipe they were viewing is no longer valid.
+	 * 
+	 * Fetches the currently viewed recipe from the 
+	 * 
+	 * @since 0.1.2
+	 */
+	public void onRecipeRemovedFromRecipeViewContext() {
+		
 	}
 
 }

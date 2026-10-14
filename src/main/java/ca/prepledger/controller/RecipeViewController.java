@@ -13,6 +13,7 @@ import ca.prepledger.model.Ingredient;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
+import ca.prepledger.util.RecipeDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,64 +30,39 @@ import javafx.scene.layout.VBox;
 
 public class RecipeViewController {
 
+	// FXML
 	@FXML private Button navBackButton;
-
 	@FXML private Label recipeTitleHeader;
-
 	@FXML private Button editButton;
-
 	@FXML private Button removeButton;
-
 	@FXML private HBox tagsHBox;
-
 	@FXML private HBox scalingHBox;
-
 	@FXML private Label batchScaleLabel;
-
 	@FXML private Button scaleMinusButton;
-
 	@FXML private TextField scaleAdjustmentField;
-
 	@FXML private Button scalePlusBtn;
-
 	@FXML private Button helpBtn;
-
 	@FXML private Tab overviewTab;
-
 	@FXML private Tab ingredientsTab;
-
 	@FXML private Tab directionsTab;
-
 	@FXML private VBox ingredientsVBox;
-
 	@FXML private TextArea directionsTextArea;
 
 	// Specific to the "Overview" tabpane
-	@FXML private VBox recipeOverviewIngredientsVBox;
-
-	// Specific to the "Overview" tabpane
+	@FXML private VBox recipeOverviewIngredientsVBox; 	
 	@FXML private TextArea recipeOverviewDirectionsTextArea;
 
+	// Other
 	private Recipe recipe;
-
 	private BigDecimal currentScale;
-
 	private BigDecimal adjustmentFactor;
-
 	private static final BigDecimal MINIMUM_SCALE = new BigDecimal("0.1");
-
 	private static final BigDecimal MAXIMUM_SCALE = new BigDecimal("100");
-
 	private NavigationHandler navigationHandler;
-
 	private boolean hasOverviewTabBeenClicked = false;
-
 	private boolean hasIngredientsTabBeenClicked = false;
-
 	private boolean hasDirectionsTabBeenClicked = false;
-
 	private ArrayList<CollapsibleIngredientRowController> ingredientRowControllers = new ArrayList<>();
-
 	private static final Logger logger = LoggerFactory.getLogger(RecipeViewController.class);
 
 
@@ -118,6 +94,10 @@ public class RecipeViewController {
 				tagsHBox.getChildren().add(tagLabel);
 			}
 		}
+	}
+	
+	public Recipe getViewedRecipe() {
+		return this.recipe;
 	}
 
 	public void setScaleProperties() {
@@ -179,7 +159,20 @@ public class RecipeViewController {
 
 	@FXML
 	private void onRemoveRecipeButtonClicked() {
+		RecipeDialog dialog = new RecipeDialog();
+		RecipeDialog.Choice choice = dialog.confirmDeletion(recipe);
 
+		if (choice == RecipeDialog.Choice.CANCEL) {
+			logger.info("attemptDeleteRecipe(): Cancelling delete of recipe: "
+					+ recipe.getTitle());
+			return;
+		}
+		
+		try {
+			navigationHandler.navigateTo(ContextArea.RECIPES, recipe);
+		} catch (IOException e) {
+			logger.error("onRemoveRecipeButtonClicked(): IOException encountered: {}", e);
+		}
 	}
 
 	@FXML
@@ -395,5 +388,5 @@ public class RecipeViewController {
 	public void setAdjustmentFactor(BigDecimal adjustmentFactor) {
 		this.adjustmentFactor = adjustmentFactor;
 	}
-
+	
 }
