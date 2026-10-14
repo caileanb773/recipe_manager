@@ -26,23 +26,14 @@ import javafx.scene.layout.HBox;
 
 public class RecipeListCardController implements Navigable {
 
-	@FXML
-	private Label recipeName;
-
-	@FXML
-	private HBox tagsPane;
-
-	@FXML
-	private Button recipeOptionsButton;
+	@FXML private Label recipeName;
+	@FXML private HBox tagsPane;
+	@FXML private Button recipeOptionsButton;
 
 	private Recipe recipe;
-
 	private RecipeService recipeService;
-
 	private Runnable onRecipeDeleted;
-
 	private NavigationHandler navigationHandler;
-	
 	private static final Logger logger = LoggerFactory.getLogger(RecipeGridCardController.class);
 
 

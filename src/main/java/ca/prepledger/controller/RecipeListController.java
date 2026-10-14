@@ -135,7 +135,7 @@ public class RecipeListController implements Navigable, Configurable {
 		try {
 			navigationHandler.navigateTo(ContextArea.ADD_RECIPE);
 		} catch (IOException e) {
-			logger.error("onRecipeCardClicked(): IOException encountered: {}", e);
+			logger.error("onAddRecipeButtonClicked(): IOException encountered: {}", e);
 		}
 	}
 
