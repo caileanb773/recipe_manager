@@ -57,9 +57,7 @@ public class CollapsibleIngredientRowController {
 
 	    BigDecimal scaledAmount = Fraction.toBigDecimal(
 	    		originalAmount).multiply(scale).stripTrailingZeros();
-
-	    System.out.println("Scaled: " + scaledAmount.toString());
-	    
+    
 	    setScaledUnitAmountLabel(scaledAmount.toPlainString());
 	}
 	
