@@ -91,6 +91,7 @@ public class RecipeListController implements Navigable, Configurable {
 			return;
 		}
 
+		resetSearchFilter();
 		toggleGridViewMode();
 	}
 
@@ -100,6 +101,7 @@ public class RecipeListController implements Navigable, Configurable {
 			return;
 		}
 
+		resetSearchFilter();
 		toggleListViewMode();
 	}
 
@@ -283,30 +285,28 @@ public class RecipeListController implements Navigable, Configurable {
 
 	private void filterRecipes(String text) {
 		String query = text.toLowerCase().trim();
-		
-		if (!query.isEmpty()) {
-			for (Recipe recipe : cachedRecipes) {
-				boolean matches = recipe.getTitle().toLowerCase().contains(query)
-						|| recipe.getTags().stream().anyMatch(
-								tag -> tag.toLowerCase().contains(query)
-								);
-				
-				Node gridCard = cachedGridCards.get(recipe);
-				Node listCard = cachedListCards.get(recipe);
-				
-				if (gridCard != null) {
-					gridCard.setVisible(matches);
-					gridCard.setManaged(matches);
-				}
-				
-				if (listCard != null) {
-					listCard.setVisible(matches);
-					listCard.setManaged(matches);
-				}			
+
+		for (Recipe recipe : cachedRecipes) {
+			boolean matches = recipe.getTitle().toLowerCase().contains(query)
+					|| recipe.getTags().stream().anyMatch(
+							tag -> tag.toLowerCase().contains(query)
+							);
+			
+			Node gridCard = cachedGridCards.get(recipe);
+			Node listCard = cachedListCards.get(recipe);
+			
+			if (gridCard != null) {
+				gridCard.setVisible(matches);
+				gridCard.setManaged(matches);
 			}
 			
-			rearrangeGridCards();
+			if (listCard != null) {
+				listCard.setVisible(matches);
+				listCard.setManaged(matches);
+			}			
 		}
+		
+		rearrangeGridCards();
 	}
 	
 	private void rearrangeGridCards() {
@@ -343,9 +343,9 @@ public class RecipeListController implements Navigable, Configurable {
 		resetSearchFilter();
 	}
 	
-	private void resetSearchFilter() {
+	public void resetSearchFilter() {
 		recipeSearchField.clear();
-		refreshDisplayedRecipes();
+		filterRecipes("");
 	}
 	
 	@FXML

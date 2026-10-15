@@ -85,6 +85,10 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		if (currentContextArea == contextArea) {
 			return;
 		}
+		
+		if (currentContextArea == ContextArea.RECIPES) {
+			recipeListController.resetSearchFilter();
+		}
 
 		currentContextArea = contextArea;
 
@@ -136,6 +140,10 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	public void navigateTo(ContextArea contextArea, Recipe recipe) throws IOException {
 		if (currentContextArea == contextArea) {
 			return;
+		}
+		
+		if (currentContextArea == ContextArea.RECIPES) {
+			recipeListController.resetSearchFilter();
 		}
 		
 		currentContextArea = contextArea;
