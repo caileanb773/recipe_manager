@@ -62,10 +62,15 @@ public class RecipeViewController {
 	private boolean hasOverviewTabBeenClicked = false;
 	private boolean hasIngredientsTabBeenClicked = false;
 	private boolean hasDirectionsTabBeenClicked = false;
-	private ArrayList<CollapsibleIngredientRowController> ingredientRowControllers = new ArrayList<>();
+	private ArrayList<CollapsibleIngredientRowController> ingredientRowControllers;
 	private static final Logger logger = LoggerFactory.getLogger(RecipeViewController.class);
 
 
+	@FXML
+	private void initialize() {
+		ingredientRowControllers = new ArrayList<>();
+	}
+	
 	public void setNavigationHandler(AppShellController appShellController) {
 		navigationHandler = appShellController;
 	}
