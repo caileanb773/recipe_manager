@@ -219,8 +219,14 @@ public class ImportExportController {
 		
 		try {
 			attemptImportRecipes(Path.of(selectedFile.getAbsolutePath()));
+		} catch (JsonProcessingException e) {
+			logger.error("onImportBtnClicked(): JsonProcessingException encountered.");
+			showImportErrorOccurredDialog();
 		} catch (IOException e) {
-			logger.error("onImportBtnClicked(): IOException encountered: {}", e);
+			logger.error("onImportBtnClicked(): IOException encountered.");
+			showImportOperationError("An Input/Output error occurred during import. "
+					+ "Please report this error along with a description of what "
+					+ "caused it to the bug reporting service.");
 		}
 	}
 	
@@ -244,12 +250,16 @@ public class ImportExportController {
 	        if (file.getName().toLowerCase().endsWith(".json")) {
 	        	try {
 					attemptImportRecipes(Path.of(file.getAbsolutePath()));
+	        	} catch (JsonProcessingException e) {
+	        		logger.error("onImportZoneDragDropped(): IOException encountered");
+	        		showImportErrorOccurredDialog();
 				} catch (IOException e) {
-					logger.error("onImportZoneDragDropped(): IOException encountered: {}", e);
+					logger.error("onImportZoneDragDropped(): IOException encountered.");
+					showImportErrorOccurredDialog();
 				}
 	        } else {
-	        	showImportOperationError("The provided file was not a valid JSON file.");
 				logger.error("onImportBtnClicked(): File dropped into import zone was not a .json file.");
+				showImportOperationError("The provided file was not a valid JSON file.");
 	        }
 	        event.setDropCompleted(true);
 	    } else {
@@ -282,24 +292,46 @@ public class ImportExportController {
 		}
 	}
 
+	// XXX Future versions of this could identify which recipe caused a JsonException
 	private void attemptImportRecipes(Path path) 
 			throws FileNotFoundException, JsonMappingException,
 			JsonProcessingException, IOException {
 		List<Recipe> importedRecipes = new ArrayList<>();
-
 		String json = Files.readString(path);
-
-		try {
-			importedRecipes = impExpService.importRecipes(json);
-		} catch (JsonMappingException e) {
-			logger.error("attemptImportRecipes(): JsonMappingException encountered: {}", e);
-		} catch (JsonProcessingException e) {
-			logger.error("attemptImportRecipes(): JsonProcessingException encountered: {}", e);
-		}
-		
+		importedRecipes = impExpService.importRecipes(json);
 		recipeService.addRecipes(importedRecipes);
-		
 		displayPostImportDialog(importedRecipes.size());
+	}
+	
+	public void setRecipeService(RecipeService recipeService) {
+		this.recipeService = recipeService;
+	}
+
+	
+	////////////////////////////////
+	/// 
+	/// Error Dialogs
+	/// 
+	////////////////////////////////
+	
+	/**
+	 * Alerts the user that a JSON-specific error occurred during import.
+	 * 
+	 * This is a catch-all dialog that tells the user "there is a problem with the
+	 * JSON file you tried to import" and is non-specific; i.e., it does not identify
+	 * which recipe caused the import to fail.
+	 */
+	private void showImportErrorOccurredDialog() {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Import Error");
+		alert.setHeaderText("Could not complete import operation.");
+		alert.setContentText("The file provided has malformed JSON elements and "
+				+ "could not be parsed. This could be a result from manually editing "
+				+ "JSON files.");
+		alert.getDialogPane().getStylesheets().add(
+				getClass().getResource("/css/components/alert.css").toExternalForm());
+		
+		alert.showAndWait();
 	}
 	
 	private void displayPostImportDialog(int numImported) {
@@ -336,8 +368,5 @@ public class ImportExportController {
 		alert.showAndWait();
 	}
 
-	public void setRecipeService(RecipeService recipeService) {
-		this.recipeService = recipeService;
-	}
 
 }
