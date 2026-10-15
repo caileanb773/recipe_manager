@@ -92,7 +92,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" HBox.hgrow="SOMETIMES">
                            <children>
-                              <ComboBox fx:id="recipeSort" prefWidth="190.0" promptText="Sort by..." styleClass="base-form-component" visibleRowCount="12">
+                              <ComboBox fx:id="recipeSortComboBox" onAction="#onRecipeSortComboBoxChanged" prefWidth="190.0" promptText="Sort by..." styleClass="base-form-component" visibleRowCount="12">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin></ComboBox>

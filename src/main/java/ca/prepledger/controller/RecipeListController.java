@@ -2,6 +2,7 @@ package ca.prepledger.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class RecipeListController implements Navigable, Configurable {
 	@FXML private Label recipeCountLabel;
 	@FXML private TextField recipeSearchField;
 	@FXML private Button filterResetBtn;
-	@FXML private ComboBox<String> recipeSort;
+	@FXML private ComboBox<String> recipeSortComboBox;
 
 	// Injectables
 	private NavigationHandler navigationHandler;
@@ -66,7 +67,7 @@ public class RecipeListController implements Navigable, Configurable {
 		cachedGridCards = new HashMap<>();
 		cachedListCards = new HashMap<>();
 		
-		recipeSort.getItems().addAll("Name: A-Z", "Name: Z-A");
+		recipeSortComboBox.getItems().addAll("Name: A-Z", "Name: Z-A");
 	}
 
 	public void initializeViewingMode() {
@@ -309,21 +310,32 @@ public class RecipeListController implements Navigable, Configurable {
 	}
 	
 	private void rearrangeGridCards() {
-		int idx = 0;
-		
-		for (Recipe recipe : cachedRecipes) {
-			Node card = cachedGridCards.get(recipe);
-			
-			if (card != null && card.isVisible()) {
-				int col = idx % 3;
-				int row = idx / 3;
-				
-				GridPane.setColumnIndex(card, col);
-				GridPane.setRowIndex(card, row);
-				
-				idx++;
-			}
-		}
+	    gridView.getChildren().clear();
+
+	    int index = 0;
+
+	    for (Recipe recipe : cachedRecipes) {
+	        Node card = cachedGridCards.get(recipe);
+
+	        if (card != null && card.isVisible()) {
+	            GridPane.setColumnIndex(card, index % 3);
+	            GridPane.setRowIndex(card, index / 3);
+	            gridView.getChildren().add(card);
+	            index++;
+	        }
+	    }
+	}
+	
+	private void rearrangeListCards() {
+	    listView.getChildren().clear();
+
+	    for (Recipe recipe : cachedRecipes) {
+	        Node card = cachedListCards.get(recipe);
+
+	        if (card != null) {
+	            listView.getChildren().add(card);
+	        }
+	    }
 	}
 	
 	@FXML
@@ -334,5 +346,27 @@ public class RecipeListController implements Navigable, Configurable {
 	private void resetSearchFilter() {
 		recipeSearchField.clear();
 		refreshDisplayedRecipes();
+	}
+	
+	@FXML
+	private void onRecipeSortComboBoxChanged() {
+	    String sortOption = recipeSortComboBox.getValue();
+
+	    if (sortOption == null) {
+	        return;
+	    }
+
+	    Comparator<Recipe> comparator =
+	            Comparator.comparing(Recipe::getTitle, String.CASE_INSENSITIVE_ORDER);
+
+	    if (sortOption.equals("Name: Z-A")) {
+	        comparator = comparator.reversed();
+	    }
+
+	    cachedRecipes.sort(comparator);
+
+	    filterRecipes(recipeSearchField.getText());
+	    rearrangeGridCards();
+	    rearrangeListCards();
 	}
 }
