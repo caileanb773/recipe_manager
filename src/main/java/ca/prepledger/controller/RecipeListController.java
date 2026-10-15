@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -39,6 +40,7 @@ public class RecipeListController implements Navigable, Configurable {
 	@FXML private Label recipeCountLabel;
 	@FXML private TextField recipeSearchField;
 	@FXML private Button filterResetBtn;
+	@FXML private ComboBox<String> recipeSort;
 
 	// Injectables
 	private NavigationHandler navigationHandler;
@@ -63,6 +65,8 @@ public class RecipeListController implements Navigable, Configurable {
 		cachedRecipes = new ArrayList<>();
 		cachedGridCards = new HashMap<>();
 		cachedListCards = new HashMap<>();
+		
+		recipeSort.getItems().addAll("Name: A-Z", "Name: Z-A");
 	}
 
 	public void initializeViewingMode() {
@@ -324,6 +328,10 @@ public class RecipeListController implements Navigable, Configurable {
 	
 	@FXML
 	private void onFilterResetBtnClicked() {
+		resetSearchFilter();
+	}
+	
+	private void resetSearchFilter() {
 		recipeSearchField.clear();
 		refreshDisplayedRecipes();
 	}

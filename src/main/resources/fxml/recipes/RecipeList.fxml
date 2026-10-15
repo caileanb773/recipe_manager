@@ -36,7 +36,7 @@
                         </VBox>
                         <HBox alignment="CENTER">
                            <HBox.margin>
-                              <Insets right="15.0" />
+                              <Insets right="10.0" />
                            </HBox.margin>
                            <children>
                               <TextField fx:id="recipeSearchField" prefWidth="280.0" promptText="Search recipes..." styleClass="base-form-component" />
@@ -92,7 +92,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" HBox.hgrow="SOMETIMES">
                            <children>
-                              <ComboBox prefWidth="150.0" promptText="Sort by..." styleClass="base-form-component" visibleRowCount="12">
+                              <ComboBox fx:id="recipeSort" prefWidth="190.0" promptText="Sort by..." styleClass="base-form-component" visibleRowCount="12">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin></ComboBox>
