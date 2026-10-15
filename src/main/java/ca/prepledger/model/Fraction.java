@@ -20,7 +20,7 @@ public class Fraction {
 	private int numerator;
 	private int denominator;
 	private static final Logger logger = LoggerFactory.getLogger(Fraction.class);
-	
+
 	// Constants
 	private static final int NUMERATOR = 0;
 	private static final int DENOMINATOR = 1;
@@ -28,38 +28,78 @@ public class Fraction {
 	private static final int FRACTIONAL = 1;
 
 	public Fraction() {}
-	
+
 	@JsonCreator
 	public Fraction(String number) {
-		
-		// Whole number
+
+		String[] parts;
+
+		// Number is a fraction
 		if (number.contains("/")) {
+			
+			// Number is a mixed fraction
 			if (number.contains(" ")) {
 				String[] wholeAndFraction = number.split(" ");
-				int wholeNum = Integer.parseInt(wholeAndFraction[WHOLE_NUMBER]);
 
+				if (wholeAndFraction.length != 2) {
+					throw new IllegalArgumentException("Invalid mixed fraction.");
+				}
+
+				int wholeNum = Integer.parseInt(wholeAndFraction[WHOLE_NUMBER]);
+				
+				if (wholeNum <= 0) {
+					throw new IllegalArgumentException("Whole number of mixed "
+							+ "fraction cannot be zero or less.");
+				}
+				
 				String[] fractionalPart = wholeAndFraction[FRACTIONAL].split("/");
+
+				if (fractionalPart.length != 2) {
+					throw new IllegalArgumentException("Invalid fraction.");
+				}
+
 				int num = Integer.parseInt(fractionalPart[NUMERATOR]);
 				int den = Integer.parseInt(fractionalPart[DENOMINATOR]);
-				
+
+				if (den <= 0) {
+					throw new ArithmeticException("Denominator cannot be zero or less.");
+				}
+
 				this.numerator = den * wholeNum + num;
 				this.denominator = den;
+
 			} else {
-				String[] parts = number.split("/");
-				this.numerator = Integer.parseInt(parts[NUMERATOR]);
-				this.denominator = Integer.parseInt(parts[DENOMINATOR]);
+				parts = number.split("/");
+
+				if (parts.length != 2) {
+					throw new IllegalArgumentException("Invalid fraction.");
+				}
+
+				int num = Integer.parseInt(parts[NUMERATOR]);
+				int den = Integer.parseInt(parts[DENOMINATOR]);
+
+				if (den <= 0 || num <= 0) {
+					throw new ArithmeticException("Neither numerator nor denominator "
+							+ "may be zero or less.");
+				}
+
+				this.numerator = num;
+				this.denominator = den;
 			}
+
+			// Not a fraction
 		} else {
 			this.numerator = Integer.parseInt(number);
 			this.denominator = 1;
 		}
 	}
-	
+
 	public Fraction(int num, int den) throws ArithmeticException {
-		if (den == 0) {
-			logger.warn("Denominator set to 0 in new fraction: Fraction().");
-			throw new ArithmeticException("Denominator cannot be 0.");
+		if (den <= 0) {
+			logger.warn("Denominator set to 0 or less in new fraction: Fraction().");
+			throw new ArithmeticException("Denominator cannot be 0 or less.");
 		}
+		
 		numerator = num;
 		denominator = den;
 		simplify();
@@ -206,10 +246,10 @@ public class Fraction {
 			throw new NumberFormatException("Denominator cannot be 0.");
 		}
 	}
-	
+
 	public static BigDecimal toBigDecimal(Fraction frac) {
-	    return BigDecimal.valueOf(frac.numerator)
-	            .divide(BigDecimal.valueOf(frac.denominator), 3, RoundingMode.HALF_UP);
+		return BigDecimal.valueOf(frac.numerator)
+				.divide(BigDecimal.valueOf(frac.denominator), 3, RoundingMode.HALF_UP);
 	}
 
 	public static boolean isFraction(String amt) {
