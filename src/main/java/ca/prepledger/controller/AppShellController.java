@@ -28,6 +28,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	private ContextArea currentContextArea;
 	private RecipeService recipeService;
 	private RecipeListController recipeListController;
+	private SidebarController sidebarController;
 	private Parent recipeList;
 	private AppConfig appConfig;
 	private boolean isRecipeListCached;
@@ -57,13 +58,14 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 
 			Parent sidebar = loader.load();
 
-			SidebarController controller = loader.getController();
-			controller.setNavigationHandler(this);
+			sidebarController = loader.getController();
+			sidebarController.setNavigationHandler(this);
+			sidebarController.cacheButtons();
 
 			appShell.setLeft(sidebar);
 
 			// Highlight the "Recipes" Sidebar nav button
-			controller.setInitialScreenNavButtonSelected();
+			sidebarController.setInitialScreenNavButtonSelected();
 
 		} catch (IOException e) {
 			logger.error("loadSidebar(): IOException caught while loading Sidebar.fxml: {}", e);
@@ -126,6 +128,8 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		default:
 			break;			
 		}
+		
+		sidebarController.setActiveButtonStyling(contextArea.toString().toLowerCase());
 	}
 
 	@Override
@@ -133,7 +137,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		if (currentContextArea == contextArea) {
 			return;
 		}
-
+		
 		currentContextArea = contextArea;
 
 		switch (contextArea) {
@@ -150,6 +154,8 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			logger.error("navigateTo(Recipe recipe): Tried to navigate to a page with a recipe that doesn't require a recipe object.");
 			break;
 		}
+		
+		sidebarController.setActiveButtonStyling(contextArea.toString().toLowerCase());
 	}
 
 	private void showRecipes() throws IOException {
@@ -320,6 +326,10 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	@Override
 	public void onRecipesChanged() {
 		shouldRefreshRecipes = true;
+	}
+	
+	public ContextArea getCurrentContextArea() {
+		return this.currentContextArea;
 	}
 	
 }

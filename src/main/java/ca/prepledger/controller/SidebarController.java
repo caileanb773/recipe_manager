@@ -16,26 +16,15 @@ import javafx.scene.layout.VBox;
 
 public class SidebarController implements Navigable {
 
-	@FXML
-	private Button recipesContextBtn;
+	@FXML private Button recipesContextBtn;
+	@FXML private Button costingContextBtn;
+	@FXML private Button settingsContextBtn;
+	@FXML private Button notificationsContextBtn;	
+	@FXML private Button impExpContextBtn;	
+	@FXML private VBox buttonVBox;
 
-	@FXML
-	private Button costingContextBtn;
-
-	@FXML
-	private Button settingsContextBtn;
-	
-	@FXML
-	private Button notificationsContextBtn;
-	
-	@FXML
-	private Button impExpContextBtn;
-	
-	@FXML
-	private VBox buttonVBox;
-			
 	private NavigationHandler navigationHandler;
-	
+	private List<Node> buttons;
 	private static final Logger logger = LoggerFactory.getLogger(SidebarController.class);
 
 
@@ -45,11 +34,14 @@ public class SidebarController implements Navigable {
 	//
 	/////////////////////
 
+	public void cacheButtons() {
+		buttons = buttonVBox.getChildren();
+	}
+
 	@FXML
 	public void onRecipesContextBtnClick() {
 		try {
 			navigationHandler.navigateTo(ContextArea.RECIPES);
-			setActiveButtonStyling("Recipes");
 		} catch (IOException e) {
 			logger.error("onRecipesContextBtnClick(): IOException encountered: {}", e);
 		}
@@ -59,7 +51,6 @@ public class SidebarController implements Navigable {
 	public void onCostingContextBtnClick() {
 		try {
 			navigationHandler.navigateTo(ContextArea.COSTING);
-			setActiveButtonStyling("Costing");
 		} catch (IOException e) {
 			logger.error("onCostingContextBtnClick(): IOException encountered: {}", e);
 		}
@@ -69,52 +60,61 @@ public class SidebarController implements Navigable {
 	public void onSettingsContextBtnClick() {
 		try {
 			navigationHandler.navigateTo(ContextArea.SETTINGS);
-			setActiveButtonStyling("Settings");
 		} catch (IOException e) {
 			logger.error("onSettingsContextBtnClick(): IOException encountered: {}", e);
 		}
 	}
-	
+
 	@FXML
 	public void onNotificationsContextBtnClick() {
 		try {
 			navigationHandler.navigateTo(ContextArea.NOTIFICATIONS);
-			setActiveButtonStyling("Notifications");
 		} catch (IOException e) {
 			logger.error("onNotificationsContextBtnClick(): IOException encountered: {}", e);
 		}
 	}
-	
+
 	@FXML
 	public void onPrepListsContextBtnClick() {
 		try {
 			navigationHandler.navigateTo(ContextArea.PREP_LISTS);
-			setActiveButtonStyling("Prep Lists");
 		} catch (IOException e) {
 			logger.error("onPrepListsContextBtnClick(): IOException encountered: {}", e);
 		}
 	}
-	
+
 	@FXML
 	public void onImportExportContextBtnClick() {
 		try {
 			navigationHandler.navigateTo(ContextArea.IMPORT_EXPORT);
-			setActiveButtonStyling("Import/Export");
 		} catch (IOException e) {
 			logger.error("onImportExportContextBtnClick(): IOException encountered: {}", e);
 		}
 	}
-	
+
 	public void setInitialScreenNavButtonSelected() {
 		setActiveButtonStyling("Recipes");
 	}
 
-	private void setActiveButtonStyling(String buttonLabel) {
-		List<Node> buttons = buttonVBox.getChildren();
+	public void setActiveButtonStyling(String buttonLabel) {
 		
+		/* A little hacky. Could optimize this whole operation with:
+		 * Map<ContextArea, Button> and just use Map.get() (which is a constant-
+		 * time operation on average) */
+		switch (buttonLabel) {
+		case "import_export":
+			buttonLabel = "Import/Export";
+			break;
+		case "prep_lists":
+			buttonLabel = "Prep Lists";
+			break;
+		default:
+			break;
+		}
+
 		for (Node buttonNode : buttons) {
 			Button b = (Button)buttonNode;
-			
+
 			// Give it the active styling CSS class
 			if (b.getText().equalsIgnoreCase(buttonLabel)) {
 				b.getStyleClass().add("active");
