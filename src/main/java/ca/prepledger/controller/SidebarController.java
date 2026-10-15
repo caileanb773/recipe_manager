@@ -108,6 +108,10 @@ public class SidebarController implements Navigable {
 		case "prep_lists":
 			buttonLabel = "Prep Lists";
 			break;
+		case "edit_recipe":
+		case "view_recipe":
+			buttonLabel = "Recipes";
+			break;
 		default:
 			break;
 		}
