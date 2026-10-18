@@ -41,22 +41,9 @@ public class Main extends Application {
 		cfgManager = new ConfigManager();
 		appCfg = cfgManager.load();
 		
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AppShell.fxml"));	
-		Parent root = loader.load();
-		
-		// Set the AppConfig in the main controller for dependency injection later
-		AppShellController controller = loader.getController();
-		controller.setAppConfig(appCfg);
-		controller.populateInitialWindow();
-		
-		Scene scene = new Scene(root, 1000, 800);
-		
-	    scene.getStylesheets().add(
-	            getClass().getResource("/css/application.css").toExternalForm()
-	        );
+		showAppShell(primaryStage);
 		
 		primaryStage.setTitle("PrepLedger");
-		primaryStage.setScene(scene);
         Image icon = new Image(getClass().getResourceAsStream("/img/icon/app-icon.png"));
         primaryStage.getIcons().add(icon);
 		primaryStage.show();
@@ -75,4 +62,23 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	private void showAppShell(Stage primaryStage) throws IOException {
+	    FXMLLoader loader = new FXMLLoader(
+	        getClass().getResource("/fxml/AppShell.fxml")
+	    );
+	    Parent root = loader.load();
+
+	    AppShellController controller = loader.getController();
+	    controller.setAppConfig(appCfg);
+	    controller.populateInitialWindow();
+
+	    Scene scene = new Scene(root, 1000, 800);
+	    scene.getStylesheets().add(
+	        getClass().getResource("/css/application.css").toExternalForm()
+	    );
+
+	    primaryStage.setScene(scene);
+	}
+	
 }
