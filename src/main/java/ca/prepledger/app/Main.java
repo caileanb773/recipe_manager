@@ -9,6 +9,7 @@ import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.ConfigManager;
 import ca.prepledger.controller.AppShellController;
 import ca.prepledger.controller.LoginController;
+import ca.prepledger.controller.RegisterController;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
@@ -36,20 +37,20 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 	private SessionManager sessionManager;
 	private UserSession currentSession;
 	private Parent root;
-	
-	
+
+
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		this.sessionManager = new SessionManager();
-		
+
 		// Load fonts
 		loadFonts();
-		
+
 		// Get config manager to load the config
 		cfgManager = new ConfigManager();
 		appCfg = cfgManager.load();
@@ -59,14 +60,14 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		// Load AppShellController and inject dependency
 		loadAppShellController();
 		injectAppShellAppConfig(appCfg);
-		
+
 		if (savedSession != null) {
 			currentSession = savedSession;
 			showMainApplication(primaryStage);
 		} else {
 			showLoginScreen(primaryStage);
 		}
-	
+
 		// Finalize (title bar, icon, and show the screen)
 		finalizeAppShell(primaryStage);
 	}
@@ -85,7 +86,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/fxml/AppShell.fxml")
 				);
-		
+
 		try {
 			root = loader.load();
 			appShellController = loader.getController();
@@ -104,29 +105,49 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 		primaryStage.setScene(scene);
 	}
-	
+
 	private void injectAppShellAppConfig(AppConfig appConfig) {
 		appShellController.setAppConfig(appCfg);
 	}
-	
+
 	private void showLoginScreen(Stage primaryStage) throws IOException {
-	    FXMLLoader loader = new FXMLLoader(
-	            getClass().getResource("/fxml/userauth/Login.fxml")
-	        );
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/fxml/userauth/Login.fxml")
+				);
 
-	        Parent root = loader.load();
+		Parent root = loader.load();
 
-	        LoginController controller = loader.getController();
-	        controller.setSessionHandler(this);
+		LoginController controller = loader.getController();
+		controller.setSessionHandler(this);
+		controller.setNavigationHandler(this);
 
-	        Scene scene = new Scene(root, 800, 600);
-	        scene.getStylesheets().add(
-	            getClass().getResource("/css/application.css").toExternalForm()
-	        );
+		Scene scene = new Scene(root, 800, 600);
+		scene.getStylesheets().add(
+				getClass().getResource("/css/application.css").toExternalForm()
+				);
 
-	        primaryStage.setScene(scene);
+		primaryStage.setScene(scene);
 	}
 	
+	private void showRegisterScreen(Stage primaryStage) throws IOException {
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/fxml/userauth/Register.fxml")
+				);
+
+		Parent root = loader.load();
+
+		RegisterController controller = loader.getController();
+		controller.setSessionHandler(this);
+		controller.setNavigationHandler(this);
+
+		Scene scene = new Scene(root, 800, 600);
+		scene.getStylesheets().add(
+				getClass().getResource("/css/application.css").toExternalForm()
+				);
+
+		primaryStage.setScene(scene);
+	}
+
 	private void finalizeAppShell(Stage primaryStage) {
 		primaryStage.setTitle("PrepLedger");
 		Image icon = new Image(getClass().getResourceAsStream("/img/icon/app-icon.png"));
@@ -143,7 +164,16 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 	@Override
 	public void navigateTo(ContextArea contextArea) throws IOException {
-		
+		switch (contextArea) {
+		case LOGIN:
+			showLoginScreen(primaryStage);
+			break;
+		case REGISTER:
+			showRegisterScreen(primaryStage);
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -154,7 +184,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 	@Override
 	public void onLoginSuccess(UserSession session) {
 		currentSession = session;
-		
+
 		try {
 			sessionManager.save(session);
 			showMainApplication(primaryStage);
