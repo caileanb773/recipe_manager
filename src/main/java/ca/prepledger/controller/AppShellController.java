@@ -129,6 +129,14 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			logger.error("navigateTo(): Tried to navigate to VIEW_RECIPE without an associated Recipe object.");
 			break;
 			
+		case LOGIN:
+			showLogin();
+			break;
+			
+		case REGISTER:
+			showRegister();
+			break;
+			
 		default:
 			break;			
 		}
@@ -306,6 +314,32 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		controller.setScaleProperties();
 
 		appShell.setCenter(viewRecipe);
+	}
+	
+	private void showLogin() throws IOException {
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/fxml/userauth/Login.fxml"));
+
+		Parent login = loader.load();
+
+		// Register this class as the navigation handler
+		LoginController controller = loader.getController();
+		controller.setNavigationHandler(this);
+
+		appShell.setCenter(login);
+	}
+	
+	private void showRegister() throws IOException {
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/fxml/userauth/Register.fxml"));
+
+		Parent register = loader.load();
+
+		// Register this class as the navigation handler
+		RegisterController controller = loader.getController();
+		controller.setNavigationHandler(this);
+
+		appShell.setCenter(register);
 	}
 	
 	/** 
