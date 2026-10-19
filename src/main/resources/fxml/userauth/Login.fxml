@@ -1,6 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.LoginController" />
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.LoginController">
+   <stylesheets>
+      <URL value="@../../css/application.css" />
+      <URL value="@../../css/theme.css" />
+      <URL value="@../../css/components/buttons.css" />
+      <URL value="@../../css/components/forms.css" />
+      <URL value="@../../css/components/alert.css" />
+      <URL value="@../../css/components/typography.css" />
+      <URL value="@../../css/components/checkbox.css" />
+      <URL value="@../../css/pages/loginregister.css" />
+   </stylesheets>
+   <top>
+      <VBox fx:id="header" alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="header" text="PrepLedger">
+               <graphic>
+                  <ImageView fx:id="logo" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/icon/icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="15.0" left="100.0" right="100.0" top="15.0" />
+         </BorderPane.margin>
+      </VBox>
+   </top>
+   <center>
+      <VBox fx:id="content" alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox fx:id="contentHeader">
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+               <children>
+                  <Label styleClass="header" text="Sign In" />
+                  <Label styleClass="header-4" text="Welcome back.">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+            <TextField promptText="Email address">
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField layoutX="40.0" layoutY="105.0" promptText="Password">
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" />
+               </VBox.margin>
+            </TextField>
+            <HBox fx:id="rememberMe" alignment="CENTER_LEFT">
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+               <children>
+                  <CheckBox mnemonicParsing="false" text="Remember me" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" styleClass="link-style-button" text="Forgot your password?">
+                     <HBox.margin>
+                        <Insets right="30.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <Button fx:id="signInBtn" mnemonicParsing="false" onAction="#onSignInBtnClicked" prefWidth="500.0" styleClass="primary-button" text="Sign in" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" />
+               </VBox.margin>
+            </Button>
+            <HBox fx:id="separator" alignment="CENTER">
+               <children>
+                  <Separator prefWidth="200.0" />
+                  <Label styleClass="sub-header" text="or">
+                     <HBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Separator layoutX="10.0" layoutY="10.0" prefWidth="200.0" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding>
+            </HBox>
+            <Button fx:id="signInGoogleBtn" mnemonicParsing="false" onAction="#onSignInGoogleBtnClicked" prefWidth="500.0" styleClass="secondary-button" text="Continue with Google" />
+         </children>
+         <BorderPane.margin>
+            <Insets left="100.0" right="100.0" />
+         </BorderPane.margin>
+         <styleClass>
+            <String fx:value="background-offset" />
+            <String fx:value="content-border" />
+         </styleClass>
+      </VBox>
+   </center>
+   <bottom>
+      <HBox fx:id="footer" alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Don't have an account?" />
+            <Button mnemonicParsing="false" styleClass="link-style-button" text="Create one" />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="15.0" top="15.0" />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+</BorderPane>
