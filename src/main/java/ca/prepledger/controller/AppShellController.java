@@ -86,7 +86,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			return;
 		}
 		
-		if (currentContextArea == ContextArea.RECIPES) {
+		if (recipeListController != null && currentContextArea == ContextArea.RECIPES) {
 			recipeListController.resetSearchFilter();
 		}
 
@@ -141,7 +141,9 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			break;			
 		}
 		
-		sidebarController.setActiveButtonStyling(contextArea.toString().toLowerCase());
+		if (sidebarController != null) {
+			sidebarController.setActiveButtonStyling(contextArea.toString().toLowerCase());			
+		}
 	}
 
 	@Override
@@ -316,7 +318,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		appShell.setCenter(viewRecipe);
 	}
 	
-	private void showLogin() throws IOException {
+	public void showLogin() throws IOException {
 		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/fxml/userauth/Login.fxml"));
 

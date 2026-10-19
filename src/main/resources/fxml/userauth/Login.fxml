@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.LoginController">
    <stylesheets>
       <URL value="@../../css/application.css" />
@@ -71,7 +70,7 @@
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
             </TextField>
-            <HBox fx:id="rememberMe" alignment="CENTER_LEFT">
+            <HBox alignment="CENTER_LEFT">
                <VBox.margin>
                   <Insets left="30.0" />
                </VBox.margin>
