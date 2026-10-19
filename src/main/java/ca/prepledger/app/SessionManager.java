@@ -43,7 +43,8 @@ public class SessionManager {
         String userId = properties.getProperty("userId");
         String email = properties.getProperty("email");
 
-        if (token == null || userId == null || email == null) {
+        if (token == null || userId == null || email == null
+        		|| isTokenExpired(token)) {
             clear();
             return null;
         }
@@ -53,6 +54,31 @@ public class SessionManager {
         } catch (NumberFormatException e) {
             clear();
             return null;
+        }
+    }
+    
+    private boolean isTokenExpired(String token) {
+        try {
+            String[] parts = token.split("\\.");
+            if (parts.length != 3) {
+                return true;
+            }
+
+            String payload = new String(
+                java.util.Base64.getUrlDecoder().decode(parts[1]),
+                java.nio.charset.StandardCharsets.UTF_8
+            );
+
+            com.fasterxml.jackson.databind.JsonNode json =
+                new com.fasterxml.jackson.databind.ObjectMapper()
+                    .readTree(payload);
+
+            long expiration = json.get("exp").asLong();
+            long now = System.currentTimeMillis() / 1000;
+
+            return now >= expiration;
+        } catch (Exception e) {
+            return true;
         }
     }
 
