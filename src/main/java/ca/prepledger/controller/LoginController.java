@@ -1,5 +1,11 @@
 package ca.prepledger.controller;
 
+import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
 import javafx.fxml.FXML;
@@ -18,6 +24,7 @@ public class LoginController implements Navigable {
 	@FXML private Button createAccount;
 	
 	private NavigationHandler navigationHandler;
+	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
 	
 	@FXML
@@ -39,7 +46,9 @@ public class LoginController implements Navigable {
 	private void onCreateAccountBtnClicked() {
 		System.out.println("Navigating to Register.fxml");
 		try {
-			navigationHandler.navigateTo();
+			navigationHandler.navigateTo(ContextArea.REGISTER);
+		} catch (IOException e) {
+			logger.error("onCreateAccountBtnClicked(): IOException encountered {}", e);
 		}
 	}
 
