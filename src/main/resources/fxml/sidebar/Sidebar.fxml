@@ -13,7 +13,7 @@
    <bottom>
       <BorderPane BorderPane.alignment="CENTER">
          <bottom>
-            <Label alignment="TOP_LEFT" styleClass="profile-name" text="John D." textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
+            <Label fx:id="profileName" alignment="TOP_LEFT" maxWidth="165.0" styleClass="profile-name" text="John D." textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>

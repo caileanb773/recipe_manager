@@ -6,12 +6,15 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.prepledger.app.UserSession;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 
 public class SidebarController implements Navigable {
@@ -22,6 +25,7 @@ public class SidebarController implements Navigable {
 	@FXML private Button notificationsContextBtn;	
 	@FXML private Button impExpContextBtn;	
 	@FXML private VBox buttonVBox;
+	@FXML private Label profileName;
 
 	private NavigationHandler navigationHandler;
 	private List<Node> buttons;
@@ -127,6 +131,12 @@ public class SidebarController implements Navigable {
 				b.getStyleClass().remove("active");
 			}
 		}
+	}
+	
+	public void setUserProfileDetails(UserSession currentSession) {
+		String email = currentSession.getEmail();
+		profileName.setText(email);
+		profileName.setTooltip(new Tooltip(email));
 	}
 
 	@Override
