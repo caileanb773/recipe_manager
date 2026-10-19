@@ -96,6 +96,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 	}
 
 	private void showMainApplication(Stage primaryStage) throws IOException {
+		appShellController.setCurrentSession(currentSession);
 		appShellController.populateInitialWindow();
 
 		Scene scene = new Scene(root, 1000, 800);
