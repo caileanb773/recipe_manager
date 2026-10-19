@@ -47,7 +47,18 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		this.primaryStage = primaryStage;
 		this.sessionManager = new SessionManager();
 		
+		// Load fonts
+		loadFonts();
+		
+		// Get config manager to load the config
+		cfgManager = new ConfigManager();
+		appCfg = cfgManager.load();
+
 		UserSession savedSession = sessionManager.load();
+
+		// Load AppShellController and inject dependency
+		loadAppShellController();
+		injectAppShellAppConfig(appCfg);
 		
 		if (savedSession != null) {
 			currentSession = savedSession;
@@ -55,18 +66,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		} else {
 			showLoginScreen(primaryStage);
 		}
-		
-		// Load fonts
-		loadFonts();
-
-		// Get config manager to load the config
-		cfgManager = new ConfigManager();
-		appCfg = cfgManager.load();
-
-		// Load AppShellController and inject dependency
-		loadAppShellController();
-		injectAppShellAppConfig(appCfg);
-
+	
 		// Finalize (title bar, icon, and show the screen)
 		finalizeAppShell(primaryStage);
 	}
