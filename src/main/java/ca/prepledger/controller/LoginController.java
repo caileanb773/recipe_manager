@@ -5,9 +5,12 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.prepledger.app.SessionHandler;
+import ca.prepledger.app.UserSession;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
+import ca.prepledger.service.AuthService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -23,9 +26,16 @@ public class LoginController implements Navigable {
 	@FXML private Button signInGoogle;
 	@FXML private Button createAccount;
 	
+	private AuthService auth;
 	private NavigationHandler navigationHandler;
+	private SessionHandler sessionHandler;
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
+	
+	@FXML
+	private void initialize() {
+		auth = new AuthService();
+	}
 	
 	@FXML
 	private void onForgotPasswordBtnClicked() {
@@ -34,7 +44,29 @@ public class LoginController implements Navigable {
 	
 	@FXML
 	private void onSignInBtnClicked() {
-		System.out.println("Signing in as: " + emailAddress.getText() + ", " + password.getText());
+		String email = emailAddress.getText().trim();
+		UserSession session = null;
+		
+		// TODO ensure email/password fields are valid
+		if (email.isBlank() || password.getText().isBlank()) {
+			// TODO show error msg to user
+			logger.warn("onSignInBtnClicked(): One or more fields blank.");
+			return;
+		}
+		
+		try {
+			session = auth.login(email, password.getText());
+		} catch (IOException | InterruptedException e) {
+			logger.warn("onSignInBtnClicked(): Couldn't login.");
+		}
+		
+		if (session != null) {
+			logger.info("Logged in as {}", session.getEmail());
+			
+			sessionHandler.onLoginSuccess(session);
+		} else {
+			
+		}
 	}
 	
 	@FXML
@@ -55,6 +87,10 @@ public class LoginController implements Navigable {
 	@Override
 	public void setNavigationHandler(NavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;		
+	}
+	
+	public void setSessionHandler(SessionHandler sessionHandler) {
+		this.sessionHandler = sessionHandler;
 	}
 
 }

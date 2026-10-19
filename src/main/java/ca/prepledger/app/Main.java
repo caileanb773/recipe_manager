@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.ConfigManager;
 import ca.prepledger.controller.AppShellController;
+import ca.prepledger.controller.LoginController;
+import ca.prepledger.model.Recipe;
+import ca.prepledger.navigation.ContextArea;
+import ca.prepledger.navigation.NavigationHandler;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,12 +26,15 @@ import javafx.stage.Stage;
  * Controller is created using the passed model and view.
  * @author: Cailean Bernard
  */
-public class Main extends Application {
+public class Main extends Application implements SessionHandler, NavigationHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 	private AppShellController appShellController;
 	private ConfigManager cfgManager;
 	private AppConfig appCfg;
+	private Stage primaryStage;
+	private SessionManager sessionManager;
+	private UserSession currentSession;
 	private Parent root;
 	
 	
@@ -36,7 +43,19 @@ public class Main extends Application {
 	}
 	
 	@Override
-	public void start(Stage primaryStage) throws Exception {	
+	public void start(Stage primaryStage) throws Exception {
+		this.primaryStage = primaryStage;
+		this.sessionManager = new SessionManager();
+		
+		UserSession savedSession = sessionManager.load();
+		
+		if (savedSession != null) {
+			currentSession = savedSession;
+			showMainApplication(primaryStage);
+		} else {
+			showLoginScreen(primaryStage);
+		}
+		
 		// Load fonts
 		loadFonts();
 
@@ -47,12 +66,6 @@ public class Main extends Application {
 		// Load AppShellController and inject dependency
 		loadAppShellController();
 		injectAppShellAppConfig(appCfg);
-		
-		// Load "Login" screen
-		showLoginScreen(primaryStage);
-
-		// Validate login credentials
-		//showAppShell(primaryStage);
 
 		// Finalize (title bar, icon, and show the screen)
 		finalizeAppShell(primaryStage);
@@ -96,19 +109,22 @@ public class Main extends Application {
 		appShellController.setAppConfig(appCfg);
 	}
 	
-	private void showLoginScreen(Stage primaryStage) {
-		try {
-			appShellController.showLogin();
-		} catch (IOException e) {
-			logger.error("showLoginScreen(): IOException caught during load: {}", e);
-		}
+	private void showLoginScreen(Stage primaryStage) throws IOException {
+	    FXMLLoader loader = new FXMLLoader(
+	            getClass().getResource("/fxml/userauth/Login.fxml")
+	        );
 
-		Scene scene = new Scene(root, 800, 600);
-		scene.getStylesheets().add(
-				getClass().getResource("/css/application.css").toExternalForm()
-				);
+	        Parent root = loader.load();
 
-		primaryStage.setScene(scene);
+	        LoginController controller = loader.getController();
+	        controller.setSessionHandler(this);
+
+	        Scene scene = new Scene(root, 800, 600);
+	        scene.getStylesheets().add(
+	            getClass().getResource("/css/application.css").toExternalForm()
+	        );
+
+	        primaryStage.setScene(scene);
 	}
 	
 	private void finalizeAppShell(Stage primaryStage) {
@@ -123,6 +139,28 @@ public class Main extends Application {
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Medium.ttf"), 14);
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-SemiBold.ttf"), 14);
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Bold.ttf"), 14);
+	}
+
+	@Override
+	public void navigateTo(ContextArea contextArea) throws IOException {
+		
+	}
+
+	@Override
+	public void navigateTo(ContextArea contextArea, Recipe recipe) throws IOException {
+		return;
+	}
+
+	@Override
+	public void onLoginSuccess(UserSession session) {
+		currentSession = session;
+		
+		try {
+			sessionManager.save(session);
+			showMainApplication(primaryStage);
+		} catch (IOException e) {
+			logger.error("onLoginSuccess(): Failed to open appplication after login.", e);
+		}
 	}
 
 }
