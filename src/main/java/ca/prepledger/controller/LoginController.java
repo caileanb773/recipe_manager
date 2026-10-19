@@ -12,6 +12,8 @@ import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.AuthService;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -39,11 +41,19 @@ public class LoginController implements Navigable {
 	
 	@FXML
 	private void onForgotPasswordBtnClicked() {
+		displayForgotPasswordDialog();
+	}
+	
+	private void displayForgotPasswordDialog() {
 		System.out.println("clicked");
 	}
 	
 	@FXML
 	private void onSignInBtnClicked() {
+		attemptLogin();
+	}
+	
+	private void attemptLogin() {
 		String email = emailAddress.getText().trim();
 		UserSession session = null;
 		
@@ -71,12 +81,22 @@ public class LoginController implements Navigable {
 	
 	@FXML
 	private void onSignInGoogleBtnClicked() {
-		System.out.println("Signing in via Google");
+		Alert alert = new Alert(
+				AlertType.INFORMATION,
+				"This feature is coming in a future release."
+				);
+		
+		alert.getDialogPane().getStylesheets().add(
+				getClass().getResource("/css/components/alert.css").toExternalForm());
+		alert.showAndWait();
 	}
 	
 	@FXML
 	private void onCreateAccountBtnClicked() {
-		System.out.println("Navigating to Register.fxml");
+		showRegisterScreen();
+	}
+	
+	private void showRegisterScreen() {
 		try {
 			navigationHandler.navigateTo(ContextArea.REGISTER);
 		} catch (IOException e) {
