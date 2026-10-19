@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.prepledger.app.UserSession;
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.Configurable;
 import ca.prepledger.model.Recipe;
@@ -15,6 +16,7 @@ import ca.prepledger.service.RecipeService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
 /**
@@ -33,6 +35,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	private AppConfig appConfig;
 	private boolean isRecipeListCached;
 	private boolean shouldRefreshRecipes;
+	private UserSession currentSession;
 	private static final Logger logger = LoggerFactory.getLogger(AppShellController.class);
 
 
@@ -61,6 +64,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			sidebarController = loader.getController();
 			sidebarController.setNavigationHandler(this);
 			sidebarController.cacheButtons();
+			sidebarController.setUserProfileDetails(currentSession);
 
 			appShell.setLeft(sidebar);
 
@@ -340,6 +344,10 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	
 	public ContextArea getCurrentContextArea() {
 		return this.currentContextArea;
+	}
+
+	public void setCurrentSession(UserSession currentSession) {
+		this.currentSession = currentSession;
 	}
 	
 }
