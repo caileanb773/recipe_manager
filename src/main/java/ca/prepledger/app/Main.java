@@ -25,22 +25,24 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
-	
+	private AppShellController appShellController;
 	private ConfigManager cfgManager;
-	
 	private AppConfig appCfg;
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Regular.ttf"), 14);
-		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Medium.ttf"), 14);
-		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-SemiBold.ttf"), 14);
-		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Bold.ttf"), 14);
+	public void start(Stage primaryStage) throws Exception {	
+		// Load fonts
+		loadFonts();
 		
 		// Get config manager to load the config
 		cfgManager = new ConfigManager();
 		appCfg = cfgManager.load();
 		
+		// Initialize AppShellController
+		
+		// Show "Login" screen
+		
+		// Validate login credentials
 		showAppShell(primaryStage);
 		
 		primaryStage.setTitle("PrepLedger");
@@ -69,9 +71,9 @@ public class Main extends Application {
 	    );
 	    Parent root = loader.load();
 
-	    AppShellController controller = loader.getController();
-	    controller.setAppConfig(appCfg);
-	    controller.populateInitialWindow();
+	    appShellController = loader.getController();
+	    appShellController.setAppConfig(appCfg);
+	    appShellController.populateInitialWindow();
 
 	    Scene scene = new Scene(root, 1000, 800);
 	    scene.getStylesheets().add(
@@ -79,6 +81,13 @@ public class Main extends Application {
 	    );
 
 	    primaryStage.setScene(scene);
+	}
+	
+	private void loadFonts() {
+		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Regular.ttf"), 14);
+		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Medium.ttf"), 14);
+		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-SemiBold.ttf"), 14);
+		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Bold.ttf"), 14);
 	}
 	
 }
