@@ -23,34 +23,41 @@ import javafx.stage.Stage;
  * @author: Cailean Bernard
  */
 public class Main extends Application {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 	private AppShellController appShellController;
 	private ConfigManager cfgManager;
 	private AppConfig appCfg;
-
+	private Parent root;
+	
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {	
 		// Load fonts
 		loadFonts();
-		
+
 		// Get config manager to load the config
 		cfgManager = new ConfigManager();
 		appCfg = cfgManager.load();
+
+		// Load AppShellController and inject dependency
+		loadAppShellController();
+		injectAppShellAppConfig(appCfg);
 		
-		// Initialize AppShellController
-		
-		// Show "Login" screen
-		
+		// Load "Login" screen
+		showLoginScreen(primaryStage);
+
 		// Validate login credentials
-		showAppShell(primaryStage);
-		
-		primaryStage.setTitle("PrepLedger");
-        Image icon = new Image(getClass().getResourceAsStream("/img/icon/app-icon.png"));
-        primaryStage.getIcons().add(icon);
-		primaryStage.show();
+		//showAppShell(primaryStage);
+
+		// Finalize (title bar, icon, and show the screen)
+		finalizeAppShell(primaryStage);
 	}
-	
+
 	@Override
 	public void stop() {
 		try {
@@ -60,34 +67,62 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void main(String[] args) {
-		launch(args);
+
+	private void loadAppShellController() {
+		FXMLLoader loader = new FXMLLoader(
+				getClass().getResource("/fxml/AppShell.fxml")
+				);
+		
+		try {
+			root = loader.load();
+			appShellController = loader.getController();
+		} catch (IOException e) {
+			logger.error("loadAppShellController(): IOException caught during controller load: {}", e);
+		}
+	}
+
+	private void showMainApplication(Stage primaryStage) throws IOException {
+		appShellController.populateInitialWindow();
+
+		Scene scene = new Scene(root, 1000, 800);
+		scene.getStylesheets().add(
+				getClass().getResource("/css/application.css").toExternalForm()
+				);
+
+		primaryStage.setScene(scene);
 	}
 	
-	private void showAppShell(Stage primaryStage) throws IOException {
-	    FXMLLoader loader = new FXMLLoader(
-	        getClass().getResource("/fxml/AppShell.fxml")
-	    );
-	    Parent root = loader.load();
-
-	    appShellController = loader.getController();
-	    appShellController.setAppConfig(appCfg);
-	    appShellController.populateInitialWindow();
-
-	    Scene scene = new Scene(root, 1000, 800);
-	    scene.getStylesheets().add(
-	        getClass().getResource("/css/application.css").toExternalForm()
-	    );
-
-	    primaryStage.setScene(scene);
+	private void injectAppShellAppConfig(AppConfig appConfig) {
+		appShellController.setAppConfig(appCfg);
 	}
 	
+	private void showLoginScreen(Stage primaryStage) {
+		try {
+			appShellController.showLogin();
+		} catch (IOException e) {
+			logger.error("showLoginScreen(): IOException caught during load: {}", e);
+		}
+
+		Scene scene = new Scene(root, 800, 600);
+		scene.getStylesheets().add(
+				getClass().getResource("/css/application.css").toExternalForm()
+				);
+
+		primaryStage.setScene(scene);
+	}
+	
+	private void finalizeAppShell(Stage primaryStage) {
+		primaryStage.setTitle("PrepLedger");
+		Image icon = new Image(getClass().getResourceAsStream("/img/icon/app-icon.png"));
+		primaryStage.getIcons().add(icon);
+		primaryStage.show();
+	}
+
 	private void loadFonts() {
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Regular.ttf"), 14);
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Medium.ttf"), 14);
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-SemiBold.ttf"), 14);
 		Font.loadFont(getClass().getResourceAsStream("/font/Inter/static/Inter_18pt-Bold.ttf"), 14);
 	}
-	
+
 }
