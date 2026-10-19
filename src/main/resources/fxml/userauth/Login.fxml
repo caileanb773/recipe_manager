@@ -61,12 +61,12 @@
                   </Label>
                </children>
             </VBox>
-            <TextField promptText="Email address">
+            <TextField fx:id="emailAddress" promptText="Email address">
                <VBox.margin>
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
             </TextField>
-            <TextField layoutX="40.0" layoutY="105.0" promptText="Password">
+            <TextField fx:id="password" layoutX="40.0" layoutY="105.0" promptText="Password">
                <VBox.margin>
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
@@ -76,16 +76,16 @@
                   <Insets left="30.0" />
                </VBox.margin>
                <children>
-                  <CheckBox mnemonicParsing="false" text="Remember me" />
+                  <CheckBox fx:id="rememberMe" mnemonicParsing="false" text="Remember me" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" styleClass="link-style-button" text="Forgot your password?">
+                  <Button fx:id="forgotPassword" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onForgotPasswordBtnClicked" styleClass="link-style-button" text="Forgot your password?">
                      <HBox.margin>
                         <Insets right="30.0" />
                      </HBox.margin>
                   </Button>
                </children>
             </HBox>
-            <Button fx:id="signInBtn" mnemonicParsing="false" onAction="#onSignInBtnClicked" prefWidth="500.0" styleClass="primary-button" text="Sign in" VBox.vgrow="ALWAYS">
+            <Button fx:id="signIn" mnemonicParsing="false" onAction="#onSignInBtnClicked" prefWidth="500.0" styleClass="primary-button" text="Sign in" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
@@ -107,7 +107,7 @@
                   <Insets left="30.0" right="30.0" />
                </padding>
             </HBox>
-            <Button fx:id="signInGoogleBtn" mnemonicParsing="false" onAction="#onSignInGoogleBtnClicked" prefWidth="500.0" styleClass="secondary-button" text="Continue with Google" />
+            <Button fx:id="signInGoogle" mnemonicParsing="false" onAction="#onSignInGoogleBtnClicked" prefWidth="500.0" styleClass="secondary-button" text="Continue with Google" />
          </children>
          <BorderPane.margin>
             <Insets left="100.0" right="100.0" />
@@ -122,7 +122,7 @@
       <HBox fx:id="footer" alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
             <Label text="Don't have an account?" />
-            <Button mnemonicParsing="false" styleClass="link-style-button" text="Create one" />
+            <Button fx:id="createAccount" mnemonicParsing="false" onAction="#onCreateAccountBtnClicked" styleClass="link-style-button" text="Create one" />
          </children>
          <BorderPane.margin>
             <Insets bottom="15.0" top="15.0" />
