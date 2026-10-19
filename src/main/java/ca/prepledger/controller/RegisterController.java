@@ -38,11 +38,45 @@ public class RegisterController implements Navigable {
 
 	@FXML
 	private void onCreateAccountButtonClicked() {
-		attemptCreateAccount();
+		if (areFormFieldsValid(emailAddress.getText().trim())) {
+			attemptRegister();
+		} else {
+			// TODO show alert
+			System.out.println("Fields not valid.");
+		}
 	}
 
-	private void attemptCreateAccount() {
+	// TODO replace with real validation
+	public boolean areFormFieldsValid(String email) {		
+		if (email.isBlank() || password.getText().isBlank() || confirmPassword.getText().isBlank()) {
+			return false;
+		}
 
+		if (!password.getText().equals(confirmPassword.getText())) {
+			// TODO display password mismatch error
+			return false;
+		}
+
+		return true;
+	}
+
+	private void attemptRegister() {
+		try {
+			auth.register(
+					emailAddress.getText().trim(),
+					password.getText()
+					);
+
+			// Registration succeeded; return to login
+			navigationHandler.navigateTo(ContextArea.LOGIN);
+
+		} catch (IOException e) {
+			logger.warn("Registration failed: {}", e.getMessage());
+			// TODO display e.getMessage() to the user
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			logger.warn("Registration request interrupted.");
+		}
 	}
 
 	@FXML
