@@ -40,7 +40,7 @@
             </Label>
          </children>
          <BorderPane.margin>
-            <Insets bottom="15.0" left="100.0" right="100.0" top="15.0" />
+            <Insets bottom="30.0" left="100.0" right="100.0" top="30.0" />
          </BorderPane.margin>
       </VBox>
    </top>
@@ -49,11 +49,11 @@
          <children>
             <VBox fx:id="contentHeader">
                <VBox.margin>
-                  <Insets left="30.0" />
+                  <Insets bottom="10.0" left="30.0" />
                </VBox.margin>
                <children>
                   <Label styleClass="header" text="Sign In" />
-                  <Label styleClass="header-4" text="Welcome back.">
+                  <Label styleClass="sub-header" text="Welcome back.">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -127,7 +127,7 @@
    <bottom>
       <HBox fx:id="footer" alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Don't have an account?" />
+            <Label styleClass="header-4" text="Don't have an account?" />
             <Button fx:id="createAccount" mnemonicParsing="false" onAction="#onCreateAccountBtnClicked" styleClass="link-style-button" text="Create one" />
          </children>
          <BorderPane.margin>

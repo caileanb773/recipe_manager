@@ -39,7 +39,7 @@
             </Label>
          </children>
          <BorderPane.margin>
-            <Insets bottom="15.0" left="100.0" right="100.0" top="15.0" />
+            <Insets bottom="30.0" left="100.0" right="100.0" top="30.0" />
          </BorderPane.margin>
       </VBox>
    </top>
@@ -48,11 +48,11 @@
          <children>
             <VBox fx:id="contentHeader">
                <VBox.margin>
-                  <Insets left="30.0" />
+                  <Insets bottom="10.0" left="30.0" />
                </VBox.margin>
                <children>
                   <Label styleClass="header" text="Register" />
-                  <Label styleClass="header-4" text="Create a new account and start tracking your recipes.">
+                  <Label styleClass="sub-header" text="Create a new account and start tracking your recipes.">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -82,10 +82,17 @@
                   <Region HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <Button fx:id="createAccount" mnemonicParsing="false" onAction="#onCreateAccountButtonClicked" prefWidth="500.0" styleClass="primary-button" text="Create Account" VBox.vgrow="ALWAYS">
+            <Button fx:id="createAccount" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onCreateAccountButtonClicked" prefWidth="500.0" styleClass="primary-button" text="Create Account" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/icon/scaled/light/login-light-scaled.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <HBox fx:id="separator" alignment="CENTER">
                <children>
@@ -118,7 +125,7 @@
    <bottom>
       <HBox fx:id="footer" alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Already have an account?" />
+            <Label styleClass="header-4" text="Already have an account?" />
             <Button fx:id="signIn" mnemonicParsing="false" onAction="#onSignInBtnClicked" styleClass="link-style-button" text="Sign in" />
          </children>
          <BorderPane.margin>
