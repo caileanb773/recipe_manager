@@ -55,22 +55,23 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		cfgManager = new ConfigManager();
 		appCfg = cfgManager.load();
 
-		UserSession savedSession = sessionManager.load();
+		initializeSession();
+	}
+	
+	private void initializeSession() throws IOException {
+	    UserSession savedSession = sessionManager.load();
 
-		// Load AppShellController and inject dependencies
-		loadAppShellController();
-		injectAppShellAppConfig();
-		injectSessionHandler();
+	    if (savedSession != null) {
+	        currentSession = savedSession;
+	        loadAppShellController();
+	        injectAppShellAppConfig();
+	        injectSessionHandler();
+	        displayAppShellController(primaryStage);
+	    } else {
+	        showLoginScreen(primaryStage);
+	    }
 
-		if (savedSession != null) {
-			currentSession = savedSession;
-			showMainApplication(primaryStage);
-		} else {
-			showLoginScreen(primaryStage);
-		}
-
-		// Finalize (title bar, icon, and show the screen)
-		finalizeAppShell(primaryStage);
+	    finalizeAppShell(primaryStage);
 	}
 
 	@Override
@@ -87,7 +88,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/fxml/AppShell.fxml")
 				);
-
+		
 		try {
 			root = loader.load();
 			appShellController = loader.getController();
@@ -96,7 +97,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		}
 	}
 
-	private void showMainApplication(Stage primaryStage) throws IOException {
+	private void displayAppShellController(Stage primaryStage) throws IOException {
 		appShellController.setCurrentSession(currentSession);
 		appShellController.populateInitialWindow();
 
@@ -190,19 +191,40 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 	@Override
 	public void onLoginSuccess(UserSession session) {
-		currentSession = session;
+	    currentSession = session;
 
-		try {
-			sessionManager.save(session);
-			showMainApplication(primaryStage);
-		} catch (IOException e) {
-			logger.error("onLoginSuccess(): Failed to open appplication after login.", e);
-		}
+	    try {
+	        sessionManager.save(session);
+
+	        loadAppShellController();
+	        injectAppShellAppConfig();
+	        injectSessionHandler();
+
+	        displayAppShellController(primaryStage);
+	    } catch (IOException e) {
+	        logger.error("onLoginSuccess(): Failed to open application after login.", e);
+	    }
 	}
 	
 	@Override
 	public void onLogout() {
+		// Destroy local JWT
+		try {
+			sessionManager.clear();
+		} catch (IOException e) {
+			logger.error("onLogout(): Couldn't clear() JWT file from disk: {}", e);
+		}
 		
+		// Invalidate current session
+		currentSession = null;
+		
+		// Navigate to Login.fxml
+		try {
+			navigateTo(ContextArea.LOGIN);
+		} catch (IOException e) {
+			logger.error("onLogout(): Caught IOException while trying to navigate"
+					+ " to LOGIN: {}", e);
+		}
 	}
 
 }
