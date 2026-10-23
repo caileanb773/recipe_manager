@@ -90,7 +90,7 @@ public class LoginController implements Navigable {
 
 			sessionHandler.onLoginSuccess(session);
 		} else {
-
+			logger.warn("attemptLogin(): Login failed; session returned from AuthService == null.");
 		}
 	}
 

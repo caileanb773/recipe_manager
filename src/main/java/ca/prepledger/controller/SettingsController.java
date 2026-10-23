@@ -1,14 +1,19 @@
 package ca.prepledger.controller;
 
+import java.sql.Time;
+import java.time.LocalTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.prepledger.app.AppInfo;
+import ca.prepledger.app.SessionHandler;
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.AppLanguage;
 import ca.prepledger.config.Configurable;
 import ca.prepledger.config.RecipeDisplayType;
 import ca.prepledger.config.Theme;
+import ca.prepledger.util.PrepLedgerDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,6 +32,7 @@ public class SettingsController implements Configurable {
 	@FXML private Label versionLabel;
 	@FXML private Button logoutButton;
 	
+	private SessionHandler sessionHandler;
 	private AppConfig appConfig;
 	private static final Logger logger = LoggerFactory.getLogger(SettingsController.class);
 
@@ -136,7 +142,16 @@ public class SettingsController implements Configurable {
 	}
 	
 	private void logout() {
+		PrepLedgerDialog confirm = new PrepLedgerDialog();
+		PrepLedgerDialog.Choice choice = confirm.confirmLogout();
 		
+		if (choice.equals(PrepLedgerDialog.Choice.CANCEL)) {
+			return;
+		}
+		
+		// Log out
+		logger.info("User logged out at " + Time.valueOf(LocalTime.now()) + ".");
+		sessionHandler.onLogout();
 	}
 	
 	public void saveSettings() {
@@ -161,5 +176,9 @@ public class SettingsController implements Configurable {
 	public void setAppConfig(AppConfig appConfig) {
 		this.appConfig = appConfig;
 	}
-
+	
+	public void setSessionHandler(SessionHandler sessionHandler) {
+		this.sessionHandler = sessionHandler;
+	}
+	
 }

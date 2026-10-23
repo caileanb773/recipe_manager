@@ -139,7 +139,6 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		Parent root = loader.load();
 
 		RegisterController controller = loader.getController();
-		controller.setSessionHandler(this);
 		controller.setNavigationHandler(this);
 		controller.initializeTextFieldIcons();
 
@@ -194,6 +193,11 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		} catch (IOException e) {
 			logger.error("onLoginSuccess(): Failed to open appplication after login.", e);
 		}
+	}
+	
+	@Override
+	public void onLogout() {
+		
 	}
 
 }
