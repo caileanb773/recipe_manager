@@ -2,6 +2,8 @@ package ca.prepledger.controller;
 
 import java.io.IOException;
 
+import org.controlsfx.control.textfield.CustomPasswordField;
+import org.controlsfx.control.textfield.CustomTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,13 +16,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class RegisterController implements Navigable {
 
-	@FXML private TextField emailAddress;
-	@FXML private TextField password;
-	@FXML private TextField confirmPassword;
+	@FXML private CustomTextField emailAddress;
+	@FXML private CustomPasswordField password;
+	@FXML private CustomPasswordField confirmPassword;
 	@FXML private Button createAccount;
 	@FXML private Button signInGoogle;
 	@FXML private Button signIn;
@@ -34,6 +37,23 @@ public class RegisterController implements Navigable {
 	@FXML
 	private void initialize() {
 		auth = new AuthService();
+	}
+	
+	public void initializeTextFieldIcons() {
+		ImageView emailIcon = new ImageView(
+				new Image(getClass().getResourceAsStream(
+						"/img/icon/scaled/other/email-gray-scaled.png")));
+		ImageView passwordIcon = new ImageView(
+				new Image(getClass().getResourceAsStream(
+						"/img/icon/scaled/other/password-gray-scaled.png")));
+		
+		ImageView confirmPasswordIcon = new ImageView(
+				new Image(getClass().getResourceAsStream(
+						"/img/icon/scaled/other/password-gray-scaled.png")));
+
+		emailAddress.setLeft(emailIcon);
+		password.setLeft(passwordIcon);
+		confirmPassword.setLeft(confirmPasswordIcon);
 	}
 
 	@FXML
