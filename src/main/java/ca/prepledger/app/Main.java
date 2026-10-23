@@ -57,9 +57,10 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 		UserSession savedSession = sessionManager.load();
 
-		// Load AppShellController and inject dependency
+		// Load AppShellController and inject dependencies
 		loadAppShellController();
-		injectAppShellAppConfig(appCfg);
+		injectAppShellAppConfig();
+		injectSessionHandler();
 
 		if (savedSession != null) {
 			currentSession = savedSession;
@@ -107,8 +108,12 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		primaryStage.setScene(scene);
 	}
 
-	private void injectAppShellAppConfig(AppConfig appConfig) {
+	private void injectAppShellAppConfig() {
 		appShellController.setAppConfig(appCfg);
+	}
+	
+	private void injectSessionHandler() {
+		appShellController.setSessionHandler(this);
 	}
 
 	private void showLoginScreen(Stage primaryStage) throws IOException {

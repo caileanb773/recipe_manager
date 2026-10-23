@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.prepledger.app.SessionHandler;
 import ca.prepledger.app.UserSession;
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.Configurable;
@@ -35,6 +36,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	private boolean isRecipeListCached;
 	private boolean shouldRefreshRecipes;
 	private UserSession currentSession;
+	private SessionHandler sessionHandler;
 	private static final Logger logger = LoggerFactory.getLogger(AppShellController.class);
 
 
@@ -220,6 +222,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		// Initialize
 		controller.setSettingsFieldsFromConfig();
 		controller.setVersionLabel();
+		controller.setSessionHandler(sessionHandler);
 		
 		appShell.setCenter(settings);
 	}
@@ -347,6 +350,10 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 
 	public void setCurrentSession(UserSession currentSession) {
 		this.currentSession = currentSession;
+	}
+	
+	public void setSessionHandler(SessionHandler sessionHandler) {
+		this.sessionHandler = sessionHandler;
 	}
 	
 }
