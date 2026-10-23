@@ -11,7 +11,7 @@ import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeService;
-import ca.prepledger.util.RecipeDialog;
+import ca.prepledger.util.PrepLedgerDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
@@ -114,10 +114,10 @@ public class RecipeGridCardController implements Navigable {
 	}
 
 	public void attemptDeleteRecipe() {
-		RecipeDialog dialog = new RecipeDialog();
-		RecipeDialog.Choice choice = dialog.confirmDeletion(recipe);
+		PrepLedgerDialog dialog = new PrepLedgerDialog();
+		PrepLedgerDialog.Choice choice = dialog.confirmDeletion(recipe);
 
-		if (choice == RecipeDialog.Choice.CANCEL) {
+		if (choice == PrepLedgerDialog.Choice.CANCEL) {
 			logger.info("attemptDeleteRecipe(): Cancelling delete of recipe: "
 					+ recipe.getTitle());
 			return;
