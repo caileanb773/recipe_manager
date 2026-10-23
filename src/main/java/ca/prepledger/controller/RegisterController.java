@@ -128,8 +128,4 @@ public class RegisterController implements Navigable {
 		this.navigationHandler = navigationHandler;
 	}
 
-	public void setSessionHandler(SessionHandler sessionHandler) {
-		this.sessionHandler = sessionHandler;
-	}
-
 }
