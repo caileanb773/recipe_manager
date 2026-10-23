@@ -14,3 +14,12 @@
 .custom-text-field > .right-pane {
     -fx-padding: 0 10px 0 8px;
 }
+
+.password-reveal-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.password-reveal-button:hover {
+    -fx-fill: #c022a6;
+}

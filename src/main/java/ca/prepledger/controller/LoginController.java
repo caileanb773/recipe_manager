@@ -2,6 +2,7 @@ package ca.prepledger.controller;
 
 import java.io.IOException;
 
+import org.controlsfx.control.textfield.CustomPasswordField;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ import javafx.scene.image.ImageView;
 public class LoginController implements Navigable {
 
 	@FXML private CustomTextField emailAddress;
-	@FXML private CustomTextField password;
+	@FXML private CustomPasswordField password;
 	@FXML private CheckBox rememberMe;
 	@FXML private Button forgotPassword;
 	@FXML private Button signIn;
@@ -48,19 +49,11 @@ public class LoginController implements Navigable {
 		ImageView passwordIcon = new ImageView(
 				new Image(getClass().getResourceAsStream(
 						"/img/icon/scaled/other/password-gray-scaled.png")));
-		ImageView hiddenIcon = new ImageView(
-				new Image(getClass().getResourceAsStream(
-						"/img/icon/scaled/other/hidden-gray-scaled.png")));
-		ImageView revealedIcon = new ImageView(
-				new Image(getClass().getResourceAsStream(
-						"/img/icon/scaled/other/visible-gray-scaled.png")));
-		Button toggleReveal = new Button();
 
 		emailAddress.setLeft(emailIcon);
 		password.setLeft(passwordIcon);
-		password.setRight(revealedIcon);
 	}
-
+	
 	@FXML
 	private void onForgotPasswordBtnClicked() {
 		displayForgotPasswordDialog();
