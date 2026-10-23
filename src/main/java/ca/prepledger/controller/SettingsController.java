@@ -11,6 +11,7 @@ import ca.prepledger.config.RecipeDisplayType;
 import ca.prepledger.config.Theme;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -18,26 +19,15 @@ import javafx.scene.control.RadioButton;
 
 public class SettingsController implements Configurable {
 
-	@FXML
-	private ComboBox<String> languageComboBox;
-
-	@FXML
-	private ComboBox<String> recipeViewComboBox;
-
-	@FXML
-	private RadioButton themeLightRadioButton;
-
-	@FXML
-	private RadioButton themeDarkRadioButton;
-
-	@FXML
-	private CheckBox toolTipsCheckbox;
-
-	@FXML
-	private Label versionLabel;
+	@FXML private ComboBox<String> languageComboBox;
+	@FXML private ComboBox<String> recipeViewComboBox;
+	@FXML private RadioButton themeLightRadioButton;
+	@FXML private RadioButton themeDarkRadioButton;
+	@FXML private CheckBox toolTipsCheckbox;
+	@FXML private Label versionLabel;
+	@FXML private Button logoutButton;
 	
 	private AppConfig appConfig;
-	
 	private static final Logger logger = LoggerFactory.getLogger(SettingsController.class);
 
 
@@ -120,6 +110,11 @@ public class SettingsController implements Configurable {
 	private void onTooltipsCheckboxClicked() {
 
 	}
+	
+	@FXML
+	private void onLogoutBtnClicked() {
+		logout();
+	}
 
 	@FXML
 	private void setLanguageComboBoxItems() {
@@ -138,6 +133,10 @@ public class SettingsController implements Configurable {
 	@FXML
 	private void onSaveButtonClicked() {
 		saveSettings();
+	}
+	
+	private void logout() {
+		
 	}
 	
 	public void saveSettings() {

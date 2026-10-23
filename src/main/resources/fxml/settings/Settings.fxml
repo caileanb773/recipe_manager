@@ -115,4 +115,11 @@
          </styleClass>
       </VBox>
    </center>
+   <bottom>
+      <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#onLogoutBtnClicked" styleClass="danger-button" text="Log Out" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="15.0" />
+         </BorderPane.margin>
+      </Button>
+   </bottom>
 </BorderPane>
