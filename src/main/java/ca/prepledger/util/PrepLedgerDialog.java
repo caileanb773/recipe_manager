@@ -49,7 +49,7 @@ public class PrepLedgerDialog {
 	public Choice confirmLogout() {
 		Alert confirmLogout = new Alert(
 				AlertType.CONFIRMATION,
-				"Are you sure you want to logout?",
+				"Are you sure you want to log out?",
 				ButtonType.YES,
 				ButtonType.CANCEL
 				);

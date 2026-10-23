@@ -1,6 +1,8 @@
 package ca.prepledger.controller;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.time.LocalTime;
 
 import org.controlsfx.control.textfield.CustomPasswordField;
 import org.controlsfx.control.textfield.CustomTextField;
@@ -86,7 +88,7 @@ public class LoginController implements Navigable {
 		}
 
 		if (session != null) {
-			logger.info("Logged in as {}", session.getEmail());
+			logger.info("Logged in as {}", session.getEmail() + " at " + Time.valueOf(LocalTime.now()));
 
 			sessionHandler.onLoginSuccess(session);
 		} else {
