@@ -7,13 +7,13 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.LoginController">
    <stylesheets>
@@ -60,16 +60,16 @@
                   </Label>
                </children>
             </VBox>
-            <TextField fx:id="emailAddress" promptText="Email address">
+            <CustomTextField fx:id="emailAddress" promptText="Email address">
                <VBox.margin>
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
-            </TextField>
-            <TextField fx:id="password" layoutX="40.0" layoutY="105.0" promptText="Password">
+            </CustomTextField>
+            <CustomTextField fx:id="password" promptText="Password">
                <VBox.margin>
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
-            </TextField>
+            </CustomTextField>
             <HBox alignment="CENTER_LEFT">
                <VBox.margin>
                   <Insets left="30.0" />

@@ -6,3 +6,11 @@
 .link-style-button:hover {
     -fx-text-fill: #226e67;
 }
+
+.custom-text-field > .left-pane {
+    -fx-padding: 0 8px 0 10px;
+}
+
+.custom-text-field > .right-pane {
+    -fx-padding: 0 10px 0 8px;
+}

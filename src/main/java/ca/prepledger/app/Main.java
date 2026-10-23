@@ -121,6 +121,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		LoginController controller = loader.getController();
 		controller.setSessionHandler(this);
 		controller.setNavigationHandler(this);
+		controller.initializeTextFieldIcons();
 
 		Scene scene = new Scene(root, 800, 600);
 		scene.getStylesheets().add(

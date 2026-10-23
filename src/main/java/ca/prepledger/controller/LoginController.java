@@ -2,6 +2,7 @@ package ca.prepledger.controller;
 
 import java.io.IOException;
 
+import org.controlsfx.control.textfield.CustomTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,86 +17,107 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class LoginController implements Navigable {
-	
-	@FXML private TextField emailAddress;
-	@FXML private TextField password;
+
+	@FXML private CustomTextField emailAddress;
+	@FXML private CustomTextField password;
 	@FXML private CheckBox rememberMe;
 	@FXML private Button forgotPassword;
 	@FXML private Button signIn;
 	@FXML private Button signInGoogle;
 	@FXML private Button createAccount;
-	
+
 	private AuthService auth;
 	private NavigationHandler navigationHandler;
 	private SessionHandler sessionHandler;
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-	
-	
+
+
 	@FXML
 	private void initialize() {
 		auth = new AuthService();
 	}
-	
+
+	public void initializeTextFieldIcons() {
+		ImageView emailIcon = new ImageView(
+				new Image(getClass().getResourceAsStream(
+						"/img/icon/scaled/other/email-gray-scaled.png")));
+		ImageView passwordIcon = new ImageView(
+				new Image(getClass().getResourceAsStream(
+						"/img/icon/scaled/other/password-gray-scaled.png")));
+		ImageView hiddenIcon = new ImageView(
+				new Image(getClass().getResourceAsStream(
+						"/img/icon/scaled/other/hidden-gray-scaled.png")));
+		ImageView revealedIcon = new ImageView(
+				new Image(getClass().getResourceAsStream(
+						"/img/icon/scaled/other/visible-gray-scaled.png")));
+		Button toggleReveal = new Button();
+
+		emailAddress.setLeft(emailIcon);
+		password.setLeft(passwordIcon);
+		password.setRight(revealedIcon);
+	}
+
 	@FXML
 	private void onForgotPasswordBtnClicked() {
 		displayForgotPasswordDialog();
 	}
-	
+
 	private void displayForgotPasswordDialog() {
 		System.out.println("clicked");
 	}
-	
+
 	@FXML
 	private void onSignInBtnClicked() {
 		attemptLogin();
 	}
-	
+
 	private void attemptLogin() {
 		String email = emailAddress.getText().trim();
 		UserSession session = null;
-		
+
 		// TODO ensure email/password fields are valid
 		if (email.isBlank() || password.getText().isBlank()) {
 			// TODO show error msg to user
 			logger.warn("onSignInBtnClicked(): One or more fields blank.");
 			return;
 		}
-		
+
 		try {
 			session = auth.login(email, password.getText());
 		} catch (IOException | InterruptedException e) {
 			logger.warn("onSignInBtnClicked(): Couldn't login.");
 		}
-		
+
 		if (session != null) {
 			logger.info("Logged in as {}", session.getEmail());
-			
+
 			sessionHandler.onLoginSuccess(session);
 		} else {
-			
+
 		}
 	}
-	
+
 	@FXML
 	private void onSignInGoogleBtnClicked() {
 		Alert alert = new Alert(
 				AlertType.INFORMATION,
 				"This feature is coming in a future release."
 				);
-		
+
 		alert.getDialogPane().getStylesheets().add(
 				getClass().getResource("/css/components/alert.css").toExternalForm());
 		alert.showAndWait();
 	}
-	
+
 	@FXML
 	private void onCreateAccountBtnClicked() {
 		showRegisterScreen();
 	}
-	
+
 	private void showRegisterScreen() {
 		try {
 			navigationHandler.navigateTo(ContextArea.REGISTER);
@@ -108,7 +130,7 @@ public class LoginController implements Navigable {
 	public void setNavigationHandler(NavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;		
 	}
-	
+
 	public void setSessionHandler(SessionHandler sessionHandler) {
 		this.sessionHandler = sessionHandler;
 	}
