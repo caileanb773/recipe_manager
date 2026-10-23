@@ -30,7 +30,6 @@ public class RegisterController implements Navigable {
 
 	private AuthService auth;
 	private NavigationHandler navigationHandler;
-	private SessionHandler sessionHandler;
 	private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
 
