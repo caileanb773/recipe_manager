@@ -1,6 +1,10 @@
 package ca.prepledger.controller;
 
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Time;
 import java.time.LocalTime;
 
@@ -15,6 +19,7 @@ import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.AuthService;
+import ca.prepledger.util.PrepLedgerDialog;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -55,14 +60,30 @@ public class LoginController implements Navigable {
 		emailAddress.setLeft(emailIcon);
 		password.setLeft(passwordIcon);
 	}
-	
+
 	@FXML
 	private void onForgotPasswordBtnClicked() {
-		displayForgotPasswordDialog();
-	}
+		String email = emailAddress.getText().trim();
+		PrepLedgerDialog dialog = new PrepLedgerDialog();
 
-	private void displayForgotPasswordDialog() {
-		System.out.println("clicked");
+		// parse input
+		if (email.isBlank()) {
+			dialog.showForgotPasswordDialog("Please enter an email.");
+			return;
+		} else if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+			dialog.showForgotPasswordDialog("Please enter a valid email.");
+			return;
+		}
+		
+		// open prepledger.ca/forgot-password.html passing the email
+		try {
+			String url = "https://prepledger.ca/forgot-password.html?email="
+					+ URLEncoder.encode(email, StandardCharsets.UTF_8);
+
+			Desktop.getDesktop().browse(URI.create(url));
+		} catch (IOException e) {
+			// Show an error if the browser couldn't be opened.
+		}
 	}
 
 	@FXML

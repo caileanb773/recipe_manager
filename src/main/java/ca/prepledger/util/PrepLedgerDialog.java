@@ -77,5 +77,19 @@ public class PrepLedgerDialog {
 			return Choice.CANCEL;
 		}
 	}
+	
+	public void showForgotPasswordDialog(String text) {
+		Alert forgotPw = new Alert(
+				AlertType.WARNING,
+				text
+				);
+
+		forgotPw.getDialogPane().getStylesheets().addAll(
+				getClass().getResource("/css/components/alert.css").toExternalForm()
+				);
+		
+		forgotPw.setTitle("Forgot Password");
+		forgotPw.showAndWait();
+	}
 
 }
