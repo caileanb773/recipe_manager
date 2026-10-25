@@ -14,7 +14,10 @@ import ca.prepledger.app.UserSession;
 
 public class AuthService {
 
-	private static final String LOGIN_URL = "http://localhost:8080/auth/login";
+	//private static final String LOCALHOST_ROOT = "http://localhost:8080";
+	private static final String RAILWAY_ROOT = "https://prepledger-server-production.up.railway.app";	
+	private static final String LOGIN_URL = RAILWAY_ROOT + "/auth/login";
+	private static final String REGISTER_URL = RAILWAY_ROOT + "/auth/register";
 	private final HttpClient client = HttpClient.newHttpClient();
 	private final ObjectMapper mapper = new ObjectMapper();
 
@@ -58,7 +61,7 @@ public class AuthService {
 		credentials.put("password", password);
 
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://localhost:8080/auth/register"))
+				.uri(URI.create(REGISTER_URL))
 				.header("Content-Type", "application/json")
 				.POST(HttpRequest.BodyPublishers.ofString(
 						mapper.writeValueAsString(credentials),
