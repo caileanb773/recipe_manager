@@ -40,29 +40,16 @@ import javafx.stage.Window;
 
 public class ImportExportController {
 
-	@FXML
-	private Button exportBtn;
-	
-	@FXML
-	private Button importBtn;
-	
-	@FXML
-	private VBox importDropzone;
+	@FXML private Button exportBtn;
+	@FXML private Button importBtn;
+	@FXML private VBox importDropzone;
+	@FXML private ToggleGroup exportToggleGroup;
+	@FXML private RadioButton allRecipesRadioBtn;
+	@FXML private RadioButton selectedRecipesRadioBtn;
 
 	private RecipeService recipeService;
-
 	private ImportExportService impExpService = new ImportExportService();
-	
 	private static final Logger logger = LoggerFactory.getLogger(ImportExportController.class);
-	
-	@FXML
-	private ToggleGroup exportToggleGroup;
-	
-	@FXML
-	private RadioButton allRecipesRadioBtn;
-	
-	@FXML
-	private RadioButton selectedRecipesRadioBtn;
 
 	
 	@FXML
