@@ -10,14 +10,13 @@ import java.nio.charset.StandardCharsets;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ca.prepledger.config.ApiConfig;
 import ca.prepledger.session.UserSession;
 
 public class AuthService {
 
-	//private static final String LOCALHOST_ROOT = "http://localhost:8080";
-	private static final String RAILWAY_ROOT = "https://prepledger-server-production.up.railway.app";	
-	private static final String LOGIN_URL = RAILWAY_ROOT + "/auth/login";
-	private static final String REGISTER_URL = RAILWAY_ROOT + "/auth/register";
+	private static final String LOGIN_URL = ApiConfig.RAILWAY_ROOT + "/auth/login";
+	private static final String REGISTER_URL = ApiConfig.RAILWAY_ROOT + "/auth/register";
 	private final HttpClient client = HttpClient.newHttpClient();
 	private final ObjectMapper mapper = new ObjectMapper();
 
