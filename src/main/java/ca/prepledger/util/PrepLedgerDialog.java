@@ -15,29 +15,29 @@ public class PrepLedgerDialog {
 	}
 
 	public Choice confirmDeletion(Recipe recipe) {
-		Alert confirmDelete = new Alert(
+		Alert alert = new Alert(
 				AlertType.CONFIRMATION,
 				"Are you sure you want to delete '" + recipe.getTitle() + "'?",
 				ButtonType.YES,
 				ButtonType.CANCEL
 				);
 
-		confirmDelete.getDialogPane().getStylesheets().addAll(
+		alert.getDialogPane().getStylesheets().addAll(
 				getClass().getResource("/css/components/alert.css").toExternalForm()
 				);
 		
-		Button yesBtn = (Button)confirmDelete.getDialogPane()
+		Button yesBtn = (Button)alert.getDialogPane()
 				.lookupButton(ButtonType.YES);
 		yesBtn.getStyleClass().remove("default");
 		yesBtn.getStyleClass().add("danger-button");
 		
-		Button cancelBtn = (Button)confirmDelete.getDialogPane()
+		Button cancelBtn = (Button)alert.getDialogPane()
 				.lookupButton(ButtonType.CANCEL);
 		cancelBtn.getStyleClass().remove("default");
 		cancelBtn.getStyleClass().add("default-button");
 		
-		confirmDelete.setTitle("Confirm Delete");
-		Optional<ButtonType> response = confirmDelete.showAndWait();
+		alert.setTitle("Confirm Delete");
+		Optional<ButtonType> response = alert.showAndWait();
 
 		if (response.isPresent() && response.get() == ButtonType.YES) {
 			return Choice.CONFIRM;
@@ -47,29 +47,29 @@ public class PrepLedgerDialog {
 	}
 	
 	public Choice confirmLogout() {
-		Alert confirmLogout = new Alert(
+		Alert alert = new Alert(
 				AlertType.CONFIRMATION,
 				"Are you sure you want to log out?",
 				ButtonType.YES,
 				ButtonType.CANCEL
 				);
 
-		confirmLogout.getDialogPane().getStylesheets().addAll(
+		alert.getDialogPane().getStylesheets().addAll(
 				getClass().getResource("/css/components/alert.css").toExternalForm()
 				);
 		
-		Button yesBtn = (Button)confirmLogout.getDialogPane()
+		Button yesBtn = (Button)alert.getDialogPane()
 				.lookupButton(ButtonType.YES);
 		yesBtn.getStyleClass().remove("default");
 		yesBtn.getStyleClass().add("danger-button");
 		
-		Button cancelBtn = (Button)confirmLogout.getDialogPane()
+		Button cancelBtn = (Button)alert.getDialogPane()
 				.lookupButton(ButtonType.CANCEL);
 		cancelBtn.getStyleClass().remove("default");
 		cancelBtn.getStyleClass().add("default-button");
 		
-		confirmLogout.setTitle("Confirm Logout");
-		Optional<ButtonType> response = confirmLogout.showAndWait();
+		alert.setTitle("Confirm Logout");
+		Optional<ButtonType> response = alert.showAndWait();
 
 		if (response.isPresent() && response.get() == ButtonType.YES) {
 			return Choice.CONFIRM;
@@ -79,31 +79,47 @@ public class PrepLedgerDialog {
 	}
 	
 	public void showForgotPasswordDialog(String text) {
-		Alert forgotPw = new Alert(
+		Alert alert = new Alert(
 				AlertType.WARNING,
 				text
 				);
 
-		forgotPw.getDialogPane().getStylesheets().addAll(
+		alert.getDialogPane().getStylesheets().addAll(
 				getClass().getResource("/css/components/alert.css").toExternalForm()
 				);
 		
-		forgotPw.setTitle("Forgot Password");
-		forgotPw.showAndWait();
+		alert.setTitle("Forgot Password");
+		alert.showAndWait();
 	}
 	
 	public void showInvalidRecipeDialog(String text) {
-		Alert invalid = new Alert(
+		Alert alert = new Alert(
 				AlertType.WARNING,
 				text
 				);
 
-		invalid.getDialogPane().getStylesheets().addAll(
+		alert.getDialogPane().getStylesheets().addAll(
 				getClass().getResource("/css/components/alert.css").toExternalForm()
 				);
 		
-		invalid.setTitle("Cannot Save Recipe");
-		invalid.showAndWait();
+		alert.setTitle("Error");
+		alert.setHeaderText("Invalid recipe.");
+		alert.showAndWait();
+	}
+	
+	public void showRecipeCreateFailedDialog(String exceptionMsg) {
+		Alert alert = new Alert(
+				AlertType.ERROR,
+				"Please try again.");
+		
+		alert.getDialogPane().getStylesheets().addAll(
+				getClass().getResource("/css/components/alert.css").toExternalForm()
+				);
+		
+		alert.setContentText("Could not create recipe for the following reason: \n"
+				+ exceptionMsg);
+		alert.setTitle("Error");
+		alert.showAndWait();
 	}
 
 }
