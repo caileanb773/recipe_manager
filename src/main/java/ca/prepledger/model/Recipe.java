@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /*
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * with either List<Ingredient> or a String[] representing all ingredients
  * present in the recipe.
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Recipe {
 
 	private Long id;
