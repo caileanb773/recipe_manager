@@ -121,6 +121,10 @@ public class Recipe {
 		return title;
 	}
 	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -132,11 +136,19 @@ public class Recipe {
 	public String getDirections() {
 		return directions;
 	}
+
+	public void setDirections(String directions) {
+		this.directions = directions;
+	}
 	
 	public List<Ingredient> getIngredients() {
 		return ingredients;
 	}
-	
+
+	public void setIngredients(List<Ingredient> ingredients) {
+	    this.ingredients = ingredients;
+	}
+
 	@JsonSetter("tags")
 	public void setTags(List<String> tags) {
 		this.tags = tags;
