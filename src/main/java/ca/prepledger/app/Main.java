@@ -71,6 +71,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 		if (savedSession != null) {
 			currentSession = savedSession;
+			connectionStatus.set(ConnectionStatus.CONNECTED);
 			startMainApplication();
 		} else {
 			showLoginScreen(primaryStage);
@@ -237,6 +238,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		loadAppShellController();
 		injectAppShellAppConfig();
 		injectSessionHandler();
+		appShellController.setConnectionStatus(connectionStatus);
 		displayAppShellController(primaryStage);
 	}
 

@@ -6,15 +6,18 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.prepledger.model.ConnectionStatus;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.session.UserSession;
+import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
@@ -32,14 +35,9 @@ public class SidebarController implements Navigable {
 
 	private NavigationHandler navigationHandler;
 	private List<Node> buttons;
+	private ObjectProperty<ConnectionStatus> connectionStatusProperty;
 	private static final Logger logger = LoggerFactory.getLogger(SidebarController.class);
 
-
-	/////////////////////
-	//
-	// Methods
-	//
-	/////////////////////
 
 	public void cacheButtons() {
 		buttons = buttonVBox.getChildren();
@@ -104,7 +102,7 @@ public class SidebarController implements Navigable {
 	}
 
 	public void setActiveButtonStyling(String buttonLabel) {
-		
+
 		/* A little hacky. Could optimize this whole operation with:
 		 * Map<ContextArea, Button> and just use Map.get() (which is a constant-
 		 * time operation on average) */
@@ -135,7 +133,7 @@ public class SidebarController implements Navigable {
 			}
 		}
 	}
-	
+
 	public void setUserProfileDetails(UserSession currentSession) {
 		String email = currentSession.getEmail();
 		profileName.setText(email);
@@ -145,6 +143,62 @@ public class SidebarController implements Navigable {
 	@Override
 	public void setNavigationHandler(NavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
+	}
+
+	/**
+	 * Sets the connection status as an observable element. When the connection
+	 * status changes, updateConnectionStatus() is called.
+	 * 
+	 * @since v0.1.2
+	 */
+	public void setConnectionStatus(
+			ObjectProperty<ConnectionStatus> status) {
+
+		this.connectionStatusProperty = status;
+
+		status.addListener((observable, oldValue, newValue) -> {
+			updateConnectionStatus(newValue);
+		});
+
+		updateConnectionStatus(status.get());
+	}
+
+	/**
+	 * Helper method for setNavigationHandler. Changes the label text and connection
+	 * status icon so the user can see the connection status of the application.
+	 * 
+	 * @since v0.1.2
+	 */
+	private void updateConnectionStatus(ConnectionStatus status) {
+		switch (status) {
+			case CONNECTED -> {
+				connectionStatus.setText("Connected");
+				connectionStatusImage.setImage(
+						loadConnectionIcon("connected-scaled.png"));
+			}
+			case CONNECTING -> {
+				connectionStatus.setText("Connecting...");
+				connectionStatusImage.setImage(
+						loadConnectionIcon("connecting-scaled.png"));
+			}
+			case DISCONNECTED -> {
+				connectionStatus.setText("Disconnected");
+				connectionStatusImage.setImage(
+						loadConnectionIcon("disconnected-scaled.png"));
+			}
+		}
+	}
+
+	/**
+	 * Helper method for updateConnectionStatus. Returns an Image from the path
+	 * completed by the filename argument which represents the current connection
+	 * status.
+	 */
+	private Image loadConnectionIcon(String filename) {
+		return new Image(
+				getClass().getResourceAsStream(
+						"/img/icon/scaled/other/" + filename)
+				);
 	}
 
 }

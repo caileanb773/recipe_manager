@@ -39,7 +39,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	private boolean shouldRefreshRecipes;
 	private UserSession currentSession;
 	private SessionHandler sessionHandler;
-	private ObjectProperty<ConnectionStatus> connectionStatus;
+	private ObjectProperty<ConnectionStatus> connectionStatusProperty;
 	private static final Logger logger = LoggerFactory.getLogger(AppShellController.class);
 
 
@@ -66,6 +66,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			Parent sidebar = loader.load();
 
 			sidebarController = loader.getController();
+			sidebarController.setConnectionStatus(connectionStatusProperty);
 			sidebarController.setNavigationHandler(this);
 			sidebarController.cacheButtons();
 			sidebarController.setUserProfileDetails(currentSession);
@@ -344,7 +345,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	
 	public ContextArea getCurrentContextArea() {
 		return this.currentContextArea;
-	}
+	}	
 	
 	@Override
 	public void setAppConfig(AppConfig appConfig) {
@@ -359,8 +360,9 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		this.sessionHandler = sessionHandler;
 	}
 	
-	public void setConnectionStatus(ObjectProperty<ConnectionStatus> connectionStatus) {
-		this.connectionStatus = connectionStatus;
+	public void setConnectionStatus(
+	        ObjectProperty<ConnectionStatus> status) {
+	    this.connectionStatusProperty = status;
 	}
-	
+		
 }
