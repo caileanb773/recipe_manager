@@ -24,13 +24,9 @@
             </Label>
          </bottom>
          <top>
-            <Label alignment="TOP_LEFT" styleClass="online-status" text="Online" textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
+            <Label fx:id="connectionStatus" alignment="TOP_LEFT" styleClass="online-status" textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
                <graphic>
-                  <ImageView pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../img/icon/scaled/light/cloud-light-scaled.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView fx:id="connectionStatusImage" pickOnBounds="true" preserveRatio="true" />
                </graphic>
             </Label>
          </top>
