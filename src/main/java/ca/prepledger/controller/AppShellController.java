@@ -12,6 +12,7 @@ import ca.prepledger.model.ConnectionStatus;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
+import ca.prepledger.service.RecipeAPIService;
 import ca.prepledger.service.RecipeChangeListener;
 import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.SessionHandler;
@@ -33,6 +34,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	
 	private ContextArea currentContextArea;
 	private RecipeService recipeService;
+	private RecipeAPIService recipeApiService;
 	private RecipeListController recipeListController;
 	private SidebarController sidebarController;
 	private Parent recipeList;
@@ -51,6 +53,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		shouldRefreshRecipes = true;
 		currentContextArea = ContextArea.RECIPES;
 		recipeService = new RecipeService();
+		recipeApiService = new RecipeAPIService();
 		recipeService.registerRecipeChangeListener(this);
 	}
 	
@@ -364,7 +367,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		    Task<List<Recipe>> task = new Task<>() {
 		        @Override
 		        protected List<Recipe> call() throws Exception {
-		            return recipeService.fetchRecipes(currentSession);
+		            return recipeApiService.fetchRecipes(currentSession);
 		        }
 		    };
 
