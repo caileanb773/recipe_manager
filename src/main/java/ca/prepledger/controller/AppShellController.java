@@ -356,28 +356,33 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 
 	public void setCurrentSession(UserSession currentSession) {
 	    this.currentSession = currentSession;
+	    getRecipesAsync();
+	}
+	
+	private void getRecipesAsync() {
+		if (currentSession != null) {
+		    Task<List<Recipe>> task = new Task<>() {
+		        @Override
+		        protected List<Recipe> call() throws Exception {
+		            return recipeService.fetchRecipes(currentSession);
+		        }
+		    };
 
-	    Task<List<Recipe>> task = new Task<>() {
-	        @Override
-	        protected List<Recipe> call() throws Exception {
-	            return recipeService.fetchRecipes(currentSession);
-	        }
-	    };
+		    task.setOnSucceeded(event -> {
+		        recipeService.addRecipes(task.getValue());
+		        recipeListController.refreshDisplayedRecipes();
+		        shouldRefreshRecipes = false;
+		    });
 
-	    task.setOnSucceeded(event -> {
-	        recipeService.addRecipes(task.getValue());
-	        recipeListController.refreshDisplayedRecipes();
-	        shouldRefreshRecipes = false;
-	    });
+		    task.setOnFailed(event -> {
+		        logger.error("Failed to fetch recipes from backend.",
+		                task.getException());
+		    });
 
-	    task.setOnFailed(event -> {
-	        logger.error("Failed to fetch recipes from backend.",
-	                task.getException());
-	    });
-
-	    Thread thread = new Thread(task, "recipe-fetch");
-	    thread.setDaemon(true);
-	    thread.start();
+		    Thread thread = new Thread(task, "recipe-fetch");
+		    thread.setDaemon(true);
+		    thread.start();
+		}
 	}
 	
 	public void setSessionHandler(SessionHandler sessionHandler) {
