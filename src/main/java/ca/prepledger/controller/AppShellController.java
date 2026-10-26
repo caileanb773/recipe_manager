@@ -279,6 +279,8 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		controller.setNavigationHandler(this);
 		controller.setRecipeService(recipeService);
 		controller.setAppConfig(appConfig);
+		controller.setCurrentSession(currentSession);
+		controller.setRecipeApiService(recipeApiService);
 
 		// start with a blank ingredientrow
 		if (appConfig.areTooltipsOn()) {

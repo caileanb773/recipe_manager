@@ -14,7 +14,9 @@ import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
+import ca.prepledger.service.RecipeAPIService;
 import ca.prepledger.service.RecipeService;
+import ca.prepledger.session.UserSession;
 import ca.prepledger.util.PrepLedgerDialog;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -31,46 +33,24 @@ import javafx.scene.layout.VBox;
 
 public class NewRecipeController implements Navigable, Configurable {
 
-	@FXML
-	private Button cancelButton;
-
-	@FXML
-	private Button saveRecipeButton;
-
-	@FXML
-	private Button addIngredientButton;
-
-	@FXML
-	private TextField recipeTitleField;
-
-	@FXML
-	private TextField recipeTagsField;
-
-	@FXML
-	private TextArea instructionsTextArea;
-	
-	@FXML
-	private VBox ingredientsVBox;
-	
-	@FXML
-	private Button navBackButton;
-	
-	@FXML
-	private Label recipeCardHeader;
+	@FXML private Button cancelButton;
+	@FXML private Button saveRecipeButton;
+	@FXML private Button addIngredientButton;
+	@FXML private TextField recipeTitleField;
+	@FXML private TextField recipeTagsField;
+	@FXML private TextArea instructionsTextArea;
+	@FXML private VBox ingredientsVBox;
+	@FXML private Button navBackButton;
+	@FXML private Label recipeCardHeader;
 	
 	private NavigationHandler navigationHandler;
-	
 	private List<IngredientRowController> ingredientRowControllers = new ArrayList<>();
-	
 	private RecipeService recipeService;
-			
-	// Edit Mode
 	private boolean editMode = false;
-	
-	private Recipe currentRecipe;
-	
+	private Recipe currentRecipe;	
 	private AppConfig appConfig;
-	
+	private UserSession currentSession;
+	private RecipeAPIService recipeApiService;
 	private static final Logger logger = LoggerFactory.getLogger(NewRecipeController.class);
 
 
@@ -374,6 +354,14 @@ public class NewRecipeController implements Navigable, Configurable {
 	@Override
 	public void setAppConfig(AppConfig appConfig) {
 		this.appConfig = appConfig;
+	}
+
+	public void setCurrentSession(UserSession currentSession) {
+		this.currentSession = currentSession;
+	}
+
+	public void setRecipeApiService(RecipeAPIService recipeApiService) {
+		this.recipeApiService = recipeApiService;
 	}
 
 }
