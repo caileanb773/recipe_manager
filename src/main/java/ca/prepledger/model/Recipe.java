@@ -31,6 +31,7 @@ public class Recipe {
 	/**
 	 * Constructs a new Recipe object (without tags).
 	 */
+	@Deprecated
 	public Recipe(String title, List<Ingredient> ingredients, String directions) {
 		this.title = title;
 		this.ingredients = ingredients;
@@ -51,6 +52,7 @@ public class Recipe {
 		}
 	}
 	
+	@Deprecated
 	public Recipe(Long id, String title, List<Ingredient> ingredients, String directions, List<String> tagsList) {
 		this.id = id;
 		this.title = title;
