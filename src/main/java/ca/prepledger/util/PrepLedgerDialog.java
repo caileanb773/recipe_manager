@@ -107,7 +107,10 @@ public class PrepLedgerDialog {
 		alert.showAndWait();
 	}
 	
-	public void showRecipeCreateFailedDialog(String exceptionMsg) {
+	public void showRecipeBackendActionFailedDialog(
+			String exceptionMsg,
+			String action) {
+		
 		Alert alert = new Alert(
 				AlertType.ERROR,
 				"Please try again.");
@@ -116,7 +119,7 @@ public class PrepLedgerDialog {
 				getClass().getResource("/css/components/alert.css").toExternalForm()
 				);
 		
-		alert.setContentText("Could not create recipe for the following reason: \n"
+		alert.setContentText("Could not " + action + " recipe for the following reason: \n\n"
 				+ exceptionMsg);
 		alert.setTitle("Error");
 		alert.showAndWait();

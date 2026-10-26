@@ -150,9 +150,45 @@ public class NewRecipeController implements Navigable, Configurable {
 		
 		// propogate recipe to recipeservice
 		if (editMode) {
-			// get the index of the recipe in service
-			int rcpIdx = recipeService.getRecipeIndex(currentRecipe);
-			recipeService.updateRecipe(rcpIdx, newRecipe);
+		    // need to preserve existing id
+		    newRecipe.setId(currentRecipe.getId());
+
+		    Task<Recipe> task = new Task<>() {
+		        @Override
+		        protected Recipe call() throws Exception {
+		            return recipeApiService.updateRecipe(
+		            		currentSession,
+		            		newRecipe,
+		            		newRecipe.getId());
+		        }
+		    };
+
+		    task.setOnSucceeded(event -> {
+		        Recipe updatedRecipe = task.getValue();
+
+		        int rcpIdx = recipeService.getRecipeIndex(currentRecipe);
+		        
+		        logger.info("Updated recipe returned: {}", updatedRecipe);
+		        logger.info("Current recipe index: {}", rcpIdx);
+		        
+		        recipeService.updateRecipe(rcpIdx, updatedRecipe);
+
+		        goBackToRecipesList();
+		    });
+
+		    task.setOnFailed(event -> {
+				logger.error("Failed to update recipe on backend: {}", task.getException());
+				PrepLedgerDialog dialog = new PrepLedgerDialog();
+				dialog.showRecipeBackendActionFailedDialog(
+						task.getException().getMessage(),
+						"update");
+		    });
+
+		    Thread thread = new Thread(task, "recipe-update");
+		    thread.setDaemon(true);
+		    thread.start();
+
+		    return;
 		} else {
 			Task<Recipe> task = new Task<>() {
 				@Override
@@ -170,7 +206,9 @@ public class NewRecipeController implements Navigable, Configurable {
 			task.setOnFailed(e -> {
 				logger.error("Failed to create recipe on backend: {}", task.getException());
 				PrepLedgerDialog dialog = new PrepLedgerDialog();
-				dialog.showRecipeCreateFailedDialog(task.getException().getMessage());
+				dialog.showRecipeBackendActionFailedDialog(
+						task.getException().getMessage(),
+						"create");
 			});
 			
 			Thread thread = new Thread(task, "recipe-create");
@@ -349,7 +387,10 @@ public class NewRecipeController implements Navigable, Configurable {
 	private Recipe constructRecipeFromRemainingFields(List<Ingredient> ingredients) {
 		Recipe newRecipe = null;
 		String title = recipeTitleField.getText().trim();
-		String[] tags = recipeTagsField.getText().split("\\s*,\\s*");
+		String tagsText = recipeTagsField.getText();
+		String[] tags = (tagsText == null || tagsText.isBlank())
+		        ? new String[0]
+		        : tagsText.split("\\s*,\\s*");
 		String instructions = instructionsTextArea.getText().trim();
 		
 		newRecipe = new Recipe(title, ingredients, instructions, tags);
