@@ -20,6 +20,7 @@ import ca.prepledger.session.UserSession;
 import ca.prepledger.util.PrepLedgerDialog;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -153,11 +154,31 @@ public class NewRecipeController implements Navigable, Configurable {
 			int rcpIdx = recipeService.getRecipeIndex(currentRecipe);
 			recipeService.updateRecipe(rcpIdx, newRecipe);
 		} else {
-			recipeService.addRecipe(newRecipe);
+			Task<Recipe> task = new Task<>() {
+				@Override
+				protected Recipe call() throws Exception {
+					recipeApiService.createRecipe(currentSession, newRecipe);
+					return null;
+				}			
+			};
+			
+			task.setOnSucceeded(e -> {
+				recipeService.addRecipe(newRecipe);
+				goBackToRecipesList();
+			});
+			
+			task.setOnFailed(e -> {
+				logger.error("Failed to create recipe on backend: {}", task.getException());
+				PrepLedgerDialog dialog = new PrepLedgerDialog();
+				dialog.showRecipeCreateFailedDialog(task.getException().getMessage());
+			});
+			
+			Thread thread = new Thread(task, "recipe-create");
+			thread.setDaemon(true);
+			thread.start();
+			return;
 		}
 
-		// send recipe to recipeservice
-		goBackToRecipesList();
 	}
 
 	@FXML
