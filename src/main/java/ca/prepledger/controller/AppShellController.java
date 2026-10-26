@@ -366,6 +366,8 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 
 	    task.setOnSucceeded(event -> {
 	        recipeService.addRecipes(task.getValue());
+	        recipeListController.refreshDisplayedRecipes();
+	        shouldRefreshRecipes = false;
 	    });
 
 	    task.setOnFailed(event -> {
