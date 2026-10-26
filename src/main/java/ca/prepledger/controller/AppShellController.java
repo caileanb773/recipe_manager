@@ -1,6 +1,7 @@
 package ca.prepledger.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.SessionHandler;
 import ca.prepledger.session.UserSession;
 import javafx.beans.property.ObjectProperty;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -353,7 +355,27 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	}
 
 	public void setCurrentSession(UserSession currentSession) {
-		this.currentSession = currentSession;
+	    this.currentSession = currentSession;
+
+	    Task<List<Recipe>> task = new Task<>() {
+	        @Override
+	        protected List<Recipe> call() throws Exception {
+	            return recipeService.fetchRecipes(currentSession);
+	        }
+	    };
+
+	    task.setOnSucceeded(event -> {
+	        recipeService.addRecipes(task.getValue());
+	    });
+
+	    task.setOnFailed(event -> {
+	        logger.error("Failed to fetch recipes from backend.",
+	                task.getException());
+	    });
+
+	    Thread thread = new Thread(task, "recipe-fetch");
+	    thread.setDaemon(true);
+	    thread.start();
 	}
 	
 	public void setSessionHandler(SessionHandler sessionHandler) {
