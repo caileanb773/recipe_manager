@@ -69,6 +69,11 @@ public class Ingredient {
 		
 		return amount.toString();
 	}
+	
+	@JsonProperty("amount")
+	public void setAmount(String amount) {
+	    this.amount = (amount == null) ? null : new Fraction(amount);
+	}
 
 	@Override
 	public String toString() {
