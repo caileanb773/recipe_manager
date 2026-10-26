@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class SidebarController implements Navigable {
@@ -26,6 +27,8 @@ public class SidebarController implements Navigable {
 	@FXML private Button impExpContextBtn;	
 	@FXML private VBox buttonVBox;
 	@FXML private Label profileName;
+	@FXML private Label connectionStatus;
+	@FXML private ImageView connectionStatusImage;
 
 	private NavigationHandler navigationHandler;
 	private List<Node> buttons;
