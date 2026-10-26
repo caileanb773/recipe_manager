@@ -141,7 +141,7 @@ public class RecipeAPIService {
 				request,
 				HttpResponse.BodyHandlers.ofString());
 
-	    if (response.statusCode() != 200 && response.statusCode() != 200) {
+	    if (response.statusCode() != 201 && response.statusCode() != 200) {
 	        throw new IOException(
 	                "Failed to create recipe. HTTP status: "
 	                + response.statusCode() + "\n" + response.body());
@@ -159,25 +159,29 @@ public class RecipeAPIService {
 	//
 	////////////////////////////////////////////////////////////////////////////	
 
-//	public Recipe updateRecipe(Recipe recipe, Long existingRecipeId) 
-//			throws InterruptedException, IOException {
-//		String json = mapper.writeValueAsString(recipe);
-//
-//		HttpRequest request = HttpRequest.newBuilder()
-//				.uri(URI.create(baseUrl + "/recipes/" + existingRecipeId))
-//				.header("Content-Type", "application/json")
-//				.PUT(HttpRequest.BodyPublishers.ofString(json))
-//				.build();
-//
-//		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-//
-//		if (response.statusCode() != 200) {
-//			throw new IOException("PUT failed. HTTP: " + response.statusCode()
-//			+ "\n" + response.body());
-//		}
-//
-//		return mapper.readValue(response.body(), Recipe.class);
-//	}
+	public Recipe updateRecipe(UserSession session, Recipe recipe, Long existingRecipeId) 
+			throws InterruptedException, IOException {
+		String json = mapper.writeValueAsString(recipe);
+
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create(RECIPES_URL + "/" + existingRecipeId))
+				.header("Authorization", "Bearer " + session.getToken())
+				.header("Content-Type", "application/json")
+				.PUT(HttpRequest.BodyPublishers.ofString(json))
+				.build();
+
+		HttpResponse<String> response = client.send(
+				request,
+				HttpResponse.BodyHandlers.ofString());
+
+	    if (response.statusCode() != 200) {
+	        throw new IOException(
+	                "Failed to update recipe. HTTP status: "
+	                + response.statusCode() + "\n" + response.body());
+	    }
+
+		return mapper.readValue(response.body(), Recipe.class);
+	}
 
 	////////////////////////////////////////////////////////////////////////////
 	//
