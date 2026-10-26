@@ -131,7 +131,7 @@ public class RecipeAPIService {
 		String json = mapper.writeValueAsString(recipe);
 		
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create(RECIPES_URL + "/recipes"))
+				.uri(URI.create(RECIPES_URL))
 				.header("Authorization", "Bearer " + session.getToken())
 	            .header("Content-Type", "application/json")				
 				.POST(HttpRequest.BodyPublishers.ofString(json))
