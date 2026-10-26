@@ -276,11 +276,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		NewRecipeController controller = loader.getController();
 
 		// inject dependencies
-		controller.setNavigationHandler(this);
-		controller.setRecipeService(recipeService);
-		controller.setAppConfig(appConfig);
-		controller.setCurrentSession(currentSession);
-		controller.setRecipeApiService(recipeApiService);
+		injectNewRecipeControllerDependencies(controller);
 
 		// start with a blank ingredientrow
 		if (appConfig.areTooltipsOn()) {
@@ -301,14 +297,21 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 
 		// Register this class as the RecipeList's navigation handler
 		NewRecipeController controller = loader.getController();
-		controller.setNavigationHandler(this);
+		injectNewRecipeControllerDependencies(controller);
 		controller.setRecipeToEdit(recipe);
-		controller.setAppConfig(appConfig);
 
 		// Inject dependencies
 		controller.setRecipeService(recipeService);
 
 		appShell.setCenter(addRecipe);
+	}
+	
+	private void injectNewRecipeControllerDependencies(NewRecipeController controller) {
+		controller.setNavigationHandler(this);
+		controller.setRecipeService(recipeService);
+		controller.setAppConfig(appConfig);
+		controller.setCurrentSession(currentSession);
+		controller.setRecipeApiService(recipeApiService);
 	}
 	
 	private void showViewRecipe(Recipe recipe) throws IOException {
