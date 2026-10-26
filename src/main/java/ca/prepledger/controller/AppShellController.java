@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.Configurable;
+import ca.prepledger.model.ConnectionStatus;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
@@ -14,6 +15,7 @@ import ca.prepledger.service.RecipeChangeListener;
 import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.SessionHandler;
 import ca.prepledger.session.UserSession;
+import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -37,6 +39,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	private boolean shouldRefreshRecipes;
 	private UserSession currentSession;
 	private SessionHandler sessionHandler;
+	private ObjectProperty<ConnectionStatus> connectionStatus;
 	private static final Logger logger = LoggerFactory.getLogger(AppShellController.class);
 
 
@@ -84,7 +87,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			logger.error("loadDefaultContextArea(): IOException caught during showRecipes(): {}", e);
 		}
 	}
-
+	
 	@Override
 	public void navigateTo(ContextArea contextArea) throws IOException {
 		if (currentContextArea == contextArea) {
@@ -335,17 +338,17 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	}
 
 	@Override
-	public void setAppConfig(AppConfig appConfig) {
-		this.appConfig = appConfig;
-	}
-
-	@Override
 	public void onRecipesChanged() {
 		shouldRefreshRecipes = true;
 	}
 	
 	public ContextArea getCurrentContextArea() {
 		return this.currentContextArea;
+	}
+	
+	@Override
+	public void setAppConfig(AppConfig appConfig) {
+		this.appConfig = appConfig;
 	}
 
 	public void setCurrentSession(UserSession currentSession) {
@@ -354,6 +357,10 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	
 	public void setSessionHandler(SessionHandler sessionHandler) {
 		this.sessionHandler = sessionHandler;
+	}
+	
+	public void setConnectionStatus(ObjectProperty<ConnectionStatus> connectionStatus) {
+		this.connectionStatus = connectionStatus;
 	}
 	
 }
