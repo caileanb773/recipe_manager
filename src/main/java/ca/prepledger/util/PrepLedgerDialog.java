@@ -91,5 +91,19 @@ public class PrepLedgerDialog {
 		forgotPw.setTitle("Forgot Password");
 		forgotPw.showAndWait();
 	}
+	
+	public void showInvalidRecipeDialog(String text) {
+		Alert invalid = new Alert(
+				AlertType.WARNING,
+				text
+				);
+
+		invalid.getDialogPane().getStylesheets().addAll(
+				getClass().getResource("/css/components/alert.css").toExternalForm()
+				);
+		
+		invalid.setTitle("Cannot Save Recipe");
+		invalid.showAndWait();
+	}
 
 }

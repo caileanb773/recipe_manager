@@ -15,6 +15,7 @@ import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeService;
+import ca.prepledger.util.PrepLedgerDialog;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -109,18 +110,24 @@ public class NewRecipeController implements Navigable, Configurable {
 		// Check that user entered a recipe title	
 		doesRecipeHaveTitle = hasUserEnteredRecipeTitle();
 
-		// Fetch ingredients
-//		try {
+		String lastIngredient = "";
 		
-	    for (IngredientRowController c : ingredientRowControllers) {
-	        ingredients.add(c.getIngredient());
-	    }
+		// Fetch ingredients
+		try {
+		
+		    for (IngredientRowController c : ingredientRowControllers) {
+		    	lastIngredient = c.getIngredientName();
+		        ingredients.add(c.getIngredient());
+		    }
 	    
-//		} catch (NumberFormatException e) {
-//			// TODO user dialog
-//			logger.warn("onSaveRecipeButtonClicked(): Invalid amount (NumberFormatException): {}", e);
-//			return;
-//		}
+		} catch (NumberFormatException e) {
+			PrepLedgerDialog dialog = new PrepLedgerDialog();
+			dialog.showInvalidRecipeDialog(
+					"Invalid amount for ingredient " + lastIngredient);
+			logger.info("onSaveRecipeButtonClicked(): "
+					+ "Invalid amount detected for ingredient {}.", lastIngredient);
+			return;
+		}
 
 		// Validate ingredients
 		errors = areIngredientsValid(ingredients);
