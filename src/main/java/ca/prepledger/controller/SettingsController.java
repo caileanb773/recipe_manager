@@ -7,12 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.prepledger.app.AppInfo;
-import ca.prepledger.app.SessionHandler;
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.AppLanguage;
 import ca.prepledger.config.Configurable;
 import ca.prepledger.config.RecipeDisplayType;
 import ca.prepledger.config.Theme;
+import ca.prepledger.session.SessionHandler;
 import ca.prepledger.util.PrepLedgerDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

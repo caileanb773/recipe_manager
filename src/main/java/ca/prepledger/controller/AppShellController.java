@@ -5,8 +5,6 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ca.prepledger.app.SessionHandler;
-import ca.prepledger.app.UserSession;
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.Configurable;
 import ca.prepledger.model.Recipe;
@@ -14,6 +12,8 @@ import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeChangeListener;
 import ca.prepledger.service.RecipeService;
+import ca.prepledger.session.SessionHandler;
+import ca.prepledger.session.UserSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

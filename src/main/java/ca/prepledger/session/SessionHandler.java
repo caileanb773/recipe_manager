@@ -1,4 +1,4 @@
-package ca.prepledger.app;
+package ca.prepledger.session;
 
 public interface SessionHandler {
 	

@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ca.prepledger.app.UserSession;
+import ca.prepledger.session.UserSession;
 
 public class AuthService {
 

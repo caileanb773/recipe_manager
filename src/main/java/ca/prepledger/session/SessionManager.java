@@ -1,5 +1,5 @@
 
-package ca.prepledger.app;
+package ca.prepledger.session;
 
 import java.io.IOException;
 import java.nio.file.Files;
