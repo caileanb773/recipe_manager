@@ -15,14 +15,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.prepledger.model.Recipe;
 
-public class RecipeApiClient {
+public class RecipeAPIService {
 
 	private HttpClient client;
 	private final ObjectMapper mapper;
 	private final String baseUrl;
 
 
-	public RecipeApiClient(String baseUrl) {
+	public RecipeAPIService(String baseUrl) {
 		this.client = HttpClient.newHttpClient();
 		this.mapper = new ObjectMapper();
 		this.baseUrl = baseUrl;
