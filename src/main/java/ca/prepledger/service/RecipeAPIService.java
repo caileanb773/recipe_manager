@@ -179,6 +179,8 @@ public class RecipeAPIService {
 	                "Failed to update recipe. HTTP status: "
 	                + response.statusCode() + "\n" + response.body());
 	    }
+	    
+	    logger.info("Successfully updated recipe: {}.", recipe.getTitle());
 
 		return mapper.readValue(response.body(), Recipe.class);
 	}
