@@ -13,8 +13,6 @@ import ca.prepledger.model.Ingredient;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
-import ca.prepledger.service.RecipeAPIService;
-import ca.prepledger.session.UserSession;
 import ca.prepledger.util.PrepLedgerDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -65,8 +63,6 @@ public class RecipeViewController {
 	private boolean hasIngredientsTabBeenClicked = false;
 	private boolean hasDirectionsTabBeenClicked = false;
 	private ArrayList<CollapsibleIngredientRowController> ingredientRowControllers;
-	private UserSession session;
-	private RecipeAPIService recipeApiService;
 	private static final Logger logger = LoggerFactory.getLogger(RecipeViewController.class);
 
 
@@ -397,13 +393,5 @@ public class RecipeViewController {
 	public void setAdjustmentFactor(BigDecimal adjustmentFactor) {
 		this.adjustmentFactor = adjustmentFactor;
 	}
-	
-	public void setSession(UserSession session) {
-		this.session = session;
-	}
-
-	public void setRecipeApiService(RecipeAPIService recipeApiService) {
-		this.recipeApiService = recipeApiService;
-	}
-	
+		
 }
