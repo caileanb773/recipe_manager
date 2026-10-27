@@ -24,7 +24,7 @@
          </BorderPane.margin></Label>
    </top>
    <center>
-      <VBox alignment="TOP_CENTER" spacing="20.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </BorderPane.margin>
@@ -32,6 +32,9 @@
             <String fx:value="background-offset" />
             <String fx:value="content-border" />
          </styleClass>
+         <children>
+            <Label styleClass="sub-header" text="This is coming in a future build." />
+         </children>
       </VBox>
    </center>
 </BorderPane>
