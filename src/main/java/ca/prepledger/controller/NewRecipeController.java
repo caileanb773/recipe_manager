@@ -187,14 +187,14 @@ public class NewRecipeController implements Navigable, Configurable {
 			Task<Recipe> task = new Task<>() {
 				@Override
 				protected Recipe call() throws Exception {
-					recipeApiService.createRecipe(currentSession, newRecipe);
-					return null;
+					return recipeApiService.createRecipe(currentSession, newRecipe);
 				}			
 			};
 			
 			task.setOnSucceeded(e -> {
-				recipeService.addRecipe(newRecipe);
-				goBackToRecipesList();
+			    Recipe createdRecipe = task.getValue();
+			    recipeService.addRecipe(createdRecipe);
+			    goBackToRecipesList();
 			});
 			
 			task.setOnFailed(e -> {

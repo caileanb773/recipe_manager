@@ -69,11 +69,11 @@ public class RecipeService {
 	}
 	
 	public void notifyRecipesChanged() {
+		logger.info("notifyRecipesChanged(): Notifying listeners...");
+		
 		for (RecipeChangeListener listener : listeners) {
 			listener.onRecipesChanged();
 		}
 	}
-	
-
-	
+		
 }
