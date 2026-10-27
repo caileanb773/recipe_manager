@@ -31,6 +31,7 @@ public class SettingsController implements Configurable {
 	@FXML private CheckBox toolTipsCheckbox;
 	@FXML private Label versionLabel;
 	@FXML private Button logoutButton;
+	@FXML private Label savedConfirmation;
 	
 	private SessionHandler sessionHandler;
 	private AppConfig appConfig;
@@ -166,6 +167,8 @@ public class SettingsController implements Configurable {
 		appConfig.setRecipeDisplayType(recipeDisplayType);
 		appConfig.setTheme(theme);
 		appConfig.setTooltipsOn(areToolTipsEnabled);
+		
+		savedConfirmation.setText("Saved!");
 	}
 	
 	public void setVersionLabel() {

@@ -108,6 +108,7 @@
             <Separator />
             <Label fx:id="versionLabel" styleClass="sub-header" />
             <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveButtonClicked" styleClass="primary-button" text="Save" />
+            <Label fx:id="savedConfirmation" layoutX="214.0" layoutY="419.0" styleClass="sub-header" />
          </children>
          <styleClass>
             <String fx:value="background-offset" />
