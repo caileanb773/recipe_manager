@@ -127,7 +127,7 @@
       <HBox fx:id="footer" alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
             <Label styleClass="header-4" text="Already have an account?" />
-            <Button fx:id="signIn" mnemonicParsing="false" onAction="#onSignInBtnClicked" styleClass="link-style-button" text="Sign in" />
+            <Button fx:id="signIn" mnemonicParsing="false" onAction="#onSignInBtnClicked" styleClass="link-style-button" text="Sign in." />
          </children>
          <BorderPane.margin>
             <Insets bottom="15.0" top="15.0" />

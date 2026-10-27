@@ -95,25 +95,37 @@ public class LoginController implements Navigable {
 		String email = emailAddress.getText().trim();
 		UserSession session = null;
 
-		// TODO ensure email/password fields are valid
 		if (email.isBlank() || password.getText().isBlank()) {
-			// TODO show error msg to user
-			logger.warn("onSignInBtnClicked(): One or more fields blank.");
+			PrepLedgerDialog dialog = new PrepLedgerDialog();
+			if (email.isBlank()) {
+				dialog.showLoginError("Please enter an email.");				
+			} else if (password.getText().isBlank()) {
+				dialog.showLoginError("Please enter a password.");
+			}
 			return;
 		}
 
+		if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+			PrepLedgerDialog dialog = new PrepLedgerDialog();
+			dialog.showLoginError("Please enter a valid email.");
+		}
+		
 		try {
 			session = auth.login(email, password.getText());
 		} catch (IOException | InterruptedException e) {
-			logger.warn("onSignInBtnClicked(): Couldn't login.");
+			PrepLedgerDialog dialog = new PrepLedgerDialog();
+			dialog.showLoginError(e.getMessage());
+			return;
 		}
-
+		
 		if (session != null) {
-			logger.info("Logged in as {}", session.getEmail() + " at " + Time.valueOf(LocalTime.now()));
+			logger.info("Logged in as {}", 
+					session.getEmail() + " at " + Time.valueOf(LocalTime.now()));
 
 			sessionHandler.onLoginSuccess(session);
 		} else {
-			logger.warn("attemptLogin(): Login failed; session returned from AuthService == null.");
+			PrepLedgerDialog dialog = new PrepLedgerDialog();
+			dialog.showLoginError("Invalid credentials.");
 		}
 	}
 

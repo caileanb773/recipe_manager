@@ -124,5 +124,33 @@ public class PrepLedgerDialog {
 		alert.setTitle("Error");
 		alert.showAndWait();
 	}
+	
+	public void showLoginError(String reason) {
+		Alert alert = new Alert(
+				AlertType.WARNING,
+				reason);
+		
+		alert.getDialogPane().getStylesheets().addAll(
+				getClass().getResource("/css/components/alert.css").toExternalForm()
+				);
+		
+		alert.setHeaderText("Could not log in");
+		alert.setTitle("Warning");
+		alert.showAndWait();
+	}
+	
+	public void showRegisterError(String reason) {
+		Alert alert = new Alert(
+				AlertType.WARNING,
+				reason);
+		
+		alert.getDialogPane().getStylesheets().addAll(
+				getClass().getResource("/css/components/alert.css").toExternalForm()
+				);
+		
+		alert.setHeaderText("Could not register");
+		alert.setTitle("Warning");
+		alert.showAndWait();
+	}
 
 }
