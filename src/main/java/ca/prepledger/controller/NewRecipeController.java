@@ -165,14 +165,8 @@ public class NewRecipeController implements Navigable, Configurable {
 
 		    task.setOnSucceeded(event -> {
 		        Recipe updatedRecipe = task.getValue();
-
-		        int rcpIdx = recipeService.getRecipeIndex(currentRecipe);
-		        
-		        logger.info("Updated recipe returned: {}", updatedRecipe);
-		        logger.info("Current recipe index: {}", rcpIdx);
-		        
+		        int rcpIdx = recipeService.getRecipeIndex(currentRecipe);	        
 		        recipeService.updateRecipe(rcpIdx, updatedRecipe);
-
 		        goBackToRecipesList();
 		    });
 

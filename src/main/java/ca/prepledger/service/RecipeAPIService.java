@@ -191,21 +191,25 @@ public class RecipeAPIService {
 	//
 	////////////////////////////////////////////////////////////////////////////	
 
-//	public void deleteRecipe(Long id) 
-//			throws InterruptedException, IOException {
-//		HttpRequest request = HttpRequest.newBuilder()
-//				.uri(URI.create(baseUrl + "/recipes/" + id))
-//				.DELETE()
-//				.build();
-//
-//		HttpResponse<Void> response = client.send(
-//				request, HttpResponse.BodyHandlers.discarding());
-//
-//		// Delete failed, likely couldn't find ID
-//		if (response.statusCode() != 204) {
-//			throw new IOException("Failed to delete recipe: HTTP "
-//					+ response.statusCode());
-//		}
-//	}
+	public void deleteRecipe(UserSession session, Long id) 
+			throws InterruptedException, IOException {
+		
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create(RECIPES_URL + "/" + id))
+				.header("Authorization", "Bearer " + session.getToken())
+				.DELETE()
+				.build();
+
+		HttpResponse<String> response = client.send(
+				request, HttpResponse.BodyHandlers.ofString());
+
+		// Delete failed, likely couldn't find ID
+		if (response.statusCode() != 204 && response.statusCode() != 200) {
+			throw new IOException("Failed to delete recipe: HTTP status: "
+					+ response.statusCode() + "\n" + response.body());
+		}
+		
+	    logger.info("Successfully deleted recipe.");
+	}
 
 }
