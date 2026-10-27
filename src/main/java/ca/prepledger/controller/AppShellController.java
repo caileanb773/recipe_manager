@@ -198,6 +198,8 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			recipeListController.initializeViewingMode();
 			recipeListController.initializeSearchField();
 			recipeListController.setRecipeService(recipeService);
+			recipeListController.setSession(currentSession);			
+			recipeListController.setRecipeApiService(recipeApiService);
 			
 			isRecipeListCached = true;
 		}
@@ -326,6 +328,8 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		controller.setRecipeToView(recipe);
 		controller.populateOverview();
 		controller.setScaleProperties();
+		controller.setSession(currentSession);			
+		controller.setRecipeApiService(recipeApiService);
 
 		appShell.setCenter(viewRecipe);
 	}

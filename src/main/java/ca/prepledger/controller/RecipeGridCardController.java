@@ -10,7 +10,9 @@ import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
+import ca.prepledger.service.RecipeAPIService;
 import ca.prepledger.service.RecipeService;
+import ca.prepledger.session.UserSession;
 import ca.prepledger.util.PrepLedgerDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -37,7 +39,8 @@ public class RecipeGridCardController implements Navigable {
 	private RecipeService recipeService;
 	private Runnable onRecipeDeleted;
 	private NavigationHandler navigationHandler;
-
+	private UserSession currentSession;
+	private RecipeAPIService recipeApiService;
 	private static final Logger logger = LoggerFactory.getLogger(RecipeGridCardController.class);
 
 
@@ -152,6 +155,14 @@ public class RecipeGridCardController implements Navigable {
 	@Override
 	public void setNavigationHandler(NavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
+	}
+	
+	public void setSession(UserSession currentSession) {
+		this.currentSession = currentSession;
+	}
+
+	public void setRecipeApiService(RecipeAPIService recipeApiService) {
+		this.recipeApiService = recipeApiService;
 	}
 
 }
