@@ -15,6 +15,7 @@ import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.UserSession;
 import ca.prepledger.util.PrepLedgerDialog;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.Node;
@@ -124,12 +125,45 @@ public class RecipeListCardController implements Navigable {
 					+ recipe.getTitle());
 			return;
 		}
+		
+		// fail early if recipe has no ID to pass to backend
+		if (recipe.getId() == null) {
+		    logger.warn("Cannot delete recipe: missing backend ID.");
+		    PrepLedgerDialog errorDialog = new PrepLedgerDialog();
+		    errorDialog.showRecipeBackendActionFailedDialog(
+		            "Missing backend ID.",
+		            "delete");
+		    return;
+		}
 
-		// Delete the recipe contained in this class from RecipeService's memory
-		recipeService.removeRecipe(recipe);
+		Task<Void> task = new Task<>() {
+		    @Override
+		    protected Void call() throws Exception {
+		        recipeApiService.deleteRecipe(
+		                currentSession, recipe.getId());
+		        return null;
+		    }
+		};
 
-		// Tell RecipeListController to refresh
-		onRecipeDeleted.run();
+		// only delete from local memory if this thread succeeded
+		task.setOnSucceeded(event -> {
+		    recipeService.removeRecipe(recipe);
+		    onRecipeDeleted.run();
+		});
+
+		task.setOnFailed(event -> {
+		    logger.error("Failed to delete recipe from backend.",
+		            task.getException());
+
+		    PrepLedgerDialog errorDialog = new PrepLedgerDialog();
+		    errorDialog.showRecipeBackendActionFailedDialog(
+		            task.getException().getMessage(),
+		            "delete");
+		});
+
+		Thread thread = new Thread(task, "recipe-delete");
+		thread.setDaemon(true);
+		thread.start();
 	}
 
 	public Recipe getRecipe() {
