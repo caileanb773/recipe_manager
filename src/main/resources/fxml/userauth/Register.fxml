@@ -83,7 +83,7 @@
                   <Region HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <Button fx:id="createAccount" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onCreateAccountButtonClicked" prefWidth="500.0" styleClass="primary-button" text="Create Account" VBox.vgrow="ALWAYS">
+            <Button fx:id="createAccount" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#onCreateAccountButtonClicked" prefWidth="500.0" styleClass="primary-button" text="Create Account" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
