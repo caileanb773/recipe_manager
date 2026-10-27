@@ -17,6 +17,7 @@ import ca.prepledger.service.RecipeChangeListener;
 import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.SessionHandler;
 import ca.prepledger.session.UserSession;
+import ca.prepledger.util.PrepLedgerDialog;
 import javafx.beans.property.ObjectProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -328,8 +329,6 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		controller.setRecipeToView(recipe);
 		controller.populateOverview();
 		controller.setScaleProperties();
-		controller.setSession(currentSession);			
-		controller.setRecipeApiService(recipeApiService);
 
 		appShell.setCenter(viewRecipe);
 	}
@@ -345,11 +344,49 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	 * @since 0.1.2
 	 */
 	public void removeRecipeFromRecipeViewContext(Recipe recipe) throws IOException {
-		// Delete recipe from the repository
-		recipeService.removeRecipe(recipe);
-		
-		// Boot the user back to RecipeList.fxml
-		showRecipes();
+		// fail early if recipe has no ID to pass to backend
+		if (recipe.getId() == null) {
+		    logger.warn("Cannot delete recipe: missing backend ID.");
+		    PrepLedgerDialog errorDialog = new PrepLedgerDialog();
+		    errorDialog.showRecipeBackendActionFailedDialog(
+		            "Missing backend ID.",
+		            "delete");
+		    return;
+		}
+
+		Task<Void> task = new Task<>() {
+		    @Override
+		    protected Void call() throws Exception {
+		        recipeApiService.deleteRecipe(
+		                currentSession, recipe.getId());
+		        return null;
+		    }
+		};
+
+		// only delete from local memory if this thread succeeded
+		task.setOnSucceeded(event -> {
+		    recipeService.removeRecipe(recipe);
+			try {
+				showRecipes();
+			} catch (IOException e) {
+				logger.error("call(), showRecipes(): IOException encountered: {}", e);
+			}
+
+		});
+
+		task.setOnFailed(event -> {
+		    logger.error("Failed to delete recipe from backend.",
+		            task.getException());
+
+		    PrepLedgerDialog errorDialog = new PrepLedgerDialog();
+		    errorDialog.showRecipeBackendActionFailedDialog(
+		            task.getException().getMessage(),
+		            "delete");
+		});
+
+		Thread thread = new Thread(task, "recipe-delete");
+		thread.setDaemon(true);
+		thread.start();
 	}
 
 	@Override
