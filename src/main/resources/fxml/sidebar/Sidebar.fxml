@@ -113,6 +113,7 @@
       </Label>
    </top>
    <stylesheets>
+      <URL value="@../../css/theme.css" />
       <URL value="@../../css/application.css" />
       <URL value="@../../css/navigation/sidebar.css" />
    </stylesheets>
