@@ -10,7 +10,7 @@
     <!-- Project information -->
     <groupId>ca.prepledger</groupId>
     <artifactId>prep-ledger</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <name>PrepLedger</name>
     <description>Professional recipe management application</description>
 
