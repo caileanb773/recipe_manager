@@ -15,10 +15,17 @@ import ca.prepledger.session.UserSession;
 
 public class AuthService {
 
-	private static final String LOGIN_URL = ApiConfig.RAILWAY_ROOT + "/auth/login";
-	private static final String REGISTER_URL = ApiConfig.RAILWAY_ROOT + "/auth/register";
+	private static String Domain;
+	private static final String LOGIN_PATH = "/auth/login";
+	private static final String REGISTER_PATH = "/auth/register";
 	private final HttpClient client = HttpClient.newHttpClient();
 	private final ObjectMapper mapper = new ObjectMapper();
+
+
+	public AuthService() {
+		Domain = (ApiConfig.mode == ApiConfig.Mode.PROD) 
+				? ApiConfig.RAILWAY_ROOT : ApiConfig.LOCALHOST_ROOT;
+	}
 
 
 	public UserSession login(String email, String password) 
@@ -29,7 +36,7 @@ public class AuthService {
 		credentials.put("password", password);
 
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create(LOGIN_URL))
+				.uri(URI.create(Domain + LOGIN_PATH))
 				.header("Content-Type", "application/json")
 				.POST(HttpRequest.BodyPublishers.ofString(
 						mapper.writeValueAsString(credentials),
@@ -60,7 +67,7 @@ public class AuthService {
 		credentials.put("password", password);
 
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create(REGISTER_URL))
+				.uri(URI.create(Domain + REGISTER_PATH))
 				.header("Content-Type", "application/json")
 				.POST(HttpRequest.BodyPublishers.ofString(
 						mapper.writeValueAsString(credentials),
@@ -78,5 +85,5 @@ public class AuthService {
 					);
 		}
 	}
-	
+
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.prepledger.config.ApiConfig;
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.ConfigManager;
 import ca.prepledger.controller.AppShellController;
@@ -48,6 +49,11 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 
 	public static void main(String[] args) {
+		if (args.length > 0) {
+			if (args[0].matches("-development")) {
+				ApiConfig.mode = ApiConfig.Mode.DEV;
+			}
+		}
 		launch(args);
 	}
 

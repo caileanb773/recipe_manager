@@ -19,15 +19,16 @@ import ca.prepledger.session.UserSession;
 
 public class RecipeAPIService {
 
-	private HttpClient client;
-	private final ObjectMapper mapper;
-	private static final String RECIPES_URL = ApiConfig.RAILWAY_ROOT + "/recipes";
+	private String Domain;
+	private final HttpClient client = HttpClient.newHttpClient();;
+	private final ObjectMapper mapper = new ObjectMapper();
+	private static final String RECIPES_PATH = "/recipes";
 	private static final Logger logger = LoggerFactory.getLogger(RecipeAPIService.class);
 	
 
 	public RecipeAPIService() {
-		this.client = HttpClient.newHttpClient();
-		this.mapper = new ObjectMapper();
+		Domain = (ApiConfig.mode == ApiConfig.Mode.PROD) 
+				? ApiConfig.RAILWAY_ROOT : ApiConfig.LOCALHOST_ROOT;
 	}
 
 
@@ -56,7 +57,7 @@ public class RecipeAPIService {
 	        throws IOException, InterruptedException {
 
 	    HttpRequest request = HttpRequest.newBuilder()
-	            .uri(URI.create(RECIPES_URL))
+	            .uri(URI.create(Domain + RECIPES_PATH))
 	            .header("Authorization", "Bearer " + session.getToken())
 	            .GET()
 	            .build();
@@ -131,7 +132,7 @@ public class RecipeAPIService {
 		String json = mapper.writeValueAsString(recipe);
 		
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create(RECIPES_URL))
+				.uri(URI.create(Domain + RECIPES_PATH))
 				.header("Authorization", "Bearer " + session.getToken())
 	            .header("Content-Type", "application/json")				
 				.POST(HttpRequest.BodyPublishers.ofString(json))
@@ -164,7 +165,7 @@ public class RecipeAPIService {
 		String json = mapper.writeValueAsString(recipe);
 
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create(RECIPES_URL + "/" + existingRecipeId))
+				.uri(URI.create(Domain + RECIPES_PATH + "/" + existingRecipeId))
 				.header("Authorization", "Bearer " + session.getToken())
 				.header("Content-Type", "application/json")
 				.PUT(HttpRequest.BodyPublishers.ofString(json))
@@ -195,7 +196,7 @@ public class RecipeAPIService {
 			throws InterruptedException, IOException {
 		
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create(RECIPES_URL + "/" + id))
+				.uri(URI.create(Domain + RECIPES_PATH + "/" + id))
 				.header("Authorization", "Bearer " + session.getToken())
 				.DELETE()
 				.build();
