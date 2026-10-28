@@ -1,27 +1,68 @@
+/* PrepLedger light theme palette.
+ * Keep application colours here; other stylesheets should reference these tokens.
+ */
+.root {
+    -pl-background: #F5F5F5;
+    -pl-surface: #FEFEFE;
+    -pl-text: #000000;
+    -pl-text-heading: #26343D;
+    -pl-text-muted: #93ACBB;
+
+    -pl-primary: #2E9B90;
+    -pl-primary-hover: #37AA9E;
+    -pl-primary-pressed: #25877E;
+    -pl-primary-hover-dark: #24786F;
+    -pl-link-hover: #226e67;
+    -pl-password-reveal-hover: #c022a6;
+
+    -pl-sidebar-background: #1C252E;
+    -pl-text-on-dark: #F2F4F3;
+    -pl-text-on-dark-heading: #E6E9EB;
+    -pl-text-muted-on-dark: #B8C0C5;
+    -pl-nav-hover: #26343D;
+
+    -pl-border-strong: #93ACBB;
+    -pl-border-muted: #C3C3C3;
+    -pl-control-border: #6B7780;
+    -pl-card-border: #E2E5E8;
+    -pl-card-border-hover: #C9CEd4;
+    -pl-neutral-hover: #BBBBBB;
+    -pl-neutral-drag-over: #bcbcbc;
+
+    -pl-danger: #E03B29;
+    -pl-danger-hover: #AE2F21;
+    -pl-focus: #4A90E2;
+    -pl-info-background: #E6F4FB;
+
+    -pl-scrollbar-thumb: #247c74;
+    -pl-scrollbar-thumb-hover: #1a5d57;
+    
+    -pl-transparent: transparent;
+    -pl-shadow: rgba(0, 0, 0, 0.08);
+    -pl-shadow-hover: rgba(0, 0, 0, 0.14);
+}
+
+/* Semantic utility classes */
 .background {
-    -fx-background-color: #F5F5F5;
+    -fx-background-color: -pl-background;
 }
 
 .background-offset {
-    -fx-background-color: #FEFEFE;
-}
-
-.highlight {
-
+    -fx-background-color: -pl-surface;
 }
 
 .text-color {
-    -fx-text-fill: #000000;
+    -fx-text-fill: -pl-text;
 }
 
 .text-muted {
-
+    -fx-text-fill: -pl-text-muted;
 }
 
 .border {
-
+    -fx-border-color: -pl-border-strong;
 }
 
 .danger {
-    
+    -fx-text-fill: -pl-danger;
 }

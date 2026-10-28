@@ -3,8 +3,8 @@
 }
 
 .default-button {
-    -fx-background-color: #FEFEFE;
-    -fx-border-color: #93ACBB;
+    -fx-background-color: -pl-surface;
+    -fx-border-color: -pl-border-strong;
     -fx-border-width: 1px;
     -fx-border-radius: 5px;
     -fx-font-size: 16px;
@@ -12,24 +12,24 @@
 }
 
 .default-button:hover {
-    -fx-background-color: #BBBBBB;
+    -fx-background-color: -pl-neutral-hover;
 }
 
 .primary-button {
-    -fx-background-color: #2E9B90;
-    -fx-text-fill: #F2F4F3;
+    -fx-background-color: -pl-primary;
+    -fx-text-fill: -pl-text-on-dark;
     -fx-font-weight: bold;
     -fx-padding: 5px 8px 5px 8px;
     -fx-background-radius: 5px;
 }
 
 .primary-button:hover {
-    -fx-background-color: #24786F;
+    -fx-background-color: -pl-primary-hover-dark;
 }
 
 .secondary-button {
     -fx-background-color: transparent;
-    -fx-border-color: #2E9B90;
+    -fx-border-color: -pl-primary;
     -fx-border-width: 2px;
     -fx-border-radius: 5px;
     -fx-font-size: 16px;
@@ -37,7 +37,7 @@
 }
 
 .secondary-button:hover {
-    -fx-background-color: #BBBBBB;
+    -fx-background-color: -pl-neutral-hover;
 }
 
 .toggle-button {
@@ -47,23 +47,23 @@
 }
 
 .toggle-button:hover {
-    -fx-background-color: #BBBBBB;
+    -fx-background-color: -pl-neutral-hover;
 }
 
 .toggle-button.active {
-    -fx-background-color:#2E9B90;
+    -fx-background-color:-pl-primary;
     -fx-border-color: transparent;
 }
 
 .icon-button {
     -fx-background-color: transparent;
-    -fx-border-color: #C3C3C3;
+    -fx-border-color: -pl-border-muted;
     -fx-border-radius: 3px;
 }
 
 /* This is also defined as toggle-button hover. */
 .icon-button:hover {
-    -fx-background-color: #BBBBBB;
+    -fx-background-color: -pl-neutral-hover;
 }
 
 .icon-only-button {
@@ -74,27 +74,27 @@
 
 /* This is also defined as toggle-button hover. */
 .icon-only-button:hover {
-    -fx-background-color: #BBBBBB;
+    -fx-background-color: -pl-neutral-hover;
 }
 
 .page-navigation-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #93ACBB;
+    -fx-text-fill: -pl-border-strong;
     -fx-padding: 0px 0px 0px 0px;
 }
 
 .page-navigation-button:hover {
-    -fx-background-color: #BBBBBB;
+    -fx-background-color: -pl-neutral-hover;
 }
 
 .danger-button {
-    -fx-background-color: #E03B29;
-    -fx-text-fill: #F2F4F3;
+    -fx-background-color: -pl-danger;
+    -fx-text-fill: -pl-text-on-dark;
     -fx-font-weight: bold;
     -fx-padding: 5px 8px 5px 8px;
     -fx-background-radius: 5px;
 }
 
 .danger-button:hover {
-    -fx-background-color: #AE2F21;
+    -fx-background-color: -pl-danger-hover;
 }

@@ -2,16 +2,16 @@
     -fx-border-style: dashed;
     -fx-border-width: 1px;
     -fx-border-radius: 6px;
-    -fx-border-color: #C3C3C3;
+    -fx-border-color: -pl-border-muted;
 }
 
 .import-tip {
     -fx-border-style: dashed;
     -fx-border-width: 1px;
     -fx-border-radius: 3px;
-    -fx-background-color: #E6F4FB;
+    -fx-background-color: -pl-info-background;
 }
 
 .import-zone-drag-over {
-    -fx-background-color: #bcbcbc;
+    -fx-background-color: -pl-neutral-drag-over;
 }

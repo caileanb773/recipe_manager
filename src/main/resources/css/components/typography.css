@@ -2,7 +2,7 @@
     -fx-font-family: "Inter 18pt";
     -fx-font-weight: bold;
     -fx-font-size: 40px;
-    -fx-text-fill: #26343D;
+    -fx-text-fill: -pl-text-heading;
 
     -fx-font-alignment: CENTER;
 }
@@ -11,7 +11,7 @@
     -fx-font-family: "Inter 18pt";
     -fx-font-weight: bold;
     -fx-font-size: 30px;
-    -fx-text-fill: #26343D;
+    -fx-text-fill: -pl-text-heading;
 
     -fx-font-alignment: CENTER;
 }
@@ -20,7 +20,7 @@
     -fx-font-family: "Inter 18pt";
     -fx-font-weight: bold;
     -fx-font-size: 20px;
-    -fx-text-fill: #26343D;
+    -fx-text-fill: -pl-text-heading;
 
     -fx-font-alignment: CENTER;
 }
@@ -29,7 +29,7 @@
     -fx-font-family: "Inter 18pt";
     -fx-font-weight: bold;
     -fx-font-size: 18px;
-    -fx-text-fill: #26343D;
+    -fx-text-fill: -pl-text-heading;
 
     -fx-font-alignment: CENTER;  
 }
@@ -37,7 +37,7 @@
 .sub-header {
     -fx-font-family: "Inter 18pt";
     -fx-font-size: 15px;
-    -fx-text-fill: #93ACBB;
+    -fx-text-fill: -pl-border-strong;
     -fx-font-weight: normal;
     -fx-font-alignment: CENTER;
 }

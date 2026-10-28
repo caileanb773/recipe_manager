@@ -1,6 +1,6 @@
 
 .label-color {
-    -fx-text-fill: #2E9B90;
+    -fx-text-fill: -pl-primary;
 }
 
 .ingredient-table-header {
@@ -13,5 +13,5 @@
 }
 
 .text-area .content {
-    -fx-background-color: #FEFEFE;
+    -fx-background-color: -pl-surface;
 }

@@ -1,13 +1,13 @@
 .recipe-list-card {
-    -fx-background-color: white;
+    -fx-background-color: -pl-surface;
     -fx-background-radius: 12px;
     -fx-border-radius: 12px;
-    -fx-border-color: #E2E5E8;
+    -fx-border-color: -pl-card-border;
     -fx-border-width: 1px;
 
     -fx-effect: dropshadow(
         gaussian,
-        rgba(0, 0, 0, 0.08),
+        -pl-shadow,
         8,
         0.2,
         0,
@@ -18,11 +18,11 @@
 }
 
 .recipe-list-card:hover {
-    -fx-border-color: #C9CEd4;
+    -fx-border-color: -pl-card-border-hover;
 
     -fx-effect: dropshadow(
         gaussian,
-        rgba(0, 0, 0, 0.14),
+        -pl-shadow-hover,
         12,
         0.25,
         0,

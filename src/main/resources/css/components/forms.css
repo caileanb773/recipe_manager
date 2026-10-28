@@ -1,23 +1,23 @@
 /* ComboBox, TextField, etc. */
 .base-form-component {
-    -fx-background-color: #FEFEFE;
+    -fx-background-color: -pl-surface;
     -fx-border-width: 1px;
     -fx-border-radius: 3px;
-    -fx-border-color: #C3C3C3;
-    -fx-text-fill: #26343D;
+    -fx-border-color: -pl-border-muted;
+    -fx-text-fill: -pl-text-heading;
 }
 
 .base-form-component .prompt-text {
-    -fx-fill: #C3C3C3;
+    -fx-fill: -pl-border-muted;
 }
 
 .base-form-component:focused {
-    -fx-border-color: #4A90E2;
+    -fx-border-color: -pl-focus;
 }
 
 /* Specifically for ComboBox default text */
 .base-form-component .list-cell {
-    -fx-text-fill: #C3C3C3; 
+    -fx-text-fill: -pl-border-muted; 
 }
 
 .base-form-component .arrow-button {

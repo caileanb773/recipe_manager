@@ -3,14 +3,14 @@
 }
 
 .sidebar {
-    -fx-background-color: #1C252E;
+    -fx-background-color: -pl-sidebar-background;
 }
 
 .sidebar-header {
     -fx-font-family: "Inter 18pt";
     -fx-font-weight: bold;
     -fx-font-size: 20px;
-    -fx-text-fill: #F2F4F3;
+    -fx-text-fill: -pl-text-on-dark;
     
     -fx-font-alignment: CENTER;
     -fx-padding: 10px 10px 10px 10px;
@@ -21,28 +21,28 @@
     -fx-border-radius: 12px;
 
     -fx-font-family: "Inter 18pt Medium";
-    -fx-text-fill: #F2F4F3;
+    -fx-text-fill: -pl-text-on-dark;
 
     -fx-alignment: CENTER_LEFT;
     -fx-padding: 10px 10px 10px 10px;
 }
 
 .nav-button:hover {
-    -fx-background-color: #26343D;
+    -fx-background-color: -pl-text-heading;
 }
 
 .nav-button.active {
-    -fx-background-color: #2E9B90;
+    -fx-background-color: -pl-primary;
 }
 
 .online-status {
     -fx-padding: 10px 10px 10px 10px;
-    -fx-text-fill: #F2F4F3;
+    -fx-text-fill: -pl-text-on-dark;
     -fx-font-size: 15px;
 }
 
 .profile-name {
     -fx-padding: 10px 10px 10px 10px;
-    -fx-text-fill: #F2F4F3;
+    -fx-text-fill: -pl-text-on-dark;
     -fx-font-size: 15px;
 }
