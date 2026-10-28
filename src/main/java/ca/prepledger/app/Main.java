@@ -244,6 +244,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		loadAppShellController();
 		injectAppShellAppConfig();
 		injectSessionHandler();
+		appShellController.initializeThemeDependencies();
 		appShellController.setConnectionStatus(connectionStatus);
 		displayAppShellController(primaryStage);
 	}

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import ca.prepledger.config.AppConfig;
 import ca.prepledger.config.Configurable;
+import ca.prepledger.config.Theme;
 import ca.prepledger.model.ConnectionStatus;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
@@ -93,6 +94,11 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		} catch (IOException e) {
 			logger.error("loadDefaultContextArea(): IOException caught during showRecipes(): {}", e);
 		}
+	}
+	
+	public void initializeThemeDependencies() {
+		appConfig.setThemeChangeListener(this::applyTheme);
+		applyTheme(appConfig.getTheme());
 	}
 	
 	@Override
@@ -392,6 +398,25 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	@Override
 	public void onRecipesChanged() {
 		shouldRefreshRecipes = true;
+	}
+	
+	public void applyTheme(Theme theme) {
+	    String stylesheet = switch (theme) {
+	        case LIGHT -> "/css/theme.css";
+	        case DARK -> "/css/theme-midnight.css";
+	    };
+
+	    var scene = appShell.getScene();
+
+	    if (scene != null) {
+	        scene.getStylesheets().removeIf(s -> 
+	            s.contains("/css/theme.css") || s.contains("/css/themes/")
+	        );
+
+	        scene.getStylesheets().add(
+	            getClass().getResource(stylesheet).toExternalForm()
+	        );
+	    }
 	}
 	
 	public ContextArea getCurrentContextArea() {

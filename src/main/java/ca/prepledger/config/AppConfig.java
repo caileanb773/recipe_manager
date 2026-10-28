@@ -1,5 +1,9 @@
 package ca.prepledger.config;
 
+import java.util.function.Consumer;
+
+import java.util.function.Consumer;
+
 /*
  * Author: Cailean Bernard
  * Contents: Contains the configurable fields of the application. The Config
@@ -10,12 +14,10 @@ package ca.prepledger.config;
 public class AppConfig {
 
 	private AppLanguage language;
-
 	private RecipeDisplayType recipeDisplayType;
-
 	private Theme theme;
-
 	private boolean areTooltipsOn;
+	private Consumer<Theme> themeChangeListener;
 
 	
 	public AppConfig() {
@@ -35,7 +37,10 @@ public class AppConfig {
 		this.theme = theme;
 		this.areTooltipsOn = areTooltipsOn;
 	}
-
+	
+	public void setThemeChangeListener(Consumer<Theme> listener) {
+	    this.themeChangeListener = listener;
+	}
 
 	// Getters & Setters
 	public AppLanguage getLanguage() {
@@ -60,6 +65,10 @@ public class AppConfig {
 
 	public void setTheme(Theme theme) {
 		this.theme = theme;
+		
+	    if (themeChangeListener != null) {
+	        themeChangeListener.accept(theme);
+	    }
 	}
 
 	public boolean areTooltipsOn() {
