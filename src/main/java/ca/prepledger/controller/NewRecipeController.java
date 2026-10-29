@@ -17,6 +17,7 @@ import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeAPIService;
 import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.UserSession;
+import ca.prepledger.util.IconManager;
 import ca.prepledger.util.PrepLedgerDialog;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -294,6 +295,11 @@ public class NewRecipeController implements Navigable, Configurable {
 		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/fxml/recipes/IngredientRow.fxml"));
 		Parent ingredientRow = loader.load();
+		
+		IconManager.applyThemeToTree(
+			    ingredientRow, appConfig.getTheme(), null
+			);
+		
 		IngredientRowController controller = loader.getController();
 
 		// Keep track of the row's controller
