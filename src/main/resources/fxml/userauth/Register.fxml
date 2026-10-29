@@ -90,7 +90,7 @@
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/icon/scaled/light/login-light-scaled.png" />
+                        <Image url="@../../img/icon/scaled/light/login.png" />
                      </image>
                   </ImageView>
                </graphic>

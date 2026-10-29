@@ -134,7 +134,7 @@
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../img/icon/scaled/light/imp-exp-light-scaled.png" />
+                                    <Image url="@../../img/icon/scaled/light/imp-exp.png" />
                                  </image>
                               </ImageView>
                            </graphic>

@@ -44,7 +44,7 @@
                                  <graphic>
                                     <ImageView pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../img/icon/scaled/dark/reset-scaled.png" />
+                                          <Image url="@../../img/icon/scaled/dark/reset.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -58,7 +58,7 @@
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../img/icon/scaled/light/plus-light-scaled.png" />
+                                    <Image url="@../../img/icon/scaled/light/plus.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -73,7 +73,7 @@
                                  <graphic>
                                     <ImageView pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../img/icon/scaled/dark/grid-scaled.png" />
+                                          <Image url="@../../img/icon/scaled/dark/grid.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -84,7 +84,7 @@
                                  <graphic>
                                     <ImageView pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../img/icon/scaled/dark/list-scaled.png" />
+                                          <Image url="@../../img/icon/scaled/dark/list.png" />
                                        </image>
                                     </ImageView>
                                  </graphic></Button>

@@ -27,7 +27,7 @@
                <graphic>
                   <ImageView pickOnBounds="true">
                      <image>
-                        <Image url="@../../img/icon/scaled/dark/options-scaled.png" />
+                        <Image url="@../../img/icon/scaled/dark/options.png" />
                      </image>
                   </ImageView>
                </graphic>

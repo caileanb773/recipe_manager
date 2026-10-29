@@ -28,7 +28,7 @@
                      <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../img/icon/scaled/other/nav-back-gray-scaled.png" />
+                              <Image url="@../../img/icon/scaled/other/nav-back.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -172,7 +172,7 @@
                            <graphic>
                               <ImageView pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../img/icon/scaled/light/plus-light-scaled.png" />
+                                    <Image url="@../../img/icon/scaled/light/plus.png" />
                                  </image>
                               </ImageView>
                            </graphic>

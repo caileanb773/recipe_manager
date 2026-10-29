@@ -17,7 +17,7 @@
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/icon/scaled/light/profile-light-scaled.png" />
+                        <Image url="@../../img/icon/scaled/light/profile.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -42,7 +42,7 @@
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/icon/scaled/light/book-light-scaled.png" />
+                        <Image url="@../../img/icon/scaled/light/book.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -51,7 +51,7 @@
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/icon/scaled/light/knife-light-scaled.png" />
+                        <Image url="@../../img/icon/scaled/light/knife.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -60,7 +60,7 @@
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/icon/scaled/light/dollar-light-scaled.png" />
+                        <Image url="@../../img/icon/scaled/light/dollar.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -69,7 +69,7 @@
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/icon/scaled/light/notification-light-scaled.png" />
+                        <Image url="@../../img/icon/scaled/light/notification.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -78,7 +78,7 @@
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/icon/scaled/light/settings-light-scaled.png" />
+                        <Image url="@../../img/icon/scaled/light/settings.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -87,7 +87,7 @@
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../img/icon/scaled/light/imp-exp-light-scaled.png" />
+                        <Image url="@../../img/icon/scaled/light/imp-exp.png" />
                      </image>
                   </ImageView>
                </graphic>

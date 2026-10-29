@@ -30,7 +30,7 @@
          <graphic>
             <ImageView pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/icon/scaled/dark/garbage-scaled.png" />
+                  <Image url="@../../img/icon/scaled/dark/garbage.png" />
                </image>
             </ImageView>
          </graphic>
