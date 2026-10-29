@@ -213,6 +213,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		}
 		
 		appShell.setCenter(recipeList);
+		IconManager.applyThemeToTree(recipeList, appConfig.getTheme(), null);
 
 		if (shouldRefreshRecipes) {
 			recipeListController.refreshDisplayedRecipes();	
@@ -244,6 +245,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		controller.setSessionHandler(sessionHandler);
 		
 		appShell.setCenter(settings);
+		IconManager.applyThemeToTree(settings, appConfig.getTheme(), null);
 	}
 
 	private void showImportExport() throws IOException {
@@ -258,6 +260,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		controller.setRecipeService(recipeService);
 
 		appShell.setCenter(importExport);
+		IconManager.applyThemeToTree(importExport, appConfig.getTheme(), null);
 	}
 
 	private void showNotifications() throws IOException {
@@ -274,6 +277,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 				);
 
 		appShell.setCenter(prepLists);
+		IconManager.applyThemeToTree(prepLists, appConfig.getTheme(), null);
 	}
 
 	private void showAddRecipe() throws IOException {
@@ -297,6 +301,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		}
 
 		appShell.setCenter(addRecipe);
+		IconManager.applyThemeToTree(addRecipe, appConfig.getTheme(), null);
 	}
 
 	private void showEditRecipe(Recipe recipe) throws IOException {
@@ -314,6 +319,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		controller.setRecipeService(recipeService);
 
 		appShell.setCenter(addRecipe);
+		IconManager.applyThemeToTree(addRecipe, appConfig.getTheme(), null);
 	}
 	
 	private void injectNewRecipeControllerDependencies(NewRecipeController controller) {
@@ -338,6 +344,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		controller.setScaleProperties();
 
 		appShell.setCenter(viewRecipe);
+		IconManager.applyThemeToTree(viewRecipe, appConfig.getTheme(), null);
 	}
 		
 	/** 
@@ -430,9 +437,9 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 
 	    scene.getStylesheets().add(resource.toExternalForm());
 
-	    IconManager.applyThemeToTree(appShell, theme, appShell.getLeft());
 	    appShell.applyCss();
 	    appShell.requestLayout();
+	    IconManager.applyThemeToTree(appShell, theme, appShell.getLeft());
 	}
 	
 	public ContextArea getCurrentContextArea() {

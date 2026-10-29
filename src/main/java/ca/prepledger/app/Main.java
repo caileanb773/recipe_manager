@@ -18,6 +18,7 @@ import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.session.SessionHandler;
 import ca.prepledger.session.SessionManager;
 import ca.prepledger.session.UserSession;
+import ca.prepledger.util.IconManager;
 import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
