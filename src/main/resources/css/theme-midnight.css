@@ -1,4 +1,3 @@
-
 /* PrepLedger Midnight theme palette.
  * Keep palette token names identical across all themes.
  */
@@ -7,36 +6,36 @@
     -pl-surface: #222838;
     -pl-text: #E8EAF0;
     -pl-text-heading: #F3F4FA;
-    -pl-text-muted: #9AA5BB;
+    -pl-text-muted: #a4acbc;
 
-    -pl-primary: #9B8AFB;
-    -pl-primary-hover: #B0A3FF;
-    -pl-primary-pressed: #8170E8;
-    -pl-primary-hover-dark: #C0B7FF;
-    -pl-link-hover: #C4BAFF;
-    -pl-password-reveal-hover: #E08BCF;
+    -pl-primary: #2E9B90;
+    -pl-primary-hover: #37AA9E;
+    -pl-primary-pressed: #25877E;
+    -pl-primary-hover-dark: #24786F;
+    -pl-link-hover: #226e67;
+    -pl-password-reveal-hover: #c022a6;
 
     -pl-sidebar-background: #10141E;
     -pl-text-on-dark: #F3F4FA;
     -pl-text-on-dark-heading: #FFFFFF;
     -pl-text-muted-on-dark: #A8B0C2;
-    -pl-nav-hover: #292F42;
+    -pl-nav-hover: #26343D;
 
     -pl-border-strong: #59647A;
-    -pl-border-muted: #424A5D;
+    -pl-border-muted: #a4acbc;
     -pl-control-border: #69748A;
     -pl-card-border: #343D51;
     -pl-card-border-hover: #626D87;
     -pl-neutral-hover: #3B4356;
     -pl-neutral-drag-over: #454E64;
 
-    -pl-danger: #FF716D;
-    -pl-danger-hover: #E85A57;
-    -pl-focus: #9B8AFB;
+    -pl-danger: #E03B29;
+    -pl-danger-hover: #AE2F21;
+    -pl-focus: #4A90E2;
     -pl-info-background: #26364B;
 
-    -pl-scrollbar-thumb: #7668C8;
-    -pl-scrollbar-thumb-hover: #9B8AFB;
+    -pl-scrollbar-thumb: #2E9B90;
+    -pl-scrollbar-thumb-hover: #2E9B90;
 
     -pl-transparent: transparent;
     -pl-shadow: rgba(0, 0, 0, 0.25);

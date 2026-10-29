@@ -37,7 +37,11 @@
 .sub-header {
     -fx-font-family: "Inter 18pt";
     -fx-font-size: 15px;
-    -fx-text-fill: -pl-border-strong;
+    -fx-text-fill: -pl-text-muted;
     -fx-font-weight: normal;
     -fx-font-alignment: CENTER;
+}
+
+.text {
+    -fx-text-fill: -pl-text;
 }

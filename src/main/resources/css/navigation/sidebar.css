@@ -28,7 +28,7 @@
 }
 
 .nav-button:hover {
-    -fx-background-color: -pl-text-heading;
+    -fx-background-color: -pl-nav-hover;
 }
 
 .nav-button.active {

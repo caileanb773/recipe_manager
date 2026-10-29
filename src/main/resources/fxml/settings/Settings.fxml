@@ -57,8 +57,8 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label text="Language" GridPane.hgrow="ALWAYS" />
-                              <Label text="Default Recipe View" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                              <Label styleClass="text" text="Language" GridPane.hgrow="ALWAYS" />
+                              <Label styleClass="text" text="Default Recipe View" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
                               <ComboBox fx:id="languageComboBox" onAction="#onLanguageSelected" prefWidth="150.0" styleClass="base-form-component" visibleRowCount="15" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
                               <ComboBox fx:id="recipeViewComboBox" onAction="#onRecipeViewStyleSelected" prefWidth="150.0" styleClass="base-form-component" visibleRowCount="15" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
                            </children>

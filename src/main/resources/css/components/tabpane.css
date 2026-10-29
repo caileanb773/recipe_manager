@@ -13,6 +13,10 @@
     -fx-faint-focus-color: transparent;
 }
 
+.tab .tab-label {
+    -fx-text-fill: -pl-text;
+}
+
 .tab-pane .tab-header-background {
     -fx-background-color: transparent;
 }

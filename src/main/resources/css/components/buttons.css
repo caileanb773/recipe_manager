@@ -9,6 +9,7 @@
     -fx-border-radius: 5px;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
+    -fx-text-fill: -pl-text;
 }
 
 .default-button:hover {
