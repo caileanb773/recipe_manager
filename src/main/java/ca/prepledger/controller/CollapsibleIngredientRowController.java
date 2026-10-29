@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import ca.prepledger.model.Fraction;
 import ca.prepledger.model.Ingredient;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class CollapsibleIngredientRowController {

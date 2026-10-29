@@ -52,10 +52,10 @@ public class LoginController implements Navigable {
 	public void initializeTextFieldIcons() {
 		ImageView emailIcon = new ImageView(
 				new Image(getClass().getResourceAsStream(
-						"/img/icon/scaled/other/email-gray-scaled.png")));
+						"/img/icon/scaled/other/email-gray.png")));
 		ImageView passwordIcon = new ImageView(
 				new Image(getClass().getResourceAsStream(
-						"/img/icon/scaled/other/password-gray-scaled.png")));
+						"/img/icon/scaled/other/password-gray.png")));
 
 		emailAddress.setLeft(emailIcon);
 		password.setLeft(passwordIcon);

@@ -55,12 +55,6 @@ public class NewRecipeController implements Navigable, Configurable {
 	private static final Logger logger = LoggerFactory.getLogger(NewRecipeController.class);
 
 
-	//////////////////////////////
-	/// 
-	/// FXML Methods
-	/// 
-	//////////////////////////////
-
 	@FXML
 	private void initialize() {
 		Platform.runLater(() -> recipeTitleField.requestFocus());
@@ -221,13 +215,6 @@ public class NewRecipeController implements Navigable, Configurable {
 			logger.error("onAddIngredientButtonClicked(): IOException encountered: {}", e);
 		}
 	}
-
-
-	//////////////////////////////
-	/// 
-	/// Other Methods
-	/// 
-	//////////////////////////////	
 	
 	public void setRecipeToEdit(Recipe recipe) {
 		this.currentRecipe = recipe;
