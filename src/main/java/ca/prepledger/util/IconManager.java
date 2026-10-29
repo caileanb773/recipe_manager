@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import ca.prepledger.config.Theme;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Labeled;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -62,11 +63,25 @@ public class IconManager {
 	    if (root == excludedNode) {
 	        return;
 	    }
+	    
+	    if (root instanceof Labeled labeled) {
+	        boolean fixedIcon =
+	            labeled.getStyleClass().contains("primary-button") ||
+	            labeled.getStyleClass().contains("danger-button");
+
+	        if (fixedIcon) {
+	            return;
+	        }
+
+	        if (labeled.getGraphic() != null) {
+	            applyThemeToTree(labeled.getGraphic(), theme, excludedNode);
+	        }
+	    }
 
 	    if (root instanceof ImageView imageView) {
 	        applyTheme(imageView, theme);
 	    }
-
+	    
 	    if (root instanceof Parent parent) {
 	        for (Node child : parent.getChildrenUnmodifiable()) {
 	            applyThemeToTree(child, theme, excludedNode);
