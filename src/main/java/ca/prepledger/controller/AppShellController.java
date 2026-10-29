@@ -405,18 +405,32 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	        case LIGHT -> "/css/theme.css";
 	        case DARK -> "/css/theme-midnight.css";
 	    };
+	    
+	    logger.info("Switching theme to: {}", theme);
 
 	    var scene = appShell.getScene();
 
-	    if (scene != null) {
-	        scene.getStylesheets().removeIf(s -> 
-	            s.contains("/css/theme.css") || s.contains("/css/themes/")
-	        );
+	    if (scene == null) {
+	        return;
+	    }
 
-	        scene.getStylesheets().add(
-	            getClass().getResource(stylesheet).toExternalForm()
+	    scene.getStylesheets().removeIf(s ->
+	        s.contains("/css/theme.css") ||
+	        s.contains("/css/theme-midnight.css")
+	    );
+
+	    var resource = getClass().getResource(stylesheet);
+
+	    if (resource == null) {
+	        throw new IllegalStateException(
+	            "Theme stylesheet not found: " + stylesheet
 	        );
 	    }
+
+	    scene.getStylesheets().add(resource.toExternalForm());
+
+	    appShell.applyCss();
+	    appShell.requestLayout();
 	}
 	
 	public ContextArea getCurrentContextArea() {

@@ -106,7 +106,7 @@
                                        <padding>
                                           <Insets bottom="10.0" />
                                        </padding></Label>
-                                    <TextField fx:id="recipeTitleField" prefColumnCount="13">
+                                    <TextField fx:id="recipeTitleField" prefColumnCount="13" styleClass="base-form-component">
                                        <VBox.margin>
                                           <Insets right="15.0" />
                                        </VBox.margin></TextField>
@@ -118,7 +118,7 @@
                                        <padding>
                                           <Insets bottom="10.0" />
                                        </padding></Label>
-                                    <TextField fx:id="recipeTagsField" prefColumnCount="13">
+                                    <TextField fx:id="recipeTagsField" prefColumnCount="13" styleClass="base-form-component">
                                        <VBox.margin>
                                           <Insets />
                                        </VBox.margin></TextField>
@@ -194,7 +194,7 @@
                            <padding>
                               <Insets bottom="10.0" />
                            </padding></Label>
-                        <TextArea fx:id="instructionsTextArea" prefHeight="200.0" prefWidth="400.0" wrapText="true" />
+                        <TextArea fx:id="instructionsTextArea" prefHeight="200.0" prefWidth="400.0" styleClass="base-form-component" wrapText="true" />
                      </children>
                      <VBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />

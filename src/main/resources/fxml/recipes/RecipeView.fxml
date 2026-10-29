@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeViewController">
+<BorderPane styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.RecipeViewController">
    <center>
       <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -154,7 +154,7 @@
       <URL value="@../../css/components/tabpane.css" />
    </stylesheets>
    <top>
-      <VBox fx:id="headerVBox" BorderPane.alignment="CENTER">
+      <VBox fx:id="headerVBox" styleClass="background" BorderPane.alignment="CENTER">
          <children>
             <HBox fx:id="navigationHeader" alignment="CENTER_LEFT">
                <children>
