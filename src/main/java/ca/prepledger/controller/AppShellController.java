@@ -18,6 +18,7 @@ import ca.prepledger.service.RecipeChangeListener;
 import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.SessionHandler;
 import ca.prepledger.session.UserSession;
+import ca.prepledger.util.IconManager;
 import ca.prepledger.util.PrepLedgerDialog;
 import javafx.beans.property.ObjectProperty;
 import javafx.concurrent.Task;
@@ -429,6 +430,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 
 	    scene.getStylesheets().add(resource.toExternalForm());
 
+	    IconManager.applyThemeToTree(appShell, theme, appShell.getLeft());
 	    appShell.applyCss();
 	    appShell.requestLayout();
 	}

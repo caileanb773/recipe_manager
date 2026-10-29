@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.prepledger.config.Theme;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -45,7 +47,31 @@ public class IconManager {
 		} else {
 			logger.warn("applyTheme(): resource == null.");
 		}
+	}
+	
+	/**
+	 * Recursive method that finds the Parent nodes in a graph, gets the children
+	 * of said parent, and calls "applyTheme()" on those children if the Node in
+	 * question is an ImageView.
+	 * 
+	 * @since v0.1.2
+	 */
+	public static void applyThemeToTree(
+	        Node root, Theme theme, Node excludedNode) {
 
+	    if (root == excludedNode) {
+	        return;
+	    }
+
+	    if (root instanceof ImageView imageView) {
+	        applyTheme(imageView, theme);
+	    }
+
+	    if (root instanceof Parent parent) {
+	        for (Node child : parent.getChildrenUnmodifiable()) {
+	            applyThemeToTree(child, theme, excludedNode);
+	        }
+	    }
 	}
 
 }
