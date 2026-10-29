@@ -174,17 +174,17 @@ public class SidebarController implements Navigable {
 			case CONNECTED -> {
 				connectionStatus.setText("Connected");
 				connectionStatusImage.setImage(
-						loadConnectionIcon("connected-scaled.png"));
+						loadConnectionIcon("connected.png"));
 			}
 			case CONNECTING -> {
 				connectionStatus.setText("Connecting...");
 				connectionStatusImage.setImage(
-						loadConnectionIcon("connecting-scaled.png"));
+						loadConnectionIcon("connecting.png"));
 			}
 			case DISCONNECTED -> {
 				connectionStatus.setText("Disconnected");
 				connectionStatusImage.setImage(
-						loadConnectionIcon("disconnected-scaled.png"));
+						loadConnectionIcon("disconnected.png"));
 			}
 		}
 	}
