@@ -17,26 +17,15 @@ import javafx.scene.layout.GridPane;
 
 public class IngredientRowController {
 
-	@FXML
-	private GridPane rootNode;
-
-	@FXML
-	private Button deleteIngredientButton;
-
-	@FXML
-	private TextField ingredientNameField;
-
-	@FXML
-	private ComboBox<String> ingredientUnitComboBox;
-
-	@FXML
-	private TextField ingredientAmountField;
-
-	@FXML
-	private TextField ingredientNotesField;
+	@FXML private GridPane rootNode;
+	@FXML private Button deleteIngredientButton;
+	@FXML private TextField ingredientNameField;
+	@FXML private ComboBox<String> ingredientUnitComboBox;
+	@FXML private TextField ingredientAmountField;
+	@FXML private TextField ingredientNotesField;
 	
 	private Consumer<IngredientRowController> onDelete;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(IngredientRowController.class);
 	
 
