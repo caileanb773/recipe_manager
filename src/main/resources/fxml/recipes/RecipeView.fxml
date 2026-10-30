@@ -71,10 +71,10 @@
                                  </top>
                                  <center>
                                     <TextArea fx:id="recipeOverviewDirectionsTextArea" editable="false" focusTraversable="false" wrapText="true" BorderPane.alignment="CENTER">
-                                       <styleClass>
-                                          <String fx:value="background-offset" />
-                                          <String fx:value="simple-text" />
-                                       </styleClass>
+										<styleClass>
+										    <String fx:value="background-offset" />
+										    <String fx:value="text-area-display" />
+										</styleClass>
                                        <BorderPane.margin>
                                           <Insets />
                                        </BorderPane.margin>
@@ -112,15 +112,11 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="150.0" prefHeight="300.0" styleClass="scroll-bar" BorderPane.alignment="CENTER">
+                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" minHeight="150.0" prefHeight="300.0" styleClass="text-area-display" BorderPane.alignment="CENTER">
                            <content>
                               <BorderPane styleClass="background-offset">
                                  <center>
-                                    <TextArea fx:id="directionsTextArea" editable="false" focusTraversable="false" wrapText="true" BorderPane.alignment="CENTER">
-                                       <styleClass>
-                                          <String fx:value="background-offset" />
-                                          <String fx:value="simple-text" />
-                                       </styleClass>
+                                    <TextArea fx:id="directionsTextArea" editable="false" focusTraversable="false" styleClass="text-area-display" wrapText="true" BorderPane.alignment="CENTER">
                                        <BorderPane.margin>
                                           <Insets />
                                        </BorderPane.margin>
@@ -152,6 +148,7 @@
       <URL value="@../../css/components/buttons.css" />
       <URL value="@../../css/pages/view-recipe.css" />
       <URL value="@../../css/components/tabpane.css" />
+      <URL value="@../../css/components/forms.css" />
    </stylesheets>
    <top>
       <VBox fx:id="headerVBox" styleClass="background" BorderPane.alignment="CENTER">

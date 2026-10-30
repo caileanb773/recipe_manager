@@ -30,30 +30,45 @@
     -fx-effect: none;
 }
 
-/* TextArea */
-.text-area {
+/* Shared TextArea styling */
+.text-area,
+.text-area-display {
     -fx-control-inner-background: -pl-surface;
-    -fx-text-fill: -pl-text-heading;
-    -fx-border-color: -pl-border-muted;
-    -fx-border-width: 1px;
-    -fx-border-radius: 3px;
+    -fx-text-fill: -pl-text;
+    -fx-background-color: -pl-surface;
     -fx-background-radius: 3px;
 }
 
-.text-area .content {
+.text-area .content,
+.text-area-display .content {
     -fx-background-color: -pl-surface;
     -fx-background-radius: 2px;
 }
 
-.text-area .prompt-text {
+.text-area .prompt-text,
+.text-area-display .prompt-text {
     -fx-fill: -pl-border-muted;
 }
 
 .text-area .scroll-pane,
-.text-area .scroll-pane .viewport {
+.text-area .scroll-pane .viewport,
+.text-area-display .scroll-pane,
+.text-area-display .scroll-pane .viewport {
     -fx-background-color: -pl-surface;
+}
+
+/* Regular input TextArea */
+.text-area {
+    -fx-border-color: -pl-border-muted;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
 }
 
 .text-area:focused {
     -fx-border-color: -pl-focus;
+}
+
+/* Recipe display TextArea */
+.text-area-display {
+    -fx-border-color: transparent;
 }

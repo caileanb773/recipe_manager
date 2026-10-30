@@ -18,7 +18,7 @@
 
         <VBox styleClass="recipe-info" VBox.vgrow="NEVER">
 
-            <Label fx:id="recipeName" styleClass="recipe-name" />
+            <Label fx:id="recipeName" styleClass="recipe-name" text="asdsad" />
 
             <HBox styleClass="recipe-meta" VBox.vgrow="NEVER">
    
