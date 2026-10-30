@@ -41,14 +41,14 @@ public class RegisterController implements Navigable {
 	public void initializeTextFieldIcons() {
 		ImageView emailIcon = new ImageView(
 				new Image(getClass().getResourceAsStream(
-						"/img/icon/scaled/other/email-gray.png")));
+						"/img/icon/scaled/other/email.png")));
 		ImageView passwordIcon = new ImageView(
 				new Image(getClass().getResourceAsStream(
-						"/img/icon/scaled/other/password-gray.png")));
+						"/img/icon/scaled/other/password.png")));
 		
 		ImageView confirmPasswordIcon = new ImageView(
 				new Image(getClass().getResourceAsStream(
-						"/img/icon/scaled/other/password-gray.png")));
+						"/img/icon/scaled/other/password.png")));
 
 		emailAddress.setLeft(emailIcon);
 		password.setLeft(passwordIcon);
