@@ -218,8 +218,6 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			recipeListController.refreshDisplayedRecipes();	
 			shouldRefreshRecipes = false;
 		}
-
-		IconManager.applyThemeToTree(recipeList, appConfig.getTheme(), null);
 	}
 
 	private void showCosting() throws IOException {

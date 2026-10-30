@@ -20,6 +20,7 @@ import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeAPIService;
 import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.UserSession;
+import ca.prepledger.util.IconManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -181,6 +182,8 @@ public class RecipeListController implements Navigable, Configurable {
 			controller.setNavigationHandler(navigationHandler);
 			controller.setSession(currentSession);			
 			controller.setRecipeApiService(recipeApiService);
+			
+			IconManager.applyThemeToTree(card, appConfig.getTheme(), null);
 
 			int index = cachedGridCards.size();
 
@@ -212,6 +215,8 @@ public class RecipeListController implements Navigable, Configurable {
 			controller.setNavigationHandler(navigationHandler);
 			controller.setSession(currentSession);			
 			controller.setRecipeApiService(recipeApiService);
+			
+			IconManager.applyThemeToTree(card, appConfig.getTheme(), null);
 
 			cachedListCards.put(recipe, card);
 			listView.getChildren().add(card);
