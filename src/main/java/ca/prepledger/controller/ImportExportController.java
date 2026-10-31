@@ -63,10 +63,14 @@ public class ImportExportController {
 	        return;
 	    }
 	    
-	    
 	    // Check if we're exporting all or a subset of the recipes
 	    if (selectedRecipesRadioBtn.isSelected()) {
 	    	recipesToExport = showRecipeSelectionDialog(recipesToExport);
+	    	
+	    	if (recipesToExport == null || recipesToExport.isEmpty()) {
+		        logger.info("onExportBtnClicked(): Export cancelled.");
+	    		return;
+	    	}
 	    }
 
 	    // Get a path from the user
@@ -93,28 +97,28 @@ public class ImportExportController {
 
 	    Path path = selectedFile.toPath();
 
-	    // Confirm before overwriting an existing file
-	    if (Files.exists(path)) {
-	        Alert confirm = new Alert(
-	                Alert.AlertType.CONFIRMATION,
-	                "The selected file already exists. Do you want to overwrite it?",
-	                ButtonType.YES,
-	                ButtonType.NO
-
-	        );
-
-	        confirm.setTitle("Confirm Export");
-	        confirm.setHeaderText("File already exists");
-    		confirm.getDialogPane().getStylesheets().add(
-    				getClass().getResource("/css/components/alert.css").toExternalForm());
-
-	        Optional<ButtonType> result = confirm.showAndWait();
-
-	        if (result.isEmpty() || result.get() != ButtonType.YES) {
-	            logger.info("onExportBtnClicked(): Export cancelled by user.");
-	            return;
-	        }
-	    }
+//	    // Confirm before overwriting an existing file
+//	    if (Files.exists(path)) {
+//	        Alert confirm = new Alert(
+//	                Alert.AlertType.CONFIRMATION,
+//	                "The selected file already exists. Do you want to overwrite it?",
+//	                ButtonType.YES,
+//	                ButtonType.NO
+//
+//	        );
+//
+//	        confirm.setTitle("Confirm Export");
+//	        confirm.setHeaderText("File already exists");
+//    		confirm.getDialogPane().getStylesheets().add(
+//    				getClass().getResource("/css/components/alert.css").toExternalForm());
+//
+//	        Optional<ButtonType> result = confirm.showAndWait();
+//
+//	        if (result.isEmpty() || result.get() != ButtonType.YES) {
+//	            logger.info("onExportBtnClicked(): Export cancelled by user.");
+//	            return;
+//	        }
+//	    }
 
 	    try {
 	        attemptExportRecipes(recipesToExport, path.toString());
@@ -139,6 +143,9 @@ public class ImportExportController {
 	            ButtonBar.ButtonData.CANCEL_CLOSE
 	    );
 
+	    dialog.getDialogPane().getStylesheets().addAll(
+		        getClass().getResource("/css/theme.css").toExternalForm(),
+		        getClass().getResource("/css/components/alert.css").toExternalForm());
 	    dialog.getDialogPane().getButtonTypes().addAll(
 	            exportButton,
 	            cancelButton
