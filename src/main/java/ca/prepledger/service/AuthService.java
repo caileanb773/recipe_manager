@@ -76,12 +76,12 @@ public class AuthService {
 
 		HttpResponse<String> response = client.send(
 				request, HttpResponse.BodyHandlers.ofString());
-
+		
 		if (response.statusCode() != 201) {
 			throw new IOException(
 					response.statusCode() == 409
 					? "An account with this email already exists."
-							: "Registration failed. Please check your details."
+							:  "Register endpoint returned HTTP " + response.statusCode() + "."
 					);
 		}
 	}

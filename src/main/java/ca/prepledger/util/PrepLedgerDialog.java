@@ -152,5 +152,19 @@ public class PrepLedgerDialog {
 		alert.setTitle("Warning");
 		alert.showAndWait();
 	}
+	
+	public void showRegisterSuccess(String information) {
+		Alert alert = new Alert(
+				AlertType.INFORMATION,
+				information);
+		
+		alert.getDialogPane().getStylesheets().addAll(
+				getClass().getResource("/css/components/alert.css").toExternalForm()
+				);
+		
+		alert.setHeaderText("User registered");
+		alert.setTitle("Success");
+		alert.showAndWait();
+	}
 
 }

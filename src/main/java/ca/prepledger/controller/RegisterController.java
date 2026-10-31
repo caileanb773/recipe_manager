@@ -105,6 +105,9 @@ public class RegisterController implements Navigable {
 					emailAddress.getText().trim(),
 					password.getText()
 					);
+			
+			PrepLedgerDialog dialog = new PrepLedgerDialog();
+			dialog.showRegisterSuccess("Please check your email to complete registration.");
 
 			// Registration succeeded; return to login
 			navigationHandler.navigateTo(ContextArea.LOGIN);
