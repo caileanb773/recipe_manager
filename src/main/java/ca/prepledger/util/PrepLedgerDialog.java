@@ -139,6 +139,27 @@ public class PrepLedgerDialog {
 		alert.showAndWait();
 	}
 	
+	public boolean showVerificationRequired() {
+	    Alert alert = new Alert(
+	            AlertType.WARNING,
+	            "Please check your email for a verification link."
+	    );
+
+	    alert.getDialogPane().getStylesheets().add(
+	            getClass().getResource("/css/components/alert.css").toExternalForm()
+	    );
+
+	    alert.setHeaderText("Email verification required");
+	    alert.setTitle("Account verification");
+
+	    ButtonType resendButton = new ButtonType("Resend email");
+	    ButtonType cancelButton = ButtonType.CANCEL;
+
+	    alert.getButtonTypes().setAll(resendButton, cancelButton);
+
+	    return alert.showAndWait().orElse(cancelButton) == resendButton;
+	}
+	
 	public void showRegisterError(String reason) {
 		Alert alert = new Alert(
 				AlertType.WARNING,
@@ -150,6 +171,19 @@ public class PrepLedgerDialog {
 		
 		alert.setHeaderText("Could not register");
 		alert.setTitle("Warning");
+		alert.showAndWait();
+	}
+	
+	public void showGenericInfo(String info) {
+		Alert alert = new Alert(
+				AlertType.INFORMATION,
+				info);
+		
+		alert.getDialogPane().getStylesheets().addAll(
+				getClass().getResource("/css/components/alert.css").toExternalForm()
+				);
+		
+		alert.setTitle("Attention");
 		alert.showAndWait();
 	}
 	

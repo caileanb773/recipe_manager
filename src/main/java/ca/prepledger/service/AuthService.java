@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.prepledger.config.ApiConfig;
+import ca.prepledger.exception.AuthException;
 import ca.prepledger.session.UserSession;
 
 public class AuthService {
@@ -46,8 +47,17 @@ public class AuthService {
 		HttpResponse<String> response = client.send(
 				request, HttpResponse.BodyHandlers.ofString());
 
+		if (response.statusCode() == 403) {
+		    JsonNode error = mapper.readTree(response.body());
+
+		    throw new AuthException(
+		            error.get("code").asText(),
+		            error.get("message").asText()
+		    );
+		}
+
 		if (response.statusCode() != 200) {
-			throw new IOException("Login failed. Check your email and password.");
+		    throw new IOException("Login failed. Check your email and password.");
 		}
 
 		JsonNode json = mapper.readTree(response.body());
@@ -84,6 +94,28 @@ public class AuthService {
 							:  "Register endpoint returned HTTP " + response.statusCode() + "."
 					);
 		}
+	}
+	
+	public void resendVerification(String email)
+	        throws IOException, InterruptedException {
+
+	    var requestBody = mapper.createObjectNode();
+	    requestBody.put("email", email);
+
+	    HttpRequest request = HttpRequest.newBuilder()
+	            .uri(URI.create(Domain + "/auth/resend-verification"))
+	            .header("Content-Type", "application/json")
+	            .POST(HttpRequest.BodyPublishers.ofString(
+	                    mapper.writeValueAsString(requestBody),
+	                    StandardCharsets.UTF_8))
+	            .build();
+
+	    HttpResponse<String> response = client.send(
+	            request, HttpResponse.BodyHandlers.ofString());
+
+	    if (response.statusCode() != 200) {
+	        throw new IOException("Unable to resend verification email.");
+	    }
 	}
 
 }

@@ -13,6 +13,7 @@ import org.controlsfx.control.textfield.CustomTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.prepledger.exception.AuthException;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
@@ -112,10 +113,30 @@ public class LoginController implements Navigable {
 		
 		try {
 			session = auth.login(email, password.getText());
+		} catch (AuthException e) {
+		    PrepLedgerDialog dialog = new PrepLedgerDialog();
+
+		    if (e.getCode().equals("PENDING_VERIFICATION")) {
+		        if (dialog.showVerificationRequired()) {
+		            try {
+		                auth.resendVerification(email);
+
+		                new PrepLedgerDialog().showGenericInfo(
+		                        "A new verification email has been sent. Please check your inbox."
+		                );
+		            } catch (IOException | InterruptedException ex) {
+		                new PrepLedgerDialog().showLoginError(
+		                        "Unable to resend verification email. Please try again later."
+		                );
+		            }
+		        }
+		    }
+
+		    return;
 		} catch (IOException | InterruptedException e) {
-			PrepLedgerDialog dialog = new PrepLedgerDialog();
-			dialog.showLoginError(e.getMessage());
-			return;
+		    PrepLedgerDialog dialog = new PrepLedgerDialog();
+		    dialog.showLoginError(e.getMessage());
+		    return;
 		}
 		
 		if (session != null) {
