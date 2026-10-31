@@ -473,6 +473,8 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		    task.setOnFailed(event -> {
 		        logger.error("Failed to fetch recipes from backend.",
 		                task.getException());
+		        PrepLedgerDialog dialog = new PrepLedgerDialog();
+		        dialog.showRecipeBackendActionFailedDialog(task.getException().getMessage(), "fetch");
 		    });
 
 		    Thread thread = new Thread(task, "recipe-fetch");
