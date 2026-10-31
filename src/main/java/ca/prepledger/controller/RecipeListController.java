@@ -229,7 +229,12 @@ public class RecipeListController implements Navigable, Configurable {
 	public void refreshDisplayedRecipes() {		
 		// XXX fetch latest recipe data (dependent on online status)
 		cachedRecipes = recipeService.getAllRecipes();
-
+		
+		if (cachedRecipes == null) {
+			logger.warn("refreshDisplayedRecipes(): cachedRecipes == null.");
+			return;
+		}
+		
 		// invalidate the card caches and reset flags
 		cachedListCards.clear();
 		cachedGridCards.clear();
