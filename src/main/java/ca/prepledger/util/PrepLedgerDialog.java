@@ -23,8 +23,8 @@ public class PrepLedgerDialog {
 				);
 
 		alert.getDialogPane().getStylesheets().addAll(
-				getClass().getResource("/css/components/alert.css").toExternalForm()
-				);
+		        getClass().getResource("/css/theme.css").toExternalForm(),
+		        getClass().getResource("/css/components/alert.css").toExternalForm());
 		
 		Button yesBtn = (Button)alert.getDialogPane()
 				.lookupButton(ButtonType.YES);
@@ -55,8 +55,8 @@ public class PrepLedgerDialog {
 				);
 
 		alert.getDialogPane().getStylesheets().addAll(
-				getClass().getResource("/css/components/alert.css").toExternalForm()
-				);
+		        getClass().getResource("/css/theme.css").toExternalForm(),
+		        getClass().getResource("/css/components/alert.css").toExternalForm());
 		
 		Button yesBtn = (Button)alert.getDialogPane()
 				.lookupButton(ButtonType.YES);
@@ -85,8 +85,8 @@ public class PrepLedgerDialog {
 				);
 
 		alert.getDialogPane().getStylesheets().addAll(
-				getClass().getResource("/css/components/alert.css").toExternalForm()
-				);
+		        getClass().getResource("/css/theme.css").toExternalForm(),
+		        getClass().getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setTitle("Forgot Password");
 		alert.showAndWait();
@@ -99,8 +99,8 @@ public class PrepLedgerDialog {
 				);
 
 		alert.getDialogPane().getStylesheets().addAll(
-				getClass().getResource("/css/components/alert.css").toExternalForm()
-				);
+		        getClass().getResource("/css/theme.css").toExternalForm(),
+		        getClass().getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setTitle("Error");
 		alert.setHeaderText("Invalid recipe.");
@@ -116,8 +116,8 @@ public class PrepLedgerDialog {
 				"Please try again.");
 		
 		alert.getDialogPane().getStylesheets().addAll(
-				getClass().getResource("/css/components/alert.css").toExternalForm()
-				);
+		        getClass().getResource("/css/theme.css").toExternalForm(),
+		        getClass().getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setContentText("Could not " + action + " recipe for the following reason: \n\n"
 				+ exceptionMsg);
@@ -131,8 +131,8 @@ public class PrepLedgerDialog {
 				reason);
 		
 		alert.getDialogPane().getStylesheets().addAll(
-				getClass().getResource("/css/components/alert.css").toExternalForm()
-				);
+		        getClass().getResource("/css/theme.css").toExternalForm(),
+		        getClass().getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setHeaderText("Could not log in");
 		alert.setTitle("Warning");
@@ -145,9 +145,9 @@ public class PrepLedgerDialog {
 	            "Please check your email for a verification link."
 	    );
 
-	    alert.getDialogPane().getStylesheets().add(
-	            getClass().getResource("/css/components/alert.css").toExternalForm()
-	    );
+		alert.getDialogPane().getStylesheets().addAll(
+		        getClass().getResource("/css/theme.css").toExternalForm(),
+		        getClass().getResource("/css/components/alert.css").toExternalForm());
 
 	    alert.setHeaderText("Email verification required");
 	    alert.setTitle("Account verification");
@@ -166,8 +166,8 @@ public class PrepLedgerDialog {
 				reason);
 		
 		alert.getDialogPane().getStylesheets().addAll(
-				getClass().getResource("/css/components/alert.css").toExternalForm()
-				);
+		        getClass().getResource("/css/theme.css").toExternalForm(),
+		        getClass().getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setHeaderText("Could not register");
 		alert.setTitle("Warning");
@@ -180,8 +180,8 @@ public class PrepLedgerDialog {
 				info);
 		
 		alert.getDialogPane().getStylesheets().addAll(
-				getClass().getResource("/css/components/alert.css").toExternalForm()
-				);
+		        getClass().getResource("/css/theme.css").toExternalForm(),
+		        getClass().getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setTitle("Attention");
 		alert.showAndWait();
@@ -193,8 +193,8 @@ public class PrepLedgerDialog {
 				information);
 		
 		alert.getDialogPane().getStylesheets().addAll(
-				getClass().getResource("/css/components/alert.css").toExternalForm()
-				);
+		        getClass().getResource("/css/theme.css").toExternalForm(),
+		        getClass().getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setHeaderText("User registered");
 		alert.setTitle("Success");
