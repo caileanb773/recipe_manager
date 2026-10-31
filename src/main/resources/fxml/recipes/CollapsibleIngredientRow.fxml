@@ -11,7 +11,7 @@
    <children>
       <HBox alignment="BASELINE_CENTER">
          <children>
-            <Label fx:id="ingredientName" styleClass="simple-text" />
+            <Label fx:id="ingredientName" styleClass="header-4" />
             <Label fx:id="ingredientAmtUnit" styleClass="sub-header">
                <HBox.margin>
                   <Insets left="15.0" right="15.0" />

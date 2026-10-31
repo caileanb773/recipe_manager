@@ -3,7 +3,8 @@
  */
 .root {
     -pl-background: #171B26;
-    -pl-surface: #222838;
+    -pl-background-offset: #222838;
+    -pl-control-background: #191F2D;
     -pl-text: #E8EAF0;
     -pl-text-heading: #F3F4FA;
     -pl-text-muted: #a4acbc;
@@ -48,7 +49,7 @@
 }
 
 .background-offset {
-    -fx-background-color: -pl-surface;
+    -fx-background-color: -pl-background-offset;
 }
 
 .text-color {

@@ -22,5 +22,5 @@
 }
 
 .radio-button:selected .dot {
-    -fx-background-color: -pl-surface;
+    -fx-background-color: -pl-background-offset;
 }

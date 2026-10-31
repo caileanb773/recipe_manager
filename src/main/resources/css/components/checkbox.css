@@ -22,5 +22,5 @@
 }
 
 .check-box:selected .mark {
-    -fx-background-color: -pl-surface;
+    -fx-background-color: -pl-background-offset;
 }

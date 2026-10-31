@@ -1,23 +1,23 @@
-/* ComboBox, TextField, etc. */
+/* Text fields, dropdowns, and other form controls */
 .base-form-component {
-    -fx-background-color: -pl-surface;
+    -fx-background-color: -pl-control-background;
     -fx-border-width: 1px;
     -fx-border-radius: 3px;
-    -fx-border-color: -pl-border-muted;
-    -fx-text-fill: -pl-text-heading;
+    -fx-border-color: -pl-control-border;
+    -fx-text-fill: -pl-text;
 }
 
 .base-form-component .prompt-text {
-    -fx-fill: -pl-border-muted;
+    -fx-fill: -pl-text-muted;
 }
 
 .base-form-component:focused {
     -fx-border-color: -pl-focus;
 }
 
-/* Specifically for ComboBox default text */
+/* ComboBox text: actual values stay high-contrast; prompts are handled above */
 .base-form-component .list-cell {
-    -fx-text-fill: -pl-border-muted; 
+    -fx-text-fill: -pl-text;
 }
 
 .base-form-component .arrow-button {
@@ -30,36 +30,36 @@
     -fx-effect: none;
 }
 
-/* Shared TextArea styling */
+/* TextArea appearance shared by editable and display-only recipe directions */
 .text-area,
 .text-area-display {
-    -fx-control-inner-background: -pl-surface;
+    -fx-control-inner-background: -pl-control-background;
     -fx-text-fill: -pl-text;
-    -fx-background-color: -pl-surface;
+    -fx-background-color: -pl-control-background;
     -fx-background-radius: 3px;
 }
 
 .text-area .content,
 .text-area-display .content {
-    -fx-background-color: -pl-surface;
+    -fx-background-color: -pl-background-offset;
     -fx-background-radius: 2px;
 }
 
 .text-area .prompt-text,
 .text-area-display .prompt-text {
-    -fx-fill: -pl-border-muted;
+    -fx-fill: -pl-text-muted;
 }
 
 .text-area .scroll-pane,
 .text-area .scroll-pane .viewport,
 .text-area-display .scroll-pane,
 .text-area-display .scroll-pane .viewport {
-    -fx-background-color: -pl-surface;
+    -fx-background-color: -pl-control-background;
 }
 
-/* Regular input TextArea */
+/* Editable TextAreas have a border; recipe display TextAreas do not */
 .text-area {
-    -fx-border-color: -pl-border-muted;
+    -fx-border-color: -pl-control-border;
     -fx-border-width: 1px;
     -fx-border-radius: 3px;
 }
@@ -68,7 +68,11 @@
     -fx-border-color: -pl-focus;
 }
 
-/* Recipe display TextArea */
-.text-area-display {
+.text-area.text-area-display,
+.text-area.text-area-display:focused {
     -fx-border-color: transparent;
+    -fx-border-width: 0;
+
+    -fx-font-weight: normal;
+    -fx-text-fill: -pl-text;
 }

@@ -53,7 +53,7 @@
 }
 
 .dialog-pane .button.default-button {
-    -fx-background-color: -pl-surface;
+    -fx-background-color: -pl-background-offset;
     -fx-text-fill: -pl-text;
 }
 
