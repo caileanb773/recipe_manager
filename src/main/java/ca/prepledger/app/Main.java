@@ -18,7 +18,6 @@ import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.session.SessionHandler;
 import ca.prepledger.session.SessionManager;
 import ca.prepledger.session.UserSession;
-import ca.prepledger.util.IconManager;
 import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -141,6 +140,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		controller.setSessionHandler(this);
 		controller.setNavigationHandler(this);
 		controller.initializeTextFieldIcons();
+		controller.setAppConfig(appCfg);
 
 		Scene scene = new Scene(root, 800, 600);
 		scene.getStylesheets().add(

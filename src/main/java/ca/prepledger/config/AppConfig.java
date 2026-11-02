@@ -2,8 +2,6 @@ package ca.prepledger.config;
 
 import java.util.function.Consumer;
 
-import java.util.function.Consumer;
-
 /*
  * Author: Cailean Bernard
  * Contents: Contains the configurable fields of the application. The Config
