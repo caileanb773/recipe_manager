@@ -1,12 +1,19 @@
 package ca.prepledger.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import ca.prepledger.model.Recipe;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.ScrollPane;
 
 public class PrepLedgerDialog {
 
@@ -281,6 +288,89 @@ public class PrepLedgerDialog {
 				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
 				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		
+		alert.showAndWait();
+	}
+
+	public static void showRecipeSaveFailureDialog(String message) {
+	    Alert alert = new Alert(Alert.AlertType.WARNING);
+	    alert.setTitle("Cannot Save Recipe");
+	    alert.setHeaderText("Please correct the following issues:");
+		alert.getDialogPane().getStylesheets().addAll(
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
+	    alert.setContentText(message.toString());
+	    alert.showAndWait();
+	}
+	
+	public static List<Recipe> showRecipeSelectionDialog(List<Recipe> recipes) {
+	    Dialog<List<Recipe>> dialog = new Dialog<>();
+	    dialog.setTitle("Select Recipes");
+	    dialog.setHeaderText("Select the recipes you want to export.");
+
+	    ButtonType exportButton = new ButtonType(
+	            "Export",
+	            ButtonBar.ButtonData.OK_DONE
+	    );
+	    ButtonType cancelButton = new ButtonType(
+	            "Cancel",
+	            ButtonBar.ButtonData.CANCEL_CLOSE
+	    );
+
+	    dialog.getDialogPane().getStylesheets().addAll(
+	    		PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+	    		PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
+	    dialog.getDialogPane().getButtonTypes().addAll(
+	            exportButton,
+	            cancelButton
+	    );
+
+	    VBox recipeList = new VBox(8);
+
+	    List<CheckBox> checkBoxes = new ArrayList<>();
+
+	    for (Recipe recipe : recipes) {
+	        CheckBox checkBox = new CheckBox(recipe.getTitle());
+	        checkBoxes.add(checkBox);
+	        recipeList.getChildren().add(checkBox);
+	    }
+
+	    ScrollPane scrollPane = new ScrollPane(recipeList);
+	    scrollPane.setFitToWidth(true);
+	    scrollPane.setPrefHeight(400);
+	    scrollPane.setPrefWidth(350);
+
+	    dialog.getDialogPane().setContent(scrollPane);
+
+	    dialog.setResultConverter(button -> {
+	        if (button == exportButton) {
+	            List<Recipe> selectedRecipes = new ArrayList<>();
+
+	            for (int i = 0; i < checkBoxes.size(); i++) {
+	                if (checkBoxes.get(i).isSelected()) {
+	                    selectedRecipes.add(recipes.get(i));
+	                }
+	            }
+
+	            return selectedRecipes;
+	        }
+
+	        return null;
+	    });
+
+	    Optional<List<Recipe>> result = dialog.showAndWait();
+
+	    return result.orElse(null);
+	}
+
+	public static void showUnimplementedFeatureDialog() {
+		Alert alert = new Alert(
+				AlertType.INFORMATION,
+				"This feature is coming in a future release."
+				);
+
+		alert.getDialogPane().getStylesheets().addAll(
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		alert.showAndWait();
 	}
 

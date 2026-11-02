@@ -13,8 +13,6 @@ import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.AuthService;
 import ca.prepledger.util.PrepLedgerDialog;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -119,14 +117,7 @@ public class RegisterController implements Navigable {
 
 	@FXML
 	private void onSignInGoogleBtnClicked() {
-		Alert alert = new Alert(
-				AlertType.INFORMATION,
-				"This feature is coming in a future release."
-				);
-
-		alert.getDialogPane().getStylesheets().add(
-				getClass().getResource("/css/components/alert.css").toExternalForm());
-		alert.showAndWait();
+		PrepLedgerDialog.showUnimplementedFeatureDialog();
 	}
 
 	@FXML

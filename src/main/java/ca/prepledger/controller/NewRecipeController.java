@@ -26,7 +26,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -127,13 +126,7 @@ public class NewRecipeController implements Navigable, Configurable {
 				}
 			}			
 			
-		    Alert alert = new Alert(Alert.AlertType.WARNING);
-		    alert.setTitle("Cannot Save Recipe");
-		    alert.setHeaderText("Please correct the following issues:");
-		    alert.getDialogPane().getStylesheets().add(
-    				getClass().getResource("/css/components/alert.css").toExternalForm());
-		    alert.setContentText(message.toString());
-		    alert.showAndWait();
+			PrepLedgerDialog.showRecipeSaveFailureDialog(message.toString());
 		    
 			logger.info("onSaveRecipeButtonClicked(): Cannot save invalid recipe.");
 			return;
