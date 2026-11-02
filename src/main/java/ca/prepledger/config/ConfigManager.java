@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
  * Author: Cailean Bernard
  * Contents: Manages loading and saving of Application Configuration. By default,
  * config files will be saved in %APPDATA%/PrepLedger/settings.cfg.
+ * 
  */
 public class ConfigManager {
 
@@ -26,7 +27,6 @@ public class ConfigManager {
 	private final String CONFIG_FILE_NAME = "settings.cfg";
 	private final String CONFIG_DIR = APP_DATA + PREPLEDGER_DIR;
 	private final String WARNING = "// do not modify this file unless you know what you are doing";
-	
 	private static final Logger logger = LoggerFactory.getLogger(ConfigManager.class);
 
 
@@ -36,31 +36,40 @@ public class ConfigManager {
 		RecipeDisplayType recipeDisplayType = RecipeDisplayType.GRID;
 		Theme theme = Theme.LIGHT;
 		boolean areToolTipsOn = true;
-		
+		boolean rememberMe = false;
+		String email = "";
+
 		// edge case for if a dir named "settings.cfg" exists in the config folder
 		if (!isValidSettingsPath()) {
-	        logger.warn("save(): Settings path exists but is a directory.");
-			return new AppConfig(language, recipeDisplayType, theme, areToolTipsOn);
+			logger.warn("save(): Settings path exists but is a directory.");
+			return new AppConfig(
+					language,
+					recipeDisplayType,
+					theme,
+					areToolTipsOn,
+					rememberMe,
+					email
+					);
 		}
-				
+
 		// Check if 'settings.cfg' exists
 		Path configFilePath = Path.of(CONFIG_DIR + CONFIG_FILE_NAME);
-					
+
 		// this will return true if "settings.cfg" is a dir instead of a file somehow
 		if (!Files.exists(configFilePath)) {
-						
+
 			// If 'settings.cfg' doesn't exist, the folder in %APPDATA% might not either
 			Path dirPath = Path.of(CONFIG_DIR);
 
 			if (!Files.exists(dirPath)) {
 				createDefaultDirectory(dirPath);
 			}
-			
+
 			// In either case, early return a default Config
 			logger.info("load() failed to find 'settings.cfg', loading default config.");
 			return new AppConfig();
 		}
-		
+
 		// Read the file
 		try (BufferedReader reader = new BufferedReader(
 				new FileReader(CONFIG_DIR + CONFIG_FILE_NAME))) {
@@ -84,7 +93,7 @@ public class ConfigManager {
 				String value = lineInfo[1].trim().toUpperCase();
 
 				// Unknown keys will just cause this method to fallback to defaults above
-				
+
 				switch (key) {
 				case "language":
 					try {
@@ -113,6 +122,11 @@ public class ConfigManager {
 				case "aretooltipson":
 					areToolTipsOn = Boolean.parseBoolean(value);
 					break;
+				case "rememberme":
+					rememberMe = Boolean.parseBoolean(value);
+					break;
+				case "email":
+					email = value;
 				default:
 					logger.warn("load(): Invalid key encountered in settings.cfg");
 				}
@@ -125,36 +139,43 @@ public class ConfigManager {
 			throw new IOException("IOException encountered while reading settings.cfg");
 		}
 
-		return new AppConfig(language, recipeDisplayType, theme, areToolTipsOn);
+		return new AppConfig(
+				language,
+				recipeDisplayType,
+				theme,
+				areToolTipsOn,
+				rememberMe,
+				email);
 	}
 
 	public void save(AppConfig config) throws IOException {		
 		if (config == null) {
-			logger.error("save(): Null configuration passed to saving method, saving default configuration instead.");
+			logger.error("save(): Null configuration passed to saving method, "
+					+ "saving default configuration instead.");
 			config = new AppConfig();
 		}
-		
+
 		// Create config directory if not exists
 		Path configPath = Path.of(CONFIG_DIR);
-		
+
 		// edge case for if a dir named "settings.cfg" exists in the config folder
 		if (!isValidSettingsPath()) {
-	        logger.warn("save(): Settings path exists but is a directory.");
+			logger.warn("save(): Settings path exists but is a directory.");
 			return;
 		}
-		
+
 		if (!Files.exists(configPath)) {
 			createDefaultDirectory(configPath);
 		}
-		
+
 		// Write config to file
 		try (BufferedWriter writer = new BufferedWriter(
 				new FileWriter(CONFIG_DIR + CONFIG_FILE_NAME))) {
-			
+
 			// Write comment warning users not to fiddle with the config
 			writer.write(WARNING);
 			writer.newLine();
-			
+
 			// Write settings
 			writer.write("language=" + config.getLanguage().toString());
 			writer.newLine();
@@ -163,30 +184,34 @@ public class ConfigManager {
 			writer.write("theme=" + config.getTheme().toString());
 			writer.newLine();
 			writer.write("aretooltipson=" + String.valueOf(config.areTooltipsOn()));
-			
+			writer.newLine();
+			writer.write("rememberme=" + String.valueOf(config.isRememberingMe()));
+			writer.newLine();
+			writer.write("email=" + config.getEmail());
+
 		} catch (IOException e) {
 			throw new IOException("IOException during ConfigManager.save(): {}", e);
 		}
 	}
-	
+
 	private boolean isValidSettingsPath() {
 		Path path = Path.of(CONFIG_DIR + CONFIG_FILE_NAME);
-		
-	    if (Files.exists(path) && Files.isDirectory(path)) {
-	        return false;
-	    }
 
-	    return true;
+		if (Files.exists(path) && Files.isDirectory(path)) {
+			return false;
+		}
+
+		return true;
 	}
-		
+
 	private void createDefaultDirectory(Path path) throws IOException {
 		Files.createDirectories(path);
 	}
-	
+
 	public String getConfigPath() {
 		return CONFIG_DIR;
 	}
-	
+
 	public String getConfigAndFilePath() {
 		return CONFIG_DIR + CONFIG_FILE_NAME;
 	}
