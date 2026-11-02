@@ -187,7 +187,9 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			break;
 		}
 		
-		sidebarController.setActiveButtonStyling(contextArea.toString().toLowerCase());
+		if (sidebarController != null) {
+			sidebarController.setActiveButtonStyling(contextArea.toString().toLowerCase());			
+		}
 	}
 
 	private void showRecipes() throws IOException {

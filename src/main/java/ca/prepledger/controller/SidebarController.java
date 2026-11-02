@@ -113,6 +113,7 @@ public class SidebarController implements Navigable {
 		case "prep_lists":
 			buttonLabel = "Prep Lists";
 			break;
+		case "add_recipe":
 		case "edit_recipe":
 		case "view_recipe":
 			buttonLabel = "Recipes";
@@ -124,12 +125,12 @@ public class SidebarController implements Navigable {
 		for (Node buttonNode : buttons) {
 			Button b = (Button)buttonNode;
 
-			// Give it the active styling CSS class
 			if (b.getText().equalsIgnoreCase(buttonLabel)) {
-				b.getStyleClass().add("active");
+			    if (!b.getStyleClass().contains("active")) {
+			        b.getStyleClass().add("active");
+			    }
 			} else {
-				// Non-matching buttons are reset
-				b.getStyleClass().remove("active");
+			    b.getStyleClass().remove("active");
 			}
 		}
 	}
