@@ -141,6 +141,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		controller.setNavigationHandler(this);
 		controller.initializeTextFieldIcons();
 		controller.setAppConfig(appCfg);
+		controller.setRememberedEmail();
 
 		Scene scene = new Scene(root, 800, 600);
 		scene.getStylesheets().add(

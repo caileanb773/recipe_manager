@@ -76,7 +76,7 @@
                   <Insets left="30.0" />
                </VBox.margin>
                <children>
-                  <CheckBox fx:id="rememberMe" mnemonicParsing="false" onAction="#onRememberMeCheckboxClicked" text="Remember me" />
+                  <CheckBox fx:id="rememberMe" mnemonicParsing="false" text="Remember me" />
                   <Region HBox.hgrow="ALWAYS" />
                   <Button fx:id="forgotPassword" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onForgotPasswordBtnClicked" styleClass="link-style-button" text="Forgot your password?">
                      <HBox.margin>

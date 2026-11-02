@@ -64,6 +64,24 @@ public class LoginController implements Navigable, Configurable {
 		emailAddress.setLeft(emailIcon);
 		password.setLeft(passwordIcon);
 	}
+	
+	/**
+	 * If appconfig was last saved with rememberme = true, then set the value of
+	 * the email field to whatever the saved email is that was loaded from the 
+	 * config file.
+	 * 
+	 * @since v0.1.2
+	 */
+	public void setRememberedEmail() {
+		if (appConfig.isRememberingMe()) {
+			String email = appConfig.getEmail();
+			
+			if (email != null) {
+				emailAddress.setText(email.toLowerCase());
+				rememberMe.setSelected(true);
+			}
+		}
+	}
 
 	@FXML
 	private void onForgotPasswordBtnClicked() {
@@ -99,6 +117,7 @@ public class LoginController implements Navigable, Configurable {
 		String email = emailAddress.getText().trim();
 		UserSession session = null;
 
+		// fail on empty email/password
 		if (email.isBlank() || password.getText().isBlank()) {
 			PrepLedgerDialog dialog = new PrepLedgerDialog();
 			if (email.isBlank()) {
@@ -109,11 +128,14 @@ public class LoginController implements Navigable, Configurable {
 			return;
 		}
 
+		// fail on invalid email (i.e., doesn't match name@url.domain)
 		if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
 			PrepLedgerDialog dialog = new PrepLedgerDialog();
 			dialog.showLoginError("Please enter a valid email.");
+			return;
 		}
 		
+		// try to log in
 		try {
 			session = auth.login(email, password.getText());
 		} catch (AuthException e) {
@@ -146,6 +168,13 @@ public class LoginController implements Navigable, Configurable {
 			logger.info("Logged in as {}", 
 					session.getEmail() + " at " + Time.valueOf(LocalTime.now()));
 
+			// handle email remembering here
+			if (rememberMe.isSelected()) {
+				appConfig.setRememberMe(true);
+				appConfig.setEmail(email);
+			}
+			
+			// tell our session handler (main) to dispose this window and open PrepLedger
 			sessionHandler.onLoginSuccess(session);
 		} else {
 			PrepLedgerDialog dialog = new PrepLedgerDialog();
@@ -170,11 +199,6 @@ public class LoginController implements Navigable, Configurable {
 		showRegisterScreen();
 	}
 	
-	@FXML
-	private void onRememberMeCheckboxClicked() {
-		appConfig.setRememberMe(rememberMe.isSelected());
-	}
-
 	private void showRegisterScreen() {
 		try {
 			navigationHandler.navigateTo(ContextArea.REGISTER);
