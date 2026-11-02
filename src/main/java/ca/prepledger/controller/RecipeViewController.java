@@ -19,7 +19,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -164,8 +163,7 @@ public class RecipeViewController {
 
 	@FXML
 	private void onRemoveRecipeButtonClicked() {
-		PrepLedgerDialog dialog = new PrepLedgerDialog();
-		PrepLedgerDialog.Choice choice = dialog.confirmDeletion(recipe);
+		PrepLedgerDialog.Choice choice = PrepLedgerDialog.confirmDeletion(recipe);
 
 		if (choice == PrepLedgerDialog.Choice.CANCEL) {
 			logger.info("attemptDeleteRecipe(): Cancelling delete of recipe: "
@@ -338,27 +336,7 @@ public class RecipeViewController {
 
 	@FXML
 	private void onHelpBtnClicked() {
-		Alert help = new Alert(
-				Alert.AlertType.INFORMATION,
-				"Adjust the quantities in your recipe without changing the original.\n\n"
-				+ "• Scale factor: Set the amount to increase or decrease the recipe. "
-				+ "The default is 0.5x.\n"
-				+ "• Increase (+): Add the scale factor to the current batch size.\n"
-				+ "• Decrease (-): Subtract the scale factor from the current batch "
-				+ "size.\n"
-				+ "• Batch Size: Displays the recipe's current multiplier (e.g., "
-				+ "2x represents twice the original recipe).\n"
-				+ "• Reset: Return the scale factor and batch size to their defaults."
-				);
-		
-		help.getDialogPane().setPrefWidth(500);
-		help.setTitle("Recipe Scaling Help");
-		help.setHeaderText("How Recipe Scaling Works");
-		help.getDialogPane().getStylesheets().add(
-				getClass().getResource("/css/components/alert.css").toExternalForm()
-				);
-		help.getDialogPane().setPrefWidth(450);
-		help.showAndWait();
+		PrepLedgerDialog.showRecipeScalingHelpDialog();
 	}
 
 	private void populateDirections() {

@@ -18,10 +18,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.service.ImportExportService;
 import ca.prepledger.service.RecipeService;
+import ca.prepledger.util.PrepLedgerDialog;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -59,7 +59,7 @@ public class ImportExportController {
 	    // Check if we have any recipes
 	    if (recipesToExport.isEmpty()) {
 	        logger.info("onExportBtnClicked(): No recipes to export.");
-	        showExportOperationError();
+	        PrepLedgerDialog.showExportOperationError();
 	        return;
 	    }
 	    
@@ -97,35 +97,12 @@ public class ImportExportController {
 
 	    Path path = selectedFile.toPath();
 
-//	    // Confirm before overwriting an existing file
-//	    if (Files.exists(path)) {
-//	        Alert confirm = new Alert(
-//	                Alert.AlertType.CONFIRMATION,
-//	                "The selected file already exists. Do you want to overwrite it?",
-//	                ButtonType.YES,
-//	                ButtonType.NO
-//
-//	        );
-//
-//	        confirm.setTitle("Confirm Export");
-//	        confirm.setHeaderText("File already exists");
-//    		confirm.getDialogPane().getStylesheets().add(
-//    				getClass().getResource("/css/components/alert.css").toExternalForm());
-//
-//	        Optional<ButtonType> result = confirm.showAndWait();
-//
-//	        if (result.isEmpty() || result.get() != ButtonType.YES) {
-//	            logger.info("onExportBtnClicked(): Export cancelled by user.");
-//	            return;
-//	        }
-//	    }
-
 	    try {
 	        attemptExportRecipes(recipesToExport, path.toString());
 	        logger.info("onExportBtnClicked(): Recipes exported successfully to {}", path);
 	    } catch (JsonProcessingException e) {
 	        logger.error("onExportBtnClicked(): JsonProcessingException encountered: {}", e);
-	        showExportOperationError();
+	        PrepLedgerDialog.showExportOperationError();
 	    }
 	}
 	
@@ -215,12 +192,13 @@ public class ImportExportController {
 			attemptImportRecipes(Path.of(selectedFile.getAbsolutePath()));
 		} catch (JsonProcessingException e) {
 			logger.error("onImportBtnClicked(): JsonProcessingException encountered.");
-			showImportErrorOccurredDialog();
+			PrepLedgerDialog.showCorruptJSONImportErrorDialog();
 		} catch (IOException e) {
 			logger.error("onImportBtnClicked(): IOException encountered.");
-			showImportOperationError("An Input/Output error occurred during import. "
-					+ "Please report this error along with a description of what "
-					+ "caused it to the bug reporting service.");
+			PrepLedgerDialog.showImportOperationError("An Input/Output error "
+					+ "occurred during import. Please report this error along "
+					+ "with a description of what caused it to the bug reporting "
+					+ "service.");
 		}
 	}
 	
@@ -246,14 +224,15 @@ public class ImportExportController {
 					attemptImportRecipes(Path.of(file.getAbsolutePath()));
 	        	} catch (JsonProcessingException e) {
 	        		logger.error("onImportZoneDragDropped(): IOException encountered");
-	        		showImportErrorOccurredDialog();
+	        		PrepLedgerDialog.showCorruptJSONImportErrorDialog();
 				} catch (IOException e) {
 					logger.error("onImportZoneDragDropped(): IOException encountered.");
-					showImportErrorOccurredDialog();
+					PrepLedgerDialog.showCorruptJSONImportErrorDialog();
 				}
 	        } else {
 				logger.error("onImportBtnClicked(): File dropped into import zone was not a .json file.");
-				showImportOperationError("The provided file was not a valid JSON file.");
+				PrepLedgerDialog.showImportOperationError(
+						"The provided file was not a valid JSON file.");
 	        }
 	        event.setDropCompleted(true);
 	    } else {
@@ -286,7 +265,6 @@ public class ImportExportController {
 		}
 	}
 
-	// XXX Future versions of this could identify which recipe caused a JsonException
 	private void attemptImportRecipes(Path path) 
 			throws FileNotFoundException, JsonMappingException,
 			JsonProcessingException, IOException {
@@ -294,73 +272,11 @@ public class ImportExportController {
 		String json = Files.readString(path);
 		importedRecipes = impExpService.importRecipes(json);
 		recipeService.addRecipes(importedRecipes);
-		displayPostImportDialog(importedRecipes.size());
+		PrepLedgerDialog.displayPostImportDialog(importedRecipes.size());
 	}
 	
 	public void setRecipeService(RecipeService recipeService) {
 		this.recipeService = recipeService;
 	}
-
-	
-	////////////////////////////////
-	/// 
-	/// Error Dialogs
-	/// 
-	////////////////////////////////
-	
-	/**
-	 * Alerts the user that a JSON-specific error occurred during import.
-	 * 
-	 * This is a catch-all dialog that tells the user "there is a problem with the
-	 * JSON file you tried to import" and is non-specific; i.e., it does not identify
-	 * which recipe caused the import to fail.
-	 */
-	private void showImportErrorOccurredDialog() {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle("Import Error");
-		alert.setHeaderText("Could not complete import operation.");
-		alert.setContentText("The file provided has malformed JSON elements and "
-				+ "could not be parsed. This could be a result from manually editing "
-				+ "JSON files.");
-		alert.getDialogPane().getStylesheets().add(
-				getClass().getResource("/css/components/alert.css").toExternalForm());
-		
-		alert.showAndWait();
-	}
-	
-	private void displayPostImportDialog(int numImported) {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
-		alert.setTitle("Import Complete");
-		alert.setHeaderText("Recipes imported successfully");
-		alert.setContentText(numImported + " recipes were imported.");
-		alert.getDialogPane().getStylesheets().add(
-			    getClass().getResource("/css/components/alert.css").toExternalForm()
-			);
-		
-		alert.showAndWait();
-	}
-	
-	private void showImportOperationError(String contentString) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle("Import Error");
-		alert.setHeaderText("Could not complete import operation.");
-		alert.setContentText(contentString);
-		alert.getDialogPane().getStylesheets().add(
-				getClass().getResource("/css/components/alert.css").toExternalForm());
-		
-		alert.showAndWait();
-	}
-	
-	private void showExportOperationError() {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle("Export Error");
-		alert.setHeaderText("Could not complete export operation.");
-		alert.setContentText("No recipes to export!");
-		alert.getDialogPane().getStylesheets().add(
-				getClass().getResource("/css/components/alert.css").toExternalForm());
-		
-		alert.showAndWait();
-	}
-
 
 }

@@ -143,8 +143,7 @@ public class SettingsController implements Configurable {
 	}
 	
 	private void logout() {
-		PrepLedgerDialog confirm = new PrepLedgerDialog();
-		PrepLedgerDialog.Choice choice = confirm.confirmLogout();
+		PrepLedgerDialog.Choice choice = PrepLedgerDialog.confirmLogout();
 		
 		if (choice.equals(PrepLedgerDialog.Choice.CANCEL)) {
 			return;

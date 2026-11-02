@@ -67,32 +67,27 @@ public class RegisterController implements Navigable {
 		}
 	}
 
-	// TODO replace with real validation
 	public boolean areFormFieldsValid(String email) {		
 		if (email.isBlank() || password.getText().isBlank() || confirmPassword.getText().isBlank()) {
-			PrepLedgerDialog dialog = new PrepLedgerDialog();
-			dialog.showRegisterError("One or more fields were left blank.");
+			PrepLedgerDialog.showRegisterError("One or more fields were left blank.");
 			return false;
 		}
 		
 		if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
-			PrepLedgerDialog dialog = new PrepLedgerDialog();
-			dialog.showRegisterError("Please enter a valid email.");
+			PrepLedgerDialog.showRegisterError("Please enter a valid email.");
 			return false;
 		}
 		
 		if(!password.getText().matches(
 				"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}$")) {
-			PrepLedgerDialog dialog = new PrepLedgerDialog();
-			dialog.showRegisterError("Passwords should be at least 8 characters "
+			PrepLedgerDialog.showRegisterError("Passwords should be at least 8 characters "
 					+ "and contain one uppercase, one lowercase, one digit, and "
 					+ "one special character.");
 			return false;
 		}
 
 		if (!password.getText().equals(confirmPassword.getText())) {
-			PrepLedgerDialog dialog = new PrepLedgerDialog();
-			dialog.showRegisterError("Passwords do not match.");
+			PrepLedgerDialog.showRegisterError("Passwords do not match.");
 			return false;
 		}
 
@@ -106,21 +101,19 @@ public class RegisterController implements Navigable {
 					password.getText()
 					);
 			
-			PrepLedgerDialog dialog = new PrepLedgerDialog();
-			dialog.showRegisterSuccess("Please check your email to complete registration.");
+			PrepLedgerDialog.showRegisterSuccess("Please check your email to "
+					+ "complete registration.");
 
 			// Registration succeeded; return to login
 			navigationHandler.navigateTo(ContextArea.LOGIN);
 
 		} catch (IOException e) {
 			logger.warn("Registration failed: {}", e.getMessage());
-			PrepLedgerDialog dialog = new PrepLedgerDialog();
-			dialog.showLoginError(e.getMessage());
+			PrepLedgerDialog.showLoginError(e.getMessage());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			logger.warn("Registration request interrupted.");
-			PrepLedgerDialog dialog = new PrepLedgerDialog();
-			dialog.showLoginError(e.getMessage());
+			PrepLedgerDialog.showLoginError(e.getMessage());
 		}
 	}
 

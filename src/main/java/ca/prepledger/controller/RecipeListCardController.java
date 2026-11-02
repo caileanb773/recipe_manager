@@ -117,8 +117,7 @@ public class RecipeListCardController implements Navigable {
 	}
 
 	public void attemptDeleteRecipe() {
-		PrepLedgerDialog dialog = new PrepLedgerDialog();
-		PrepLedgerDialog.Choice choice = dialog.confirmDeletion(recipe);
+		PrepLedgerDialog.Choice choice = PrepLedgerDialog.confirmDeletion(recipe);
 
 		if (choice == PrepLedgerDialog.Choice.CANCEL) {
 			logger.info("attemptDeleteRecipe(): Cancelling delete of recipe: "
@@ -129,8 +128,7 @@ public class RecipeListCardController implements Navigable {
 		// fail early if recipe has no ID to pass to backend
 		if (recipe.getId() == null) {
 		    logger.warn("Cannot delete recipe: missing backend ID.");
-		    PrepLedgerDialog errorDialog = new PrepLedgerDialog();
-		    errorDialog.showRecipeBackendActionFailedDialog(
+		    PrepLedgerDialog.showRecipeBackendActionFailedDialog(
 		            "Missing backend ID.",
 		            "delete");
 		    return;
@@ -154,9 +152,7 @@ public class RecipeListCardController implements Navigable {
 		task.setOnFailed(event -> {
 		    logger.error("Failed to delete recipe from backend.",
 		            task.getException());
-
-		    PrepLedgerDialog errorDialog = new PrepLedgerDialog();
-		    errorDialog.showRecipeBackendActionFailedDialog(
+		    PrepLedgerDialog.showRecipeBackendActionFailedDialog(
 		            task.getException().getMessage(),
 		            "delete");
 		});

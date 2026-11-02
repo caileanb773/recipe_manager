@@ -97,8 +97,7 @@ public class NewRecipeController implements Navigable, Configurable {
 		    }
 	    
 		} catch (NumberFormatException e) {
-			PrepLedgerDialog dialog = new PrepLedgerDialog();
-			dialog.showInvalidRecipeDialog(
+			PrepLedgerDialog.showInvalidRecipeDialog(
 					"Invalid amount for ingredient " + lastIngredient);
 			logger.info("onSaveRecipeButtonClicked(): "
 					+ "Invalid amount detected for ingredient {}.", lastIngredient);
@@ -167,8 +166,7 @@ public class NewRecipeController implements Navigable, Configurable {
 
 		    task.setOnFailed(event -> {
 				logger.error("Failed to update recipe on backend: {}", task.getException());
-				PrepLedgerDialog dialog = new PrepLedgerDialog();
-				dialog.showRecipeBackendActionFailedDialog(
+				PrepLedgerDialog.showRecipeBackendActionFailedDialog(
 						task.getException().getMessage(),
 						"update");
 		    });
@@ -194,8 +192,7 @@ public class NewRecipeController implements Navigable, Configurable {
 			
 			task.setOnFailed(e -> {
 				logger.error("Failed to create recipe on backend: {}", task.getException());
-				PrepLedgerDialog dialog = new PrepLedgerDialog();
-				dialog.showRecipeBackendActionFailedDialog(
+				PrepLedgerDialog.showRecipeBackendActionFailedDialog(
 						task.getException().getMessage(),
 						"create");
 			});

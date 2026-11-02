@@ -360,8 +360,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		// fail early if recipe has no ID to pass to backend
 		if (recipe.getId() == null) {
 		    logger.warn("Cannot delete recipe: missing backend ID.");
-		    PrepLedgerDialog errorDialog = new PrepLedgerDialog();
-		    errorDialog.showRecipeBackendActionFailedDialog(
+		    PrepLedgerDialog.showRecipeBackendActionFailedDialog(
 		            "Missing backend ID.",
 		            "delete");
 		    return;
@@ -391,8 +390,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		    logger.error("Failed to delete recipe from backend.",
 		            task.getException());
 
-		    PrepLedgerDialog errorDialog = new PrepLedgerDialog();
-		    errorDialog.showRecipeBackendActionFailedDialog(
+		    PrepLedgerDialog.showRecipeBackendActionFailedDialog(
 		            task.getException().getMessage(),
 		            "delete");
 		});
@@ -473,8 +471,8 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		    task.setOnFailed(event -> {
 		        logger.error("Failed to fetch recipes from backend.",
 		                task.getException());
-		        PrepLedgerDialog dialog = new PrepLedgerDialog();
-		        dialog.showRecipeBackendActionFailedDialog(task.getException().getMessage(), "fetch");
+		        PrepLedgerDialog.showRecipeBackendActionFailedDialog(
+		        		task.getException().getMessage(), "fetch");
 		    });
 
 		    Thread thread = new Thread(task, "recipe-fetch");

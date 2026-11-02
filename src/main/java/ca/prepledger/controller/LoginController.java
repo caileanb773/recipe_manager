@@ -24,8 +24,6 @@ import ca.prepledger.session.SessionHandler;
 import ca.prepledger.session.UserSession;
 import ca.prepledger.util.PrepLedgerDialog;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
@@ -86,14 +84,13 @@ public class LoginController implements Navigable, Configurable {
 	@FXML
 	private void onForgotPasswordBtnClicked() {
 		String email = emailAddress.getText().trim();
-		PrepLedgerDialog dialog = new PrepLedgerDialog();
 
 		// parse input
 		if (email.isBlank()) {
-			dialog.showForgotPasswordDialog("Please enter an email.");
+			PrepLedgerDialog.showForgotPasswordDialog("Please enter an email.");
 			return;
 		} else if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
-			dialog.showForgotPasswordDialog("Please enter a valid email.");
+			PrepLedgerDialog.showForgotPasswordDialog("Please enter a valid email.");
 			return;
 		}
 		
@@ -119,19 +116,17 @@ public class LoginController implements Navigable, Configurable {
 
 		// fail on empty email/password
 		if (email.isBlank() || password.getText().isBlank()) {
-			PrepLedgerDialog dialog = new PrepLedgerDialog();
 			if (email.isBlank()) {
-				dialog.showLoginError("Please enter an email.");				
+				PrepLedgerDialog.showLoginError("Please enter an email.");				
 			} else if (password.getText().isBlank()) {
-				dialog.showLoginError("Please enter a password.");
+				PrepLedgerDialog.showLoginError("Please enter a password.");
 			}
 			return;
 		}
 
 		// fail on invalid email (i.e., doesn't match name@url.domain)
 		if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
-			PrepLedgerDialog dialog = new PrepLedgerDialog();
-			dialog.showLoginError("Please enter a valid email.");
+			PrepLedgerDialog.showLoginError("Please enter a valid email.");
 			return;
 		}
 		
@@ -139,19 +134,18 @@ public class LoginController implements Navigable, Configurable {
 		try {
 			session = auth.login(email, password.getText());
 		} catch (AuthException e) {
-		    PrepLedgerDialog dialog = new PrepLedgerDialog();
 
 		    if (e.getCode().equals("PENDING_VERIFICATION")) {
-		        if (dialog.showVerificationRequired()) {
+		        if (PrepLedgerDialog.showVerificationRequired()) {
 		            try {
 		                auth.resendVerification(email);
 
-		                new PrepLedgerDialog().showGenericInfo(
-		                        "A new verification email has been sent. Please check your inbox."
+		                PrepLedgerDialog.showGenericInfo("A new verification email "
+		                		+ "has been sent. Please check your inbox."
 		                );
 		            } catch (IOException | InterruptedException ex) {
-		                new PrepLedgerDialog().showLoginError(
-		                        "Unable to resend verification email. Please try again later."
+		            	PrepLedgerDialog.showLoginError("Unable to resend "
+		            			+ "verification email. Please try again later."
 		                );
 		            }
 		        }
@@ -159,8 +153,7 @@ public class LoginController implements Navigable, Configurable {
 
 		    return;
 		} catch (IOException | InterruptedException e) {
-		    PrepLedgerDialog dialog = new PrepLedgerDialog();
-		    dialog.showLoginError(e.getMessage());
+		    PrepLedgerDialog.showLoginError(e.getMessage());
 		    return;
 		}
 		
@@ -177,21 +170,13 @@ public class LoginController implements Navigable, Configurable {
 			// tell our session handler (main) to dispose this window and open PrepLedger
 			sessionHandler.onLoginSuccess(session);
 		} else {
-			PrepLedgerDialog dialog = new PrepLedgerDialog();
-			dialog.showLoginError("Invalid credentials.");
+			PrepLedgerDialog.showLoginError("Invalid credentials.");
 		}
 	}
 
 	@FXML
 	private void onSignInGoogleBtnClicked() {
-		Alert alert = new Alert(
-				AlertType.INFORMATION,
-				"This feature is coming in a future release."
-				);
-
-		alert.getDialogPane().getStylesheets().add(
-				getClass().getResource("/css/components/alert.css").toExternalForm());
-		alert.showAndWait();
+		PrepLedgerDialog.showGenericInfo("This feature is coming in a future release.");
 	}
 
 	@FXML

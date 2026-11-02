@@ -14,7 +14,7 @@ public class PrepLedgerDialog {
 		CONFIRM, CANCEL
 	}
 
-	public Choice confirmDeletion(Recipe recipe) {
+	public static Choice confirmDeletion(Recipe recipe) {
 		Alert alert = new Alert(
 				AlertType.CONFIRMATION,
 				"Are you sure you want to delete '" + recipe.getTitle() + "'?",
@@ -23,8 +23,8 @@ public class PrepLedgerDialog {
 				);
 
 		alert.getDialogPane().getStylesheets().addAll(
-		        getClass().getResource("/css/theme.css").toExternalForm(),
-		        getClass().getResource("/css/components/alert.css").toExternalForm());
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		
 		Button yesBtn = (Button)alert.getDialogPane()
 				.lookupButton(ButtonType.YES);
@@ -46,7 +46,7 @@ public class PrepLedgerDialog {
 		}
 	}
 	
-	public Choice confirmLogout() {
+	public static Choice confirmLogout() {
 		Alert alert = new Alert(
 				AlertType.CONFIRMATION,
 				"Are you sure you want to log out?",
@@ -55,8 +55,8 @@ public class PrepLedgerDialog {
 				);
 
 		alert.getDialogPane().getStylesheets().addAll(
-		        getClass().getResource("/css/theme.css").toExternalForm(),
-		        getClass().getResource("/css/components/alert.css").toExternalForm());
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		
 		Button yesBtn = (Button)alert.getDialogPane()
 				.lookupButton(ButtonType.YES);
@@ -78,36 +78,36 @@ public class PrepLedgerDialog {
 		}
 	}
 	
-	public void showForgotPasswordDialog(String text) {
+	public static void showForgotPasswordDialog(String text) {
 		Alert alert = new Alert(
 				AlertType.WARNING,
 				text
 				);
 
 		alert.getDialogPane().getStylesheets().addAll(
-		        getClass().getResource("/css/theme.css").toExternalForm(),
-		        getClass().getResource("/css/components/alert.css").toExternalForm());
+		        PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+		        PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setTitle("Forgot Password");
 		alert.showAndWait();
 	}
 	
-	public void showInvalidRecipeDialog(String text) {
+	public static void showInvalidRecipeDialog(String text) {
 		Alert alert = new Alert(
 				AlertType.WARNING,
 				text
 				);
 
 		alert.getDialogPane().getStylesheets().addAll(
-		        getClass().getResource("/css/theme.css").toExternalForm(),
-		        getClass().getResource("/css/components/alert.css").toExternalForm());
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setTitle("Error");
 		alert.setHeaderText("Invalid recipe.");
 		alert.showAndWait();
 	}
 	
-	public void showRecipeBackendActionFailedDialog(
+	public static void showRecipeBackendActionFailedDialog(
 			String exceptionMsg,
 			String action) {
 		
@@ -116,8 +116,8 @@ public class PrepLedgerDialog {
 				"Please try again.");
 		
 		alert.getDialogPane().getStylesheets().addAll(
-		        getClass().getResource("/css/theme.css").toExternalForm(),
-		        getClass().getResource("/css/components/alert.css").toExternalForm());
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setContentText("Could not " + action + " recipe for the following reason: \n\n"
 				+ exceptionMsg);
@@ -125,29 +125,29 @@ public class PrepLedgerDialog {
 		alert.showAndWait();
 	}
 	
-	public void showLoginError(String reason) {
+	public static void showLoginError(String reason) {
 		Alert alert = new Alert(
 				AlertType.WARNING,
 				reason);
 		
 		alert.getDialogPane().getStylesheets().addAll(
-		        getClass().getResource("/css/theme.css").toExternalForm(),
-		        getClass().getResource("/css/components/alert.css").toExternalForm());
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setHeaderText("Could not log in");
 		alert.setTitle("Warning");
 		alert.showAndWait();
 	}
 	
-	public boolean showVerificationRequired() {
+	public static boolean showVerificationRequired() {
 	    Alert alert = new Alert(
 	            AlertType.WARNING,
 	            "Please check your email for a verification link."
 	    );
 
 		alert.getDialogPane().getStylesheets().addAll(
-		        getClass().getResource("/css/theme.css").toExternalForm(),
-		        getClass().getResource("/css/components/alert.css").toExternalForm());
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 
 	    alert.setHeaderText("Email verification required");
 	    alert.setTitle("Account verification");
@@ -160,44 +160,127 @@ public class PrepLedgerDialog {
 	    return alert.showAndWait().orElse(cancelButton) == resendButton;
 	}
 	
-	public void showRegisterError(String reason) {
+	public static void showRegisterError(String reason) {
 		Alert alert = new Alert(
 				AlertType.WARNING,
 				reason);
 		
 		alert.getDialogPane().getStylesheets().addAll(
-		        getClass().getResource("/css/theme.css").toExternalForm(),
-		        getClass().getResource("/css/components/alert.css").toExternalForm());
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setHeaderText("Could not register");
 		alert.setTitle("Warning");
 		alert.showAndWait();
 	}
 	
-	public void showGenericInfo(String info) {
+	public static void showGenericInfo(String info) {
 		Alert alert = new Alert(
 				AlertType.INFORMATION,
 				info);
 		
 		alert.getDialogPane().getStylesheets().addAll(
-		        getClass().getResource("/css/theme.css").toExternalForm(),
-		        getClass().getResource("/css/components/alert.css").toExternalForm());
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setTitle("Attention");
 		alert.showAndWait();
 	}
 	
-	public void showRegisterSuccess(String information) {
+	public static void showRegisterSuccess(String information) {
 		Alert alert = new Alert(
 				AlertType.INFORMATION,
 				information);
 		
 		alert.getDialogPane().getStylesheets().addAll(
-		        getClass().getResource("/css/theme.css").toExternalForm(),
-		        getClass().getResource("/css/components/alert.css").toExternalForm());
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		
 		alert.setHeaderText("User registered");
 		alert.setTitle("Success");
+		alert.showAndWait();
+	}
+	
+	public static void showRecipeScalingHelpDialog() {
+		Alert help = new Alert(
+				Alert.AlertType.INFORMATION,
+				"Adjust the quantities in your recipe without changing the original.\n\n"
+				+ "• Scale factor: Set the amount to increase or decrease the recipe. "
+				+ "The default is 0.5x.\n"
+				+ "• Increase (+): Add the scale factor to the current batch size.\n"
+				+ "• Decrease (-): Subtract the scale factor from the current batch "
+				+ "size.\n"
+				+ "• Batch Size: Displays the recipe's current multiplier (e.g., "
+				+ "2x represents twice the original recipe).\n"
+				+ "• Reset: Return the scale factor and batch size to their defaults."
+				);
+		
+		help.getDialogPane().setPrefWidth(500);
+		help.setTitle("Recipe Scaling Help");
+		help.setHeaderText("How Recipe Scaling Works");
+		help.getDialogPane().getStylesheets().addAll(
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm()
+				);
+		help.getDialogPane().setPrefWidth(450);
+		help.showAndWait();
+	}
+	
+	/**
+	 * Alerts the user that a JSON-specific error occurred during import.
+	 * 
+	 * This is a catch-all dialog that tells the user "there is a problem with the
+	 * JSON file you tried to import" and is non-specific; i.e., it does not identify
+	 * which recipe caused the import to fail; this is because the specific JSON
+	 * selector for the recipe title could be corrupt.
+	 */
+	public static void showCorruptJSONImportErrorDialog() {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Import Error");
+		alert.setHeaderText("Could not complete import operation.");
+		alert.setContentText("Could not parse recipes from JSON file; file is "
+				+ "corrupt. Please only import JSON files that were exported using "
+				+ "PrepLedger and do not manually edit JSON files.");
+		alert.getDialogPane().getStylesheets().addAll(
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
+		
+		alert.showAndWait();
+	}
+	
+	public static void showImportOperationError(String contentString) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Import Error");
+		alert.setHeaderText("Could not complete import operation.");
+		alert.setContentText(contentString);
+		alert.getDialogPane().getStylesheets().addAll(
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
+		
+		alert.showAndWait();
+	}
+
+	public static void displayPostImportDialog(int numImported) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Import Complete");
+		alert.setHeaderText("Recipes imported successfully");
+		alert.setContentText(numImported + " recipes were imported.");
+		alert.getDialogPane().getStylesheets().addAll(
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
+		
+		alert.showAndWait();
+	}
+	
+	public static void showExportOperationError() {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Export Error");
+		alert.setHeaderText("Could not complete export operation.");
+		alert.setContentText("No recipes to export!");
+		alert.getDialogPane().getStylesheets().addAll(
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
+		
 		alert.showAndWait();
 	}
 
