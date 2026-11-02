@@ -1,5 +1,12 @@
 .button {
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+}
 
+.button:focused {
+    -fx-border-color: -pl-primary;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
 }
 
 .default-button {
