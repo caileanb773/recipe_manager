@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -84,8 +85,12 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <RadioButton fx:id="themeLightRadioButton" mnemonicParsing="false" onAction="#onLightRadioButtonClicked" text="Light" />
-                        <RadioButton fx:id="themeDarkRadioButton" mnemonicParsing="false" onAction="#onDarkRadioButtonClicked" text="Dark" GridPane.columnIndex="1" />
+                        <RadioButton fx:id="themeLightRadioButton" mnemonicParsing="false" onAction="#onLightRadioButtonClicked" text="Light">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="radioToggleGroup" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="themeDarkRadioButton" mnemonicParsing="false" onAction="#onDarkRadioButtonClicked" text="Dark" toggleGroup="$radioToggleGroup" GridPane.columnIndex="1" />
                      </children>
                   </GridPane>
                </children>
