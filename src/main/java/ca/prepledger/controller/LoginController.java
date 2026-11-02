@@ -13,6 +13,8 @@ import org.controlsfx.control.textfield.CustomTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.prepledger.config.AppConfig;
+import ca.prepledger.config.Configurable;
 import ca.prepledger.exception.AuthException;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
@@ -29,7 +31,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class LoginController implements Navigable {
+public class LoginController implements Navigable, Configurable {
 
 	@FXML private CustomTextField emailAddress;
 	@FXML private CustomPasswordField password;
@@ -42,6 +44,7 @@ public class LoginController implements Navigable {
 	private AuthService auth;
 	private NavigationHandler navigationHandler;
 	private SessionHandler sessionHandler;
+	private AppConfig appConfig;
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 
@@ -166,6 +169,11 @@ public class LoginController implements Navigable {
 	private void onCreateAccountBtnClicked() {
 		showRegisterScreen();
 	}
+	
+	@FXML
+	private void onRememberMeCheckboxClicked() {
+		appConfig.setRememberMe(rememberMe.isSelected());
+	}
 
 	private void showRegisterScreen() {
 		try {
@@ -182,6 +190,11 @@ public class LoginController implements Navigable {
 
 	public void setSessionHandler(SessionHandler sessionHandler) {
 		this.sessionHandler = sessionHandler;
+	}
+
+	@Override
+	public void setAppConfig(AppConfig appConfig) {
+		this.appConfig = appConfig;
 	}
 
 }
