@@ -127,8 +127,10 @@ public class ConfigManager {
 					break;
 				case "email":
 					email = value;
+					break;
 				default:
-					logger.warn("load(): Invalid key encountered in settings.cfg");
+					logger.warn("load(): Invalid key " + key + " encountered in "
+							+ "settings.cfg");
 				}
 			}
 		} catch (FileNotFoundException e) {
