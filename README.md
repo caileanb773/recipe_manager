@@ -10,13 +10,11 @@ At its core, PrepLedger is a simple recipe manager that allows multiple users to
 
 # Usage
 
-## Installation (planned)
+## Installation (Win 10, 11)
 
-PrepLedger will be available via installer which includes JRE dependencies, or through a lightweight .jar for advanced users who might already have a JRE installed.
+PrepLedger will be available via a `.exe` installer. Future versions will support MacOS and Linux.
 
-For the installer, run the PrepLedgerInstaller.exe and select a directory. The installer will install the JRE libraries it depends on in addition to the application itself. The installer will optionally create a desktop shortcut/start menu directory if desired.
-
-For the standalone .jar, ensure you have the correct JRE installed and extract the .zip wherever you would like the application to go. You will have to create desktop shortcuts/start menu directories manually, if desired.
+The `.exe` installer will install PrepLedger along with all dependencies to a default directory and configure required environment variables.
 
 ## Getting Started
 
@@ -30,60 +28,77 @@ Recipes can be filtered by name or by their associated tags in the "filter" sect
 
 ### Adding New Recipes
 
-To add a new recipe, click the "Add" button below the recipe selection pane. A new dialog will be created that has input areas for title, ingredients, instructions, and tags.
+To add a new recipe, use the Sidebar on the left-hand side of the screen to navigate to "Recipes", and then click the "+ Add Recipe" button in the top-right hand of the screen. You will be taken to the "New Recipe" page.
 
 Give the recipe a title, a list of ingredients, and some instructions. You may opt to include tags for your recipes, but they are optional. Helpful uses for tags allow you and your staff to search for recipes by the section(s) that they are associated with; for example: *Garde Manger, Saucier, Entremetier.*
 
-Recipe ingredients must be input in a particular fashion to allow the application to properly parse ingredients and allow for scaling. The proper way to add an ingredient is:
+There are few restrictions for how you can add ingredients, but one such restriction is: **if the ingredient has an amount, it must have a unit**. For example:
 
-```
-[amount] [unit] [ingredient name]
+| Ingredient Name | Amount | Unit | Notes | Ingredient Valid? |
+| :-- | :-- | :-- | :-- | :-- |
+| Salt | - | - | - | Yes |
+| Garlic | 1 | clove | crushed | Yes |
+| Vinegar | 1/2 | - | - | No (has amount, but no unit) |
+| Peppercorns | - | - | A handful | Yes |
+| - | 1 | tbsp | - | No (name missing) |
 
-1 1/2 cup flour         // Fractional amounts are fine
-0.5 cup sugar           // As are decimal amounts
-1 stick butter          // Special units exist for common ingredients (clove, stick, knob)
-salt to taste           // ERROR; Program will reject this recipe as there is no unit
-```
-
-As you can see from the example above, it may seem like the application is overly particular. However, the only cases where the recipe will be rejected is if one or more ingredients are in the incorrect format, with the most common cause for rejection being **salt**, or **salt, to taste** being at the bottom of most recipes.
-
-In the vast majority of professional kitchens, seasoning with salt is an unwritten step in every recipe, is highly subjective, and is reliant on many factors including the cook's palate. If there is no prescribed "amount" of salt for the associated recipe, just add "season with salt" to the instructions.
+From the examples above, the only requirement for an ingredient to be valid is a **name** for the ingredient, and, if the ingredient has an amount, then how much of the amount must be specified.
 
 # Features
 
+## Always-Online Database
+
+Your recipes are stored in a database on the cloud. To access your current recipes, an internet connection is required.
+
+## Automatic Backups (coming soon)
+
+PrepLedger will automatically backup the latest snapshot of your recipes to JSON upon exiting. In the event that you cannot connect to the internet, the most recent backup will be loaded.
+
 ## Recipe Scaling
 
-Recipes can be scaled up incrementally for batching out recipes.
+Recipes can be scaled up incrementally for batching out recipes. This feature is available from the "Recipe View" screen. From the "Recipes" screen, click on any recipe in the list to navigate to the "Recipe View" screen. The scaling options are on the top-right. You may scale a recipe up ( **+** ) or down ( **-** ) by the **scale factor** in the number field. By default, recipes will scale up or down by 0.5 times. The reset button will reset all amounts.
 
 ## Import/Export
 
-Recipes can be manually exported to and imported from files in the proprietary .rcp format. This is helpful for migrating recipes from one database to another, or merging the contents of multiple databases into one.
+Recipes can be manually exported to and imported from JSON. You can export your entire recipe collection, or just a selection of recipes. This is helpful for migrating recipes from one PrepLedger installation to another, or sharing recipes. 
 
 ## Languages
 
-PrepLedger is available in English and French. Additional languages may be added in the future.
+PrepLedger will be available in English and French at launch. Additional languages may be added in the future.
+
+## Themes
+
+PrepLedger introduced themes in beta v0.1.2 and the current theme can be changed by navigating to the **Settings** page via the Sidebar. Some people may find that the default *light* theme may cause eye strain; for this reason, a *dark* theme was added. More themes may be added in future releases.
 
 # Upcoming Features
 
+## Costing
+
+Input your cost of raw product and PrepLedger will calculate the total cost of recipes based on how much of each ingredient they use.
+
+## Prep Lists
+
+Keep track of your employees prep lists by section; monitor the status of the work day based on which tasks have been completed against which tasks still need to be completed.
+
 ## Mobile Application
 
-The mobile application will allow staff who are invited to your restaurant group to view, suggest edits to, and suggest creation of new recipes.
+The mobile application will allow staff who are invited to your restaurant group to view recipes. Additionally, administrators can grant priveleges to certain users who may then propose changes to recipes, or propose entirely new recipes. These will appear in your **Notifications** where you can review, approve, deny, or modify the incoming changes.
 
 A single PrepLedger Administrator account will not only have its associated recipes, but also a list of staff who have these permissions.
 
 An incoming recipe creation/edit request from a staff will take the form of a notification in the Administrator's notification center. These requests can be quickly viewed and accepted or rejected with a single click. Upon accepting a change, the database will update itself to reflect the changes.
 
-## Persistent Database
-
-Always-on database that allows your recipes to be accessible when you might not be. Staff can still access the database and perform other functions of the mobile application at any time.
-
 ## User management
 
 The Administrator will have the ability to send invites to new staff who will then enter their information and register for an account. Staff who no longer work at the establishment can have their permissions revoked.
 
-## Themes / Accessibility
+## Accessibility
 
-Multiple UI colour themes, including themes for colour-blindness. Planned accessibility features include adjustable font sizes, text-to-speech, voice-to-text, and others.
+Themes for individuals with various colour-blindness. Planned accessibility features include adjustable font sizes, text-to-speech, voice-to-text, and others.
+
+## AI image uploading
+
+Upload an image of a written recipe and an AI agent will scan the text and create a new recipe from the image.
 
 ## Submitting a Bug Report
 
