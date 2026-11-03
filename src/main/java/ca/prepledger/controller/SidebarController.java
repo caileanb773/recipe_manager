@@ -21,6 +21,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+/**
+ * Controller class which handles input from the view and delegates actions. This
+ * controller is persistently visible on the left of the screen and allows the
+ * user to navigate the application.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.0
+ */
 public class SidebarController implements Navigable {
 
 	@FXML private Button recipesContextBtn;
@@ -194,6 +202,7 @@ public class SidebarController implements Navigable {
 	 * Helper method for updateConnectionStatus. Returns an Image from the path
 	 * completed by the filename argument which represents the current connection
 	 * status.
+	 * 
 	 */
 	private Image loadConnectionIcon(String filename) {
 		return new Image(

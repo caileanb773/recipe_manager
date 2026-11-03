@@ -32,6 +32,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
+/**
+ * Controller class which handles input from the view and delegates actions.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.0
+ */
 public class NewRecipeController implements Navigable, Configurable {
 
 	@FXML private Button cancelButton;

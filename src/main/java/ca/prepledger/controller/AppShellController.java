@@ -30,6 +30,9 @@ import javafx.scene.layout.BorderPane;
 /**
  * Contents: Main controller which controls fxml loading application-wide. Also
  * handles dependency injection for controllers of those fxml pages.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.0
  */
 public class AppShellController implements NavigationHandler, Configurable, RecipeChangeListener {
 

@@ -1,5 +1,12 @@
 package ca.prepledger.config;
 
+/**
+ * Contains configurations for production and development modes, as well as the
+ * root addresses of both dev and production backend APIs.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.1
+ */
 public class ApiConfig {
 	
 	public static final String LOCALHOST_ROOT = "http://localhost:8080";

@@ -29,6 +29,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Controller class which handles input from the view and delegates actions.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.0
+ */
 public class LoginController implements Navigable, Configurable {
 
 	@FXML private CustomTextField emailAddress;

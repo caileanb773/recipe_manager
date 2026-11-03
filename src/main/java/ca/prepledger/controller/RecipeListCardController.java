@@ -27,6 +27,12 @@ import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 
+/**
+ * Controller class which handles input from the view and delegates actions.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.0
+ */
 public class RecipeListCardController implements Navigable {
 
 	@FXML private Label recipeName;

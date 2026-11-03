@@ -7,6 +7,12 @@ import ca.prepledger.model.Ingredient;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+/**
+ * Controller class which handles input from the view and delegates actions.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.0
+ */
 public class CollapsibleIngredientRowController {
 		
 	@FXML private Label ingredientName;	

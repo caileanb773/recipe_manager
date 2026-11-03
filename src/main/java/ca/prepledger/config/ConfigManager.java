@@ -12,11 +12,12 @@ import java.nio.file.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
- * Author: Cailean Bernard
+/**
  * Contents: Manages loading and saving of Application Configuration. By default,
  * config files will be saved in %APPDATA%/PrepLedger/settings.cfg.
  * 
+ * @author Cailean Bernard
+ * @since v0.1.0
  */
 public class ConfigManager {
 

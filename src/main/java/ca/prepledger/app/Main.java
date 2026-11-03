@@ -32,7 +32,9 @@ import javafx.stage.Stage;
  * Contents: Injection point for the application. An instance of the model,
  * the Notification Service, and the view is instantiated, and then a new 
  * Controller is created using the passed model and view.
+ * 
  * @author: Cailean Bernard
+ * @since v0.1.0
  */
 public class Main extends Application implements SessionHandler, NavigationHandler {
 

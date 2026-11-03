@@ -2,13 +2,14 @@ package ca.prepledger.config;
 
 import java.util.function.Consumer;
 
-/*
- * Author: Cailean Bernard
+/**
  * Contents: Contains the configurable fields of the application. The Config
  * Manager will load a configuration from a .cfg file and return an AppConfig,
  * or will read the state of AppConfig and save it to a .cfg file.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.0
  */
-
 public class AppConfig {
 
 	private AppLanguage language;
