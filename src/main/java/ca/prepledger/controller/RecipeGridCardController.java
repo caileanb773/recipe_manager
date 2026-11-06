@@ -51,7 +51,6 @@ public class RecipeGridCardController implements Navigable {
 	private static final Logger logger = LoggerFactory.getLogger(RecipeGridCardController.class);
 
 
-	// XXX Placeholder method
 	public void setRecipe(Recipe recipe) {
 		this.recipe = recipe;
 
@@ -68,19 +67,14 @@ public class RecipeGridCardController implements Navigable {
 			tagsList.add(tagLabel);
 		});
 
-		// Get/set image
-		recipeImage.setImage(getDefaultImage());
-
-		/* XXX Eventually:
-		 * Image image;
-		 * 
-		 * if (recipe.hasImage())
-		 * 		image = fetchImage()
-		 * else
-		 * 		image = getDefaultImage()
-		 * 
-		 * recipeImage.setImage(image)
-		 */
+		// Set only default image for now until custom images are supported
+		Image tempImage = getDefaultImage();
+		
+		if (tempImage != null) {
+			recipeImage.setImage(tempImage);
+		} else {			
+			logger.error("setRecipe(): Recipe image is null.");
+		}
 	}
 
 	@FXML
@@ -169,9 +163,14 @@ public class RecipeGridCardController implements Navigable {
 		thread.start();
 	}
 
-	// XXX need defensive programming for people who delete the image by mistake
 	private Image getDefaultImage() {
 		URL url = getClass().getResource("/img/temp/missing-image.png");
+		
+		if (url == null) {
+			logger.error("getDefaultImage(): couldn't locate 'missing-image.png'.");
+			return null;
+		}
+		
 		Image image = new Image(url.toExternalForm());
 		return image;
 	}

@@ -328,7 +328,10 @@ public class NewRecipeController implements Navigable, Configurable {
 	}
 
 	/**
-	 * Check that the user has filled in all required fields
+	 * Checks that the user has entered *anything* in all the required fields.
+	 * 
+	 * @return boolean
+	 * @since v0.1.1
 	 */
 	private boolean hasUserEnteredRecipeTitle() {
 		String rcpTitle = recipeTitleField.getText().trim();

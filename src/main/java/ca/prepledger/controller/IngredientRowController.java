@@ -40,7 +40,6 @@ public class IngredientRowController {
 		setUnitComboBoxItems();
 	}
 	
-	// XXX eventually replace this with some feature that allows users to define pref. units
 	public void setUnitComboBoxItems() {	
 		ObservableList<String> items = ingredientUnitComboBox.getItems();
 		items.add("g");
