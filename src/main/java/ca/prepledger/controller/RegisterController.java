@@ -112,11 +112,11 @@ public class RegisterController implements Navigable {
 			navigationHandler.navigateTo(ContextArea.LOGIN);
 
 		} catch (IOException e) {
-			logger.warn("Registration failed: {}", e.getMessage());
+			logger.warn("attemptRegister(): Registration failed: {}", e.getMessage());
 			PrepLedgerDialog.showLoginError(e.getMessage());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
-			logger.warn("Registration request interrupted.");
+			logger.warn("attemptRegister(): Registration request interrupted.");
 			PrepLedgerDialog.showLoginError(e.getMessage());
 		}
 	}
