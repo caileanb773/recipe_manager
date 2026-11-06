@@ -7,12 +7,14 @@ import java.util.StringJoiner;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-/*
- * Author: Cailean Bernard
+/**
  * Contents: Recipes are made up of a title, a List of ingredients, and a set of
  * instructions/directions. A recipe can be created using an overloaded constructor
  * with either List<Ingredient> or a String[] representing all ingredients
  * present in the recipe.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.0
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Recipe {

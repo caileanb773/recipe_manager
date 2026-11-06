@@ -6,6 +6,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
+/**
+ * Manages the sessions that are generated on successful user login. The session
+ * file is stored under %APPDATA% in Windows. Future OS support (Linux, MacOS)
+ * will need to account for this pathing.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.1
+ */
 public class SessionManager {
 
 	// XXX will need to be changed to support other OS

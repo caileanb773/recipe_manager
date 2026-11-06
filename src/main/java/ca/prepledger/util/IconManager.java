@@ -12,6 +12,15 @@ import javafx.scene.control.Labeled;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * The icon manager is responsible for maintaining high-contrast icons depending
+ * on which theme is currently active. When the theme is changed, the icon manager
+ * will recurse through the node tree, determining which nodes contain icons
+ * that should be changed to their high-contrast variant.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.2
+ */
 public class IconManager {
 
 	private static final String ICON_ROOT = "/img/icon/scaled/";

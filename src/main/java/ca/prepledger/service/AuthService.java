@@ -14,6 +14,13 @@ import ca.prepledger.config.ApiConfig;
 import ca.prepledger.exception.AuthException;
 import ca.prepledger.session.UserSession;
 
+/**
+ * Contains the routing for the backend authentication endpoints and the methods
+ * that call those endpoints.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.1
+ */
 public class AuthService {
 
 	private static String Domain;

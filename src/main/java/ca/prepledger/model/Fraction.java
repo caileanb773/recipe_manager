@@ -9,10 +9,12 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-/*
- * Author: Cailean Bernard
+/**
  * Contents: Fraction definition along with methods to perform fraction math on 
  * fractions.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.0
  */
 public class Fraction {
 

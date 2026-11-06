@@ -14,6 +14,9 @@ import ca.prepledger.model.Recipe;
 /**
  * Contents: The service which handles the mapping of JSON into a list of recipe
  * objects and vice-versa.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.0
  */
 public class ImportExportService {
 

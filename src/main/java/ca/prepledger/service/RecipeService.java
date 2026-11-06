@@ -11,6 +11,9 @@ import ca.prepledger.model.Recipe;
 /**
  * Contents: The recipe service is the interface for the application and how it 
  * should fetch recipes.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.1
  */
 public class RecipeService {
 	

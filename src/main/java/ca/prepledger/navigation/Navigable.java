@@ -5,6 +5,9 @@ package ca.prepledger.navigation;
  * handler for a class that needs to handle its own navigation (i.e., it has a
  * sub-screen or element that causes an action performed in it to initiate some
  * sort of navigation).
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.0
  */
 public interface Navigable {
 

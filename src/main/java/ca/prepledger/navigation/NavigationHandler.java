@@ -7,6 +7,9 @@ import ca.prepledger.model.Recipe;
 /**
  * Contents: The methods needed to navigate between different windows in the
  * application.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.0
  */
 public interface NavigationHandler {
 

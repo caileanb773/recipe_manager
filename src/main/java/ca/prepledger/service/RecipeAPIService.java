@@ -17,6 +17,13 @@ import ca.prepledger.config.ApiConfig;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.session.UserSession;
 
+/**
+ * Contains all recipe-related HTTP endpoint methods. All CRUD methods are
+ * contained within, as well as other useful methods.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.1
+ */
 public class RecipeAPIService {
 
 	private String Domain;
