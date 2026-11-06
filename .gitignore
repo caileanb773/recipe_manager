@@ -7,4 +7,5 @@ MMLock
 /resources/config.ini
 /resources/db.properties
 /target/
+/dist/
 recipes.json
