@@ -102,7 +102,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	
 	public void initializeThemeDependencies() {
 		appConfig.setThemeChangeListener(this::applyTheme);
-		applyTheme(appConfig.getTheme());
+		//applyTheme(appConfig.getTheme());
 	}
 	
 	@Override
@@ -218,6 +218,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		}
 		
 		appShell.setCenter(recipeList);
+		IconManager.applyThemeToTree(recipeList, appConfig.getTheme(), null);
 
 		if (shouldRefreshRecipes) {
 			recipeListController.refreshDisplayedRecipes();	
