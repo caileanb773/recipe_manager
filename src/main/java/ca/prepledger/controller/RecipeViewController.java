@@ -76,10 +76,6 @@ public class RecipeViewController {
 		ingredientRowControllers = new ArrayList<>();
 	}
 	
-	public void setNavigationHandler(AppShellController appShellController) {
-		navigationHandler = appShellController;
-	}
-
 	public void setRecipeToView(Recipe recipe) {
 		this.recipe = recipe;
 
@@ -306,7 +302,6 @@ public class RecipeViewController {
 		adjustIngredientDisplayScale();
 	}
 
-
 	@FXML
 	private void onScalePlusBtnClicked() {
 		// add the current scale by the new scale
@@ -377,5 +372,9 @@ public class RecipeViewController {
 	public void setAdjustmentFactor(BigDecimal adjustmentFactor) {
 		this.adjustmentFactor = adjustmentFactor;
 	}
-		
+	
+	public void setNavigationHandler(AppShellController appShellController) {
+		navigationHandler = appShellController;
+	}
+			
 }

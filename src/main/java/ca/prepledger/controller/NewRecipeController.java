@@ -268,6 +268,8 @@ public class NewRecipeController implements Navigable, Configurable {
 				getClass().getResource("/fxml/recipes/IngredientRow.fxml"));
 		Parent ingredientRow = loader.load();
 		IngredientRowController controller = loader.getController();
+	    IconManager.applyThemeToTree(ingredientRow, appConfig.getTheme(), null);
+
 
 		// Keep track of the row's controller
 		ingredientRowControllers.add(controller);
