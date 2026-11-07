@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.service.ImportExportService;
 import ca.prepledger.service.RecipeService;
+import ca.prepledger.session.UserSession;
 import ca.prepledger.util.PrepLedgerDialog;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -49,6 +50,7 @@ public class ImportExportController {
 
 	private RecipeService recipeService;
 	private ImportExportService impExpService = new ImportExportService();
+	private UserSession userSession;
 	private static final Logger logger = LoggerFactory.getLogger(ImportExportController.class);
 
 	
@@ -218,6 +220,10 @@ public class ImportExportController {
 	
 	public void setRecipeService(RecipeService recipeService) {
 		this.recipeService = recipeService;
+	}
+	
+	public void setUserSession(UserSession userSession) {
+		this.userSession = userSession;
 	}
 
 }

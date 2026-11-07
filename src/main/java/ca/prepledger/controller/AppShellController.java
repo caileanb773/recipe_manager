@@ -261,9 +261,10 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 
 		ImportExportController controller = loader.getController();
 
-		// Inject dependency to recipeservice
+		// Inject recipeservice and usersession
 		controller.setRecipeService(recipeService);
-
+		controller.setUserSession(currentSession);
+		
 		appShell.setCenter(importExport);
 		IconManager.applyThemeToTree(importExport, appConfig.getTheme(), null);
 	}
