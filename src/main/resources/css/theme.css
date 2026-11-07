@@ -2,7 +2,7 @@
  * Keep application colours here; other stylesheets should reference these tokens.
  */
 .root {
-    -pl-background: #F5F5F5;
+    -pl-background: #eeeeee;
     -pl-background-offset: #FEFEFE;
     -pl-control-background: #F0F2F3;
     -pl-text: #000000;
