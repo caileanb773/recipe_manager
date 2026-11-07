@@ -30,16 +30,21 @@
     -fx-effect: none;
 }
 
-/* TextArea appearance shared by editable and display-only recipe directions */
+/* Shared TextArea appearance */
 .text-area,
 .text-area-display {
     -fx-control-inner-background: -pl-control-background;
     -fx-text-fill: -pl-text;
     -fx-background-color: -pl-control-background;
     -fx-background-radius: 3px;
+    -fx-font-weight: normal;
 }
 
-.text-area .content,
+.text-area .content {
+    -fx-background-color: -pl-control-background;
+    -fx-background-radius: 2px;
+}
+
 .text-area-display .content {
     -fx-background-color: -pl-background-offset;
     -fx-background-radius: 2px;
@@ -54,10 +59,12 @@
 .text-area .scroll-pane .viewport,
 .text-area-display .scroll-pane,
 .text-area-display .scroll-pane .viewport {
-    -fx-background-color: -pl-control-background;
+    -fx-background-radius: 3px;
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
 }
 
-/* Editable TextAreas have a border; recipe display TextAreas do not */
+/* Editable TextArea */
 .text-area {
     -fx-border-color: -pl-control-border;
     -fx-border-width: 1px;
@@ -68,11 +75,48 @@
     -fx-border-color: -pl-focus;
 }
 
-.text-area.text-area-display,
-.text-area.text-area-display:focused {
+/* Display-only TextArea */
+.text-area-display {
     -fx-border-color: transparent;
     -fx-border-width: 0;
+    -fx-background-color: transparent;
+}
 
-    -fx-font-weight: normal;
+.text-area-display:focused {
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-color: transparent;
+}
+
+.combo-box {
+    -fx-text-fill: -pl-text-muted;
+    -fx-background-color: -pl-control-background;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-border-color: -pl-control-border;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: -pl-text-muted;
+    -fx-background-color: -pl-control-background;
+}
+
+.combo-box .list-cell:empty {
+    -fx-text-fill: -pl-text-muted;
+    -fx-background-color: -pl-control-background;
+}
+
+.combo-box .text-field {
+    -fx-background-color: -pl-control-background;
     -fx-text-fill: -pl-text;
+    -fx-prompt-text-fill: -pl-text-muted;
+}
+
+.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:hover {
+    -fx-background-color: #007acc;
+    -fx-text-fill: white;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
 }
