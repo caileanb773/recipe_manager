@@ -214,6 +214,5 @@
       <URL value="@../../css/components/buttons.css" />
       <URL value="@../../css/components/forms.css" />
       <URL value="@../../css/pages/new-recipe.css" />
-      <URL value="@../../css/theme.css" />
    </stylesheets>
 </BorderPane>
