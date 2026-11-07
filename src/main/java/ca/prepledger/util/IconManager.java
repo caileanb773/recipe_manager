@@ -51,11 +51,9 @@ public class IconManager {
 		
 		URL resource = IconManager.class.getResource(
 				ICON_ROOT + folder + "/" + fileName);
-		
+			
 		if (resource != null) {
 			imageView.setImage(new Image(resource.toExternalForm()));
-		} else {
-			logger.warn("applyTheme(): resource == null.");
 		}
 	}
 	
