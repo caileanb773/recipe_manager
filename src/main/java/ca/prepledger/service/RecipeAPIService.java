@@ -11,6 +11,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.prepledger.config.ApiConfig;
@@ -158,6 +159,37 @@ public class RecipeAPIService {
 	    logger.info("Successfully created recipe: {}.", recipe.getTitle());
 
 		return mapper.readValue(response.body(), Recipe.class);
+	}
+	
+	// Create multiple recipes in bulk
+	public List<Recipe> importRecipes(UserSession session, List<Recipe> recipes)
+	        throws InterruptedException, IOException {
+
+	    String json = mapper.writeValueAsString(recipes);
+
+	    HttpRequest request = HttpRequest.newBuilder()
+	            .uri(URI.create(Domain + RECIPES_PATH + "/import"))
+	            .header("Authorization", "Bearer " + session.getToken())
+	            .header("Content-Type", "application/json")
+	            .POST(HttpRequest.BodyPublishers.ofString(json))
+	            .build();
+
+	    HttpResponse<String> response = client.send(
+	            request,
+	            HttpResponse.BodyHandlers.ofString());
+
+	    if (response.statusCode() != 200) {
+	        throw new IOException(
+	                "Failed to import recipes. HTTP status: "
+	                + response.statusCode() + "\n" + response.body());
+	    }
+
+	    logger.info("Successfully imported {} recipes.", recipes.size());
+
+	    return mapper.readValue(
+	            response.body(),
+	            new TypeReference<List<Recipe>>() {}
+	    );
 	}
 
 
