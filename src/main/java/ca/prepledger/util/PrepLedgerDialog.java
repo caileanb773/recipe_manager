@@ -133,7 +133,7 @@ public class PrepLedgerDialog {
 				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
 				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		
-		alert.setContentText("Could not " + action + " recipe for the following reason: \n\n"
+		alert.setContentText("Error during " + action + ". Reason: \n\n"
 				+ exceptionMsg);
 		alert.setTitle("Error");
 		alert.showAndWait();

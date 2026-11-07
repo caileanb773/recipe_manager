@@ -1,24 +1,23 @@
 package ca.prepledger.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 import ca.prepledger.model.Recipe;
 import ca.prepledger.service.ImportExportService;
+import ca.prepledger.service.RecipeAPIService;
 import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.UserSession;
 import ca.prepledger.util.PrepLedgerDialog;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -50,6 +49,7 @@ public class ImportExportController {
 
 	private RecipeService recipeService;
 	private ImportExportService impExpService = new ImportExportService();
+	private RecipeAPIService recipeApiService;
 	private UserSession userSession;
 	private static final Logger logger = LoggerFactory.getLogger(ImportExportController.class);
 
@@ -208,14 +208,38 @@ public class ImportExportController {
 		}
 	}
 
-	private void attemptImportRecipes(Path path) 
-			throws FileNotFoundException, JsonMappingException,
-			JsonProcessingException, IOException {
-		List<Recipe> importedRecipes = new ArrayList<>();
-		String json = Files.readString(path);
-		importedRecipes = impExpService.importRecipes(json);
-		recipeService.addRecipes(importedRecipes);
-		PrepLedgerDialog.displayPostImportDialog(importedRecipes.size());
+	private void attemptImportRecipes(Path path)
+	        throws IOException {
+
+	    String json = Files.readString(path);
+	    List<Recipe> importedRecipes = impExpService.importRecipes(json);
+
+	    Task<List<Recipe>> task = new Task<>() {
+	        @Override
+	        protected List<Recipe> call() throws Exception {
+	            return recipeApiService.importRecipes(userSession, importedRecipes);
+	        }
+	    };
+
+	    task.setOnSucceeded(e -> {
+	        List<Recipe> savedRecipes = task.getValue();
+
+	        recipeService.addRecipes(savedRecipes);
+	        PrepLedgerDialog.displayPostImportDialog(savedRecipes.size());
+	    });
+
+	    task.setOnFailed(e -> {
+	        logger.error("Failed to import recipes to backend: {}", task.getException());
+
+	        PrepLedgerDialog.showRecipeBackendActionFailedDialog(
+	                task.getException().getMessage(),
+	                "import"
+	        );
+	    });
+
+	    Thread thread = new Thread(task, "recipe-import");
+	    thread.setDaemon(true);
+	    thread.start();
 	}
 	
 	public void setRecipeService(RecipeService recipeService) {
@@ -224,6 +248,10 @@ public class ImportExportController {
 	
 	public void setUserSession(UserSession userSession) {
 		this.userSession = userSession;
+	}
+	
+	public void setRecipeApiService(RecipeAPIService recipeApiService) {
+		this.recipeApiService = recipeApiService;
 	}
 
 }
