@@ -64,6 +64,7 @@ public class RecipeGridCardController implements Navigable {
 			tagLabel.setMaxWidth(80);
 			tagLabel.setTextOverrun(OverrunStyle.ELLIPSIS);
 			tagLabel.setTooltip(new Tooltip(tag));
+			tagLabel.getStyleClass().add("sub-header");
 			tagsList.add(tagLabel);
 		});
 
