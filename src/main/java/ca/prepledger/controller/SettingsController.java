@@ -38,6 +38,8 @@ public class SettingsController implements Configurable {
 	@FXML private Label versionLabel;
 	@FXML private Button logoutButton;
 	@FXML private Label savedConfirmation;
+	@FXML private CheckBox autoBackupCheckbox;
+	@FXML private Button autoBackupHelpButton;
 	
 	private SessionHandler sessionHandler;
 	private AppConfig appConfig;
@@ -101,7 +103,7 @@ public class SettingsController implements Configurable {
 
 	@FXML
 	private void onLanguageSelected() {
-
+		
 	}
 
 	@FXML
@@ -122,6 +124,16 @@ public class SettingsController implements Configurable {
 	@FXML
 	private void onTooltipsCheckboxClicked() {
 
+	}
+	
+	@FXML
+	private void onAutoBackupCheckboxClicked() {
+		
+	}
+	
+	@FXML
+	private void onAutoBackupHelpButtonClicked() {
+		PrepLedgerDialog.showAutoBackupHelpDialog();
 	}
 	
 	@FXML

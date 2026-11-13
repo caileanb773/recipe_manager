@@ -380,5 +380,25 @@ public class PrepLedgerDialog {
 				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
 		alert.showAndWait();
 	}
+	
+	public static void showAutoBackupHelpDialog() {
+		Alert alert = new Alert(
+				AlertType.INFORMATION
+				);
+		
+		alert.setHeaderText("Enable or disable auto-backup functionality");
+		
+		alert.setContentText("Auto-backup is a feature that saves all current "
+				+ "recipes to a time-stamped JSON file whenever PrepLedger is "
+				+ "closed.\n"
+				+ "By default, backups are stored in\n%APPDATA%/PrepLedger/Backup/\n"
+				+ "PrepLedger will maintain a total of 10 backups at a time, with "
+				+ "the oldest backup being aged out every time a backup is created.");
+
+		alert.getDialogPane().getStylesheets().addAll(
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
+		alert.showAndWait();
+	}
 
 }

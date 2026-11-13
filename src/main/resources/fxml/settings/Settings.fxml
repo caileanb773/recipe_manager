@@ -10,16 +10,18 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.prepledger.controller.SettingsController">
    <stylesheets>
-      <URL value="@../../css/theme.css" />
       <URL value="@../../css/application.css" />
       <URL value="@../../css/components/typography.css" />
       <URL value="@../../css/components/buttons.css" />
@@ -96,16 +98,31 @@
                </children>
             </VBox>
             <Separator />
-            <VBox>
+            <VBox spacing="10.0">
                <children>
                   <Label styleClass="header-3" text="Other">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </Label>
-                  <HBox>
+                  <HBox alignment="CENTER_LEFT">
                      <children>
                         <CheckBox fx:id="toolTipsCheckbox" mnemonicParsing="false" onAction="#onTooltipsCheckboxClicked" text="Show tooltips" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="50.0">
+                     <children>
+                        <CheckBox fx:id="autoBackupCheckbox" mnemonicParsing="false" onAction="#onAutoBackupCheckboxClicked" text="Auto Backup" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="autoBackupHelpButton" mnemonicParsing="false" onAction="#onAutoBackupHelpButtonClicked" styleClass="icon-only-button">
+                           <graphic>
+                              <ImageView pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/icon/scaled/other/help.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </HBox>
                </children>
