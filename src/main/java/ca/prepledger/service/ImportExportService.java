@@ -20,10 +20,12 @@ import ca.prepledger.model.Recipe;
  */
 public class ImportExportService {
 
-	private ObjectMapper objectMapper = new ObjectMapper();
+	private static ObjectMapper objectMapper = new ObjectMapper();
+	
+	
+	private ImportExportService() {}
 
-
-	public List<Recipe> importRecipes(String json)
+	public static List<Recipe> importRecipes(String json)
 			throws JsonMappingException, JsonProcessingException {
 		List<Recipe> recipes = objectMapper.readValue(
 				json,
@@ -33,7 +35,7 @@ public class ImportExportService {
 		return recipes;
 	}
 
-	public void exportRecipes(List<Recipe> recipes, String path) throws IOException {
+	public static void exportRecipes(List<Recipe> recipes, String path) throws IOException {
 		objectMapper.writerWithDefaultPrettyPrinter()
 	      .writeValue(new File(path), recipes);
 	}
