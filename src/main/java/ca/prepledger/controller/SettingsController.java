@@ -46,6 +46,15 @@ public class SettingsController implements Configurable {
 	private static final Logger logger = LoggerFactory.getLogger(SettingsController.class);
 
 
+	/**
+	 * Translates the current status of fields in the injected AppConfig to their
+	 * representation as JavaFX components; ComboBoxes, CheckBoxes, etc.
+	 * 
+	 * This ensures the user is viewing an accurate representation of what exists
+	 * in AppConfig.
+	 * 
+	 * @since v0.1.0
+	 */
 	public void setSettingsFieldsFromConfig() {
 		languageComboBox.setValue(capitalize(appConfig.getLanguage().toString()));
 		recipeViewComboBox.setValue(capitalize(appConfig.getRecipeDisplayType().toString()));
@@ -58,6 +67,7 @@ public class SettingsController implements Configurable {
 		}
 
 		toolTipsCheckbox.setSelected(appConfig.areTooltipsOn() ? true : false);
+		autoBackupCheckbox.setSelected(appConfig.isAutoBackupOn() ? true : false);
 	}
 
 	private String capitalize(String str) {
@@ -126,6 +136,11 @@ public class SettingsController implements Configurable {
 
 	}
 	
+	/**
+	 * Click handler for auto-backup feature.
+	 * 
+	 * @since v0.1.2
+	 */
 	@FXML
 	private void onAutoBackupCheckboxClicked() {
 		
@@ -172,6 +187,12 @@ public class SettingsController implements Configurable {
 		sessionHandler.onLogout();
 	}
 	
+	/**
+	 * Retrieve values from JavaFX components and set those values in the injected
+	 * config.
+	 * 
+	 * @since v0.1.0
+	 */
 	public void saveSettings() {
 		AppLanguage language = AppLanguage.valueOf(
 				languageComboBox.getValue().toUpperCase());
@@ -179,11 +200,13 @@ public class SettingsController implements Configurable {
 				recipeViewComboBox.getValue().toUpperCase());
 		Theme theme = getSelectedTheme();
 		boolean areToolTipsEnabled = toolTipsCheckbox.isSelected();
+		boolean isAutoBackupOn = autoBackupCheckbox.isSelected();
 		
 		appConfig.setLanguage(language);
 		appConfig.setRecipeDisplayType(recipeDisplayType);
 		appConfig.setTheme(theme);
 		appConfig.setTooltipsOn(areToolTipsEnabled);
+		appConfig.setAutoBackupOn(isAutoBackupOn);
 		
 		savedConfirmation.setText("Saved!");
 	}

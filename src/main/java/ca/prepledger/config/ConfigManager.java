@@ -37,6 +37,7 @@ public class ConfigManager {
 		RecipeDisplayType recipeDisplayType = RecipeDisplayType.GRID;
 		Theme theme = Theme.LIGHT;
 		boolean areToolTipsOn = true;
+		boolean isAutoBackupOn = true;
 		boolean rememberMe = false;
 		String email = "";
 
@@ -48,6 +49,7 @@ public class ConfigManager {
 					recipeDisplayType,
 					theme,
 					areToolTipsOn,
+					isAutoBackupOn,
 					rememberMe,
 					email
 					);
@@ -123,6 +125,9 @@ public class ConfigManager {
 				case "aretooltipson":
 					areToolTipsOn = Boolean.parseBoolean(value);
 					break;
+				case "isautobackupon":
+					isAutoBackupOn = Boolean.parseBoolean(value);
+					break;
 				case "rememberme":
 					rememberMe = Boolean.parseBoolean(value);
 					break;
@@ -147,6 +152,7 @@ public class ConfigManager {
 				recipeDisplayType,
 				theme,
 				areToolTipsOn,
+				isAutoBackupOn,
 				rememberMe,
 				email);
 	}
@@ -187,6 +193,8 @@ public class ConfigManager {
 			writer.write("theme=" + config.getTheme().toString());
 			writer.newLine();
 			writer.write("aretooltipson=" + String.valueOf(config.areTooltipsOn()));
+			writer.newLine();
+			writer.write("isautobackupon=" + String.valueOf(config.isAutoBackupOn()));
 			writer.newLine();
 			writer.write("rememberme=" + String.valueOf(config.isRememberingMe()));
 			writer.newLine();

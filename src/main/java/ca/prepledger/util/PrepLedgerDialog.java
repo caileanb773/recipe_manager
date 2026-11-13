@@ -391,7 +391,7 @@ public class PrepLedgerDialog {
 		alert.setContentText("Auto-backup is a feature that saves all current "
 				+ "recipes to a time-stamped JSON file whenever PrepLedger is "
 				+ "closed.\n"
-				+ "By default, backups are stored in\n%APPDATA%/PrepLedger/Backup/\n"
+				+ "By default, backups are stored in\n%APPDATA%/Local/PrepLedger/Backup/\n"
 				+ "PrepLedger will maintain a total of 10 backups at a time, with "
 				+ "the oldest backup being aged out every time a backup is created.");
 

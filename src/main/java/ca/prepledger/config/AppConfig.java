@@ -16,6 +16,7 @@ public class AppConfig {
 	private RecipeDisplayType recipeDisplayType;
 	private Theme theme;
 	private boolean areTooltipsOn;
+	private boolean isAutoBackupOn;
 	private boolean rememberMe;
 	private String email;
 	private Consumer<Theme> themeChangeListener;
@@ -33,6 +34,7 @@ public class AppConfig {
 		this.recipeDisplayType = RecipeDisplayType.GRID;
 		this.theme = Theme.LIGHT;
 		this.areTooltipsOn = true;
+		this.isAutoBackupOn = true;
 		this.rememberMe = false;
 		this.email = "";
 	}
@@ -48,12 +50,14 @@ public class AppConfig {
 			RecipeDisplayType recipeDisplayType,
 			Theme theme,
 			boolean areTooltipsOn,
+			boolean isAutoBackupOn,
 			boolean rememberMe,
 			String email) {
 		this.language = language;
 		this.recipeDisplayType = recipeDisplayType;
 		this.theme = theme;
 		this.areTooltipsOn = areTooltipsOn;
+		this.isAutoBackupOn = isAutoBackupOn;
 		this.rememberMe = rememberMe;
 		this.email = email;
 	}
@@ -97,6 +101,24 @@ public class AppConfig {
 
 	public void setTooltipsOn(boolean areTooltipsOn) {
 		this.areTooltipsOn = areTooltipsOn;
+	}
+	
+	/**
+	 * Getter for isAutoBackupOn.
+	 * 
+	 * @since v0.1.2
+	 */
+	public boolean isAutoBackupOn() {
+		return isAutoBackupOn;
+	}
+	
+	/**
+	 * Setter for isAutoBackupOn.
+	 * 
+	 * @since v0.1.2
+	 */
+	public void setAutoBackupOn(boolean isAutoBackupOn) {
+		this.isAutoBackupOn = isAutoBackupOn;
 	}
 	
 	public boolean isRememberingMe() {
