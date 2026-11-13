@@ -1,8 +1,15 @@
 package ca.prepledger.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ca.prepledger.constant.Constants;
 import ca.prepledger.model.Recipe;
 
 /**
@@ -24,6 +31,11 @@ public class AutoBackupService {
 	private static final String EXTENSION = "JSON";
 	private static LocalDateTime timestamp = LocalDateTime.now();
 	private static String fileName = PREFIX + "_" + timestamp + "." + EXTENSION;
+	private static final String BACKUP_DIR = "\\Backup\\";
+	private static final String BACKUP_PATH = 
+			Constants.LOCAL_APP_DATA + Constants.PREPLEDGER_DIR + BACKUP_DIR;
+	private static final Logger logger = LoggerFactory.getLogger(AutoBackupService.class);
+
 	
 	/**
 	 * Private no-argument constructor overrides JVM default constructor; all
@@ -41,18 +53,14 @@ public class AutoBackupService {
 	 * @since v0.1.2
 	 */
 	public static void createBackup(List<Recipe> recipes) {
-		if (!isPathValid()) {
-			createBackupPath();
+		Path backupPath = Path.of(BACKUP_PATH);
+		
+		if (!isPathValid(backupPath)) {
+			createBackupPath(backupPath);
 		}
 		
 		// Call ImportExportService.Export(recipes)
 		
-		// Count number of backup files in directory
-		int numBackups = 0;
-		
-		if (numBackups > MAXIMUM_BACKUPS) {
-			ageOutOldestBackup();
-		}
 	}
 	
 	/**
@@ -61,8 +69,12 @@ public class AutoBackupService {
 	 * 
 	 * @since v0.1.2
 	 */
-	private static boolean isPathValid() {
-		return false;
+	private static boolean isPathValid(Path path) {
+		if (!Files.exists(path)) {
+			return false;			
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -72,8 +84,13 @@ public class AutoBackupService {
 	 * 
 	 * @since v0.1.2
 	 */
-	private static void createBackupPath() {
-		
+	private static void createBackupPath(Path path) {
+		try {
+			Files.createDirectories(path);			
+		} catch (IOException e) {
+			logger.warn("createBackupPath(): "
+					+ "IOException caught during Files.createDirectories().");
+		}
 	}
 	
 	/**
@@ -88,7 +105,21 @@ public class AutoBackupService {
 	 * @since v0.1.2
 	 */
 	private static void ageOutOldestBackup() {
+		int numBackups = 0;
+
+		// Get a list of files
 		
+		// Count the files
+		
+		// Count number of backup files in directory
+		
+		if (numBackups > MAXIMUM_BACKUPS) {
+			
+		} else {
+			return;
+		}
+		
+		// Delete oldest backup
 	}
 	
 }
