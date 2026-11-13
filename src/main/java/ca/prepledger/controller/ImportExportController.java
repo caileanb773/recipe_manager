@@ -48,7 +48,6 @@ public class ImportExportController {
 	@FXML private RadioButton selectedRecipesRadioBtn;
 
 	private RecipeService recipeService;
-	private ImportExportService impExpService = new ImportExportService();
 	private RecipeAPIService recipeApiService;
 	private UserSession userSession;
 	private static final Logger logger = LoggerFactory.getLogger(ImportExportController.class);
@@ -202,7 +201,7 @@ public class ImportExportController {
 	private void attemptExportRecipes(List<Recipe> recipes, String path)
 			throws JsonProcessingException {
 		try {
-			impExpService.exportRecipes(recipes, path);
+			ImportExportService.exportRecipes(recipes, path);
 		} catch (IOException e) {
 			logger.error("attemptExportRecipes(): IOException encountered: {}", e);
 		}
@@ -212,7 +211,7 @@ public class ImportExportController {
 	        throws IOException {
 
 	    String json = Files.readString(path);
-	    List<Recipe> importedRecipes = impExpService.importRecipes(json);
+	    List<Recipe> importedRecipes = ImportExportService.importRecipes(json);
 
 	    Task<List<Recipe>> task = new Task<>() {
 	        @Override
