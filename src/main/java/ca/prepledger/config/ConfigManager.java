@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.prepledger.constant.Constants;
+
 /**
  * Contents: Manages loading and saving of Application Configuration. By default,
  * config files will be saved in %APPDATA%/PrepLedger/settings.cfg.
@@ -21,12 +23,8 @@ import org.slf4j.LoggerFactory;
  */
 public class ConfigManager {
 
-	// TODO this is Windows only, will need to be factored into a helper method
-	// for proper cross-platform support
-	private final String APP_DATA = System.getenv("LOCALAPPDATA");
-	private final String PREPLEDGER_DIR = "\\PrepLedger\\";
 	private final String CONFIG_FILE_NAME = "settings.cfg";
-	private final String CONFIG_DIR = APP_DATA + PREPLEDGER_DIR;
+	private final String CONFIG_DIR = Constants.LOCAL_APP_DATA + Constants.PREPLEDGER_DIR;
 	private final String WARNING = "// do not modify this file unless you know what you are doing";
 	private static final Logger logger = LoggerFactory.getLogger(ConfigManager.class);
 
