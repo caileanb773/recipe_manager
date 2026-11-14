@@ -324,12 +324,16 @@ public class PrepLedgerDialog {
 	    );
 
 	    dialog.getDialogPane().getStylesheets().addAll(
+	    		PrepLedgerDialog.class.getResource("/css/application.css").toExternalForm(),
 	    		PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
-	    		PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
-	    dialog.getDialogPane().getButtonTypes().addAll(
-	            exportButton,
-	            cancelButton
-	    );
+	    		PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm(),
+	    		PrepLedgerDialog.class.getResource("/css/components/checkbox.css").toExternalForm());
+	   	    
+	    dialog.getDialogPane().getButtonTypes().addAll(exportButton, cancelButton);
+
+	    dialog.getDialogPane()
+	            .lookupButton(cancelButton)
+	            .getStyleClass().add("danger-button");
 
 	    VBox recipeList = new VBox(8);
 
@@ -337,11 +341,13 @@ public class PrepLedgerDialog {
 
 	    for (Recipe recipe : recipes) {
 	        CheckBox checkBox = new CheckBox(recipe.getTitle());
+	        
 	        checkBoxes.add(checkBox);
 	        recipeList.getChildren().add(checkBox);
 	    }
 
 	    ScrollPane scrollPane = new ScrollPane(recipeList);
+	    scrollPane.getStyleClass().add("recipe-selection");
 	    scrollPane.setFitToWidth(true);
 	    scrollPane.setPrefHeight(400);
 	    scrollPane.setPrefWidth(350);

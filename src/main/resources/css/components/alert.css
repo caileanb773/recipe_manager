@@ -60,3 +60,18 @@
 .dialog-pane .button.default-button:hover {
     -fx-background-color: -pl-neutral-hover;
 }
+
+.recipe-selection,
+.recipe-selection > .viewport,
+.recipe-selection .content {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.recipe-selection {
+    -fx-padding: 0;
+}
+
+.recipe-selection .check-box {
+    -fx-text-fill: white;
+}
