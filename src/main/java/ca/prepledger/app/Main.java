@@ -1,6 +1,7 @@
 package ca.prepledger.app;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,7 +108,11 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 		// Perform backup
 		if (appCfg.isAutoBackupOn()) {
-			AutoBackupService.createBackup(RecipeService.getAllRecipes());
+			List<Recipe> recipes = RecipeService.getAllRecipes();
+			
+			if (recipes.size() > 0) {
+				AutoBackupService.createBackup(recipes);				
+			}
 		}
 	}
 
