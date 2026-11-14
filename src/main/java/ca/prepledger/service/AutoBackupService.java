@@ -1,12 +1,15 @@
 package ca.prepledger.service;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,13 +32,18 @@ import ca.prepledger.model.Recipe;
 public class AutoBackupService {
 	
 	private static final int MAXIMUM_BACKUPS = 10;
-	private static final String PREFIX = "backup";	//Ex: backup_2026-11-13T16:43:00.JSON
-	private static final String EXTENSION = "JSON";
-	private static LocalDateTime timestamp = LocalDateTime.now();
-	private static String fileName = PREFIX + "_" + timestamp + "." + EXTENSION;
-	private static final String BACKUP_DIR = "\\Backup\\";
-	private static final String BACKUP_PATH = 
-			Constants.LOCAL_APP_DATA + Constants.PREPLEDGER_DIR + BACKUP_DIR;
+	private static final String PREFIX = "backup_";	//Ex: backup_2026-11-13T16:43:00.JSON
+	private static final String EXTENSION = ".json";
+	
+	private static final DateTimeFormatter TIMESTAMP_FORMAT =
+			DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss-SSS");
+	private static final Pattern BACKUP_NAME = Pattern.compile(
+			"backup_\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}-\\d{3}\\.json",
+			Pattern.CASE_INSENSITIVE);
+	
+	private static final Path BACKUP_DIR =
+			Path.of(Constants.LOCAL_APP_DATA + Constants.PREPLEDGER_DIR).resolve("Backup");
+
 	private static final Logger logger = LoggerFactory.getLogger(AutoBackupService.class);
 
 	
@@ -57,121 +65,53 @@ public class AutoBackupService {
 	 * @since v0.1.2
 	 */
 	public static void createBackup(List<Recipe> recipes) {
-		Path backupPath = Path.of(BACKUP_PATH);
-		
-		if (!isPathValid(backupPath)) {
-			createBackupPath(backupPath);
-		}
-		
-		// Create the backup and age out the oldest backup if necessary
 		try {
-			timestamp = LocalDateTime.now();
-			ImportExportService.exportRecipes(recipes, BACKUP_PATH + fileName);
-			countBackups(backupPath);
-		} catch (IOException e) {
-			logger.error("createBackup(): IOException caught while exporting: {}", e);
-		}
-		
-	}
-	
-	/**
-	 * Validates the path that backup files are written to. If the path doesn't
-	 * exist, then the helper method 'createBackupPath()' is called.
-	 * 
-	 * @param path - The path under which to look.
-	 * @return True if the path exists, false otherwise.
-	 * @since v0.1.2
-	 */
-	private static boolean isPathValid(Path path) {
-		return Files.exists(path);
-	}
-	
-	/**
-	 * Creates the default path that backup files are written to. On Windows:
-	 * 
-	 * %APPDATA%/Local/PrepLedger/Backup
-	 * 
-	 * @param path - The path under which to create a backup.
-	 * @since v0.1.2
-	 */
-	private static void createBackupPath(Path path) {
-		try {
-			Files.createDirectories(path);			
-		} catch (IOException e) {
-			logger.warn("createBackupPath(): "
-					+ "IOException caught during Files.createDirectories().");
-		}
-	}
-	
-	/**
-	 * Counts how many backup files exist in the backup directory. If there are 
-	 * > MAXIMUM_BACKUPS backup files, the service will determine which is the 
-	 * oldest and remove it.
-	 * 
- 	 * @param path - The path under which to look.
-	 * @since v0.1.2
-	 */
-	private static void countBackups(Path path) throws IOException {
-		int numBackups = 0;
-		List<Path> filePaths;
+			Files.createDirectories(BACKUP_DIR); // no-op if it already exists
 
-		// Get a list of files
-		filePaths = Files.list(path).toList();
-		
-		// Count the files
-		for (Path p : filePaths) {
-			if (p.toString().endsWith(".json") || p.toString().endsWith(".JSON")) {
-				numBackups++;
-			}
-		}
-				
-		// Delete oldest backup if necessary
-		if (numBackups > MAXIMUM_BACKUPS) {
-			Path oldestPath = findOldestBackup(path);
-			deleteOldestBackup(oldestPath);
+			String fileName = PREFIX + LocalDateTime.now().format(TIMESTAMP_FORMAT) + EXTENSION;
+			ImportExportService.exportRecipes(recipes, BACKUP_DIR.resolve(fileName).toString());
+
+			pruneOldBackups();
+		} catch (IOException | RuntimeException e) {
+			logger.error("createBackup(): backup failed", e);
 		}
 	}
 	
 	/**
-	 * Finds the backup with the oldest marked time-stamp.
-	 * 
-	 * @param path - The path under which to look.
-	 * @return The path of the oldest backup.
+	 * Deletes the oldest backups until at most MAXIMUM_BACKUPS remain.
+	 *
 	 * @since v0.1.2
 	 */
-	private static Path findOldestBackup(Path path) throws IOException {
-		Path oldest = null;
-		LocalDateTime lastComparedDateTime = null;
-		
-		List<Path> filePaths = Files.list(path).filter(Files::isRegularFile).toList();
-		
-		for (Path p : filePaths) {
-			String pathString = p.toString();
-			String dateString = pathString.substring(pathString.indexOf('_') + 1, '.');
-			LocalDateTime dateTime = LocalDateTime.parse(dateString);
-			
-			// If this is the first comparison, or if p is older than oldest
-			if (oldest == null 
-					|| lastComparedDateTime == null 
-					|| dateTime.isBefore(lastComparedDateTime)) {
-				oldest = p;
-				lastComparedDateTime = dateTime;
-			}
+	private static void pruneOldBackups() throws IOException {
+		List<Path> backups = listBackups();
+		backups.sort(Comparator.comparing((Path p) -> p.getFileName().toString().toLowerCase()));
+
+		int excess = backups.size() - MAXIMUM_BACKUPS;
+		for (int i = 0; i < excess; i++) {
+			Path oldest = backups.get(i);
+			Files.deleteIfExists(oldest);
+			logger.info("pruneOldBackups(): deleted old backup {}", oldest.getFileName());
 		}
-		
-		return oldest;
 	}
 	
 	/**
-	 * Deletes the oldest backup at the provided path.
-	 * 
-	 * @param path - The path of the oldest backup.
+	 * Lists the files in the backup directory whose names match the backup
+	 * naming pattern. Other files in the directory are ignored and never deleted.
+	 *
+	 * @return The backup files, in no particular order.
 	 * @since v0.1.2
 	 */
-	private static void deleteOldestBackup(Path path) throws IOException {
-		if (Files.exists(path)) {
-			Files.delete(path);
+	private static List<Path> listBackups() throws IOException {
+		List<Path> backups = new ArrayList<>();
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(BACKUP_DIR)) {
+			for (Path p : stream) {
+				if (Files.isRegularFile(p)
+						&& BACKUP_NAME.matcher(p.getFileName().toString()).matches()) {
+					backups.add(p);
+				}
+			}
 		}
+		return backups;
 	}
 	
 }
