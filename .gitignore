@@ -9,3 +9,4 @@ MMLock
 /target/
 /dist/
 recipes.json
+.classpath
