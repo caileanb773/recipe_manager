@@ -90,21 +90,24 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		finalizeAppShell(primaryStage);
 	}
 
+	/**
+	 * Perform all functions that need to be performed on shutdown.
+	 * 
+	 * @since v0.1.1
+	 */
 	@Override
 	public void stop() {
+		
+		// Save configuration settings to file
 		try {
-			
-			// Save configuration settings to file
-			cfgManager.save(appCfg);
-			
-			// Perform backup
-			if (appCfg.isAutoBackupOn()) {
-				AutoBackupService.createBackup(RecipeService.getAllRecipes());
-			}
-			
+			cfgManager.save(appCfg);			
 		} catch (IOException e) {
-			logger.warn("IOException caught during ConfigManager.save() during Main.stop().");
-			e.printStackTrace();
+			logger.error("stop(): Could not save configuration to settings file.");
+		}		
+
+		// Perform backup
+		if (appCfg.isAutoBackupOn()) {
+			AutoBackupService.createBackup(RecipeService.getAllRecipes());
 		}
 	}
 
