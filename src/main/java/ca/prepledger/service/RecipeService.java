@@ -17,7 +17,7 @@ import ca.prepledger.model.Recipe;
  */
 public class RecipeService {
 	
-	private ArrayList<Recipe> recipeList;
+	private static ArrayList<Recipe> recipeList;
 	private List<RecipeChangeListener> listeners = new ArrayList<>();
 
 	private static final Logger logger = LoggerFactory.getLogger(RecipeService.class);
@@ -59,7 +59,7 @@ public class RecipeService {
 		notifyRecipesChanged();
 	}
 	
-	public ArrayList<Recipe> getAllRecipes() {
+	public static ArrayList<Recipe> getAllRecipes() {
 		return recipeList;
 	}
 	

@@ -15,6 +15,8 @@ import ca.prepledger.model.ConnectionStatus;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
+import ca.prepledger.service.AutoBackupService;
+import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.SessionHandler;
 import ca.prepledger.session.SessionManager;
 import ca.prepledger.session.UserSession;
@@ -91,7 +93,15 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 	@Override
 	public void stop() {
 		try {
+			
+			// Save configuration settings to file
 			cfgManager.save(appCfg);
+			
+			// Perform backup
+			if (appCfg.isAutoBackupOn()) {
+				AutoBackupService.createBackup(RecipeService.getAllRecipes());
+			}
+			
 		} catch (IOException e) {
 			logger.warn("IOException caught during ConfigManager.save() during Main.stop().");
 			e.printStackTrace();
