@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import ca.prepledger.model.Recipe;
  */
 public class AutoBackupService {
 	
-	private static final int MAXIMUM_BACKUPS = 10;
+	static final int MAXIMUM_BACKUPS = 10;
 	private static final String PREFIX = "backup_";	//Ex: backup_2026-11-13T16:43:00.JSON
 	private static final String EXTENSION = ".json";
 	
@@ -65,16 +66,43 @@ public class AutoBackupService {
 	 * @since v0.1.2
 	 */
 	public static void createBackup(List<Recipe> recipes) {
+		createBackup(recipes, BACKUP_DIR, Clock.systemDefaultZone());
+	}
+	
+	/**
+	 * Package-private overload so tests can supply a temporary directory and a
+	 * fixed clock instead of writing to the real backup folder.
+	 *
+	 * @param recipes - The list of recipes to export as a backup.
+	 * @param backupDir - The directory to write the backup to.
+	 * @param clock - The clock used to time-stamp the backup.
+	 * @since v0.1.2
+	 */
+	static void createBackup(List<Recipe> recipes, Path backupDir, Clock clock) {
+		String fileName = "";
+		
 		try {
-			Files.createDirectories(BACKUP_DIR); // no-op if it already exists
+			Files.createDirectories(backupDir); // no-op if it already exists
 
-			String fileName = PREFIX + LocalDateTime.now().format(TIMESTAMP_FORMAT) + EXTENSION;
-			ImportExportService.exportRecipes(recipes, BACKUP_DIR.resolve(fileName).toString());
+			fileName = backupFileName(LocalDateTime.now(clock));
+			ImportExportService.exportRecipes(recipes, backupDir.resolve(fileName).toString());
 
-			pruneOldBackups();
+			pruneOldBackups(backupDir);
 		} catch (IOException | RuntimeException e) {
-			logger.error("createBackup(): backup failed", e);
+			logger.error("createBackup(): backup failed for {}", fileName);
 		}
+	}
+
+	/**
+	 * Builds the backup file name for a given time,
+	 * e.g. backup_2026-11-13T16-43-00-123.json
+	 *
+	 * @param time - The time to stamp the backup with.
+	 * @return The backup file name.
+	 * @since v0.1.2
+	 */
+	static String backupFileName(LocalDateTime time) {
+		return PREFIX + time.format(TIMESTAMP_FORMAT) + EXTENSION;
 	}
 	
 	/**
@@ -82,11 +110,12 @@ public class AutoBackupService {
 	 *
 	 * @since v0.1.2
 	 */
-	private static void pruneOldBackups() throws IOException {
-		List<Path> backups = listBackups();
+	static void pruneOldBackups(Path backupDir) throws IOException {
+		List<Path> backups = listBackups(backupDir);
 		backups.sort(Comparator.comparing((Path p) -> p.getFileName().toString().toLowerCase()));
 
 		int excess = backups.size() - MAXIMUM_BACKUPS;
+		
 		for (int i = 0; i < excess; i++) {
 			Path oldest = backups.get(i);
 			Files.deleteIfExists(oldest);
@@ -101,9 +130,9 @@ public class AutoBackupService {
 	 * @return The backup files, in no particular order.
 	 * @since v0.1.2
 	 */
-	private static List<Path> listBackups() throws IOException {
+	static List<Path> listBackups(Path backupDir) throws IOException {
 		List<Path> backups = new ArrayList<>();
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(BACKUP_DIR)) {
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(backupDir)) {
 			for (Path p : stream) {
 				if (Files.isRegularFile(p)
 						&& BACKUP_NAME.matcher(p.getFileName().toString()).matches()) {
@@ -111,6 +140,7 @@ public class AutoBackupService {
 				}
 			}
 		}
+		
 		return backups;
 	}
 	
