@@ -84,7 +84,6 @@ jpackage ^
     --main-class ca.prepledger.app.Main ^
     --module-path "%INPUT_DIR%\lib" ^
 	--add-modules "%DETECTED_MODULES%" ^
-	--win-console ^
     --dest "%OUTPUT_DIR%"
 
 if errorlevel 1 (
@@ -107,6 +106,8 @@ jpackage ^
     --win-shortcut ^
     --win-menu ^
     --win-dir-chooser ^
+	--vendor "Cailean Bernard" ^
+	--icon "%PROJECT_DIR%\src\main\resources\img\icon\icon-256.ico" ^
     --dest "%OUTPUT_DIR%"
 
 if errorlevel 1 (
