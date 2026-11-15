@@ -12,9 +12,29 @@ At its core, PrepLedger is a simple recipe manager that allows multiple users to
 
 ## Installation (Win 10, 11)
 
-PrepLedger will be available via a `.exe` installer. Future versions will support MacOS and Linux.
+PrepLedger is available via a `.exe` installer. Future versions will support MacOS and Linux.
 
-The `.exe` installer will install PrepLedger along with all dependencies to a default directory and configure required environment variables.
+1. Download the PrepLedger installer [here](https://prepledger.ca/downloads.html).
+
+1. Run the installer.
+
+1. If prompted for anything, click **yes**.
+
+1. Select your installation directory. By default, it is under C:/Program Files.
+
+1. By default, a shortcut is placed on the Desktop. Use to launch PrepLedger.
+
+## Uninstallation
+
+### Windows
+
+1. Press the Windows key and type "Add or Remove Programs" and click the link that appears.
+
+1. In the *Search Apps* bar, type "PrepLedger".
+
+1. Click the 3 dots under the "PrepLedger" result, and click **Uninstall**.
+
+1. Accept any prompts.
 
 ## Getting Started
 
