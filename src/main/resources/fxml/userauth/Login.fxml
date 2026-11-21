@@ -114,7 +114,7 @@
                   <Insets left="30.0" right="30.0" />
                </padding>
             </HBox>
-            <Button fx:id="signInGoogle" mnemonicParsing="false" onAction="#onSignInGoogleBtnClicked" prefWidth="500.0" styleClass="secondary-button" text="Continue with Google" />
+            <Button fx:id="startInOfflineMode" mnemonicParsing="false" onAction="#onStartInOfflineModeBtnClicked" prefWidth="500.0" styleClass="secondary-button" text="Start in Offline Mode" />
          </children>
          <BorderPane.margin>
             <Insets left="100.0" right="100.0" />

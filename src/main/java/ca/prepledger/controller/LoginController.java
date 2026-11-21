@@ -42,7 +42,7 @@ public class LoginController implements Navigable, Configurable {
 	@FXML private CheckBox rememberMe;
 	@FXML private Button forgotPassword;
 	@FXML private Button signIn;
-	@FXML private Button signInGoogle;
+	@FXML private Button startInOfflineMode;
 	@FXML private Button createAccount;
 
 	private AuthService auth;
@@ -181,8 +181,8 @@ public class LoginController implements Navigable, Configurable {
 	}
 
 	@FXML
-	private void onSignInGoogleBtnClicked() {
-		PrepLedgerDialog.showGenericInfo("This feature is coming in a future release.");
+	private void onStartInOfflineModeBtnClicked() {
+		sessionHandler.onStartOfflineMode();
 	}
 
 	@FXML
