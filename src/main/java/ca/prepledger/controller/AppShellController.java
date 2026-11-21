@@ -41,7 +41,6 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	
 	private ContextArea currentContextArea;
 	private RecipeService recipeService;
-	private RecipeAPIService recipeApiService;
 	private RecipeListController recipeListController;
 	private SidebarController sidebarController;
 	private Parent recipeList;
@@ -70,8 +69,9 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	 * @since v0.1.3
 	 */
 	public void initializeRecipeService() {
-		recipeService = new RecipeService(connectionManager);
-		recipeApiService = new RecipeAPIService();
+		recipeService = new RecipeService(
+				connectionManager,
+				new RecipeAPIService());
 		recipeService.registerRecipeChangeListener(this);
 	}
 	
@@ -224,7 +224,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			recipeListController.initializeSearchField();
 			recipeListController.setRecipeService(recipeService);
 			recipeListController.setSession(currentSession);			
-			recipeListController.setRecipeApiService(recipeApiService);
+//			recipeListController.setRecipeApiService(recipeService.getRecipeApiService());
 			
 			isRecipeListCached = true;
 		}
@@ -276,7 +276,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		// Dependency injections
 		controller.setRecipeService(recipeService);
 		controller.setUserSession(currentSession);
-		controller.setRecipeApiService(recipeApiService);
+//		controller.setRecipeApiService(recipeApiService);
 		
 		appShell.setCenter(importExport);
 		IconManager.applyThemeToTree(importExport, appConfig.getTheme(), null);
@@ -346,7 +346,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		controller.setRecipeService(recipeService);
 		controller.setAppConfig(appConfig);
 		controller.setCurrentSession(currentSession);
-		controller.setRecipeApiService(recipeApiService);
+//		controller.setRecipeApiService(recipeApiService);
 	}
 	
 	private void showViewRecipe(Recipe recipe) throws IOException {
