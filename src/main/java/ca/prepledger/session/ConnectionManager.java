@@ -3,6 +3,16 @@ package ca.prepledger.session;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+/**
+ * Manages details about the type of session the user is using the application 
+ * in as well as the connection status of the application. A user could, for 
+ * example, choose to use the application in offline mode. They cannot, however, 
+ * choose if the application, for any reason, cannot reach the back-end. For 
+ * this reason, the two ideas are distinct.
+ * 
+ * @author Cailean Bernard
+ * @since v0.1.3.
+ */
 public class ConnectionManager {
 	
 	private final SessionMode sessionMode;
