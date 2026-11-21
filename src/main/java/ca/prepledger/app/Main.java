@@ -12,12 +12,12 @@ import ca.prepledger.config.ConfigManager;
 import ca.prepledger.controller.AppShellController;
 import ca.prepledger.controller.LoginController;
 import ca.prepledger.controller.RegisterController;
-import ca.prepledger.model.ConnectionStatus;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.AutoBackupService;
 import ca.prepledger.service.RecipeService;
+import ca.prepledger.session.ConnectionStatus;
 import ca.prepledger.session.SessionHandler;
 import ca.prepledger.session.SessionManager;
 import ca.prepledger.session.UserSession;
@@ -48,7 +48,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 	private SessionManager sessionManager;
 	private UserSession currentSession;
 	private Parent root;
-	private ObjectProperty<ConnectionStatus> connectionStatus =
+	private final ObjectProperty<ConnectionStatus> connectionStatus =
 			new SimpleObjectProperty<>(ConnectionStatus.DISCONNECTED);
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
@@ -259,6 +259,35 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		} catch (IOException e) {
 			logger.error("onLogout(): Caught IOException while trying to navigate"
 					+ " to LOGIN: {}", e);
+		}
+	}
+	
+	/**
+	 * Starts application in offline mode. Invalidates any session tokens that
+	 * may have been generated previously and navigates to the main app screen
+	 * in offline mode.
+	 * 
+	 * @since v0.1.3
+	 */
+	@Override
+	public void onStartOfflineMode() {
+		// Delete stale JWT
+		try {
+			sessionManager.clear();
+		}  catch (IOException e) {
+			logger.error("onStartOfflineMode(): Couldn't clear session.", e);
+		}
+		
+		// Set conn status to disconnected & nullify current session
+		connectionStatus.set(ConnectionStatus.DISCONNECTED);
+		currentSession = null;
+		
+		// this method will check connectionStatus
+		try {
+			startMainApplication();
+		} catch (IOException e) {
+			logger.error("onStartOfflineMode(): Failed to open application after "
+					+ "starting in offline mode.", e);
 		}
 	}
 	
