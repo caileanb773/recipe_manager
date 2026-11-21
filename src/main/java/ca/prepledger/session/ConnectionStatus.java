@@ -1,4 +1,4 @@
-package ca.prepledger.model;
+package ca.prepledger.session;
 
 /**
  * Enumeration for the connection status of the application. Application either
