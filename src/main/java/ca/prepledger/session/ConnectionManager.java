@@ -11,7 +11,7 @@ import javafx.beans.property.SimpleObjectProperty;
  * this reason, the two ideas are distinct.
  * 
  * @author Cailean Bernard
- * @since v0.1.3.
+ * @since v0.1.3
  */
 public class ConnectionManager {
 	

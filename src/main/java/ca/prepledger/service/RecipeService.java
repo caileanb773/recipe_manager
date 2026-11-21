@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.prepledger.model.Recipe;
+import ca.prepledger.session.ConnectionManager;
 
 /**
  * Contents: The recipe service is the interface for the application and how it 
@@ -17,12 +18,15 @@ import ca.prepledger.model.Recipe;
  */
 public class RecipeService {
 	
+	// TODO revisit whether this needs to be static still
 	private static ArrayList<Recipe> recipeList;
 	private List<RecipeChangeListener> listeners = new ArrayList<>();
-
+	private ConnectionManager connectionManager;
+	
 	private static final Logger logger = LoggerFactory.getLogger(RecipeService.class);
 	
-	public RecipeService() {
+	public RecipeService(ConnectionManager connectionManager) {
+		this.connectionManager = connectionManager;
 		recipeList = new ArrayList<>();
 	}
 

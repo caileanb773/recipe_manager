@@ -15,6 +15,7 @@ import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.RecipeAPIService;
 import ca.prepledger.service.RecipeChangeListener;
 import ca.prepledger.service.RecipeService;
+import ca.prepledger.session.ConnectionManager;
 import ca.prepledger.session.ConnectionStatus;
 import ca.prepledger.session.SessionHandler;
 import ca.prepledger.session.UserSession;
@@ -49,7 +50,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	private boolean shouldRefreshRecipes;
 	private UserSession currentSession;
 	private SessionHandler sessionHandler;
-	private ObjectProperty<ConnectionStatus> connectionStatusProperty;
+	private ConnectionManager connectionManager;
 	private static final Logger logger = LoggerFactory.getLogger(AppShellController.class);
 
 
@@ -58,7 +59,18 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		isRecipeListCached = false;
 		shouldRefreshRecipes = true;
 		currentContextArea = ContextArea.RECIPES;
-		recipeService = new RecipeService();
+	}
+	
+	/**
+	 * Initialize recipe service and its dependencies. This has to be deferred
+	 * until after initialize() since at that point in the call stack, we have
+	 * not yet injected ConnectionManager as a dependency and RecipeService 
+	 * needs a reference to that class.
+	 * 
+	 * @since v0.1.3
+	 */
+	public void initializeRecipeService() {
+		recipeService = new RecipeService(connectionManager);
 		recipeApiService = new RecipeAPIService();
 		recipeService.registerRecipeChangeListener(this);
 	}
@@ -77,7 +89,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			Parent sidebar = loader.load();
 
 			sidebarController = loader.getController();
-			sidebarController.setConnectionStatus(connectionStatusProperty);
+			sidebarController.setConnectionStatus(connectionManager.connectionStatusProperty());
 			sidebarController.setNavigationHandler(this);
 			sidebarController.cacheButtons();
 			sidebarController.setUserProfileDetails(currentSession);
@@ -493,9 +505,18 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		this.sessionHandler = sessionHandler;
 	}
 	
+	/**
+	 * DI setter for ConnectionManager.
+	 * 
+	 * @since v0.1.3
+	 */
+	public void setConnectionManager(ConnectionManager connectionManager) {
+		this.connectionManager = connectionManager;
+	}
+	
 	public void setConnectionStatus(
 	        ObjectProperty<ConnectionStatus> status) {
-	    this.connectionStatusProperty = status;
+	    this.connectionManager.connectionStatusProperty().set(status.get());
 	}
 		
 }

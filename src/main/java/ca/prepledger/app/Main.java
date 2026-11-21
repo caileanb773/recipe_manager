@@ -140,13 +140,12 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 		primaryStage.setScene(scene);
 	}
-
-	private void injectAppShellAppConfig() {
+	
+	private void injectAppShellDependencies() {
 		appShellController.setAppConfig(appCfg);
-	}
-
-	private void injectSessionHandler() {
 		appShellController.setSessionHandler(this);
+		appShellController.setConnectionManager(connectionManager);
+		appShellController.initializeThemeDependencies();
 	}
 
 	private void showLoginScreen(Stage primaryStage) throws IOException {
@@ -293,9 +292,8 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 	public void startMainApplication() throws IOException {
 		loadAppShellController();
-		injectAppShellAppConfig();
-		injectSessionHandler();
-		appShellController.initializeThemeDependencies();
+		injectAppShellDependencies();
+		appShellController.initializeRecipeService();
 		appShellController.setConnectionStatus(connectionManager.connectionStatusProperty());
 		displayAppShellController(primaryStage);
 		appShellController.applyTheme(appCfg.getTheme());
