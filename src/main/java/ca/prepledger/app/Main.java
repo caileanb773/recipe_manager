@@ -17,13 +17,13 @@ import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.service.AutoBackupService;
 import ca.prepledger.service.RecipeService;
+import ca.prepledger.session.ConnectionManager;
 import ca.prepledger.session.ConnectionStatus;
 import ca.prepledger.session.SessionHandler;
 import ca.prepledger.session.SessionManager;
+import ca.prepledger.session.SessionMode;
 import ca.prepledger.session.UserSession;
 import javafx.application.Application;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -48,8 +48,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 	private SessionManager sessionManager;
 	private UserSession currentSession;
 	private Parent root;
-	private final ObjectProperty<ConnectionStatus> connectionStatus =
-			new SimpleObjectProperty<>(ConnectionStatus.DISCONNECTED);
+	private ConnectionManager connectionManager;
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 
@@ -66,6 +65,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		this.sessionManager = new SessionManager();
+		this.connectionManager = new ConnectionManager(SessionMode.OFFLINE);
 
 		// Load fonts
 		loadFonts();
@@ -82,7 +82,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 		if (savedSession != null) {
 			currentSession = savedSession;
-			connectionStatus.set(ConnectionStatus.CONNECTED);
+			connectionManager.connectionStatusProperty().set(ConnectionStatus.CONNECTED);
 			startMainApplication();
 		} else {
 			showLoginScreen(primaryStage);
@@ -98,7 +98,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 	 */
 	@Override
 	public void stop() {
-		
+
 		// Save configuration settings to file
 		try {
 			cfgManager.save(appCfg);			
@@ -109,7 +109,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		// Perform backup
 		if (appCfg.isAutoBackupOn()) {
 			List<Recipe> recipes = RecipeService.getAllRecipes();
-			
+
 			if (recipes.size() > 0) {
 				AutoBackupService.createBackup(recipes);				
 			}
@@ -229,8 +229,8 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 		try {
 			// communication with backend succesful, update connection status
-			connectionStatus.set(ConnectionStatus.CONNECTED);
-			
+			connectionManager.connectionStatusProperty().set(ConnectionStatus.CONNECTED);
+
 			// save the user session
 			sessionManager.save(session);
 
@@ -261,7 +261,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 					+ " to LOGIN: {}", e);
 		}
 	}
-	
+
 	/**
 	 * Starts application in offline mode. Invalidates any session tokens that
 	 * may have been generated previously and navigates to the main app screen
@@ -277,11 +277,11 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		}  catch (IOException e) {
 			logger.error("onStartOfflineMode(): Couldn't clear session.", e);
 		}
-		
+
 		// Set conn status to disconnected & nullify current session
-		connectionStatus.set(ConnectionStatus.DISCONNECTED);
+		connectionManager.connectionStatusProperty().set(ConnectionStatus.DISCONNECTED);
 		currentSession = null;
-		
+
 		// this method will check connectionStatus
 		try {
 			startMainApplication();
@@ -290,13 +290,13 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 					+ "starting in offline mode.", e);
 		}
 	}
-	
+
 	public void startMainApplication() throws IOException {
 		loadAppShellController();
 		injectAppShellAppConfig();
 		injectSessionHandler();
 		appShellController.initializeThemeDependencies();
-		appShellController.setConnectionStatus(connectionStatus);
+		appShellController.setConnectionStatus(connectionManager.connectionStatusProperty());
 		displayAppShellController(primaryStage);
 		appShellController.applyTheme(appCfg.getTheme());
 	}
