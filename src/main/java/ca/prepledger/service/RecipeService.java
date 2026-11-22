@@ -3,6 +3,7 @@ package ca.prepledger.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,19 +38,46 @@ public class RecipeService {
 		recipeList = new ArrayList<>();
 	}
 
-	public void addRecipe(Recipe recipe) {
-		recipeList.add(recipe);
-		notifyRecipesChanged();
-	}
-
 	public void addRecipes(List<Recipe> recipes) {
 		recipeList.addAll(recipes);
 		notifyRecipesChanged();
 	}
+	
+	/**
+	 * Decide based on Connection Status whether the created recipe should be
+	 * persisted to the back-end or not.
+	 * 
+	 * @since v0.1.3
+	 */
+	public Recipe createRecipe(UserSession session, Recipe recipe)
+	        throws IOException, InterruptedException {
 
-	public void updateRecipe(int id, Recipe recipe) {
-		recipeList.set(id, recipe);
-		notifyRecipesChanged();
+	    if (connectionManager.isOnlineMode()) {
+	        recipe = recipeApiService.createRecipe(session, recipe);	   
+	    }
+
+	    recipeList.add(recipe);
+	    notifyRecipesChanged();
+	    return recipe;
+	}
+
+	public Recipe updateRecipe(UserSession session, Recipe recipe, int recipeIndex)
+	        throws IOException, InterruptedException {
+
+		// if online, call the relevant backend endpoint method
+	    if (connectionManager.isOnlineMode()) {
+	        Long id = recipe.getId();
+
+	        if (id == null) {
+	            throw new IOException("Missing backend ID for recipe.");
+	        }
+
+	        recipe = recipeApiService.updateRecipe(session, recipe, id);
+	    }
+
+	    recipeList.set(recipeIndex, recipe);
+	    notifyRecipesChanged();
+	    return recipe;
 	}
 
 	public void removeRecipe(UserSession session, Recipe recipe) 
@@ -77,7 +105,12 @@ public class RecipeService {
 	}
 
 	public int getRecipeIndex(Recipe recipe) {
-		return recipeList.indexOf(recipe);
+	    for (int i = 0; i < recipeList.size(); i++) {
+	        if (Objects.equals(recipeList.get(i).getId(), recipe.getId())) {
+	            return i;
+	        }
+	    }
+	    return -1;
 	}
 
 	/**
@@ -103,6 +136,10 @@ public class RecipeService {
 		} else {
 			return recipeApiService.fetchRecipes(session);
 		}
+	}
+	
+	public ArrayList<Recipe> getInMemoryRecipeList() {
+		return recipeList;
 	}
 
 	public static ArrayList<Recipe> getRecipeList() {

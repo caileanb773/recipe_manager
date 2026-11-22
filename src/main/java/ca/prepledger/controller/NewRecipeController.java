@@ -14,7 +14,6 @@ import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
-import ca.prepledger.service.RecipeAPIService;
 import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.UserSession;
 import ca.prepledger.util.IconManager;
@@ -57,7 +56,6 @@ public class NewRecipeController implements Navigable, Configurable {
 	private Recipe currentRecipe;	
 	private AppConfig appConfig;
 	private UserSession currentSession;
-	private RecipeAPIService recipeApiService;
 	private static final Logger logger = LoggerFactory.getLogger(NewRecipeController.class);
 
 
@@ -144,22 +142,18 @@ public class NewRecipeController implements Navigable, Configurable {
 		// propogate recipe to recipeservice
 		if (editMode) {
 		    // need to preserve existing id
-		    newRecipe.setId(currentRecipe.getId());
-
+		    newRecipe.setId(currentRecipe.getId());	    
+		    int recipeIndex = recipeService.getRecipeIndex(currentRecipe);
+		   		    
 		    Task<Recipe> task = new Task<>() {
 		        @Override
 		        protected Recipe call() throws Exception {
-		            return recipeApiService.updateRecipe(
-		            		currentSession,
-		            		newRecipe,
-		            		newRecipe.getId());
+		        	return recipeService.updateRecipe(
+		        		    currentSession, newRecipe, recipeIndex);
 		        }
 		    };
 
 		    task.setOnSucceeded(event -> {
-		        Recipe updatedRecipe = task.getValue();
-		        int rcpIdx = recipeService.getRecipeIndex(currentRecipe);	        
-		        recipeService.updateRecipe(rcpIdx, updatedRecipe);
 		        goBackToRecipesList();
 		    });
 
@@ -179,13 +173,11 @@ public class NewRecipeController implements Navigable, Configurable {
 			Task<Recipe> task = new Task<>() {
 				@Override
 				protected Recipe call() throws Exception {
-					return recipeApiService.createRecipe(currentSession, newRecipe);
+					return recipeService.createRecipe(currentSession, newRecipe);
 				}			
 			};
 			
 			task.setOnSucceeded(e -> {
-			    Recipe createdRecipe = task.getValue();
-			    recipeService.addRecipe(createdRecipe);
 			    goBackToRecipesList();
 			});
 			
@@ -408,10 +400,6 @@ public class NewRecipeController implements Navigable, Configurable {
 
 	public void setCurrentSession(UserSession currentSession) {
 		this.currentSession = currentSession;
-	}
-
-	public void setRecipeApiService(RecipeAPIService recipeApiService) {
-		this.recipeApiService = recipeApiService;
 	}
 
 }
