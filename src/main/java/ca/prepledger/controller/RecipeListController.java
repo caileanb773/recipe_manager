@@ -187,7 +187,6 @@ public class RecipeListController implements Navigable, Configurable {
 			controller.setOnRecipeDeleted(this::refreshDisplayedRecipes);
 			controller.setNavigationHandler(navigationHandler);
 			controller.setSession(currentSession);			
-			controller.setRecipeApiService(recipeApiService);
 			
 			IconManager.applyThemeToTree(card, appConfig.getTheme(), null);
 
@@ -220,7 +219,6 @@ public class RecipeListController implements Navigable, Configurable {
 			controller.setOnRecipeDeleted(this::refreshDisplayedRecipes);
 			controller.setNavigationHandler(navigationHandler);
 			controller.setSession(currentSession);			
-			controller.setRecipeApiService(recipeApiService);
 			
 			IconManager.applyThemeToTree(card, appConfig.getTheme(), null);
 

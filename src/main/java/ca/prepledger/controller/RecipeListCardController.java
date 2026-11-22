@@ -10,7 +10,6 @@ import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
-import ca.prepledger.service.RecipeAPIService;
 import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.UserSession;
 import ca.prepledger.util.PrepLedgerDialog;
@@ -44,7 +43,6 @@ public class RecipeListCardController implements Navigable {
 	private Runnable onRecipeDeleted;
 	private NavigationHandler navigationHandler;
 	private UserSession currentSession;
-	private RecipeAPIService recipeApiService;
 	private static final Logger logger = LoggerFactory.getLogger(RecipeGridCardController.class);
 
 
@@ -131,27 +129,16 @@ public class RecipeListCardController implements Navigable {
 			return;
 		}
 		
-		// fail early if recipe has no ID to pass to backend
-		if (recipe.getId() == null) {
-		    logger.warn("Cannot delete recipe: missing backend ID.");
-		    PrepLedgerDialog.showRecipeBackendActionFailedDialog(
-		            "Missing backend ID.",
-		            "delete");
-		    return;
-		}
-
 		Task<Void> task = new Task<>() {
 		    @Override
 		    protected Void call() throws Exception {
-		        recipeApiService.deleteRecipe(
-		                currentSession, recipe.getId());
+		        recipeService.removeRecipe(currentSession, recipe);
 		        return null;
 		    }
 		};
 
 		// only delete from local memory if this thread succeeded
 		task.setOnSucceeded(event -> {
-		    recipeService.removeRecipe(recipe);
 		    onRecipeDeleted.run();
 		});
 
@@ -187,10 +174,6 @@ public class RecipeListCardController implements Navigable {
 
 	public void setSession(UserSession currentSession) {
 		this.currentSession = currentSession;
-	}
-
-	public void setRecipeApiService(RecipeAPIService recipeApiService) {
-		this.recipeApiService = recipeApiService;
 	}
 	
 }

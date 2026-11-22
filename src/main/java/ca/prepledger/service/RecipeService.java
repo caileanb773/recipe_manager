@@ -80,11 +80,6 @@ public class RecipeService {
 		return recipeList.indexOf(recipe);
 	}
 
-	public void removeRecipe(int id) {
-		recipeList.remove(id);
-		notifyRecipesChanged();
-	}
-
 	/**
 	 * Decide based on Connection Status whether the imported recipes should be
 	 * persisted to the back-end or not.
