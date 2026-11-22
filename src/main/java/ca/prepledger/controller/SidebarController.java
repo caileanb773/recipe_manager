@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
+import ca.prepledger.session.ConnectionManager;
 import ca.prepledger.session.ConnectionStatus;
 import ca.prepledger.session.UserSession;
 import javafx.beans.property.ObjectProperty;
@@ -43,7 +44,7 @@ public class SidebarController implements Navigable {
 
 	private NavigationHandler navigationHandler;
 	private List<Node> buttons;
-	private ObjectProperty<ConnectionStatus> connectionStatusProperty;
+	private ConnectionManager connectionManager;
 	private static final Logger logger = LoggerFactory.getLogger(SidebarController.class);
 
 
@@ -134,16 +135,21 @@ public class SidebarController implements Navigable {
 			Button b = (Button)buttonNode;
 
 			if (b.getText().equalsIgnoreCase(buttonLabel)) {
-			    if (!b.getStyleClass().contains("active")) {
-			        b.getStyleClass().add("active");
-			    }
+				if (!b.getStyleClass().contains("active")) {
+					b.getStyleClass().add("active");
+				}
 			} else {
-			    b.getStyleClass().remove("active");
+				b.getStyleClass().remove("active");
 			}
 		}
 	}
 
 	public void setUserProfileDetails(UserSession currentSession) {
+		if (connectionManager.isOfflineMode()) {
+			profileName.setText("Anonymous");			
+			return;
+		}
+		
 		String email = currentSession.getEmail();
 		profileName.setText(email);
 		profileName.setTooltip(new Tooltip(email));
@@ -160,16 +166,15 @@ public class SidebarController implements Navigable {
 	 * 
 	 * @since v0.1.2
 	 */
-	public void setConnectionStatus(
-			ObjectProperty<ConnectionStatus> status) {
+	public void setConnectionManager(ConnectionManager connectionManager) {
+		this.connectionManager = connectionManager;
 
-		this.connectionStatusProperty = status;
-
-		status.addListener((observable, oldValue, newValue) -> {
+		connectionManager.connectionStatusProperty()
+		.addListener((observable, oldValue, newValue) -> {
 			updateConnectionStatus(newValue);
 		});
 
-		updateConnectionStatus(status.get());
+		updateConnectionStatus(connectionManager.connectionStatusProperty().get());
 	}
 
 	/**
@@ -180,21 +185,21 @@ public class SidebarController implements Navigable {
 	 */
 	private void updateConnectionStatus(ConnectionStatus status) {
 		switch (status) {
-			case CONNECTED -> {
-				connectionStatus.setText("Connected");
-				connectionStatusImage.setImage(
-						loadConnectionIcon("connected.png"));
-			}
-			case CONNECTING -> {
-				connectionStatus.setText("Connecting...");
-				connectionStatusImage.setImage(
-						loadConnectionIcon("connecting.png"));
-			}
-			case DISCONNECTED -> {
-				connectionStatus.setText("Disconnected");
-				connectionStatusImage.setImage(
-						loadConnectionIcon("disconnected.png"));
-			}
+		case CONNECTED -> {
+			connectionStatus.setText("Connected");
+			connectionStatusImage.setImage(
+					loadConnectionIcon("connected.png"));
+		}
+		case CONNECTING -> {
+			connectionStatus.setText("Connecting...");
+			connectionStatusImage.setImage(
+					loadConnectionIcon("connecting.png"));
+		}
+		case DISCONNECTED -> {
+			connectionStatus.setText("Disconnected");
+			connectionStatusImage.setImage(
+					loadConnectionIcon("disconnected.png"));
+		}
 		}
 	}
 

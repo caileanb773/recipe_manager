@@ -183,7 +183,6 @@ public class SettingsController implements Configurable {
 		}
 		
 		// Log out
-		logger.info("User logged out at " + Time.valueOf(LocalTime.now()) + ".");
 		sessionHandler.onLogout();
 	}
 	
