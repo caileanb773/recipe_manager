@@ -1,6 +1,8 @@
 package ca.prepledger.app;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -65,7 +67,6 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		this.sessionManager = new SessionManager();
-		this.connectionManager = new ConnectionManager(SessionMode.OFFLINE);
 
 		// Load fonts
 		loadFonts();
@@ -82,6 +83,12 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 		if (savedSession != null) {
 			currentSession = savedSession;
+			
+			/* XXX This line is potentially problematic. If the user has a valid
+			 * session, we shouldn't just assume they have a valid internet
+			 * connection. We could do a small check of the /health endpoint to
+			 * see if are connected to the internet/able to reach the backend.*/
+			connectionManager = new ConnectionManager(SessionMode.ONLINE);
 			connectionManager.connectionStatusProperty().set(ConnectionStatus.CONNECTED);
 			startMainApplication();
 		} else {
@@ -228,12 +235,14 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 		try {
 			// communication with backend succesful, update connection status
+			connectionManager = new ConnectionManager(SessionMode.ONLINE);
 			connectionManager.connectionStatusProperty().set(ConnectionStatus.CONNECTED);
 
 			// save the user session
 			sessionManager.save(session);
 
 			// load & display the main application
+			logger.info("Starting in ONLINE mode.");
 			startMainApplication();
 		} catch (IOException e) {
 			logger.error("onLoginSuccess(): Failed to open application after login.", e);
@@ -251,9 +260,11 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 		// Invalidate current session
 		currentSession = null;
+		connectionManager = null;
 
 		// Navigate to Login.fxml
 		try {
+			logger.info("User logged out at " + Time.valueOf(LocalTime.now()) + ".");
 			navigateTo(ContextArea.LOGIN);
 		} catch (IOException e) {
 			logger.error("onLogout(): Caught IOException while trying to navigate"
@@ -278,23 +289,29 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 		}
 
 		// Set conn status to disconnected & nullify current session
+		connectionManager = new ConnectionManager(SessionMode.OFFLINE);
 		connectionManager.connectionStatusProperty().set(ConnectionStatus.DISCONNECTED);
 		currentSession = null;
 
 		// this method will check connectionStatus
 		try {
+			logger.info("Starting in OFFLINE mode.");
 			startMainApplication();
 		} catch (IOException e) {
 			logger.error("onStartOfflineMode(): Failed to open application after "
 					+ "starting in offline mode.", e);
 		}
 	}
-
-	public void startMainApplication() throws IOException {
-		loadAppShellController();
+	
+	private void initializeAppShellController() {
 		injectAppShellDependencies();
 		appShellController.initializeRecipeService();
 		appShellController.setConnectionStatus(connectionManager.connectionStatusProperty());
+	}
+
+	public void startMainApplication() throws IOException {
+		loadAppShellController();
+		initializeAppShellController();
 		displayAppShellController(primaryStage);
 		appShellController.applyTheme(appCfg.getTheme());
 	}
