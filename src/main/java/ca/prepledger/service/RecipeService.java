@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.session.ConnectionManager;
 import ca.prepledger.session.UserSession;
+import ca.prepledger.util.PrepLedgerDialog;
 
 /**
  * Contents: The recipe service is the interface for the application and how it 
@@ -54,6 +55,12 @@ public class RecipeService {
 
 	public void removeRecipe(UserSession session, Recipe recipe) 
 			throws IOException {
+		// fail early if recipe has no ID to pass to recipeservice
+		if (recipe.getId() == null) {
+		    logger.warn("Cannot delete recipe: missing backend ID.");
+		    throw new IOException("Missing backend ID for recipe.");
+		}
+		
 		if (connectionManager.isOfflineMode()) {
 			recipeList.remove(recipe);
 		} else {				
@@ -86,7 +93,7 @@ public class RecipeService {
 		if (connectionManager.isOfflineMode()) {
 			return recipeList;			
 		} else {
-			return (ArrayList<Recipe>)recipeApiService.fetchRecipes(session);
+			return recipeApiService.fetchRecipes(session);
 		}
 	}
 	
