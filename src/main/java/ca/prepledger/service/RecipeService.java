@@ -1,5 +1,6 @@
 package ca.prepledger.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import ca.prepledger.model.Recipe;
 import ca.prepledger.session.ConnectionManager;
+import ca.prepledger.session.UserSession;
 
 /**
  * Contents: The recipe service is the interface for the application and how it 
@@ -50,8 +52,15 @@ public class RecipeService {
 		notifyRecipesChanged();
 	}
 
-	public void removeRecipe(Recipe recipe) {
-		recipeList.remove(recipe);
+	public void removeRecipe(UserSession session, Recipe recipe) 
+			throws IOException, InterruptedException {
+		if (connectionManager.isOfflineMode()) {
+			recipeList.remove(recipe);
+		} else {				
+			recipeApiService.deleteRecipe(session, recipe.getId());
+			recipeList.remove(recipe);
+		}
+
 		notifyRecipesChanged();
 	}
 

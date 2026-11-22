@@ -389,15 +389,14 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		Task<Void> task = new Task<>() {
 		    @Override
 		    protected Void call() throws Exception {
-		        recipeApiService.deleteRecipe(
-		                currentSession, recipe.getId());
+		        recipeService.removeRecipe(
+		                currentSession, recipe);
 		        return null;
 		    }
 		};
 
 		// only delete from local memory if this thread succeeded
 		task.setOnSucceeded(event -> {
-		    recipeService.removeRecipe(recipe);
 			try {
 				showRecipes();
 			} catch (IOException e) {
