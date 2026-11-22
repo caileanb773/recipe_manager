@@ -108,7 +108,7 @@ public class Main extends Application implements SessionHandler, NavigationHandl
 
 		// Perform backup
 		if (appCfg.isAutoBackupOn()) {
-			List<Recipe> recipes = RecipeService.getAllRecipes();
+			List<Recipe> recipes = RecipeService.getRecipeList ();
 
 			if (recipes.size() > 0) {
 				AutoBackupService.createBackup(recipes);				

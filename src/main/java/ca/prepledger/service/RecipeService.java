@@ -53,12 +53,16 @@ public class RecipeService {
 	}
 
 	public void removeRecipe(UserSession session, Recipe recipe) 
-			throws IOException, InterruptedException {
+			throws IOException {
 		if (connectionManager.isOfflineMode()) {
 			recipeList.remove(recipe);
 		} else {				
-			recipeApiService.deleteRecipe(session, recipe.getId());
-			recipeList.remove(recipe);
+			try {
+				recipeApiService.deleteRecipe(session, recipe.getId());
+				recipeList.remove(recipe);
+			} catch (InterruptedException | IOException e) {
+				logger.error("removeRecipe(): caught exception: ", e);
+			}
 		}
 
 		notifyRecipesChanged();
@@ -77,7 +81,16 @@ public class RecipeService {
 		notifyRecipesChanged();
 	}
 
-	public static ArrayList<Recipe> getAllRecipes() {
+	public ArrayList<Recipe> getAllRecipes(UserSession session) 
+			throws IOException, InterruptedException {
+		if (connectionManager.isOfflineMode()) {
+			return recipeList;			
+		} else {
+			return (ArrayList<Recipe>)recipeApiService.fetchRecipes(session);
+		}
+	}
+	
+	public static ArrayList<Recipe> getRecipeList() {
 		return recipeList;
 	}
 

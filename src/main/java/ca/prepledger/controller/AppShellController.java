@@ -477,7 +477,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		    Task<List<Recipe>> task = new Task<>() {
 		        @Override
 		        protected List<Recipe> call() throws Exception {
-		            return recipeApiService.fetchRecipes(currentSession);
+		            return recipeService.getAllRecipes(currentSession);
 		        }
 		    };
 
