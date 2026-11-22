@@ -13,7 +13,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import ca.prepledger.model.Recipe;
 import ca.prepledger.service.ImportExportService;
-import ca.prepledger.service.RecipeAPIService;
 import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.UserSession;
 import ca.prepledger.util.PrepLedgerDialog;
@@ -48,14 +47,22 @@ public class ImportExportController {
 	@FXML private RadioButton selectedRecipesRadioBtn;
 
 	private RecipeService recipeService;
-	private RecipeAPIService recipeApiService;
 	private UserSession userSession;
 	private static final Logger logger = LoggerFactory.getLogger(ImportExportController.class);
 
 	
 	@FXML
 	public void onExportBtnClicked(ActionEvent event) {
-	    List<Recipe> recipesToExport = recipeService.getAllRecipes();
+	    List<Recipe> recipesToExport;
+		try {
+			recipesToExport = recipeService.getAllRecipes(userSession);
+		} catch (IOException e) {
+			logger.warn("onExportBtnClicked(): IOException during export.", e);
+			return;
+		} catch (InterruptedException e) {
+			logger.warn("onExportBtnClicked(): InterruptedException during export.", e);
+			return;
+		}
 
 	    // Check if we have any recipes
 	    if (recipesToExport.isEmpty()) {
@@ -216,7 +223,7 @@ public class ImportExportController {
 	    Task<List<Recipe>> task = new Task<>() {
 	        @Override
 	        protected List<Recipe> call() throws Exception {
-	            return recipeApiService.importRecipes(userSession, importedRecipes);
+	            return recipeService.handleImportRecipes(userSession, importedRecipes);
 	        }
 	    };
 
@@ -247,10 +254,6 @@ public class ImportExportController {
 	
 	public void setUserSession(UserSession userSession) {
 		this.userSession = userSession;
-	}
-	
-	public void setRecipeApiService(RecipeAPIService recipeApiService) {
-		this.recipeApiService = recipeApiService;
 	}
 
 }

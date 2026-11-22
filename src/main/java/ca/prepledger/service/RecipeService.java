@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import ca.prepledger.model.Recipe;
 import ca.prepledger.session.ConnectionManager;
 import ca.prepledger.session.UserSession;
-import ca.prepledger.util.PrepLedgerDialog;
 
 /**
  * Contents: The recipe service is the interface for the application and how it 
@@ -54,22 +53,20 @@ public class RecipeService {
 	}
 
 	public void removeRecipe(UserSession session, Recipe recipe) 
-			throws IOException {
-		// fail early if recipe has no ID to pass to recipeservice
-		if (recipe.getId() == null) {
-		    logger.warn("Cannot delete recipe: missing backend ID.");
-		    throw new IOException("Missing backend ID for recipe.");
-		}
+			throws IOException, InterruptedException {
 		
 		if (connectionManager.isOfflineMode()) {
 			recipeList.remove(recipe);
 		} else {				
-			try {
+
+				// fail if recipe has no ID to pass to recipeservice
+				if (recipe.getId() == null) {
+					logger.warn("Cannot delete recipe: missing backend ID.");
+					throw new IOException("Missing backend ID for recipe.");
+				}
+				
 				recipeApiService.deleteRecipe(session, recipe.getId());
-				recipeList.remove(recipe);
-			} catch (InterruptedException | IOException e) {
-				logger.error("removeRecipe(): caught exception: ", e);
-			}
+				recipeList.remove(recipe);			
 		}
 
 		notifyRecipesChanged();
@@ -88,6 +85,22 @@ public class RecipeService {
 		notifyRecipesChanged();
 	}
 
+	/**
+	 * Decide based on Connection Status whether the imported recipes should be
+	 * persisted to the back-end or not.
+	 * 
+	 * @since v0.1.3
+	 */
+	public List<Recipe> handleImportRecipes(UserSession session, List<Recipe> recipeList) 
+			throws IOException, InterruptedException {
+		
+		if (connectionManager.isOfflineMode()) {
+			return recipeList;
+		} else {
+			return recipeApiService.importRecipes(session, recipeList);
+		}
+	}
+
 	public ArrayList<Recipe> getAllRecipes(UserSession session) 
 			throws IOException, InterruptedException {
 		if (connectionManager.isOfflineMode()) {
@@ -96,7 +109,7 @@ public class RecipeService {
 			return recipeApiService.fetchRecipes(session);
 		}
 	}
-	
+
 	public static ArrayList<Recipe> getRecipeList() {
 		return recipeList;
 	}
