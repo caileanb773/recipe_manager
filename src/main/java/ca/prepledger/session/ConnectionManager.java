@@ -38,4 +38,8 @@ public class ConnectionManager {
 	public boolean isOfflineMode() {
 		return sessionMode == SessionMode.OFFLINE;
 	}
+	
+	public boolean isOnlineMode() {
+		return sessionMode == SessionMode.ONLINE;
+	}
 }
