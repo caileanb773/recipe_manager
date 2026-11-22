@@ -17,7 +17,6 @@ import ca.prepledger.model.Recipe;
 import ca.prepledger.navigation.ContextArea;
 import ca.prepledger.navigation.Navigable;
 import ca.prepledger.navigation.NavigationHandler;
-import ca.prepledger.service.RecipeAPIService;
 import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.UserSession;
 import ca.prepledger.util.IconManager;
@@ -57,7 +56,6 @@ public class RecipeListController implements Navigable, Configurable {
 	private RecipeService recipeService;
 	private AppConfig appConfig;
 	private UserSession currentSession;
-	private RecipeAPIService recipeApiService;
 
 	// Flags
 	private boolean gridCardsInitialized = false;
@@ -400,7 +398,4 @@ public class RecipeListController implements Navigable, Configurable {
 		this.currentSession = currentSession;
 	}
 
-	public void setRecipeApiService(RecipeAPIService recipeApiService) {
-		this.recipeApiService = recipeApiService;
-	}
 }
