@@ -89,7 +89,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 			Parent sidebar = loader.load();
 
 			sidebarController = loader.getController();
-			sidebarController.setConnectionStatus(connectionManager.connectionStatusProperty());
+			sidebarController.setConnectionManager(connectionManager);
 			sidebarController.setNavigationHandler(this);
 			sidebarController.cacheButtons();
 			sidebarController.setUserProfileDetails(currentSession);
@@ -377,25 +377,14 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	 * @since 0.1.2
 	 */
 	public void removeRecipeFromRecipeViewContext(Recipe recipe) throws IOException {
-		// fail early if recipe has no ID to pass to backend
-		if (recipe.getId() == null) {
-		    logger.warn("Cannot delete recipe: missing backend ID.");
-		    PrepLedgerDialog.showRecipeBackendActionFailedDialog(
-		            "Missing backend ID.",
-		            "delete");
-		    return;
-		}
-
 		Task<Void> task = new Task<>() {
 		    @Override
 		    protected Void call() throws Exception {
-		        recipeService.removeRecipe(
-		                currentSession, recipe);
+		        recipeService.removeRecipe(currentSession, recipe);
 		        return null;
 		    }
 		};
 
-		// only delete from local memory if this thread succeeded
 		task.setOnSucceeded(event -> {
 			try {
 				showRecipes();
@@ -481,6 +470,7 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		        }
 		    };
 
+		    // XXX this currently queries the backend for recipes twice.
 		    task.setOnSucceeded(event -> {
 		        recipeService.addRecipes(task.getValue());
 		        recipeListController.refreshDisplayedRecipes();

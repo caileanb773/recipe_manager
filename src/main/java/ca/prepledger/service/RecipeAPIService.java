@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class RecipeAPIService {
 //		return mapper.readValue(response.body(), Recipe.class);
 //	}
 //
-	public List<Recipe> fetchRecipes(UserSession session)
+	public ArrayList<Recipe> fetchRecipes(UserSession session)
 	        throws IOException, InterruptedException {
 
 	    HttpRequest request = HttpRequest.newBuilder()
@@ -82,7 +83,7 @@ public class RecipeAPIService {
 	    Recipe[] recipes = mapper.readValue(response.body(), Recipe[].class);
 	    logger.info("Successfully fetched {} recipes from backend.",  recipes.length);
 
-	    return Arrays.asList(recipes);
+	    return new ArrayList<Recipe>(Arrays.asList(recipes));
 	}
 //
 //	// Search recipes by title

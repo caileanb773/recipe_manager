@@ -234,7 +234,11 @@ public class RecipeListController implements Navigable, Configurable {
 
 	public void refreshDisplayedRecipes() {		
 		// XXX fetch latest recipe data (dependent on online status)
-		cachedRecipes = recipeService.getAllRecipes();
+		try {
+			cachedRecipes = recipeService.getAllRecipes(currentSession);
+		} catch (IOException | InterruptedException e) {
+			logger.error("refreshDisplayedRecipes(): Failed to get recipes from service.", e);
+		}
 		
 		if (cachedRecipes == null) {
 			logger.warn("refreshDisplayedRecipes(): cachedRecipes == null.");
