@@ -12,7 +12,6 @@ import ca.prepledger.navigation.NavigationHandler;
 import ca.prepledger.session.ConnectionManager;
 import ca.prepledger.session.ConnectionStatus;
 import ca.prepledger.session.UserSession;
-import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;

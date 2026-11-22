@@ -100,10 +100,6 @@ public class RecipeService {
 		notifyRecipesChanged();
 	}
 
-	public Recipe getRecipe(int id) {
-		return recipeList.get(id);
-	}
-
 	public int getRecipeIndex(Recipe recipe) {
 	    for (int i = 0; i < recipeList.size(); i++) {
 	        if (Objects.equals(recipeList.get(i).getId(), recipe.getId())) {
@@ -131,23 +127,15 @@ public class RecipeService {
 
 	public ArrayList<Recipe> getAllRecipes(UserSession session) 
 			throws IOException, InterruptedException {
-		if (connectionManager.isOfflineMode()) {
-			return recipeList;			
+		if (connectionManager.isOfflineMode() || session == null) {
+			return recipeList;
 		} else {
 			return recipeApiService.fetchRecipes(session);
 		}
 	}
 	
-	public ArrayList<Recipe> getInMemoryRecipeList() {
+	public static ArrayList<Recipe> getInMemoryRecipeList() {
 		return recipeList;
-	}
-
-	public static ArrayList<Recipe> getRecipeList() {
-		return recipeList;
-	}
-
-	public int getTotalRecipes() {
-		return recipeList.size();
 	}
 
 	public void registerRecipeChangeListener(RecipeChangeListener listener) {
@@ -160,10 +148,6 @@ public class RecipeService {
 		for (RecipeChangeListener listener : listeners) {
 			listener.onRecipesChanged();
 		}
-	}
-
-	public RecipeAPIService getRecipeApiService() {
-		return this.recipeApiService;
 	}
 
 }
