@@ -47,6 +47,15 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Button fx:id="impExpContextBtn" layoutX="20.0" layoutY="228.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onImportExportContextBtnClick" styleClass="nav-button" text="Import/Export">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../img/icon/scaled/light/imp-exp.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             <Button fx:id="prepListsContextBtn" layoutX="20.0" layoutY="176.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPrepListsContextBtnClick" styleClass="nav-button" text="Prep Lists">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
@@ -79,15 +88,6 @@
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../img/icon/scaled/light/settings.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="impExpContextBtn" layoutX="20.0" layoutY="228.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onImportExportContextBtnClick" styleClass="nav-button" text="Import/Export">
-               <graphic>
-                  <ImageView pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../img/icon/scaled/light/imp-exp.png" />
                      </image>
                   </ImageView>
                </graphic>
