@@ -110,12 +110,12 @@ public class SettingsController implements Configurable {
 
 	@FXML
 	private void onLanguageSelected() {
-		
+		PrepLedgerDialog.showUnimplementedFeatureDialog();
 	}
 
 	@FXML
 	private void onRecipeViewStyleSelected() {
-
+		
 	}
 
 	@FXML
