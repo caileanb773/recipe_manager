@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -38,6 +40,7 @@ public class IngredientRowController {
 	@FXML
 	private void initialize() {
 		setUnitComboBoxItems();
+		initializeHandleDownArrowKeyPress();
 	}
 	
 	public void setUnitComboBoxItems() {	
@@ -54,6 +57,16 @@ public class IngredientRowController {
 		items.add("%");
 	}
 	
+	public void initializeHandleDownArrowKeyPress() {
+		ingredientUnitComboBox.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+		    if (event.getCode() == KeyCode.DOWN && !ingredientUnitComboBox.isShowing()) {
+		    	ingredientUnitComboBox.show();
+		        event.consume();
+		    }
+		});
+
+	}
+		
 	@FXML
 	public void onDeleteIngredientButtonClicked() {
 		if (onDelete != null) {
