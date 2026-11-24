@@ -31,18 +31,54 @@ public class IngredientRowController {
 	@FXML private ComboBox<String> ingredientUnitComboBox;
 	@FXML private TextField ingredientAmountField;
 	@FXML private TextField ingredientNotesField;
-	
-	private Consumer<IngredientRowController> onDelete;
 
+	private Consumer<IngredientRowController> onDelete;
+	private Runnable onIngredientChanged;
+	private boolean initializing = true;
+	private boolean changeTrackingEnabled = false;
 	private static final Logger logger = LoggerFactory.getLogger(IngredientRowController.class);
-	
+
 
 	@FXML
 	private void initialize() {
 		setUnitComboBoxItems();
 		initializeHandleDownArrowKeyPress();
+
+		ingredientNameField.textProperty().addListener(
+				(obs, oldValue, newValue) -> {
+					if (!initializing) {
+						notifyIngredientChanged();						
+					}
+				}
+				);
+
+		ingredientAmountField.textProperty().addListener(
+				(obs, oldValue, newValue) -> {
+					if (!initializing) {
+						notifyIngredientChanged();
+					}
+				}
+				);
+
+		ingredientUnitComboBox.valueProperty().addListener(
+				(obs, oldValue, newValue) -> {
+					if (!initializing) {
+						notifyIngredientChanged();
+					}
+				}
+				);
+
+		ingredientNotesField.textProperty().addListener(
+				(obs, oldValue, newValue) -> {
+					if (!initializing) {
+						notifyIngredientChanged();
+					}
+				}
+				);
+
+		initializing = false;
 	}
-	
+
 	public void setUnitComboBoxItems() {	
 		ObservableList<String> items = ingredientUnitComboBox.getItems();
 		items.add("g");
@@ -56,17 +92,17 @@ public class IngredientRowController {
 		items.add("fl. oz");
 		items.add("%");
 	}
-	
+
 	public void initializeHandleDownArrowKeyPress() {
 		ingredientUnitComboBox.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-		    if (event.getCode() == KeyCode.DOWN && !ingredientUnitComboBox.isShowing()) {
-		    	ingredientUnitComboBox.show();
-		        event.consume();
-		    }
+			if (event.getCode() == KeyCode.DOWN && !ingredientUnitComboBox.isShowing()) {
+				ingredientUnitComboBox.show();
+				event.consume();
+			}
 		});
 
 	}
-		
+
 	@FXML
 	public void onDeleteIngredientButtonClicked() {
 		if (onDelete != null) {
@@ -81,15 +117,15 @@ public class IngredientRowController {
 	}
 
 	// Getters & Setters
-	
+
 	public GridPane getRoot() {
 		return rootNode;
 	}
-	
+
 	public void setOnDelete(Consumer<IngredientRowController> onDelete) {
 		this.onDelete = onDelete;
 	}
-	
+
 	public void setDefaultPromptText() {
 		ingredientNameField.setPromptText("e.g. Smoked Paprika");
 		ingredientUnitComboBox.setPromptText("Select Unit");
@@ -102,27 +138,27 @@ public class IngredientRowController {
 		String unit = getIngredientUnit();
 		String name = getIngredientName();
 		String notes = getIngredientNotes();
-		
+
 		return new Ingredient(frac, unit, name, notes);
 	}
 
 	public String getIngredientName() {
 		String val = ingredientNameField.getText();
-		
+
 		if (val == null || val.trim().isEmpty()) {
 			return null;
 		}		
-		
+
 		return val;
 	}
 
 	public Fraction getIngredientAmount() {
 		String amountStr = ingredientAmountField.getText();
-		
+
 		if (amountStr == null || amountStr.trim().isEmpty()) {
 			return null;
 		}
-		
+
 		if (Fraction.isFraction(amountStr)) {
 			return Fraction.parseFraction(amountStr);
 		}
@@ -132,21 +168,21 @@ public class IngredientRowController {
 
 	public String getIngredientUnit() {
 		String val = ingredientUnitComboBox.getValue();
-		
+
 		if (val == null || val.trim().isEmpty()) {
 			return null;
 		}
-		
+
 		return val;
 	}
 
 	public String getIngredientNotes() {
 		String val = ingredientNotesField.getText(); 
-		
+
 		if (val == null || val.trim().isEmpty()) {
 			return null;
 		}
-		
+
 		return val;
 	}
 
@@ -159,6 +195,16 @@ public class IngredientRowController {
 		ingredientUnitComboBox.setValue((unit == null) ? null : unit);
 		ingredientAmountField.setText((amt == null) ? null : amt);
 		ingredientNotesField.setText((note == null) ? null : note);
+	}
+
+	public void enableChangeTracking() {
+		changeTrackingEnabled = true;
+	}
+
+	private void notifyIngredientChanged() {
+		if (changeTrackingEnabled && onIngredientChanged != null) {
+			onIngredientChanged.run();
+		}
 	}
 
 	public void setIngredientName(String name) {
@@ -175,6 +221,10 @@ public class IngredientRowController {
 
 	public void setIngredientNotes(String notes) {
 		ingredientNotesField.setText(notes);
+	}
+
+	public void setOnIngredientChanged(Runnable callback) {
+		this.onIngredientChanged = callback;
 	}
 
 }

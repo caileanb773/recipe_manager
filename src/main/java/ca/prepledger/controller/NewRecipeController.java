@@ -18,6 +18,7 @@ import ca.prepledger.service.RecipeService;
 import ca.prepledger.session.UserSession;
 import ca.prepledger.util.IconManager;
 import ca.prepledger.util.PrepLedgerDialog;
+import ca.prepledger.util.PrepLedgerDialog.Choice;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -48,7 +49,7 @@ public class NewRecipeController implements Navigable, Configurable {
 	@FXML private VBox ingredientsVBox;
 	@FXML private Button navBackButton;
 	@FXML private Label recipeCardHeader;
-	
+
 	private NavigationHandler navigationHandler;
 	private List<IngredientRowController> ingredientRowControllers = new ArrayList<>();
 	private RecipeService recipeService;
@@ -56,28 +57,92 @@ public class NewRecipeController implements Navigable, Configurable {
 	private Recipe currentRecipe;	
 	private AppConfig appConfig;
 	private UserSession currentSession;
+	private boolean userHasUnsavedChanges = false;
+	private boolean initializing = true;
+	private boolean addingFirstIngredientRow = true;
 	private static final Logger logger = LoggerFactory.getLogger(NewRecipeController.class);
-
 
 	@FXML
 	private void initialize() {
 		Platform.runLater(() -> recipeTitleField.requestFocus());
 	}
+	
+	public void initializeChangeListeners() {
+		recipeTitleField.textProperty().addListener(
+				(obs, oldValue, newValue) -> {
+					if (!initializing) {
+						userHasUnsavedChanges = true;
+					}
+				}
+				);
+
+		recipeTagsField.textProperty().addListener(
+				(obs, oldValue, newValue) -> {
+					if (!initializing) {
+						userHasUnsavedChanges = true;
+					}
+				}
+				);
+
+		instructionsTextArea.textProperty().addListener(
+				(obs, oldValue, newValue) -> {
+					if (!initializing) {
+						userHasUnsavedChanges = true;
+					}
+				}
+				);
+
+		// done initializing
+		initializing = false;
+	}
 
 	@FXML
 	public void onNavBackButtonClicked() {
-		try {
-			navigationHandler.navigateTo(ContextArea.RECIPES);
-		} catch (IOException e) {
-			logger.error("onNavBackButtonClicked(): IOException encountered: {}", e);
+		if (canNavigateAwayAfterConfirmingUnsavedChanges()) {
+			goBackToRecipesList();
 		}
 	}
 
+	/**
+	 * Check for unsaved changes, ask user to confirm that they don't care if
+	 * they lose changes, and when confirmation is received, go back to the 
+	 * recipes list view.
+	 */
 	@FXML
 	public void onCancelButtonClicked() {
-		goBackToRecipesList();
+		if (canNavigateAwayAfterConfirmingUnsavedChanges()) {
+			goBackToRecipesList();
+		}
 	}
 
+	/**
+	 * Checks the unsaved changes flag to see if there are any modifications to
+	 * this recipe since it was opened for creating/editing. If there are unsaved
+	 * changes, display a confirmation dialog asking user to confirm they would
+	 * like to discard changes.
+	 * 
+	 * @return True to discard changes, false to stay in this view.
+	 */
+	private boolean canNavigateAwayAfterConfirmingUnsavedChanges() {
+		if (userHasUnsavedChanges) {
+			Choice choice = PrepLedgerDialog.showGenericConfirmationDialog(
+					"Are you sure? This recipe has unsaved changes.",
+					"Confirm");
+
+			if (choice == Choice.CONFIRM) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return true;			
+		}
+	}
+
+	/**
+	 * Save button will navigate back to the "Recipe List" view, unless the user
+	 * has some unsaved changes (dictated by the flag).
+	 */
 	@FXML
 	public void onSaveRecipeButtonClicked() {
 		List<Ingredient> ingredients = new ArrayList<>();
@@ -90,15 +155,15 @@ public class NewRecipeController implements Navigable, Configurable {
 		doesRecipeHaveTitle = hasUserEnteredRecipeTitle();
 
 		String lastIngredient = "";
-		
+
 		// Fetch ingredients
 		try {
-		
-		    for (IngredientRowController c : ingredientRowControllers) {
-		    	lastIngredient = c.getIngredientName();
-		        ingredients.add(c.getIngredient());
-		    }
-	    
+
+			for (IngredientRowController c : ingredientRowControllers) {
+				lastIngredient = c.getIngredientName();
+				ingredients.add(c.getIngredient());
+			}
+
 		} catch (NumberFormatException e) {
 			PrepLedgerDialog.showInvalidRecipeDialog(
 					"Invalid amount for ingredient " + lastIngredient);
@@ -109,66 +174,66 @@ public class NewRecipeController implements Navigable, Configurable {
 
 		// Validate ingredients
 		errors = areIngredientsValid(ingredients);
-		
+
 		// If no errors from ingredient field validation, then all ingredients are good
 		areIngredientFieldsValid = errors.isEmpty();
 
 		// At this point, determine if the recipe is valid. if not, show error
 		isRecipeValid = (doesRecipeHaveTitle && areIngredientFieldsValid);
-		
+
 		// The recipe is invalid for some reason. Could be no title, malformed ingredients, or both.
 		if (!isRecipeValid) {
 			StringBuilder message = new StringBuilder();
-			
+
 			if (!doesRecipeHaveTitle) {
 				message.append("• ").append("Please enter a recipe title.\n");
 			}
-				
+
 			if (!areIngredientFieldsValid) {
 				for (String e : errors) {
 					message.append("• ").append(e).append("\n");
 				}
 			}			
-			
+
 			PrepLedgerDialog.showRecipeSaveFailureDialog(message.toString());
-		    
+
 			logger.info("onSaveRecipeButtonClicked(): Cannot save invalid recipe.");
 			return;
 		}
-		
+
 		// Construct Recipe object
 		Recipe newRecipe = constructRecipeFromRemainingFields(ingredients);
-		
+
 		// propogate recipe to recipeservice
 		if (editMode) {
-		    // need to preserve existing id
-		    newRecipe.setId(currentRecipe.getId());	    
-		    int recipeIndex = recipeService.getRecipeIndex(currentRecipe);
-		   		    
-		    Task<Recipe> task = new Task<>() {
-		        @Override
-		        protected Recipe call() throws Exception {
-		        	return recipeService.updateRecipe(
-		        		    currentSession, newRecipe, recipeIndex);
-		        }
-		    };
+			// need to preserve existing id
+			newRecipe.setId(currentRecipe.getId());	    
+			int recipeIndex = recipeService.getRecipeIndex(currentRecipe);
 
-		    task.setOnSucceeded(event -> {
-		        goBackToRecipesList();
-		    });
+			Task<Recipe> task = new Task<>() {
+				@Override
+				protected Recipe call() throws Exception {
+					return recipeService.updateRecipe(
+							currentSession, newRecipe, recipeIndex);
+				}
+			};
 
-		    task.setOnFailed(event -> {
+			task.setOnSucceeded(event -> {
+				goBackToRecipesList();
+			});
+
+			task.setOnFailed(event -> {
 				logger.error("Failed to update recipe on backend: {}", task.getException());
 				PrepLedgerDialog.showRecipeBackendActionFailedDialog(
 						task.getException().getMessage(),
 						"update");
-		    });
+			});
 
-		    Thread thread = new Thread(task, "recipe-update");
-		    thread.setDaemon(true);
-		    thread.start();
+			Thread thread = new Thread(task, "recipe-update");
+			thread.setDaemon(true);
+			thread.start();
 
-		    return;
+			return;
 		} else {
 			Task<Recipe> task = new Task<>() {
 				@Override
@@ -176,18 +241,18 @@ public class NewRecipeController implements Navigable, Configurable {
 					return recipeService.createRecipe(currentSession, newRecipe);
 				}			
 			};
-			
+
 			task.setOnSucceeded(e -> {
-			    goBackToRecipesList();
+				goBackToRecipesList();
 			});
-			
+
 			task.setOnFailed(e -> {
 				logger.error("Failed to create recipe on backend: {}", task.getException());
 				PrepLedgerDialog.showRecipeBackendActionFailedDialog(
 						task.getException().getMessage(),
 						"create");
 			});
-			
+
 			Thread thread = new Thread(task, "recipe-create");
 			thread.setDaemon(true);
 			thread.start();
@@ -200,43 +265,47 @@ public class NewRecipeController implements Navigable, Configurable {
 	public void onAddIngredientButtonClicked() {
 		try {
 			addNewIngredientRow(appConfig.areTooltipsOn() ? true : false);
+			if (addingFirstIngredientRow) {
+				userHasUnsavedChanges = true;
+				addingFirstIngredientRow = false;
+			}
 		} catch (IOException e) {
 			logger.error("onAddIngredientButtonClicked(): IOException encountered: {}", e);
 		}
 	}
-	
+
 	public void setRecipeToEdit(Recipe recipe) {
 		this.currentRecipe = recipe;
 		editMode = true;
-		
+
 		populateFields(recipe);
 		recipeCardHeader.setText("Edit Recipe");
 	}
-	
+
 	private void populateFields(Recipe recipe) {
 		recipeTitleField.setText(recipe.getTitle());
 		instructionsTextArea.setText(recipe.getDirections());
-		
+
 		// Manage tags
 		String tagsStr = null;
 		List<String> tags = recipe.getTags();
-		
+
 		if (!tags.isEmpty()) {
 			StringBuilder sb = new StringBuilder();
-			
+
 			for (String tag : tags) {
 				if (sb.length() > 0) {
 					sb.append(", ");
 				}
-				
+
 				sb.append(tag);
 			}
-			
+
 			tagsStr = sb.toString();
 		}
-		
+
 		recipeTagsField.setText(tagsStr);
-		
+
 		// Add new ingredientrow.fxml for each ingredient
 		for (Ingredient ing : recipe.getIngredients()) {
 			try {
@@ -246,7 +315,7 @@ public class NewRecipeController implements Navigable, Configurable {
 			}
 		}
 	}
-	
+
 	private void goBackToRecipesList() {
 		try {
 			navigationHandler.navigateTo(ContextArea.RECIPES);
@@ -255,12 +324,12 @@ public class NewRecipeController implements Navigable, Configurable {
 		}
 	}
 
-	void addNewIngredientRow(boolean withPromptText) throws IOException {
+	public void addNewIngredientRow(boolean withPromptText) throws IOException {
 		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/fxml/recipes/IngredientRow.fxml"));
 		Parent ingredientRow = loader.load();
 		IngredientRowController controller = loader.getController();
-	    IconManager.applyThemeToTree(ingredientRow, appConfig.getTheme(), null);
+		IconManager.applyThemeToTree(ingredientRow, appConfig.getTheme(), null);
 
 
 		// Keep track of the row's controller
@@ -268,11 +337,13 @@ public class NewRecipeController implements Navigable, Configurable {
 
 		// Wire the callback for when row's delete button is pressed
 		controller.setOnDelete(this::removeIngredientRow);
+		controller.setOnIngredientChanged(() -> userHasUnsavedChanges = true);
+		controller.enableChangeTracking();
 
 		// Add at 2nd last index so "Add Ingredient" button is last
 		ObservableList<Node> children = ingredientsVBox.getChildren();
 		children.add(children.size() - 1, ingredientRow);
-		
+
 		if (withPromptText) {
 			controller.setDefaultPromptText();
 		}
@@ -280,16 +351,16 @@ public class NewRecipeController implements Navigable, Configurable {
 		// Request focus in the "name" field
 		controller.requestFocusInNameTextField();
 	}
-	
+
 	private void addNewIngredientRow(Ingredient ingredient) throws IOException {
 		FXMLLoader loader = new FXMLLoader(
 				getClass().getResource("/fxml/recipes/IngredientRow.fxml"));
 		Parent ingredientRow = loader.load();
-		
+
 		IconManager.applyThemeToTree(
-			    ingredientRow, appConfig.getTheme(), null
-			);
-		
+				ingredientRow, appConfig.getTheme(), null
+				);
+
 		IngredientRowController controller = loader.getController();
 
 		// Keep track of the row's controller
@@ -297,7 +368,7 @@ public class NewRecipeController implements Navigable, Configurable {
 
 		// Wire the callback for when row's delete button is pressed
 		controller.setOnDelete(this::removeIngredientRow);
-		
+
 		// Set the ingredient fields to the data from passed ingredient
 		controller.setIngredient(ingredient);
 
@@ -310,12 +381,14 @@ public class NewRecipeController implements Navigable, Configurable {
 	}
 
 	private void removeIngredientRow(IngredientRowController controller) {
+
 		int vboxElementsPlusOneIngredientMinimum = 4;
 		ObservableList<Node> children = ingredientsVBox.getChildren();
 
 		/* Every recipe should have at least one ingredient. This ensures users
 		 * can't delete the only ingredient row in the screen. */
 		if (children.size() > vboxElementsPlusOneIngredientMinimum) {
+			userHasUnsavedChanges = true;
 			ingredientRowControllers.remove(controller);
 			ingredientsVBox.getChildren().remove(controller.getRoot());
 		}
@@ -339,44 +412,46 @@ public class NewRecipeController implements Navigable, Configurable {
 
 	private List<String> areIngredientsValid(List<Ingredient> ingredients) {
 		List<String> errors = new ArrayList<>();
-		
-	    for (Ingredient ingredient : ingredients) {
-	        if (ingredient.getName() == null) {
-	            errors.add("An ingredient is missing its name.");
-	        }
-	        
-	        String name = ingredient.getName();
 
-	        try {
+		for (Ingredient ingredient : ingredients) {
+			if (ingredient.getName() == null) {
+				errors.add("An ingredient is missing its name.");
+			}
+
+			String name = ingredient.getName();
+
+			try {
 				String amount = ingredient.getAmount();
-				
+
 				if (amount == null && ingredient.getUnit() != null) {
-				    errors.add("Ingredient '" + name
-				    + "': a unit cannot be specified without an associated amount.");
+					errors.add("Ingredient '" + name
+							+ "': a unit cannot be specified without an associated amount.");
 				}
-				
+
 			} catch (ArithmeticException e) {
 				errors.add("Ingredient " + name + ": the amount is malformed or invalid.");
 				logger.warn("areIngredientsValid(): Invalid amount for ingredient ", name);
 			}
-	    }
+		}
 
-	    return errors;
+		return errors;
 	}
-	
+
 	private Recipe constructRecipeFromRemainingFields(List<Ingredient> ingredients) {
 		Recipe newRecipe = null;
 		String title = recipeTitleField.getText().trim();
 		String tagsText = recipeTagsField.getText();
 		String[] tags = (tagsText == null || tagsText.isBlank())
-		        ? new String[0]
-		        : tagsText.split("\\s*,\\s*");
+				? new String[0]
+						: tagsText.split("\\s*,\\s*");
 		String instructions = instructionsTextArea.getText().trim();
-		
+
 		newRecipe = new Recipe(title, ingredients, instructions, tags);
-		
+
 		return newRecipe;
 	}
+
+
 	
 	public void setRecipeTooltips() {
 		recipeTitleField.setPromptText("e.g. Massaman Curry");
@@ -388,7 +463,7 @@ public class NewRecipeController implements Navigable, Configurable {
 	public void setNavigationHandler(NavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;		
 	}
-	
+
 	public void setRecipeService(RecipeService recipeService) {
 		this.recipeService = recipeService;
 	}

@@ -407,4 +407,36 @@ public class PrepLedgerDialog {
 		alert.showAndWait();
 	}
 
+	public static Choice showGenericConfirmationDialog(String message, String title) {
+		Alert alert = new Alert(
+				AlertType.CONFIRMATION,
+				message,
+				ButtonType.YES,
+				ButtonType.CANCEL
+				);
+
+		alert.getDialogPane().getStylesheets().addAll(
+				PrepLedgerDialog.class.getResource("/css/theme.css").toExternalForm(),
+				PrepLedgerDialog.class.getResource("/css/components/alert.css").toExternalForm());
+		
+		Button yesBtn = (Button)alert.getDialogPane()
+				.lookupButton(ButtonType.YES);
+		yesBtn.getStyleClass().remove("default");
+		yesBtn.getStyleClass().add("danger-button");
+		
+		Button cancelBtn = (Button)alert.getDialogPane()
+				.lookupButton(ButtonType.CANCEL);
+		cancelBtn.getStyleClass().remove("default");
+		cancelBtn.getStyleClass().add("default-button");
+		
+		alert.setTitle(title);
+		Optional<ButtonType> response = alert.showAndWait();
+
+		if (response.isPresent() && response.get() == ButtonType.YES) {
+			return Choice.CONFIRM;
+		} else {
+			return Choice.CANCEL;
+		}
+	}
+
 }

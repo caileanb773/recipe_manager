@@ -276,7 +276,6 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 		// Dependency injections
 		controller.setRecipeService(recipeService);
 		controller.setUserSession(currentSession);
-//		controller.setRecipeApiService(recipeApiService);
 		
 		appShell.setCenter(importExport);
 		IconManager.applyThemeToTree(importExport, appConfig.getTheme(), null);
@@ -342,11 +341,11 @@ public class AppShellController implements NavigationHandler, Configurable, Reci
 	}
 	
 	private void injectNewRecipeControllerDependencies(NewRecipeController controller) {
+		controller.initializeChangeListeners();
 		controller.setNavigationHandler(this);
 		controller.setRecipeService(recipeService);
 		controller.setAppConfig(appConfig);
 		controller.setCurrentSession(currentSession);
-//		controller.setRecipeApiService(recipeApiService);
 	}
 	
 	private void showViewRecipe(Recipe recipe) throws IOException {
